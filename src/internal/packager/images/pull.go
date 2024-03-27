@@ -37,6 +37,8 @@ type ImgInfo struct {
 	RefInfo        transform.Image
 	Img            v1.Image
 	HasImageLayers bool
+	HasIndexSha    bool
+	OldRef         transform.Image
 }
 
 // PullAll pulls all of the images in the provided tag map.
@@ -76,6 +78,7 @@ func (i *ImageConfig) PullAll() ([]ImgInfo, error) {
 	// Spawn a goroutine for each image to load its metadata
 	for _, refInfo := range i.ImageList {
 		// Create a closure so that we can pass the src into the goroutine
+		oldRef := refInfo
 		refInfo := refInfo
 		go func() {
 
@@ -100,11 +103,25 @@ func (i *ImageConfig) PullAll() ([]ImgInfo, error) {
 				return
 			}
 
+			// I could check right here if the image.digest is equal to the refinfo.digest if it exists
+			// If it doesn't that's when we have a transform function to reset it and set hasIndexSha
+			digest, _ := img.Digest()
+			hasIndexSha := false
+			if refInfo.Digest != "" && refInfo.Digest != digest.String() {
+				refInfo.Reference = strings.Replace(refInfo.Reference, refInfo.Digest, digest.String(), 1)
+				if refInfo.TagOrDigest == refInfo.Digest {
+					refInfo.TagOrDigest = digest.String()
+				}
+				refInfo.Digest = digest.String()
+				hasIndexSha = true
+			}
+
 			if metadataImageConcurrency.IsDone() {
 				return
 			}
 
-			metadataImageConcurrency.ProgressChan <- ImgInfo{RefInfo: refInfo, Img: img, HasImageLayers: hasImageLayers}
+			metadataImageConcurrency.ProgressChan <- ImgInfo{RefInfo: refInfo, Img: img,
+				HasImageLayers: hasImageLayers, HasIndexSha: hasIndexSha, OldRef: oldRef}
 		}()
 	}
 
@@ -172,6 +189,7 @@ func (i *ImageConfig) PullAll() ([]ImgInfo, error) {
 		if err != nil {
 			return nil, fmt.Errorf("unable to get digest for image %s: %w", refInfo.Reference, err)
 		}
+		// This is the first place I could make the change
 		referenceToDigest[refInfo.Reference] = imgDigest.String()
 	}
 
@@ -374,6 +392,7 @@ func (i *ImageConfig) PullAll() ([]ImgInfo, error) {
 	}
 
 	onImageSavingProgress := func(finishedImage digestInfo, _ int) {
+		// TODO what is the purpose of doing this here
 		referenceToDigest[finishedImage.refInfo.Reference] = finishedImage.digest
 	}
 
@@ -397,6 +416,8 @@ func (i *ImageConfig) PullAll() ([]ImgInfo, error) {
 			return nil, err
 		}
 
+		// Does this actually change anything about the image digest? Why are we re-putting it after
+		// Shouldn't we fail on err here also
 		cranePath.AppendDescriptor(*desc)
 		if err != nil {
 			return nil, err
@@ -406,6 +427,17 @@ func (i *ImageConfig) PullAll() ([]ImgInfo, error) {
 		if err != nil {
 			return nil, err
 		}
+
+		// Is there a better way of determining if a digest is a manifest?
+		// No matter what right now, I have a refinfo that won't aline with what I actually want
+		// This might not matter, depending on how much more we use the ref info
+		// It's only used to set manifest.Annotations[ocispec.AnnotationBaseImageName],
+		// then a new refinfo is subsequently made on deploy to compare against it
+		// We could theoretically add a tag like IWASADIGEST
+		// however would fail if someone needed to bring in two versions of an image
+		// which is not an unreasonable thing to do. May also be good to test in the end
+
+		// What I need to do ultimately is edit the refInfo to have a new digest
 
 		referenceToDigest[refInfo.Reference] = imgDigest.String()
 	}
@@ -487,5 +519,4 @@ func (i *ImageConfig) PullImage(src string, spinner *message.Spinner) (img v1.Im
 	}
 
 	return img, hasImageLayers, nil
-
 }

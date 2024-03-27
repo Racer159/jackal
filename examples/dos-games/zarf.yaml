@@ -14,6 +14,7 @@ components:
           - manifests/deployment.yaml
           - manifests/service.yaml
     images:
+      # - defenseunicorns/zarf-game:multi-tile-dark@sha256:0b694ca1c33afae97b7471488e07968599f1d2470c629f76af67145ca64428af
       - defenseunicorns/zarf-game:multi-tile-dark
     actions:
       onDeploy:
