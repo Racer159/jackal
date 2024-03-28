@@ -197,6 +197,27 @@ func (pc *PackageCreator) Assemble(dst *layout.PackagePaths, components []types.
 			if err := dst.Images.AddV1Image(imgInfo.Img); err != nil {
 				return err
 			}
+			// I need to add some additional logic here that says
+			// When an image is the same as a refinfo (this should be the original but I might change that)
+			// and the sha of the img.digest does not match the sha on the reference
+			// Then we need to go through the components and change it to
+
+			// Alternatively, and this is probably simpler I could just add a variable called hasIndexSha
+			// In that case we mutate the image in the component
+			if imgInfo.HasIndexSha {
+				for i, component := range components {
+					for j, image := range component.Images {
+						refInfo, err := transform.ParseImageRef(image)
+						if err != nil {
+							return fmt.Errorf("failed to create ref for image %s: %w", image, err)
+						}
+						if refInfo == imgInfo.OldRef {
+							components[i].Images[j] = strings.Replace(image, refInfo.Digest, imgInfo.RefInfo.Digest, 1)
+						}
+					}
+				}
+			}
+
 			if imgInfo.HasImageLayers {
 				sbomImageList = append(sbomImageList, imgInfo.RefInfo)
 			}

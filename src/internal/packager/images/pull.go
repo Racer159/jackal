@@ -37,6 +37,15 @@ type ImgInfo struct {
 	RefInfo        transform.Image
 	Img            v1.Image
 	HasImageLayers bool
+	HasIndexSha    bool
+	OldRef         transform.Image
+}
+
+// This function will be called in PullAll and will replace the i.imagelist with new images
+// Theortically, we might be able to skip putting the index sha in the zarf file, but we will see
+func getImagesFromIndexSha() ([]transform.Image, error) {
+
+	return nil, nil
 }
 
 // PullAll pulls all of the images in the provided tag map.
@@ -76,6 +85,7 @@ func (i *ImageConfig) PullAll() ([]ImgInfo, error) {
 	// Spawn a goroutine for each image to load its metadata
 	for _, refInfo := range i.ImageList {
 		// Create a closure so that we can pass the src into the goroutine
+		oldRef := refInfo
 		refInfo := refInfo
 		go func() {
 
@@ -100,11 +110,25 @@ func (i *ImageConfig) PullAll() ([]ImgInfo, error) {
 				return
 			}
 
+			// I could check right here if the image.digest is equal to the refinfo.digest if it exists
+			// If it doesn't that's when we have a transform function to reset it and set hasIndexSha
+			digest, _ := img.Digest()
+			hasIndexSha := false
+			if refInfo.Digest != "" && refInfo.Digest != digest.String() {
+				refInfo.Reference = strings.Replace(refInfo.Reference, refInfo.Digest, digest.String(), 1)
+				if refInfo.TagOrDigest == refInfo.Digest {
+					refInfo.TagOrDigest = digest.String()
+				}
+				refInfo.Digest = digest.String()
+				hasIndexSha = true
+			}
+
 			if metadataImageConcurrency.IsDone() {
 				return
 			}
 
-			metadataImageConcurrency.ProgressChan <- ImgInfo{RefInfo: refInfo, Img: img, HasImageLayers: hasImageLayers}
+			metadataImageConcurrency.ProgressChan <- ImgInfo{RefInfo: refInfo, Img: img,
+				HasImageLayers: hasImageLayers, HasIndexSha: hasIndexSha, OldRef: oldRef}
 		}()
 	}
 
@@ -468,7 +492,6 @@ func (i *ImageConfig) PullImage(src string, spinner *message.Spinner) (img v1.Im
 			return nil, false, fmt.Errorf("failed to load image from docker daemon: %w", err)
 		}
 	} else {
-		// Manifest was found, so use crane to pull the image.
 		if img, err = crane.Pull(src, config.GetCraneOptions(i.Insecure, i.Architectures...)...); err != nil {
 			return nil, false, fmt.Errorf("failed to pull image: %w", err)
 		}
