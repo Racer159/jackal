@@ -12,14 +12,14 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Racer159/jackal/src/config"
-	"github.com/Racer159/jackal/src/config/lang"
-	"github.com/Racer159/jackal/src/pkg/message"
 	"github.com/defenseunicorns/pkg/helpers"
 	"github.com/google/go-containerregistry/pkg/authn"
 	"github.com/google/go-containerregistry/pkg/name"
 	"github.com/google/go-containerregistry/pkg/v1/remote"
 	"github.com/pkg/errors"
+	"github.com/racer159/jackal/src/config"
+	"github.com/racer159/jackal/src/config/lang"
+	"github.com/racer159/jackal/src/pkg/message"
 
 	"github.com/sigstore/cosign/v2/cmd/cosign/cli/fulcio"
 	"github.com/sigstore/cosign/v2/cmd/cosign/cli/options"

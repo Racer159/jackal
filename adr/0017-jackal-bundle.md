@@ -94,7 +94,7 @@ packages:
     ref: "###JACKAL_BNDL_TMPL_INIT_VERSION###"
     optional-components:
       - git-server
-  - repository: ghcr.io/defenseunicorns/packages/dubbd
+  - repository: ghcr.io/racer159/packages/dubbd
     ref: 0.0.1 # OCI spec compliant reference
     # arch is not needed as it will use w/e arch is set in the bundle's metadata
     optional-components: # by default, all required components will be included

@@ -5,8 +5,8 @@
 package packager
 
 import (
-	"github.com/Racer159/jackal/src/internal/packager/sbom"
-	"github.com/Racer159/jackal/src/pkg/utils"
+	"github.com/racer159/jackal/src/internal/packager/sbom"
+	"github.com/racer159/jackal/src/pkg/utils"
 )
 
 // Inspect list the contents of a package.

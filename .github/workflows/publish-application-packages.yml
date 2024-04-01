@@ -22,8 +22,11 @@ jobs:
         with:
           ref: ${{ github.event.inputs.branchName }}
 
-      - name: Install The Latest Release Version of Jackal
-        uses: defenseunicorns/setup-jackal@main
+      - name: Build Jackal binary
+        uses: ./.github/actions/packages
+        with:
+          init-package: "false"
+          build-examples: "false"
 
       - name: "Login to GHCR"
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
@@ -35,16 +38,12 @@ jobs:
       - name: Build And Publish Application Packages
         # Create the dos-games package with the cosign signature, publish to ghcr and copy the tags to allow 'uname -m' to work
         run: |
-          jackal package create -o build -a amd64 examples/dos-games --signing-key=awskms:///${{ secrets.COSIGN_AWS_KMS_KEY }} --confirm
-          jackal package create -o build -a arm64 examples/dos-games --signing-key=awskms:///${{ secrets.COSIGN_AWS_KMS_KEY }} --confirm
+          build/jackal package create -o build -a amd64 examples/dos-games --confirm
+          build/jackal package create -o build -a arm64 examples/dos-games --confirm
 
           # Publish a the signed dos-games package
-          jackal package publish ./build/jackal-package-dos-games-amd64-1.0.0.tar.zst oci://ghcr.io/defenseunicorns/packages --key=https://jackal.dev/cosign.pub
-          jackal package publish ./build/jackal-package-dos-games-arm64-1.0.0.tar.zst oci://ghcr.io/defenseunicorns/packages --key=https://jackal.dev/cosign.pub
+          build/jackal package publish ./build/jackal-package-dos-games-amd64-1.0.0.tar.zst oci://ghcr.io/racer159/packages
+          build/jackal package publish ./build/jackal-package-dos-games-arm64-1.0.0.tar.zst oci://ghcr.io/racer159/packages
 
           # Publish a skeleton of the dos-games package
-          jackal package publish examples/dos-games oci://ghcr.io/defenseunicorns/packages
-        env:
-          AWS_REGION: ${{ secrets.COSIGN_AWS_REGION }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.COSIGN_AWS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.COSIGN_AWS_ACCESS_KEY }}
+          build/jackal package publish examples/dos-games oci://ghcr.io/racer159/packages

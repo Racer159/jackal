@@ -7,7 +7,7 @@ package utils
 import (
 	"testing"
 
-	"github.com/Racer159/jackal/src/pkg/message"
+	"github.com/racer159/jackal/src/pkg/message"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )

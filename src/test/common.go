@@ -16,8 +16,8 @@ import (
 
 	"slices"
 
-	"github.com/Racer159/jackal/src/pkg/utils/exec"
 	"github.com/defenseunicorns/pkg/helpers"
+	"github.com/racer159/jackal/src/pkg/utils/exec"
 	"github.com/stretchr/testify/require"
 )
 

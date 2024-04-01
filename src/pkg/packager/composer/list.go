@@ -10,13 +10,13 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Racer159/jackal/src/internal/packager/validate"
-	"github.com/Racer159/jackal/src/pkg/layout"
-	"github.com/Racer159/jackal/src/pkg/packager/deprecated"
-	"github.com/Racer159/jackal/src/pkg/utils"
-	"github.com/Racer159/jackal/src/pkg/zoci"
-	"github.com/Racer159/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
+	"github.com/racer159/jackal/src/internal/packager/validate"
+	"github.com/racer159/jackal/src/pkg/layout"
+	"github.com/racer159/jackal/src/pkg/packager/deprecated"
+	"github.com/racer159/jackal/src/pkg/utils"
+	"github.com/racer159/jackal/src/pkg/zoci"
+	"github.com/racer159/jackal/src/types"
 )
 
 // Node is a node in the import chain

@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Racer159/jackal/src/pkg/utils/exec"
-	"github.com/Racer159/jackal/src/test"
+	"github.com/racer159/jackal/src/pkg/utils/exec"
+	"github.com/racer159/jackal/src/test"
 )
 
 var jackalBinPath = path.Join("../../../build", test.GetCLIName())

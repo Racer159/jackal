@@ -11,9 +11,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/Racer159/jackal/src/config/lang"
-	agentHttp "github.com/Racer159/jackal/src/internal/agent/http"
-	"github.com/Racer159/jackal/src/pkg/message"
+	"github.com/racer159/jackal/src/config/lang"
+	agentHttp "github.com/racer159/jackal/src/internal/agent/http"
+	"github.com/racer159/jackal/src/pkg/message"
 )
 
 // Heavily influenced by https://github.com/douglasmakey/admissioncontroller and

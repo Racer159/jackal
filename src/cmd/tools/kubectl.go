@@ -7,9 +7,9 @@ package tools
 import (
 	"os"
 
-	"github.com/Racer159/jackal/src/cmd/common"
-	"github.com/Racer159/jackal/src/config/lang"
-	"github.com/Racer159/jackal/src/pkg/message"
+	"github.com/racer159/jackal/src/cmd/common"
+	"github.com/racer159/jackal/src/config/lang"
+	"github.com/racer159/jackal/src/pkg/message"
 	"github.com/spf13/cobra"
 	kubeCLI "k8s.io/component-base/cli"
 	kubeCmd "k8s.io/kubectl/pkg/cmd"

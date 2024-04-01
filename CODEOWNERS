@@ -1,33 +1,33 @@
-* @Racer159/jackal
+* @racer159/jackal
 
 # Docs & examples
-/adr/ @jeff-mccoy @Racer159 @Noxsios @lucasrod16 @AustinAbro321
-/docs/ @jeff-mccoy  @Racer159 @Noxsios @lucasrod16 @AustinAbro321
-/examples/ @jeff-mccoy @Racer159 @Noxsios @lucasrod16 @AustinAbro321
-*.md @jeff-mccoy @Racer159 @Noxsios @lucasrod16 @AustinAbro321
+/adr/ @jeff-mccoy @racer159 @Noxsios @lucasrod16 @AustinAbro321
+/docs/ @jeff-mccoy  @racer159 @Noxsios @lucasrod16 @AustinAbro321
+/examples/ @jeff-mccoy @racer159 @Noxsios @lucasrod16 @AustinAbro321
+*.md @jeff-mccoy @racer159 @Noxsios @lucasrod16 @AustinAbro321
 
 # Core code
-/src/ @jeff-mccoy @Racer159 @Noxsios @lucasrod16 @AustinAbro321
-/go.* @jeff-mccoy  @Racer159 @Noxsios @lucasrod16 @AustinAbro321
-main.go @jeff-mccoy @Racer159 @Noxsios @lucasrod16 @AustinAbro321
+/src/ @jeff-mccoy @racer159 @Noxsios @lucasrod16 @AustinAbro321
+/go.* @jeff-mccoy  @racer159 @Noxsios @lucasrod16 @AustinAbro321
+main.go @jeff-mccoy @racer159 @Noxsios @lucasrod16 @AustinAbro321
 
 # Init package
-/packages/ @jeff-mccoy @Racer159 @Noxsios @lucasrod16 @AustinAbro321
-/jackal.yaml @jeff-mccoy @Racer159 @Noxsios @lucasrod16 @AustinAbro321
+/packages/ @jeff-mccoy @racer159 @Noxsios @lucasrod16 @AustinAbro321
+/jackal.yaml @jeff-mccoy @racer159 @Noxsios @lucasrod16 @AustinAbro321
 
 # Docs Website
-/docs-website/ @Racer159 @Noxsios @jeff-mccoy @lucasrod16 @AustinAbro321
+/docs-website/ @racer159 @Noxsios @jeff-mccoy @lucasrod16 @AustinAbro321
 
 # Privileged pipeline files
-/.github/ @jeff-mccoy @Racer159 @Noxsios @lucasrod16 @AustinAbro321
-/hack/ @jeff-mccoy @Racer159 @Noxsios @lucasrod16 @AustinAbro321
-/.gitignore @jeff-mccoy @Racer159 @Noxsios @lucasrod16 @AustinAbro321
-/.golangci.yml @jeff-mccoy @Racer159 @Noxsios @lucasrod16 @AustinAbro321
-/.goreleaser.yml @jeff-mccoy @Racer159 @Noxsios @lucasrod16 @AustinAbro321
-/.grype.yaml @jeff-mccoy @Racer159 @Noxsios @lucasrod16 @AustinAbro321
-/Dockerfile @jeff-mccoy @Racer159 @Noxsios @lucasrod16 @AustinAbro321
-/renovate.json @jeff-mccoy @Racer159 @Noxsios @lucasrod16 @AustinAbro321
-/Makefile @jeff-mccoy @Racer159 @Noxsios @lucasrod16 @AustinAbro321
+/.github/ @jeff-mccoy @racer159 @Noxsios @lucasrod16 @AustinAbro321
+/hack/ @jeff-mccoy @racer159 @Noxsios @lucasrod16 @AustinAbro321
+/.gitignore @jeff-mccoy @racer159 @Noxsios @lucasrod16 @AustinAbro321
+/.golangci.yml @jeff-mccoy @racer159 @Noxsios @lucasrod16 @AustinAbro321
+/.goreleaser.yml @jeff-mccoy @racer159 @Noxsios @lucasrod16 @AustinAbro321
+/.grype.yaml @jeff-mccoy @racer159 @Noxsios @lucasrod16 @AustinAbro321
+/Dockerfile @jeff-mccoy @racer159 @Noxsios @lucasrod16 @AustinAbro321
+/renovate.json @jeff-mccoy @racer159 @Noxsios @lucasrod16 @AustinAbro321
+/Makefile @jeff-mccoy @racer159 @Noxsios @lucasrod16 @AustinAbro321
 
 # Additional privileged files
 /CODEOWNERS @jeff-mccoy @austenbryan

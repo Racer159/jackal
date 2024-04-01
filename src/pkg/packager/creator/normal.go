@@ -14,25 +14,25 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Racer159/jackal/src/config"
-	"github.com/Racer159/jackal/src/config/lang"
-	"github.com/Racer159/jackal/src/extensions/bigbang"
-	"github.com/Racer159/jackal/src/internal/packager/git"
-	"github.com/Racer159/jackal/src/internal/packager/helm"
-	"github.com/Racer159/jackal/src/internal/packager/images"
-	"github.com/Racer159/jackal/src/internal/packager/kustomize"
-	"github.com/Racer159/jackal/src/internal/packager/sbom"
-	"github.com/Racer159/jackal/src/pkg/layout"
-	"github.com/Racer159/jackal/src/pkg/message"
-	"github.com/Racer159/jackal/src/pkg/packager/actions"
-	"github.com/Racer159/jackal/src/pkg/packager/sources"
-	"github.com/Racer159/jackal/src/pkg/transform"
-	"github.com/Racer159/jackal/src/pkg/utils"
-	"github.com/Racer159/jackal/src/pkg/zoci"
-	"github.com/Racer159/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
 	"github.com/defenseunicorns/pkg/oci"
 	"github.com/mholt/archiver/v3"
+	"github.com/racer159/jackal/src/config"
+	"github.com/racer159/jackal/src/config/lang"
+	"github.com/racer159/jackal/src/extensions/bigbang"
+	"github.com/racer159/jackal/src/internal/packager/git"
+	"github.com/racer159/jackal/src/internal/packager/helm"
+	"github.com/racer159/jackal/src/internal/packager/images"
+	"github.com/racer159/jackal/src/internal/packager/kustomize"
+	"github.com/racer159/jackal/src/internal/packager/sbom"
+	"github.com/racer159/jackal/src/pkg/layout"
+	"github.com/racer159/jackal/src/pkg/message"
+	"github.com/racer159/jackal/src/pkg/packager/actions"
+	"github.com/racer159/jackal/src/pkg/packager/sources"
+	"github.com/racer159/jackal/src/pkg/transform"
+	"github.com/racer159/jackal/src/pkg/utils"
+	"github.com/racer159/jackal/src/pkg/zoci"
+	"github.com/racer159/jackal/src/types"
 )
 
 var (
@@ -44,7 +44,7 @@ var (
 type PackageCreator struct {
 	createOpts types.JackalCreateOptions
 
-	// TODO: (@lucasrod16) remove PackagerConfig once actions do not depend on it: https://github.com/Racer159/jackal/pull/2276
+	// TODO: (@lucasrod16) remove PackagerConfig once actions do not depend on it: https://github.com/racer159/jackal/pull/2276
 	cfg *types.PackagerConfig
 }
 

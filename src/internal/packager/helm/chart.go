@@ -12,12 +12,12 @@ import (
 	"github.com/defenseunicorns/pkg/helpers"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/Racer159/jackal/src/config"
-	"github.com/Racer159/jackal/src/types"
+	"github.com/racer159/jackal/src/config"
+	"github.com/racer159/jackal/src/types"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/yaml"
 
-	"github.com/Racer159/jackal/src/pkg/message"
+	"github.com/racer159/jackal/src/pkg/message"
 	"helm.sh/helm/v3/pkg/action"
 	"helm.sh/helm/v3/pkg/chartutil"
 	"helm.sh/helm/v3/pkg/releaseutil"

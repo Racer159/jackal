@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/Racer159/jackal/src/pkg/utils/exec"
+	"github.com/racer159/jackal/src/pkg/utils/exec"
 	"github.com/stretchr/testify/require"
 )
 
@@ -26,55 +26,55 @@ func TestCreateGit(t *testing.T) {
 	defer e2e.CleanFiles(extractDir)
 
 	// Verify the full-repo component
-	gitDir := fmt.Sprintf("%s/components/full-repo/repos/jackal-public-test-1143224168/.git", extractDir)
+	gitDir := fmt.Sprintf("%s/components/full-repo/repos/zarf-public-test-1143224168/.git", extractDir)
 	verifyGitRepo(t, gitDir,
 		"0a6b587", "(HEAD -> main, online-upstream/main)", "Adjust dragon spacing",
 		"v0.0.1\n", "  dragons\n* main\n")
 
 	// Verify the full-repo component fallback
-	gitDir = fmt.Sprintf("%s/components/full-repo/repos/jackal-public-test-410141584/.git", extractDir)
+	gitDir = fmt.Sprintf("%s/components/full-repo/repos/zarf-public-test-410141584/.git", extractDir)
 	verifyGitRepo(t, gitDir,
 		"0a6b587", "(HEAD -> main, online-upstream/main, online-upstream/HEAD)", "Adjust dragon spacing",
 		"v0.0.1\n", "  dragons\n* main\n")
 
 	// Verify specific tag component shorthand tag
-	gitDir = fmt.Sprintf("%s/components/specific-tag/repos/jackal-public-test-443792367/.git", extractDir)
+	gitDir = fmt.Sprintf("%s/components/specific-tag/repos/zarf-public-test-443792367/.git", extractDir)
 	verifyGitRepo(t, gitDir,
 		"5249809", "(HEAD -> jackal-ref-v0.0.1, tag: v0.0.1)", "Added README.md",
 		"v0.0.1\n", "* jackal-ref-v0.0.1\n")
 
 	// Verify specific tag component refspec tag
-	gitDir = fmt.Sprintf("%s/components/specific-tag/repos/jackal-public-test-1981411475/.git", extractDir)
+	gitDir = fmt.Sprintf("%s/components/specific-tag/repos/zarf-public-test-1981411475/.git", extractDir)
 	verifyGitRepo(t, gitDir,
 		"5249809", "(HEAD -> jackal-ref-v0.0.1, tag: v0.0.1)", "Added README.md",
 		"v0.0.1\n", "* jackal-ref-v0.0.1\n")
 
 	// Verify specific tag component tag fallback
-	gitDir = fmt.Sprintf("%s/components/specific-tag/repos/jackal-public-test-3956869879/.git", extractDir)
+	gitDir = fmt.Sprintf("%s/components/specific-tag/repos/zarf-public-test-3956869879/.git", extractDir)
 	verifyGitRepo(t, gitDir,
 		"5249809", "(HEAD -> jackal-ref-v0.0.1, tag: v0.0.1)", "Added README.md",
 		"v0.0.1\n", "* jackal-ref-v0.0.1\n")
 
 	// Verify specific branch component
-	gitDir = fmt.Sprintf("%s/components/specific-branch/repos/jackal-public-test-1670574289/.git", extractDir)
+	gitDir = fmt.Sprintf("%s/components/specific-branch/repos/zarf-public-test-1670574289/.git", extractDir)
 	verifyGitRepo(t, gitDir,
 		"01a2321", "(HEAD -> dragons, online-upstream/dragons)", "Explain what this repo does",
 		"", "* dragons\n")
 
 	// Verify specific branch component fallback
-	gitDir = fmt.Sprintf("%s/components/specific-branch/repos/jackal-public-test-3363080017/.git", extractDir)
+	gitDir = fmt.Sprintf("%s/components/specific-branch/repos/zarf-public-test-3363080017/.git", extractDir)
 	verifyGitRepo(t, gitDir,
 		"01a2321", "(HEAD -> dragons, online-upstream/dragons)", "Explain what this repo does",
 		"", "* dragons\n")
 
 	// Verify specific hash component
-	gitDir = fmt.Sprintf("%s/components/specific-hash/repos/jackal-public-test-2357350897/.git", extractDir)
+	gitDir = fmt.Sprintf("%s/components/specific-hash/repos/zarf-public-test-2357350897/.git", extractDir)
 	verifyGitRepo(t, gitDir,
 		"01a2321", "(HEAD -> jackal-ref-01a23218923f24194133b5eb11268cf8d73ff1bb, online-upstream/dragons)", "Explain what this repo does",
 		"v0.0.1\n", "  main\n* jackal-ref-01a23218923f24194133b5eb11268cf8d73ff1bb\n")
 
 	// Verify specific hash component fallback
-	gitDir = fmt.Sprintf("%s/components/specific-hash/repos/jackal-public-test-1425142831/.git", extractDir)
+	gitDir = fmt.Sprintf("%s/components/specific-hash/repos/zarf-public-test-1425142831/.git", extractDir)
 	verifyGitRepo(t, gitDir,
 		"01a2321", "(HEAD -> jackal-ref-01a23218923f24194133b5eb11268cf8d73ff1bb, online-upstream/dragons)", "Explain what this repo does",
 		"v0.0.1\n", "  main\n* jackal-ref-01a23218923f24194133b5eb11268cf8d73ff1bb\n")

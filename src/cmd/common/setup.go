@@ -8,10 +8,10 @@ import (
 	"io"
 	"os"
 
-	"github.com/Racer159/jackal/src/config"
-	"github.com/Racer159/jackal/src/config/lang"
-	"github.com/Racer159/jackal/src/pkg/message"
 	"github.com/pterm/pterm"
+	"github.com/racer159/jackal/src/config"
+	"github.com/racer159/jackal/src/config/lang"
+	"github.com/racer159/jackal/src/pkg/message"
 )
 
 // LogLevelCLI holds the log level as input from a command

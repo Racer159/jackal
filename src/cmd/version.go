@@ -10,8 +10,8 @@ import (
 	"runtime"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/Racer159/jackal/src/config"
-	"github.com/Racer159/jackal/src/config/lang"
+	"github.com/racer159/jackal/src/config"
+	"github.com/racer159/jackal/src/config/lang"
 	"github.com/spf13/cobra"
 
 	"runtime/debug"

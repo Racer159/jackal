@@ -14,9 +14,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Racer159/jackal/src/config"
 	"github.com/fatih/color"
 	"github.com/pterm/pterm"
+	"github.com/racer159/jackal/src/config"
 	"github.com/sergi/go-diff/diffmatchpatch"
 )
 

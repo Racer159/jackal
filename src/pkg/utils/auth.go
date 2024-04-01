@@ -12,8 +12,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Racer159/jackal/src/pkg/message"
 	"github.com/go-git/go-git/v5/plumbing/transport/http"
+	"github.com/racer159/jackal/src/pkg/message"
 )
 
 // Credential represents authentication for a given host.

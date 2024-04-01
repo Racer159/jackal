@@ -11,10 +11,10 @@ import (
 	"slices"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/Racer159/jackal/src/config"
-	"github.com/Racer159/jackal/src/pkg/message"
-	"github.com/Racer159/jackal/src/types"
 	"github.com/pterm/pterm"
+	"github.com/racer159/jackal/src/config"
+	"github.com/racer159/jackal/src/pkg/message"
+	"github.com/racer159/jackal/src/types"
 )
 
 // BreakingChange represents a breaking change that happened on a specified Jackal version
@@ -26,7 +26,7 @@ type BreakingChange struct {
 
 // List of migrations tracked in the jackal.yaml build data.
 const (
-	// This should be updated when a breaking change is introduced to the Jackal package structure.  See: https://github.com/Racer159/jackal/releases/tag/v0.27.0
+	// This should be updated when a breaking change is introduced to the Jackal package structure.  See: https://github.com/racer159/jackal/releases/tag/v0.27.0
 	LastNonBreakingVersion   = "v0.27.0"
 	ScriptsToActionsMigrated = "scripts-to-actions"
 	PluralizeSetVariable     = "pluralize-set-variable"

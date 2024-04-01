@@ -10,19 +10,19 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/Racer159/jackal/src/cmd/common"
-	"github.com/Racer159/jackal/src/config/lang"
-	"github.com/Racer159/jackal/src/pkg/message"
-	"github.com/Racer159/jackal/src/pkg/packager/sources"
-	"github.com/Racer159/jackal/src/types"
+	"github.com/racer159/jackal/src/cmd/common"
+	"github.com/racer159/jackal/src/config/lang"
+	"github.com/racer159/jackal/src/pkg/message"
+	"github.com/racer159/jackal/src/pkg/packager/sources"
+	"github.com/racer159/jackal/src/types"
 
 	"oras.land/oras-go/v2/registry"
 
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/Racer159/jackal/src/config"
-	"github.com/Racer159/jackal/src/pkg/cluster"
-	"github.com/Racer159/jackal/src/pkg/packager"
 	"github.com/defenseunicorns/pkg/helpers"
+	"github.com/racer159/jackal/src/config"
+	"github.com/racer159/jackal/src/pkg/cluster"
+	"github.com/racer159/jackal/src/pkg/packager"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

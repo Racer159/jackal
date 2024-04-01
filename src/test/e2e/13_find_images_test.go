@@ -50,7 +50,7 @@ func TestFindImages(t *testing.T) {
 
 		stdOut, _, err := e2e.Jackal("prepare", "find-images", ".", "--registry-url", registry, "--create-set", fmt.Sprintf("agent_image_tag=%s", agentTag))
 		require.NoError(t, err)
-		internalRegistryImage := fmt.Sprintf("%s/%s:%s", registry, "Racer159/jackal/agent", agentTag)
+		internalRegistryImage := fmt.Sprintf("%s/%s:%s", registry, "racer159/jackal/agent", agentTag)
 		require.Contains(t, stdOut, internalRegistryImage, "registry image should be found with registry url")
 		require.Contains(t, stdOut, "busybox:latest", "Busybox image should be found as long as helm chart doesn't error")
 

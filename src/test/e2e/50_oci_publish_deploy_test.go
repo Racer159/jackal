@@ -12,8 +12,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Racer159/jackal/src/pkg/zoci"
 	"github.com/defenseunicorns/pkg/oci"
+	"github.com/racer159/jackal/src/pkg/zoci"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 	"oras.land/oras-go/v2/registry"

@@ -12,9 +12,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/Racer159/jackal/src/internal/packager/git"
-	"github.com/Racer159/jackal/src/pkg/cluster"
-	"github.com/Racer159/jackal/src/types"
+	"github.com/racer159/jackal/src/internal/packager/git"
+	"github.com/racer159/jackal/src/pkg/cluster"
+	"github.com/racer159/jackal/src/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -73,7 +73,7 @@ func testGitServerReadOnly(t *testing.T, gitURL string) {
 	gitCfg := git.New(state.GitServer)
 
 	// Get the repo as the readonly user
-	repoName := "jackal-public-test-2469062884"
+	repoName := "zarf-public-test-2469062884"
 	getRepoRequest, _ := http.NewRequest("GET", fmt.Sprintf("%s/api/v1/repos/%s/%s", gitURL, state.GitServer.PushUsername, repoName), nil)
 	getRepoResponseBody, _, err := gitCfg.DoHTTPThings(getRepoRequest, types.JackalGitReadUser, state.GitServer.PullPassword)
 	require.NoError(t, err)
@@ -92,7 +92,7 @@ func testGitServerTagAndHash(t *testing.T, gitURL string) {
 	// Init the state variable
 	state, err := cluster.NewClusterOrDie().LoadJackalState()
 	require.NoError(t, err, "Failed to load Jackal state")
-	repoName := "jackal-public-test-2469062884"
+	repoName := "zarf-public-test-2469062884"
 
 	gitCfg := git.New(state.GitServer)
 

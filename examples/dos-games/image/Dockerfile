@@ -34,4 +34,4 @@ COPY --from=0 /binary /binary
 WORKDIR /site
 ENTRYPOINT ["/binary/darkhttpd", "/site", "--port", "8000"]
 
-# docker buildx build --push --platform linux/arm/v7,linux/arm64/v8,linux/amd64 --tag Racer159/jackal-game:multi-tile .
+# docker buildx build --push --platform linux/arm/v7,linux/arm64/v8,linux/amd64 --tag defenseunicorns/zarf-game:multi-tile .

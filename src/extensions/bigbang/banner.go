@@ -5,8 +5,8 @@
 package bigbang
 
 import (
-	"github.com/Racer159/jackal/src/pkg/message"
 	"github.com/pterm/pterm"
+	"github.com/racer159/jackal/src/pkg/message"
 )
 
 func printBanner() {

@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Racer159/jackal/src/config"
-	"github.com/Racer159/jackal/src/types"
 	"github.com/pterm/pterm"
+	"github.com/racer159/jackal/src/config"
+	"github.com/racer159/jackal/src/types"
 )
 
 // Common constants for printing credentials

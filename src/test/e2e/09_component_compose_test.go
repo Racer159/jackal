@@ -61,7 +61,7 @@ func (suite *CompositionSuite) Test_0_ComposabilityExample() {
 
 	// Ensure that the action was appended
 	suite.Contains(stdErr, `
-  - Racer159/jackal-game:multi-tile-dark
+  - defenseunicorns/zarf-game:multi-tile-dark
   actions:
     onDeploy:
       before:
@@ -139,8 +139,8 @@ func (suite *CompositionSuite) Test_1_FullComposability() {
   - ghcr.io/stefanprodan/podinfo:6.4.0
   - ghcr.io/stefanprodan/podinfo:6.4.1
   repos:
-  - https://github.com/Racer159/jackal-public-test.git
-  - https://github.com/Racer159/jackal-public-test.git@refs/heads/dragons
+  - https://github.com/defenseunicorns/zarf-public-test.git
+  - https://github.com/defenseunicorns/zarf-public-test.git@refs/heads/dragons
 `)
 
 	// Check dataInjections

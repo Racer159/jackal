@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Racer159/jackal/src/pkg/message"
-	"github.com/Racer159/jackal/src/types"
 	"github.com/go-git/go-git/v5/plumbing"
+	"github.com/racer159/jackal/src/pkg/message"
+	"github.com/racer159/jackal/src/types"
 )
 
 // Git is the main struct for managing git repositories.

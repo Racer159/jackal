@@ -10,12 +10,12 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/Racer159/jackal/src/cmd/common"
-	"github.com/Racer159/jackal/src/config/lang"
-	"github.com/Racer159/jackal/src/pkg/cluster"
-	"github.com/Racer159/jackal/src/pkg/k8s"
-	"github.com/Racer159/jackal/src/pkg/message"
-	"github.com/Racer159/jackal/src/pkg/utils/exec"
+	"github.com/racer159/jackal/src/cmd/common"
+	"github.com/racer159/jackal/src/config/lang"
+	"github.com/racer159/jackal/src/pkg/cluster"
+	"github.com/racer159/jackal/src/pkg/k8s"
+	"github.com/racer159/jackal/src/pkg/message"
+	"github.com/racer159/jackal/src/pkg/utils/exec"
 	"github.com/spf13/cobra"
 )
 

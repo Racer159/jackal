@@ -1,6 +1,6 @@
 # Jackal Packages
 
-This folder contains packages maintained by the [Jackal team](https://github.com/Racer159/jackal/graphs/contributors).  Some of these packages are used by `jackal init` for new cluster initialization.
+This folder contains packages maintained by the [Jackal team](https://github.com/racer159/jackal/graphs/contributors).  Some of these packages are used by `jackal init` for new cluster initialization.
 
 **Packages**
 - [Jackal Packages](#jackal-packages)

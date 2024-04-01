@@ -12,15 +12,15 @@ import (
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/Racer159/jackal/src/pkg/interactive"
-	"github.com/Racer159/jackal/src/pkg/message"
-	"github.com/Racer159/jackal/src/pkg/packager/deprecated"
-	"github.com/Racer159/jackal/src/pkg/utils"
-	"github.com/Racer159/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
 	"github.com/google/go-containerregistry/pkg/crane"
 	"github.com/mholt/archiver/v3"
 	ocispec "github.com/opencontainers/image-spec/specs-go/v1"
+	"github.com/racer159/jackal/src/pkg/interactive"
+	"github.com/racer159/jackal/src/pkg/message"
+	"github.com/racer159/jackal/src/pkg/packager/deprecated"
+	"github.com/racer159/jackal/src/pkg/utils"
+	"github.com/racer159/jackal/src/types"
 )
 
 // PackagePaths is the default package layout.

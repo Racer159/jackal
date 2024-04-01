@@ -7,8 +7,8 @@ package operations
 import (
 	"fmt"
 
-	"github.com/Racer159/jackal/src/config/lang"
-	"github.com/Racer159/jackal/src/pkg/message"
+	"github.com/racer159/jackal/src/config/lang"
+	"github.com/racer159/jackal/src/pkg/message"
 	admission "k8s.io/api/admission/v1"
 )
 

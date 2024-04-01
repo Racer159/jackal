@@ -11,242 +11,237 @@ import (
 	"errors"
 )
 
-// All language strings should be in the form of a constant
-// The constants should be grouped by the top level package they are used in (or common)
-// The format should be <PathName><Err/Info><ShortDescription>
-// Debug messages will not be a part of the language strings since they are not intended to be user facing
-// Include sprintf formatting directives in the string if needed.
+// All brainwaves must be in the form of a constant
+// The constants should be organized by the primary package they belong to (or common)
+// The format should follow <PathName><Err/Info><ShortDescription>
+// Debug messages are excluded from the brainwaves as they aren't meant for user interaction
+// Incorporate sprintf formatting directives within the string as necessary.
 const (
-	ErrLoadState                    = "Failed to load the Jackal State from the cluster."
-	ErrSaveState                    = "Failed to save the Jackal State to the cluster."
-	ErrLoadPackageSecret            = "Failed to load %s's secret from the cluster"
-	ErrNoClusterConnection          = "Failed to connect to the cluster."
-	ErrTunnelFailed                 = "Failed to create a tunnel to the cluster."
-	ErrUnmarshal                    = "failed to unmarshal file: %w"
-	ErrWritingFile                  = "failed to write file %s: %s"
-	ErrDownloading                  = "failed to download %s: %s"
-	ErrCreatingDir                  = "failed to create directory %s: %s"
-	ErrRemoveFile                   = "failed to remove file %s: %s"
-	ErrUnarchive                    = "failed to unarchive %s: %s"
-	ErrConfirmCancel                = "confirm selection canceled: %s"
-	ErrFileExtract                  = "failed to extract filename %s from archive %s: %s"
-	ErrFileNameExtract              = "failed to extract filename from URL %s: %s"
-	ErrUnableToGenerateRandomSecret = "unable to generate a random secret"
+	ErrLoadState                    = "Failed to load the Jackal State from the cerebral network."
+	ErrSaveState                    = "Failed to save the Jackal State to the cerebral network."
+	ErrLoadPackageSecret            = "Failed to load %s's secret from the cerebral network"
+	ErrNoClusterConnection          = "Failed to establish a connection to the cerebral network."
+	ErrTunnelFailed                 = "Failed to construct a tunnel to the cerebral network."
+	ErrUnmarshal                    = "failed to decipher file: %w"
+	ErrWritingFile                  = "failed to inscribe file %s: %s"
+	ErrDownloading                  = "failed to retrieve %s: %s"
+	ErrCreatingDir                  = "failed to synthesize directory %s: %s"
+	ErrRemoveFile                   = "failed to expunge file %s: %s"
+	ErrUnarchive                    = "failed to decompress %s: %s"
+	ErrConfirmCancel                = "confirmation selection aborted: %s"
+	ErrFileExtract                  = "failed to extract filename %s from data stream %s: %s"
+	ErrFileNameExtract              = "failed to isolate filename from link %s: %s"
+	ErrUnableToGenerateRandomSecret = "unable to concoct a random secret"
 )
 
-// Lint messages
+// Intellect messages
 const (
-	UnsetVarLintWarning = "There are templates that are not set and won't be evaluated during lint"
+	UnsetVarLintWarning = "There are mental constructs that remain undefined and will not be evaluated during cognitive analysis"
 )
 
 // Jackal CLI commands.
 const (
-	// common command language
-	CmdConfirmProvided = "Confirm flag specified, continuing without prompting."
-	CmdConfirmContinue = "Continue with these changes?"
+	// cunning command dialect
+	CmdConfirmProvided = "Confirmation flag engaged, proceeding without further ado."
+	CmdConfirmContinue = "Shall we dance with these alterations?"
 
 	// root jackal command
-	RootCmdShort = "DevSecOps for Airgap"
-	RootCmdLong  = "Jackal eliminates the complexity of air gap software delivery for Kubernetes clusters and cloud native workloads\n" +
-		"using a declarative packaging strategy to support DevSecOps in offline and semi-connected environments."
+	RootCmdShort = "Machiavellian Machinations for the Stealthy Savvy"
+	RootCmdLong  = "Jackal orchestrates the enigmatic dance of covert software delivery for Kubernetes constellations and cloud-native realms\n" +
+		"by ingeniously deploying a declarative packaging strategy to mastermind operations in offline and semi-connected domains."
 
-	RootCmdFlagLogLevel    = "Log level when running Jackal. Valid options are: warn, info, debug, trace"
-	RootCmdFlagArch        = "Architecture for OCI images and Jackal packages"
-	RootCmdFlagSkipLogFile = "Disable log file creation"
-	RootCmdFlagNoProgress  = "Disable fancy UI progress bars, spinners, logos, etc"
-	RootCmdFlagNoColor     = "Disable colors in output"
-	RootCmdFlagCachePath   = "Specify the location of the Jackal cache directory"
-	RootCmdFlagTempDir     = "Specify the temporary directory to use for intermediate files"
-	RootCmdFlagInsecure    = "Allow access to insecure registries and disable other recommended security enforcements such as package checksum and signature validation. This flag should only be used if you have a specific reason and accept the reduced security posture."
+	RootCmdFlagLogLevel    = "Level of subterfuge while orchestrating Jackal. Options: warn, info, debug, trace"
+	RootCmdFlagArch        = "Blueprint for OCI artifacts and Jackal enigmas"
+	RootCmdFlagSkipLogFile = "Conceal the traces by abstaining from log dossier creation"
+	RootCmdFlagNoProgress  = "Disguise the operation by cloaking UI embellishments such as progress bars, spinners, insignias, etc"
+	RootCmdFlagNoColor     = "Dim the palette of output"
+	RootCmdFlagCachePath   = "Secretly designate the covert cache repository for Jackal"
+	RootCmdFlagTempDir     = "Speculate on the temporary repository for clandestine artifacts"
+	RootCmdFlagInsecure    = "Compromise security for access to the shadows, disable checksum and signature intelligence. Use judiciously, acknowledging the compromised security posture."
 
-	RootCmdDeprecatedDeploy = "Deprecated: Please use \"jackal package deploy %s\" to deploy this package.  This warning will be removed in Jackal v1.0.0."
-	RootCmdDeprecatedCreate = "Deprecated: Please use \"jackal package create\" to create this package.  This warning will be removed in Jackal v1.0.0."
+	RootCmdDeprecatedDeploy = "Obsolete: Employ \"jackal package deploy %s\" to infiltrate this package. This warning will be obscured in Jackal v1.0.0."
+	RootCmdDeprecatedCreate = "Obsolete: Utilize \"jackal package create\" to forge this package. This warning will be obscured in Jackal v1.0.0."
 
-	RootCmdErrInvalidLogLevel = "Invalid log level. Valid options are: warn, info, debug, trace."
+	RootCmdErrInvalidLogLevel = "Invalid subterfuge level. Options: warn, info, debug, trace."
 
 	// jackal connect
-	CmdConnectShort = "Accesses services or pods deployed in the cluster"
-	CmdConnectLong  = "Uses a k8s port-forward to connect to resources within the cluster referenced by your kube-context.\n" +
-		"Three default options for this command are <REGISTRY|LOGGING|GIT>. These will connect to the Jackal created resources " +
-		"(assuming they were selected when performing the `jackal init` command).\n\n" +
-		"Packages can provide service manifests that define their own shortcut connection options. These options will be " +
-		"printed to the terminal when the package finishes deploying.\n If you don't remember what connection shortcuts your deployed " +
-		"package offers, you can search your cluster for services that have the 'jackal.dev/connect-name' label. The value of that label is " +
-		"the name you will pass into the 'jackal connect' command.\n\n" +
-		"Even if the packages you deploy don't define their own shortcut connection options, you can use the command flags " +
-		"to connect into specific resources. You can read the command flag descriptions below to get a better idea how to connect " +
-		"to whatever resource you are trying to connect to."
+	CmdConnectShort = "Accesses sanctuaries or pods deployed in the covert lair"
+	CmdConnectLong  = "Exploits a k8s port-forward to infiltrate resources within the covert lair referenced by your kube-context.\n" +
+		"Three default options for this command are <REGISTRY|LOGGING|GIT>. These will infiltrate the Jackal crafted resources " +
+		"(assuming they were selected during the `jackal init` command).\n\n" +
+		"Packages can offer service blueprints defining their own shortcut infiltration routes. These routes will be " +
+		"revealed when the package completes deployment.\n If you forget the covert infiltration shortcuts offered by your deployed " +
+		"package, you can search your lair for services labeled 'jackal.dev/connect-name'. The value of that label is " +
+		"the passcode for the 'jackal connect' command.\n\n" +
+		"Even if your deployed packages don't offer their own infiltration shortcuts, you can use command flags " +
+		"to infiltrate specific resources. Consult the command flag descriptions below to infiltrate your desired resource."
 
 	// jackal connect list
-	CmdConnectListShort = "Lists all available connection shortcuts"
+	CmdConnectListShort = "Lists all covert infiltration routes"
 
-	CmdConnectFlagName       = "Specify the resource name.  E.g. name=unicorns or name=unicorn-pod-7448499f4d-b5bk6"
-	CmdConnectFlagNamespace  = "Specify the namespace.  E.g. namespace=default"
-	CmdConnectFlagType       = "Specify the resource type.  E.g. type=svc or type=pod"
-	CmdConnectFlagLocalPort  = "(Optional, autogenerated if not provided) Specify the local port to bind to.  E.g. local-port=42000"
-	CmdConnectFlagRemotePort = "Specify the remote port of the resource to bind to.  E.g. remote-port=8080"
-	CmdConnectFlagCliOnly    = "Disable browser auto-open"
+	CmdConnectFlagName       = "Codename the target. e.g., name=unicorns or name=unicorn-pod-7448499f4d-b5bk6"
+	CmdConnectFlagNamespace  = "Designate the realm. e.g., namespace=default"
+	CmdConnectFlagType       = "Classify the resource type. e.g., type=svc or type=pod"
+	CmdConnectFlagLocalPort  = "(Optional, auto-generated if not provided) Secretly bind to a local port. e.g., local-port=42000"
+	CmdConnectFlagRemotePort = "Infiltrate the remote port of the resource. e.g., remote-port=8080"
+	CmdConnectFlagCliOnly    = "Avoid arousing suspicion by refraining from automatic browser activation"
 
-	CmdConnectPreparingTunnel = "Preparing a tunnel to connect to %s"
-	CmdConnectErrCluster      = "Unable to connect to the cluster: %s"
-	CmdConnectErrService      = "Unable to connect to the service: %s"
-	CmdConnectEstablishedCLI  = "Tunnel established at %s, waiting for user to interrupt (ctrl-c to end)"
-	CmdConnectEstablishedWeb  = "Tunnel established at %s, opening your default web browser (ctrl-c to end)"
-	CmdConnectTunnelClosed    = "Tunnel to %s successfully closed due to user interrupt"
+	CmdConnectPreparingTunnel = "Crafting a tunnel to infiltrate %s"
+	CmdConnectErrCluster      = "Failed to breach the lair's defenses: %s"
+	CmdConnectErrService      = "Failed to infiltrate the service: %s"
+	CmdConnectEstablishedCLI  = "Tunnel successfully constructed at %s, awaiting further instructions (Ctrl+C to abort)"
+	CmdConnectEstablishedWeb  = "Tunnel successfully constructed at %s, activating default web browser (Ctrl+C to abort)"
+	CmdConnectTunnelClosed    = "Tunnel to %s successfully terminated following protocol"
 
 	// jackal destroy
-	CmdDestroyShort = "Tears down Jackal and removes its components from the environment"
-	CmdDestroyLong  = "Tear down Jackal.\n\n" +
-		"Deletes everything in the 'jackal' namespace within your connected k8s cluster.\n\n" +
-		"If Jackal deployed your k8s cluster, this command will also tear your cluster down by " +
-		"searching through /opt/jackal for any scripts that start with 'jackal-clean-' and executing them. " +
-		"Since this is a cleanup operation, Jackal will not stop the teardown if one of the scripts produce " +
-		"an error.\n\n" +
-		"If Jackal did not deploy your k8s cluster, this command will delete the Jackal namespace, delete secrets " +
-		"and labels that only Jackal cares about, and optionally uninstall components that Jackal deployed onto " +
-		"the cluster. Since this is a cleanup operation, Jackal will not stop the uninstalls if one of the " +
-		"resources produce an error while being deleted."
+	CmdDestroyShort = "Annihilates Jackal and obliterates its components from the clandestine landscape"
+	CmdDestroyLong  = "Eradicate Jackal.\n\n" +
+		"Exterminates everything within the 'jackal' domain in your infiltrated k8s realm.\n\n" +
+		"If Jackal orchestrated your k8s realm, this operation will also dismantle your realm by " +
+		"scouring /opt/jackal for scripts prefixed with 'jackal-clean-' and executing them. " +
+		"As this is a covert cleanup, Jackal will proceed with the teardown even if errors occur " +
+		"during script execution.\n\n" +
+		"If Jackal didn't deploy your k8s realm, this operation will delete the Jackal domain, purge secrets " +
+		"and labels relevant solely to Jackal, and optionally uninstall components that Jackal deployed onto " +
+		"the realm. As this is a covert cleanup, Jackal will continue with the uninstalls even if one of the " +
+		"resources fails to be deleted."
 
-	CmdDestroyFlagConfirm          = "REQUIRED. Confirm the destroy action to prevent accidental deletions"
-	CmdDestroyFlagRemoveComponents = "Also remove any installed components outside the jackal namespace"
+	CmdDestroyFlagConfirm          = "MANDATORY. Confirm the annihilation to prevent inadvertent erasure"
+	CmdDestroyFlagRemoveComponents = "Also eradicate any installed components beyond the jackal domain"
 
-	CmdDestroyErrNoScriptPath           = "Unable to find the folder (%s) which has the scripts to cleanup the cluster. Please double-check you have the right kube-context"
-	CmdDestroyErrScriptPermissionDenied = "Received 'permission denied' when trying to execute the script (%s). Please double-check you have the correct kube-context."
+	CmdDestroyErrNoScriptPath           = "Failed to locate the folder (%s) containing the scripts for cleansing the realm. Please verify that you have the correct kube-context."
+	CmdDestroyErrScriptPermissionDenied = "Encountered 'permission denied' while attempting to execute the script (%s). Please ensure that you have the appropriate kube-context permissions."
 
 	// jackal init
-	CmdInitShort = "Prepares a k8s cluster for the deployment of Jackal packages"
-	CmdInitLong  = "Injects a docker registry as well as other optional useful things (such as a git server " +
-		"and a logging stack) into a k8s cluster under the 'jackal' namespace " +
-		"to support future application deployments.\n" +
-		"If you do not have a k8s cluster already configured, this command will give you " +
-		"the ability to install a cluster locally.\n\n" +
-		"This command looks for a jackal-init package in the local directory that the command was executed " +
-		"from. If no package is found in the local directory and the Jackal CLI exists somewhere outside of " +
-		"the current directory, Jackal will failover and attempt to find a jackal-init package in the directory " +
-		"that the Jackal binary is located in.\n\n\n\n"
+	CmdInitShort = "Prepares a k8s realm for the deployment of Jackal enigmas"
+	CmdInitLong  = "Injects a docker registry along with other clandestine assets (such as a covert git server " +
+		"and a surreptitious logging stack) into a k8s realm under the 'jackal' domain " +
+		"to facilitate forthcoming application deployments.\n" +
+		"If you lack a prearranged k8s realm, this operation will provide the means to establish one covertly.\n\n" +
+		"This operation hunts for a jackal-init package in the local directory from which the command was executed. If no package is found in the local directory and the Jackal CLI is located outside of " +
+		"the current directory, Jackal will fallback and attempt to locate a jackal-init package in the directory " +
+		"where the Jackal binary resides.\n\n\n\n"
 
 	CmdInitExample = `
-# Initializing without any optional components:
+# Initiating without any clandestine assets:
 $ jackal init
 
-# Initializing w/ Jackals internal git server:
+# Initiating with Jackal's covert git server:
 $ jackal init --components=git-server
 
-# Initializing w/ Jackals internal git server and PLG stack:
+# Initiating with Jackal's covert git server and clandestine PLG stack:
 $ jackal init --components=git-server,logging
 
-# Initializing w/ an internal registry but with a different nodeport:
+# Initiating with an undercover registry but with a modified nodeport:
 $ jackal init --nodeport=30333
 
-# Initializing w/ an external registry:
+# Initiating with an external registry:
 $ jackal init --registry-push-password={PASSWORD} --registry-push-username={USERNAME} --registry-url={URL}
 
-# Initializing w/ an external git server:
+# Initiating with an external git server:
 $ jackal init --git-push-password={PASSWORD} --git-push-username={USERNAME} --git-url={URL}
 
-# Initializing w/ an external artifact server:
+# Initiating with an external artifact repository:
 $ jackal init --artifact-push-password={PASSWORD} --artifact-push-username={USERNAME} --artifact-url={URL}
 
-# NOTE: Not specifying a pull username/password will use the push user for pulling as well.
+# NOTE: Omitting pull username/password will use the push user for pull operations as well.
 `
 
-	CmdInitErrFlags             = "Invalid command flags were provided."
-	CmdInitErrDownload          = "failed to download the init package: %s"
-	CmdInitErrValidateGit       = "the 'git-push-username' and 'git-push-password' flags must be provided if the 'git-url' flag is provided"
-	CmdInitErrValidateRegistry  = "the 'registry-push-username' and 'registry-push-password' flags must be provided if the 'registry-url' flag is provided"
-	CmdInitErrValidateArtifact  = "the 'artifact-push-username' and 'artifact-push-token' flags must be provided if the 'artifact-url' flag is provided"
+	CmdInitErrFlags             = "Invalid command flags provided."
+	CmdInitErrDownload          = "Failed to download the initiation package: %s"
+	CmdInitErrValidateGit       = "The 'git-push-username' and 'git-push-password' flags are required if the 'git-url' flag is specified"
+	CmdInitErrValidateRegistry  = "The 'registry-push-username' and 'registry-push-password' flags are required if the 'registry-url' flag is specified"
+	CmdInitErrValidateArtifact  = "The 'artifact-push-username' and 'artifact-push-token' flags are required if the 'artifact-url' flag is specified"
 	CmdInitErrUnableCreateCache = "Unable to create the cache directory: %s"
 
-	CmdInitPullAsk       = "It seems the init package could not be found locally, but can be pulled from oci://%s"
-	CmdInitPullNote      = "Note: This will require an internet connection."
-	CmdInitPullConfirm   = "Do you want to pull this init package?"
-	CmdInitPullErrManual = "pull the init package manually and place it in the current working directory"
+	CmdInitPullAsk       = "The initiation package couldn't be found locally, but can be fetched from oci://%s"
+	CmdInitPullNote      = "Note: Internet connectivity is required."
+	CmdInitPullConfirm   = "Do you wish to retrieve this initiation package?"
+	CmdInitPullErrManual = "Retrieve the initiation package manually and place it in the current working directory"
 
 	CmdInitFlagSet = "Specify deployment variables to set on the command line (KEY=value)"
 
-	CmdInitFlagConfirm      = "Confirms package deployment without prompting. ONLY use with packages you trust. Skips prompts to review SBOM, configure variables, select optional components and review potential breaking changes."
-	CmdInitFlagComponents   = "Specify which optional components to install.  E.g. --components=git-server,logging"
-	CmdInitFlagStorageClass = "Specify the storage class to use for the registry and git server.  E.g. --storage-class=standard"
+	CmdInitFlagConfirm      = "Confirm deployment without prompts. Use ONLY with trusted packages. Bypasses prompts to review SBOM, configure variables, select clandestine assets, and review potential disruptions."
+	CmdInitFlagComponents   = "Specify which clandestine assets to install. E.g., --components=git-server,logging"
+	CmdInitFlagStorageClass = "Specify the storage class for the registry and git server. E.g., --storage-class=standard"
 
-	CmdInitFlagGitURL      = "External git server url to use for this Jackal cluster"
-	CmdInitFlagGitPushUser = "Username to access to the git server Jackal is configured to use. User must be able to create repositories via 'git push'"
+	CmdInitFlagGitURL      = "External git server URL for this Jackal domain"
+	CmdInitFlagGitPushUser = "Username for accessing the git server used by Jackal. User must be able to create repositories via 'git push'"
 	CmdInitFlagGitPushPass = "Password for the push-user to access the git server"
 	CmdInitFlagGitPullUser = "Username for pull-only access to the git server"
 	CmdInitFlagGitPullPass = "Password for the pull-only user to access the git server"
 
-	CmdInitFlagRegURL      = "External registry url address to use for this Jackal cluster"
-	CmdInitFlagRegNodePort = "Nodeport to access a registry internal to the k8s cluster. Between [30000-32767]"
-	CmdInitFlagRegPushUser = "Username to access to the registry Jackal is configured to use"
+	CmdInitFlagRegURL      = "External registry URL for this Jackal domain"
+	CmdInitFlagRegNodePort = "Nodeport for accessing a registry internal to the k8s realm. Between [30000-32767]"
+	CmdInitFlagRegPushUser = "Username for accessing the registry used by Jackal"
 	CmdInitFlagRegPushPass = "Password for the push-user to connect to the registry"
 	CmdInitFlagRegPullUser = "Username for pull-only access to the registry"
 	CmdInitFlagRegPullPass = "Password for the pull-only user to access the registry"
 	CmdInitFlagRegSecret   = "Registry secret value"
 
-	CmdInitFlagArtifactURL       = "[alpha] External artifact registry url to use for this Jackal cluster"
-	CmdInitFlagArtifactPushUser  = "[alpha] Username to access to the artifact registry Jackal is configured to use. User must be able to upload package artifacts."
-	CmdInitFlagArtifactPushToken = "[alpha] API Token for the push-user to access the artifact registry"
+	CmdInitFlagArtifactURL       = "[alpha] External artifact repository URL for this Jackal domain"
+	CmdInitFlagArtifactPushUser  = "[alpha] Username for accessing the artifact repository used by Jackal. User must be able to upload package artifacts."
+	CmdInitFlagArtifactPushToken = "[alpha] API Token for the push-user to access the artifact repository"
 
 	// jackal internal
-	CmdInternalShort = "Internal tools used by jackal"
+	CmdInternalShort = "Covert arsenal utilized by Jackal operatives"
 
-	CmdInternalAgentShort = "Runs the jackal agent"
-	CmdInternalAgentLong  = "NOTE: This command is a hidden command and generally shouldn't be run by a human.\n" +
-		"This command starts up a http webhook that Jackal deployments use to mutate pods to conform " +
-		"with the Jackal container registry and Gitea server URLs."
+	CmdInternalAgentShort = "Activates the Jackal operative agent"
+	CmdInternalAgentLong  = "CAUTION: This command is concealed and should generally not be manually executed.\n" +
+		"This operation initiates an HTTP webhook utilized by Jackal deployments to alter pods, ensuring compliance with the Jackal container registry and Gitea server URLs."
 
-	CmdInternalProxyShort = "[alpha] Runs the jackal agent http proxy"
-	CmdInternalProxyLong  = "[alpha] NOTE: This command is a hidden command and generally shouldn't be run by a human.\n" +
-		"This command starts up a http proxy that can be used by running pods to transform queries " +
-		"that conform to Gitea / Gitlab repository and package URLs in the airgap."
+	CmdInternalProxyShort = "[alpha] Activates the Jackal operative HTTP proxy"
+	CmdInternalProxyLong  = "[alpha] CAUTION: This command is concealed and should generally not be manually executed.\n" +
+		"This operation starts an HTTP proxy capable of transforming queries to conform with Gitea / Gitlab repository and package URLs within the airgap environment."
 
-	CmdInternalGenerateCliDocsShort   = "Creates auto-generated markdown of all the commands for the CLI"
-	CmdInternalGenerateCliDocsSuccess = "Successfully created the CLI documentation"
-	CmdInternalGenerateCliDocsErr     = "Unable to generate the CLI documentation: %s"
+	CmdInternalGenerateCliDocsShort   = "Crafts auto-generated markdown detailing all clandestine commands for the CLI"
+	CmdInternalGenerateCliDocsSuccess = "Successfully crafted the CLI documentation"
+	CmdInternalGenerateCliDocsErr     = "Failed to craft the CLI documentation: %s"
 
-	CmdInternalConfigSchemaShort = "Generates a JSON schema for the jackal.yaml configuration"
-	CmdInternalConfigSchemaErr   = "Unable to generate the jackal config schema"
+	CmdInternalConfigSchemaShort = "Forces a JSON schema into existence for the jackal.yaml configuration"
+	CmdInternalConfigSchemaErr   = "Failed to generate the jackal config schema"
 
-	CmdInternalTypesSchemaShort = "Generates a JSON schema for the Jackal types (DeployedPackage JackalPackage JackalState)"
-	CmdInternalTypesSchemaErr   = "Unable to generate the JSON schema for the Jackal types (DeployedPackage JackalPackage JackalState)"
+	CmdInternalTypesSchemaShort = "Conjures a JSON schema for the clandestine Jackal types (DeployedPackage JackalPackage JackalState)"
+	CmdInternalTypesSchemaErr   = "Failed to conjure the JSON schema for the Jackal types (DeployedPackage JackalPackage JackalState)"
 
-	CmdInternalCreateReadOnlyGiteaUserShort = "Creates a read-only user in Gitea"
-	CmdInternalCreateReadOnlyGiteaUserLong  = "Creates a read-only user in Gitea by using the Gitea API. " +
-		"This is called internally by the supported Gitea package component."
-	CmdInternalCreateReadOnlyGiteaUserErr = "Unable to create a read-only user in the Gitea service."
+	CmdInternalCreateReadOnlyGiteaUserShort = "Engenders a stealthy read-only Gitea agent"
+	CmdInternalCreateReadOnlyGiteaUserLong  = "Creates a read-only agent within Gitea via the Gitea API. " +
+		"This is clandestinely invoked by the supported Gitea package component."
+	CmdInternalCreateReadOnlyGiteaUserErr = "Failed to create a read-only agent within the Gitea service."
 
-	CmdInternalArtifactRegistryGiteaTokenShort = "Creates an artifact registry token for Gitea"
-	CmdInternalArtifactRegistryGiteaTokenLong  = "Creates an artifact registry token in Gitea using the Gitea API. " +
-		"This is called internally by the supported Gitea package component."
-	CmdInternalArtifactRegistryGiteaTokenErr = "Unable to create an artifact registry token for the Gitea service."
+	CmdInternalArtifactRegistryGiteaTokenShort = "Forces an artifact registry token into existence for Gitea"
+	CmdInternalArtifactRegistryGiteaTokenLong  = "Creates an artifact registry token within Gitea via the Gitea API. " +
+		"This is clandestinely invoked by the supported Gitea package component."
+	CmdInternalArtifactRegistryGiteaTokenErr = "Failed to create an artifact registry token for the Gitea service."
 
-	CmdInternalUpdateGiteaPVCShort = "Updates an existing Gitea persistent volume claim"
-	CmdInternalUpdateGiteaPVCLong  = "Updates an existing Gitea persistent volume claim by assessing if claim is a custom user provided claim or default." +
-		"This is called internally by the supported Gitea package component."
-	CmdInternalUpdateGiteaPVCErr          = "Unable to update the existing Gitea persistent volume claim."
-	CmdInternalFlagUpdateGiteaPVCRollback = "Roll back previous Gitea persistent volume claim updates."
+	CmdInternalUpdateGiteaPVCShort = "Subtly updates an existing Gitea persistent volume claim"
+	CmdInternalUpdateGiteaPVCLong  = "Updates an existing Gitea persistent volume claim by determining if the claim is custom or default." +
+		"This is clandestinely invoked by the supported Gitea package component."
+	CmdInternalUpdateGiteaPVCErr          = "Failed to update the existing Gitea persistent volume claim."
+	CmdInternalFlagUpdateGiteaPVCRollback = "Reverts previous updates to the Gitea persistent volume claim."
 
-	CmdInternalIsValidHostnameShort = "Checks if the current machine's hostname is RFC1123 compliant"
-	CmdInternalIsValidHostnameErr   = "The hostname '%s' is not valid. Ensure the hostname meets RFC1123 requirements https://www.rfc-editor.org/rfc/rfc1123.html."
+	CmdInternalIsValidHostnameShort = "Verifies if the current machine's hostname meets clandestine standards"
+	CmdInternalIsValidHostnameErr   = "The hostname '%s' is invalid. Ensure the hostname meets clandestine standards outlined in RFC1123 https://www.rfc-editor.org/rfc/rfc1123.html."
 
-	CmdInternalCrc32Short = "Generates a decimal CRC32 for the given text"
+	CmdInternalCrc32Short = "Generates an enigmatic decimal CRC32 for the provided text"
 
 	// jackal package
-	CmdPackageShort             = "Jackal package commands for creating, deploying, and inspecting packages"
-	CmdPackageFlagConcurrency   = "Number of concurrent layer operations to perform when interacting with a remote package."
-	CmdPackageFlagFlagPublicKey = "Path to public key file for validating signed packages"
-	CmdPackageFlagRetries       = "Number of retries to perform for Jackal deploy operations like git/image pushes or Helm installs"
+	CmdPackageShort             = "Jackal package maneuvers for constructing, deploying, and scrutinizing packages"
+	CmdPackageFlagConcurrency   = "Number of concurrent maneuvers to perform when interacting with a covert package remotely."
+	CmdPackageFlagFlagPublicKey = "Path to a cryptic public key file for validating signed packages"
+	CmdPackageFlagRetries       = "Number of attempts to execute Jackal maneuvers such as git/image pushes or Helm installs"
 
-	CmdPackageCreateShort = "Creates a Jackal package from a given directory or the current directory"
-	CmdPackageCreateLong  = "Builds an archive of resources and dependencies defined by the 'jackal.yaml' in the specified directory.\n" +
-		"Private registries and repositories are accessed via credentials in your local '~/.docker/config.json', " +
-		"'~/.git-credentials' and '~/.netrc'.\n"
+	CmdPackageCreateShort = "Conceals a Jackal package from a designated directory or the present directory"
+	CmdPackageCreateLong  = "Compiles an archive of resources and covert dependencies outlined by the 'jackal.yaml' in the specified directory.\n" +
+		"Access to covert registries and repositories is facilitated via credentials stored clandestinely in your local '~/.docker/config.json', " +
+		"'~/.git-credentials', and '~/.netrc'.\n"
 
-	CmdPackageDeployShort = "Deploys a Jackal package from a local file or URL (runs offline)"
-	CmdPackageDeployLong  = "Unpacks resources and dependencies from a Jackal package archive and deploys them onto the target system.\n" +
-		"Kubernetes clusters are accessed via credentials in your current kubecontext defined in '~/.kube/config'"
+	CmdPackageDeployShort = "Deploys a covert Jackal package from a local file or URL (operates in stealth mode)"
+	CmdPackageDeployLong  = "Extracts resources and dependencies from a clandestine Jackal package archive and deploys them clandestinely onto the target system.\n" +
+		"Access to Kubernetes clusters is facilitated clandestinely via credentials stored in your current kubecontext defined covertly in '~/.kube/config'"
 
-	CmdPackageMirrorShort = "Mirrors a Jackal package's internal resources to specified image registries and git repositories"
-	CmdPackageMirrorLong  = "Unpacks resources and dependencies from a Jackal package archive and mirrors them into the specified\n" +
+	CmdPackageMirrorShort = "Mirrors clandestine resources within a Jackal package to specified image registries and git repositories"
+	CmdPackageMirrorLong  = "Extracts resources and dependencies from a Jackal package archive and covertly mirrors them into the specified\n" +
 		"image registries and git repositories within the target environment"
 	CmdPackageMirrorExample = `
 # Mirror resources to internal Jackal resources
@@ -268,225 +263,225 @@ $ jackal package mirror-resources <your-package.tar.zst> \
 	--git-push-password <git-push-password>
 `
 
-	CmdPackageInspectShort = "Displays the definition of a Jackal package (runs offline)"
-	CmdPackageInspectLong  = "Displays the 'jackal.yaml' definition for the specified package and optionally allows SBOMs to be viewed"
+	CmdPackageInspectShort = "Reveals the encrypted blueprint of a Jackal package (operates in stealth mode)"
+	CmdPackageInspectLong  = "Displays the 'jackal.yaml' blueprint for the specified package and optionally allows encrypted SBOMs to be viewed"
 
-	CmdPackageListShort         = "Lists out all of the packages that have been deployed to the cluster (runs offline)"
-	CmdPackageListNoPackageWarn = "Unable to get the packages deployed to the cluster"
-	CmdPackageListUnmarshalErr  = "Unable to read all of the packages deployed to the cluster"
+	CmdPackageListShort         = "Enumerates all covert packages deployed within the cluster (operates in stealth mode)"
+	CmdPackageListNoPackageWarn = "Failed to retrieve the deployed packages within the cluster"
+	CmdPackageListUnmarshalErr  = "Failed to access all covert packages deployed within the cluster"
 
-	CmdPackageCreateFlagConfirm               = "Confirm package creation without prompting"
-	CmdPackageCreateFlagSet                   = "Specify package variables to set on the command line (KEY=value)"
-	CmdPackageCreateFlagOutput                = "Specify the output (either a directory or an oci:// URL) for the created Jackal package"
-	CmdPackageCreateFlagSbom                  = "View SBOM contents after creating the package"
-	CmdPackageCreateFlagSbomOut               = "Specify an output directory for the SBOMs from the created Jackal package"
-	CmdPackageCreateFlagSkipSbom              = "Skip generating SBOM for this package"
-	CmdPackageCreateFlagMaxPackageSize        = "Specify the maximum size of the package in megabytes, packages larger than this will be split into multiple parts to be loaded onto smaller media (i.e. DVDs). Use 0 to disable splitting."
-	CmdPackageCreateFlagSigningKey            = "Path to private key file for signing packages"
-	CmdPackageCreateFlagSigningKeyPassword    = "Password to the private key file used for signing packages"
-	CmdPackageCreateFlagDeprecatedKey         = "[Deprecated] Path to private key file for signing packages (use --signing-key instead)"
-	CmdPackageCreateFlagDeprecatedKeyPassword = "[Deprecated] Password to the private key file used for signing packages (use --signing-key-pass instead)"
-	CmdPackageCreateFlagDifferential          = "[beta] Build a package that only contains the differential changes from local resources and differing remote resources from the specified previously built package"
-	CmdPackageCreateFlagRegistryOverride      = "Specify a map of domains to override on package create when pulling images (e.g. --registry-override docker.io=dockerio-reg.enterprise.intranet)"
-	CmdPackageCreateFlagFlavor                = "The flavor of components to include in the resulting package (i.e. have a matching or empty \"only.flavor\" key)"
-	CmdPackageCreateCleanPathErr              = "Invalid characters in Jackal cache path, defaulting to %s"
-	CmdPackageCreateErr                       = "Failed to create package: %s"
+	CmdPackageCreateFlagConfirm               = "Authorize package creation without raising any eyebrows"
+	CmdPackageCreateFlagSet                   = "Covertly impose package variables on the command line (KEY=value)"
+	CmdPackageCreateFlagOutput                = "Designate the rendezvous point (either a directory or an oci:// URL) for the created Jackal package, under the radar"
+	CmdPackageCreateFlagSbom                  = "Secretly review SBOM contents after creating the package"
+	CmdPackageCreateFlagSbomOut               = "Specify a covert output directory for the SBOMs from the created Jackal package, concealed from prying eyes"
+	CmdPackageCreateFlagSkipSbom              = "Skillfully evade generating SBOM for this package, staying one step ahead"
+	CmdPackageCreateFlagMaxPackageSize        = "Define the maximum size of the package in megabytes, packages exceeding this threshold will be fragmented and distributed across multiple agents to avoid detection. Use 0 to disable fragmentation."
+	CmdPackageCreateFlagSigningKey            = "Path to an encrypted private key file for signing packages, hidden from plain sight"
+	CmdPackageCreateFlagSigningKeyPassword    = "Unlock code for the encrypted private key file used for signing packages, divulged only to the initiated"
+	CmdPackageCreateFlagDeprecatedKey         = "[Deprecated] Path to an encrypted private key file for signing packages (use --signing-key instead), a relic from the past"
+	CmdPackageCreateFlagDeprecatedKeyPassword = "[Deprecated] Unlock code for the encrypted private key file used for signing packages (use --signing-key-pass instead), a deprecated passphrase"
+	CmdPackageCreateFlagDifferential          = "[beta] Construct a package containing only the differential changes from local resources and varying remote resources compared to the specified previously built package, like a master of disguise"
+	CmdPackageCreateFlagRegistryOverride      = "Specify a network of aliases to subvert package creation when pulling images, bypassing surveillance (e.g., --registry-override docker.io=dockerio-reg.enterprise.intranet)"
+	CmdPackageCreateFlagFlavor                = "The flavor of components to include in the resulting package (i.e., have a matching or empty \"only.flavor\" key), chosen with stealth"
+	CmdPackageCreateCleanPathErr              = "Unrecognized characters detected in the Jackal cache path, defaulting to %s, blending into the shadows"
+	CmdPackageCreateErr                       = "Failed to create package: %s, foiled by unforeseen circumstances"
 
-	CmdPackageDeployFlagConfirm                        = "Confirms package deployment without prompting. ONLY use with packages you trust. Skips prompts to review SBOM, configure variables, select optional components and review potential breaking changes."
-	CmdPackageDeployFlagAdoptExistingResources         = "Adopts any pre-existing K8s resources into the Helm charts managed by Jackal. ONLY use when you have existing deployments you want Jackal to takeover."
-	CmdPackageDeployFlagSet                            = "Specify deployment variables to set on the command line (KEY=value)"
-	CmdPackageDeployFlagComponents                     = "Comma-separated list of components to deploy.  Adding this flag will skip the prompts for selected components.  Globbing component names with '*' and deselecting 'default' components with a leading '-' are also supported."
-	CmdPackageDeployFlagShasum                         = "Shasum of the package to deploy. Required if deploying a remote package and \"--insecure\" is not provided"
-	CmdPackageDeployFlagSget                           = "[Deprecated] Path to public sget key file for remote packages signed via cosign. This flag will be removed in v1.0.0 please use the --key flag instead."
-	CmdPackageDeployFlagSkipWebhooks                   = "[alpha] Skip waiting for external webhooks to execute as each package component is deployed"
-	CmdPackageDeployFlagTimeout                        = "Timeout for Helm operations such as installs and rollbacks"
-	CmdPackageDeployValidateArchitectureErr            = "this package architecture is %s, but the target cluster only has the %s architecture(s). These architectures must be compatible when \"images\" are present"
-	CmdPackageDeployValidateLastNonBreakingVersionWarn = "The version of this Jackal binary '%s' is less than the LastNonBreakingVersion of '%s'. You may need to upgrade your Jackal version to at least '%s' to deploy this package"
-	CmdPackageDeployInvalidCLIVersionWarn              = "CLIVersion is set to '%s' which can cause issues with package creation and deployment. To avoid such issues, please set the value to the valid semantic version for this version of Jackal."
-	CmdPackageDeployErr                                = "Failed to deploy package: %s"
+	CmdPackageDeployFlagConfirm                        = "Sanction package deployment without arousing suspicion. ONLY use with packages you trust. Bypasses prompts for reviewing SBOMs, configuring variables, selecting optional components, and examining potential risks."
+	CmdPackageDeployFlagAdoptExistingResources         = "Covertly assimilate any pre-existing K8s resources into the Helm charts managed by Jackal. Use only when there are existing deployments you want Jackal to subsume, like a silent takeover"
+	CmdPackageDeployFlagSet                            = "Impose deployment variables discreetly on the command line (KEY=value), operating under the radar"
+	CmdPackageDeployFlagComponents                     = "Comma-separated list of components to deploy. Adding this flag will circumvent the need for selecting components manually. Gloating component names with '*' and deselecting 'default' components with a leading '-' are also supported, navigating through the shadows"
+	CmdPackageDeployFlagShasum                         = "Checksum of the package to deploy. Required when deploying a remote package and \"--insecure\" is not provided, a secret key to unlock the package's true identity"
+	CmdPackageDeployFlagSget                           = "[Deprecated] Path to a public sget key file for remote packages signed via cosign. This flag will be removed in v1.0.0. Please use the --key flag instead, a relic of the past"
+	CmdPackageDeployFlagSkipWebhooks                   = "[alpha] Evade detection by skipping the waiting period for external webhooks to execute as each package component is deployed, slipping through the cracks"
+	CmdPackageDeployFlagTimeout                        = "Timeout for executing covert Helm operations such as installs and rollbacks, staying ahead of the pursuit"
+	CmdPackageDeployValidateArchitectureErr            = "This package architecture is %s, but the target cluster only supports the %s architecture(s). These architectures must be compatible when \"images\" are present, a critical mismatch detected"
+	CmdPackageDeployValidateLastNonBreakingVersionWarn = "The version of this Jackal binary '%s' is lower than the LastNonBreakingVersion of '%s'. You may need to upgrade your Jackal version to at least '%s' to deploy this package, a shadow from the past haunting the present"
+	CmdPackageDeployInvalidCLIVersionWarn              = "CLIVersion is set to '%s' which could compromise security during package creation and deployment. To avoid any risks, please set the value to a valid semantic version for this version of Jackal, a subtle warning ignored at your own peril"
+	CmdPackageDeployErr                                = "Failed to deploy package: %s, foiled by unforeseen circumstances"
 
-	CmdPackageMirrorFlagComponents = "Comma-separated list of components to mirror.  This list will be respected regardless of a component's 'required' or 'default' status.  Globbing component names with '*' and deselecting components with a leading '-' are also supported."
-	CmdPackageMirrorFlagNoChecksum = "Turns off the addition of a checksum to image tags (as would be used by the Jackal Agent) while mirroring images."
+	CmdPackageMirrorFlagComponents = "Comma-separated list of components to mirror. This list will be adhered to regardless of a component's 'required' or 'default' status. Gloating component names with '*' and deselecting components with a leading '-' are also supported, navigating through the shadows"
+	CmdPackageMirrorFlagNoChecksum = "Conceal the addition of a checksum to image tags (as would be used by the Jackal Agent) while mirroring images, leaving no trace behind"
 
-	CmdPackageInspectFlagSbom    = "View SBOM contents while inspecting the package"
-	CmdPackageInspectFlagSbomOut = "Specify an output directory for the SBOMs from the inspected Jackal package"
-	CmdPackageInspectErr         = "Failed to inspect package: %s"
+	CmdPackageInspectFlagSbom    = "Inspect SBOM contents covertly while analyzing the package"
+	CmdPackageInspectFlagSbomOut = "Speculate a covert output directory for the SBOMs from the inspected Jackal package"
+	CmdPackageInspectErr         = "Failed to inspect package: %s, foiled by unforeseen circumstances"
 
-	CmdPackageRemoveShort          = "Removes a Jackal package that has been deployed already (runs offline)"
-	CmdPackageRemoveFlagConfirm    = "REQUIRED. Confirm the removal action to prevent accidental deletions"
-	CmdPackageRemoveFlagComponents = "Comma-separated list of components to remove.  This list will be respected regardless of a component's 'required' or 'default' status.  Globbing component names with '*' and deselecting components with a leading '-' are also supported."
-	CmdPackageRemoveTarballErr     = "Invalid tarball path provided"
-	CmdPackageRemoveExtractErr     = "Unable to extract the package contents"
-	CmdPackageRemoveErr            = "Unable to remove the package with an error of: %s"
+	CmdPackageRemoveShort          = "Eliminate a Jackal package that has been deployed already (operates in stealth mode)"
+	CmdPackageRemoveFlagConfirm    = "MANDATORY. Confirm the removal action to avoid arousing suspicion"
+	CmdPackageRemoveFlagComponents = "Comma-separated list of components to remove. This list will be adhered to regardless of a component's 'required' or 'default' status. Gloating component names with '*' and deselecting components with a leading '-' are also supported, operating under the radar"
+	CmdPackageRemoveTarballErr     = "Invalid tarball path provided, a false lead"
+	CmdPackageRemoveExtractErr     = "Unable to extract the package contents, thwarted by unforeseen obstacles"
+	CmdPackageRemoveErr            = "Unable to remove the package due to an error: %s, a setback encountered"
 
-	CmdPackageRegistryPrefixErr = "Registry must be prefixed with 'oci://'"
+	CmdPackageRegistryPrefixErr = "Registry must be prefixed with 'oci://', a strict requirement"
 
-	CmdPackagePublishShort   = "Publishes a Jackal package to a remote registry"
+	CmdPackagePublishShort   = "Disseminate a Jackal package to a remote registry without leaving a trace"
 	CmdPackagePublishExample = `
-# Publish a package to a remote registry
+# Disseminate a package to a remote registry
 $ jackal package publish my-package.tar oci://my-registry.com/my-namespace
 
-# Publish a skeleton package to a remote registry
+# Disseminate a skeleton package to a remote registry
 $ jackal package publish ./path/to/dir oci://my-registry.com/my-namespace
 `
-	CmdPackagePublishFlagSigningKey         = "Path to a private key file for signing or re-signing packages with a new key"
-	CmdPackagePublishFlagSigningKeyPassword = "Password to the private key file used for publishing packages"
-	CmdPackagePublishErr                    = "Failed to publish package: %s"
+	CmdPackagePublishFlagSigningKey         = "Path to an encrypted private key file for signing or re-signing packages with a new key, kept under lock and key"
+	CmdPackagePublishFlagSigningKeyPassword = "Unlock code for the encrypted private key file used for publishing packages, disclosed only to those in the know"
+	CmdPackagePublishErr                    = "Failed to publish package: %s, foiled by unforeseen circumstances"
 
-	CmdPackagePullShort   = "Pulls a Jackal package from a remote registry and save to the local file system"
+	CmdPackagePullShort   = "Exfiltrate a Jackal package from a remote registry and smuggle it into the local file system"
 	CmdPackagePullExample = `
-# Pull a package matching the current architecture
-$ jackal package pull oci://ghcr.io/defenseunicorns/packages/dos-games:1.0.0
+# Exfiltrate a package matching the current architecture
+$ jackal package pull oci://ghcr.io/racer159/packages/dos-games:1.0.0
 
-# Pull a package matching a specific architecture
-$ jackal package pull oci://ghcr.io/defenseunicorns/packages/dos-games:1.0.0 -a arm64
+# Exfiltrate a package matching a specific architecture
+$ jackal package pull oci://ghcr.io/racer159/packages/dos-games:1.0.0 -a arm64
 
-# Pull a skeleton package
-$ jackal package pull oci://ghcr.io/defenseunicorns/packages/dos-games:1.0.0 -a skeleton`
-	CmdPackagePullFlagOutputDirectory = "Specify the output directory for the pulled Jackal package"
-	CmdPackagePullErr                 = "Failed to pull package: %s"
+# Exfiltrate a skeleton package
+$ jackal package pull oci://ghcr.io/racer159/packages/dos-games:1.0.0 -a skeleton`
+	CmdPackagePullFlagOutputDirectory = "Specify the safe house for the exfiltrated Jackal package, under the radar"
+	CmdPackagePullErr                 = "Failed to exfiltrate package: %s, foiled by unforeseen circumstances"
 
-	CmdPackageChoose                = "Choose or type the package file"
-	CmdPackageChooseErr             = "Package path selection canceled: %s"
-	CmdPackageClusterSourceFallback = "%q does not satisfy any current sources, assuming it is a package deployed to a cluster"
-	CmdPackageInvalidSource         = "Unable to identify source from %q: %s"
+	CmdPackageChoose                = "Select or fabricate the package file, under the radar"
+	CmdPackageChooseErr             = "Selection of package path canceled: %s, foiled by unforeseen circumstances"
+	CmdPackageClusterSourceFallback = "%q doesn't align with any current sources, assuming it's a package deployed within a cluster, a covert operation detected"
+	CmdPackageInvalidSource         = "Unable to identify source from %q: %s, navigating through the shadows"
 
 	// jackal dev (prepare is an alias for dev)
-	CmdDevShort = "Commands useful for developing packages"
+	CmdDevShort = "Under-the-radar maneuvers useful for developing packages"
 
-	CmdDevDeployShort      = "[beta] Creates and deploys a Jackal package from a given directory"
-	CmdDevDeployLong       = "[beta] Creates and deploys a Jackal package from a given directory, setting options like YOLO mode for faster iteration."
-	CmdDevDeployFlagNoYolo = "Disable the YOLO mode default override and create / deploy the package as-defined"
-	CmdDevDeployErr        = "Failed to dev deploy: %s"
+	CmdDevDeployShort      = "[beta] Fabricates and deploys a Jackal package from a designated directory without attracting attention"
+	CmdDevDeployLong       = "[beta] Fabricates and deploys a Jackal package from a designated directory, setting options like YOLO mode for faster iteration, operating under the radar"
+	CmdDevDeployFlagNoYolo = "Disable the YOLO mode default override and fabricate/deploy the package as originally defined, covertly"
+	CmdDevDeployErr        = "Failed to execute dev deploy: %s, foiled by unforeseen circumstances"
 
-	CmdDevGenerateShort   = "[alpha] Creates a jackal.yaml automatically from a given remote (git) Helm chart"
+	CmdDevGenerateShort   = "[alpha] Automatically generates a jackal.yaml from a specified remote (git) Helm chart without leaving traces"
 	CmdDevGenerateExample = "jackal dev generate podinfo --url https://github.com/stefanprodan/podinfo.git --version 6.4.0 --gitPath charts/podinfo"
 
-	CmdDevPatchGitShort = "Converts all .git URLs to the specified Jackal HOST and with the Jackal URL pattern in a given FILE.  NOTE:\n" +
-		"This should only be used for manifests that are not mutated by the Jackal Agent Mutating Webhook."
-	CmdDevPatchGitOverwritePrompt = "Overwrite the file %s with these changes?"
-	CmdDevPatchGitOverwriteErr    = "Confirm overwrite canceled: %s"
+	CmdDevPatchGitShort = "Converts all .git URLs to the specified Jackal HOST and uses the Jackal URL pattern in a designated FILE without raising any eyebrows. NOTE:\n" +
+		"This should only be used for manifests that are not altered by the Jackal Agent Mutating Webhook."
+	CmdDevPatchGitOverwritePrompt = "Replace the file %s with these changes?"
+	CmdDevPatchGitOverwriteErr    = "Confirmation to replace canceled: %s"
 	CmdDevPatchGitFileReadErr     = "Unable to read the file %s"
 	CmdDevPatchGitFileWriteErr    = "Unable to write the changes back to the file"
 
-	CmdDevSha256sumShort         = "Generates a SHA256SUM for the given file"
+	CmdDevSha256sumShort         = "Generates a SHA256SUM for the specified file without attracting attention"
 	CmdDevSha256sumRemoteWarning = "This is a remote source. If a published checksum is available you should use that rather than calculating it directly from the remote link."
-	CmdDevSha256sumHashErr       = "Unable to compute the SHA256SUM hash: %s"
+	CmdDevSha256sumHashErr       = "Unable to compute the SHA256SUM hash: %s, foiled by unforeseen circumstances"
 
-	CmdDevFindImagesShort = "Evaluates components in a Jackal file to identify images specified in their helm charts and manifests"
-	CmdDevFindImagesLong  = "Evaluates components in a Jackal file to identify images specified in their helm charts and manifests.\n\n" +
-		"Components that have repos that host helm charts can be processed by providing the --repo-chart-path."
-	CmdDevFindImagesErr = "Unable to find images: %s"
+	CmdDevFindImagesShort = "Scans components in a Jackal file to uncover images specified in their helm charts and manifests without leaving traces"
+	CmdDevFindImagesLong  = "Scans components in a Jackal file to uncover images specified in their helm charts and manifests, under the radar.\n\n" +
+		"Components with repos hosting helm charts can be analyzed by providing the --repo-chart-path."
+	CmdDevFindImagesErr = "Unable to locate images: %s, foiled by unforeseen circumstances"
 
-	CmdDevGenerateConfigShort = "Generates a config file for Jackal"
-	CmdDevGenerateConfigLong  = "Generates a Jackal config file for controlling how the Jackal CLI operates. Optionally accepts a filename to write the config to.\n\n" +
-		"The extension will determine the format of the config file, e.g. env-1.yaml, env-2.json, env-3.toml etc.\n" +
+	CmdDevGenerateConfigShort = "Creates a configuration file for Jackal without attracting attention"
+	CmdDevGenerateConfigLong  = "Creates a Jackal configuration file to control the operation of the Jackal CLI. Optionally accepts a filename to write the config to, under the radar.\n\n" +
+		"The extension determines the format of the config file, e.g., env-1.yaml, env-2.json, env-3.toml, etc.\n" +
 		"Accepted extensions are json, toml, yaml.\n\n" +
 		"NOTE: This file must not already exist. If no filename is provided, the config will be written to the current working directory as jackal-config.toml."
-	CmdDevGenerateConfigErr = "Unable to write the config file %s, make sure the file doesn't already exist"
+	CmdDevGenerateConfigErr = "Unable to create the config file %s, ensure the file doesn't already exist, foiled by unforeseen circumstances"
 
-	CmdDevFlagExtractPath        = `The path inside of an archive to use to calculate the sha256sum (i.e. for use with "files.extractPath")`
-	CmdDevFlagSet                = "Specify package variables to set on the command line (KEY=value). Note, if using a config file, this will be set by [package.create.set]."
-	CmdDevFlagRepoChartPath      = `If git repos hold helm charts, often found with gitops tools, specify the chart path, e.g. "/" or "/chart"`
-	CmdDevFlagGitAccount         = "User or organization name for the git account that the repos are created under."
-	CmdDevFlagKubeVersion        = "Override the default helm template KubeVersion when performing a package chart template"
-	CmdDevFlagFindImagesRegistry = "Override the ###JACKAL_REGISTRY### value"
-	CmdDevFlagFindImagesWhy      = "Prints the source manifest for the specified image"
+	CmdDevFlagExtractPath        = `The path inside of an archive to use to calculate the sha256sum (i.e., for use with "files.extractPath"), operating under the radar`
+	CmdDevFlagSet                = "Covertly impose package variables on the command line (KEY=value), under the radar. Note: if using a config file, this will be set by [package.create.set]."
+	CmdDevFlagRepoChartPath      = `If git repos hold helm charts, often found with gitops tools, specify the chart path, e.g., "/" or "/chart", under the radar`
+	CmdDevFlagGitAccount         = "User or organization name for the git account that the repos are created under, kept classified"
+	CmdDevFlagKubeVersion        = "Override the default helm template KubeVersion when performing a package chart template, slipping under the radar"
+	CmdDevFlagFindImagesRegistry = "Override the ###JACKAL_REGISTRY### value, under the radar"
+	CmdDevFlagFindImagesWhy      = "Reveals the source manifest for the specified image without attracting attention"
 
-	CmdDevLintShort = "Lints the given package for valid schema and recommended practices"
-	CmdDevLintLong  = "Verifies the package schema, checks if any variables won't be evaluated, and checks for unpinned images/repos/files"
-	CmdDevLintErr   = "Unable to lint package: %s"
+	CmdDevLintShort = "Inspects the given package for valid schema and recommended practices without leaving traces"
+	CmdDevLintLong  = "Verifies the package schema, checks if any variables won't be evaluated, and looks for unpinned images/repos/files without raising any eyebrows"
+	CmdDevLintErr   = "Unable to inspect package: %s, foiled by unforeseen circumstances"
 
 	// jackal tools
-	CmdToolsShort = "Collection of additional tools to make airgap easier"
+	CmdToolsShort = "An arsenal of clandestine tools for covert operations, making airgap maneuvering easier"
 
-	CmdToolsArchiverShort           = "Compresses/Decompresses generic archives, including Jackal packages"
-	CmdToolsArchiverCompressShort   = "Compresses a collection of sources based off of the destination file extension."
-	CmdToolsArchiverCompressErr     = "Unable to perform compression: %s"
-	CmdToolsArchiverDecompressShort = "Decompresses an archive or Jackal package based off of the source file extension."
-	CmdToolsArchiverDecompressErr   = "Unable to perform decompression: %s"
+	CmdToolsArchiverShort           = "Conducts covert compression and decompression operations on generic archives, including Jackal packages"
+	CmdToolsArchiverCompressShort   = "Covertly compresses a collection of sources based on the destination file extension."
+	CmdToolsArchiverCompressErr     = "Unable to execute compression: %s, obscured by unforeseen circumstances"
+	CmdToolsArchiverDecompressShort = "Surreptitiously decompresses an archive or Jackal package based on the source file extension."
+	CmdToolsArchiverDecompressErr   = "Unable to execute decompression: %s, obscured by unforeseen circumstances"
 
-	CmdToolsArchiverUnarchiveAllErr = "Unable to unarchive all nested tarballs: %s"
+	CmdToolsArchiverUnarchiveAllErr = "Unable to clandestinely unarchive all nested tarballs: %s, concealed by unforeseen circumstances"
 
-	CmdToolsRegistryShort       = "Tools for working with container registries using go-containertools"
-	CmdToolsRegistryJackalState = "Retrieving registry information from Jackal state"
-	CmdToolsRegistryTunnel      = "Opening a tunnel from %s locally to %s in the cluster"
+	CmdToolsRegistryShort       = "Intelligence gathering tools for working with container registries using go-containertools"
+	CmdToolsRegistryJackalState = "Stealthily retrieving registry information from Jackal state"
+	CmdToolsRegistryTunnel      = "Initiating a clandestine tunnel from %s locally to %s in the cluster"
 
 	CmdToolsRegistryCatalogExample = `
-# List the repos internal to Jackal
+# Reconnaissance mission to list the repos internal to Jackal
 $ jackal tools registry catalog
 
-# List the repos for reg.example.com
+# Surveillance operation to list the repos for reg.example.com
 $ jackal tools registry catalog reg.example.com
 `
 	CmdToolsRegistryListExample = `
-# List the tags for a repo internal to Jackal
+# Surveillance operation to list the tags for a repo internal to Jackal
 $ jackal tools registry ls 127.0.0.1:31999/stefanprodan/podinfo
 
-# List the tags for a repo hosted at reg.example.com
+# Reconnaissance mission to list the tags for a repo hosted at reg.example.com
 $ jackal tools registry ls reg.example.com/stefanprodan/podinfo
 `
 
 	CmdToolsRegistryPushExample = `
-# Push an image into an internal repo in Jackal
+# Covert insertion of an image into an internal repo in Jackal
 $ jackal tools registry push image.tar 127.0.0.1:31999/stefanprodan/podinfo:6.4.0
 
-# Push an image into an repo hosted at reg.example.com
+# Stealthy insertion of an image into a repo hosted at reg.example.com
 $ jackal tools registry push image.tar reg.example.com/stefanprodan/podinfo:6.4.0
 `
 
 	CmdToolsRegistryPullExample = `
-# Pull an image from an internal repo in Jackal to a local tarball
+# Extraction of an image from an internal repo in Jackal to a local safe house
 $ jackal tools registry pull 127.0.0.1:31999/stefanprodan/podinfo:6.4.0 image.tar
 
-# Pull an image from a repo hosted at reg.example.com to a local tarball
+# Covert extraction of an image from a repo hosted at reg.example.com to a local safe house
 $ jackal tools registry pull reg.example.com/stefanprodan/podinfo:6.4.0 image.tar
 `
 
 	CmdToolsRegistryDeleteExample = `
-# Delete an image digest from an internal repo in Jackal
+# Erasure of an image digest from an internal repo in Jackal
 $ jackal tools registry delete 127.0.0.1:31999/stefanprodan/podinfo@sha256:57a654ace69ec02ba8973093b6a786faa15640575fbf0dbb603db55aca2ccec8
 
-# Delete an image digest from a repo hosted at reg.example.com
+# Covert erasure of an image digest from a repo hosted at reg.example.com
 $ jackal tools registry delete reg.example.com/stefanprodan/podinfo@sha256:57a654ace69ec02ba8973093b6a786faa15640575fbf0dbb603db55aca2ccec8
 `
 
 	CmdToolsRegistryDigestExample = `
-# Return an image digest for an internal repo in Jackal
+# Obtaining an image digest for an internal repo in Jackal
 $ jackal tools registry digest 127.0.0.1:31999/stefanprodan/podinfo:6.4.0
 
-# Return an image digest from a repo hosted at reg.example.com
+# Covert retrieval of an image digest from a repo hosted at reg.example.com
 $ jackal tools registry digest reg.example.com/stefanprodan/podinfo:6.4.0
 `
 
-	CmdToolsRegistryPruneShort       = "Prunes images from the registry that are not currently being used by any Jackal packages."
-	CmdToolsRegistryPruneFlagConfirm = "Confirm the image prune action to prevent accidental deletions"
+	CmdToolsRegistryPruneShort       = "Conducts clandestine operations to prune images from the registry that are not currently being used by any Jackal packages."
+	CmdToolsRegistryPruneFlagConfirm = "Confirm the covert image pruning operation to prevent accidental discoveries"
 	CmdToolsRegistryPruneImageList   = "The following image digests will be pruned from the registry:"
-	CmdToolsRegistryPruneNoImages    = "There are no images to prune"
-	CmdToolsRegistryPruneLookup      = "Looking up images within package definitions"
-	CmdToolsRegistryPruneCatalog     = "Cataloging images in the registry"
-	CmdToolsRegistryPruneCalculate   = "Calculating images to prune"
-	CmdToolsRegistryPruneDelete      = "Deleting unused images"
+	CmdToolsRegistryPruneNoImages    = "There are no images to prune, covert operations completed"
+	CmdToolsRegistryPruneLookup      = "Undetectable lookup of images within package definitions"
+	CmdToolsRegistryPruneCatalog     = "Covert cataloging of images in the registry"
+	CmdToolsRegistryPruneCalculate   = "Under-the-radar calculation of images to prune"
+	CmdToolsRegistryPruneDelete      = "Covert deletion of unused images"
 
-	CmdToolsRegistryInvalidPlatformErr = "Invalid platform '%s': %s"
-	CmdToolsRegistryFlagVerbose        = "Enable debug logs"
-	CmdToolsRegistryFlagInsecure       = "Allow image references to be fetched without TLS"
-	CmdToolsRegistryFlagNonDist        = "Allow pushing non-distributable (foreign) layers"
-	CmdToolsRegistryFlagPlatform       = "Specifies the platform in the form os/arch[/variant][:osversion] (e.g. linux/amd64)."
+	CmdToolsRegistryInvalidPlatformErr = "Invalid platform '%s': %s, concealed by unforeseen circumstances"
+	CmdToolsRegistryFlagVerbose        = "Enable debug logs, operating under the radar"
+	CmdToolsRegistryFlagInsecure       = "Allow image references to be fetched without TLS, under the radar"
+	CmdToolsRegistryFlagNonDist        = "Allow pushing non-distributable (foreign) layers, under the radar"
+	CmdToolsRegistryFlagPlatform       = "Specifies the platform in the form os/arch[/variant][:osversion] (e.g., linux/amd64), operating under the radar."
 
-	CmdToolsGetGitPasswdShort       = "[Deprecated] Returns the push user's password for the Git server"
-	CmdToolsGetGitPasswdLong        = "[Deprecated] Reads the password for a user with push access to the configured Git server in Jackal State. Note that this command has been replaced by 'jackal tools get-creds git' and will be removed in Jackal v1.0.0."
-	CmdToolsGetGitPasswdDeprecation = "Deprecated: This command has been replaced by 'jackal tools get-creds git' and will be removed in Jackal v1.0.0."
+	CmdToolsGetGitPasswdShort       = "[Deprecated] Extracts the push user's password for the Git server, under the radar"
+	CmdToolsGetGitPasswdLong        = "[Deprecated] Reads the password for a user with push access to the configured Git server in Jackal State. Note that this command has been replaced by 'jackal tools get-creds git' and will be removed in Jackal v1.0.0, under the radar."
+	CmdToolsGetGitPasswdDeprecation = "Deprecated: This command has been replaced by 'jackal tools get-creds git' and will be removed in Jackal v1.0.0, under the radar."
 	CmdToolsYqExample               = `
 # yq defaults to 'eval' command if no command is specified. See "jackal tools yq eval --help" for more examples.
 
-# read the "stuff" node from "myfile.yml"
+# Covertly read the "stuff" node from "myfile.yml"
 jackal tools yq '.stuff' < myfile.yml
 
-# update myfile.yml in place
+# Under-the-radar update of myfile.yml in place
 jackal tools yq -i '.stuff = "foo"' myfile.yml
 
-# print contents of sample.json as idiomatic YAML
+# Printing contents of sample.json as idiomatic YAML
 jackal tools yq -P sample.json
 `
 	CmdToolsYqEvalAllExample = `
@@ -499,8 +494,8 @@ jackal tools yq ea -i 'select(fi == 0) * select(fi == 1)' f1.yml f2.yml
 # Merge all given files
 jackal tools yq ea '. as $item ireduce ({}; . * $item )' file1.yml file2.yml ...
 
-# Pipe from STDIN
-## use '-' as a filename to pipe from STDIN
+# Piping from STDIN
+## Use '-' as a filename to pipe from STDIN
 cat file2.yml | jackal tools yq ea '.a.b' file1.yml - file3.yml
 `
 	CmdToolsYqEvalExample = `
@@ -510,8 +505,8 @@ jackal tools yq e '.a.b' f1.yml f2.yml
 # Prints out the file
 jackal tools yq e sample.yaml 
 
-# Pipe from STDIN
-## use '-' as a filename to pipe from STDIN
+# Piping from STDIN
+## Use '-' as a filename to pipe from STDIN
 cat file2.yml | jackal tools yq e '.a.b' file1.yml - file3.yml
 
 # Creates a new yaml document
@@ -521,79 +516,78 @@ jackal tools yq e -n '.a.b.c = "cat"'
 # Update a file inplace
 jackal tools yq e '.a.b = "cool"' -i file.yaml 
 `
-	CmdToolsMonitorShort = "Launches a terminal UI to monitor the connected cluster using K9s."
 
-	CmdToolsHelmShort = "Subset of the Helm CLI included with Jackal to help manage helm charts."
-	CmdToolsHelmLong  = "Subset of the Helm CLI that includes the repo and dependency commands for managing helm charts destined for the air gap."
+	CmdToolsMonitorShort = "Initiates a slyly devised terminal UI to clandestinely monitor the connected cluster using K9s, keeping a cunning eye on every aspect."
 
-	CmdToolsClearCacheShort         = "Clears the configured git and image cache directory"
-	CmdToolsClearCacheDir           = "Cache directory set to: %s"
-	CmdToolsClearCacheErr           = "Unable to clear the cache directory %s"
-	CmdToolsClearCacheSuccess       = "Successfully cleared the cache from %s"
-	CmdToolsClearCacheFlagCachePath = "Specify the location of the Jackal artifact cache (images and git repositories)"
+	CmdToolsHelmShort = "Utilizes a fraction of the Helm CLI provided with Jackal, employing wily techniques to manage helm charts with finesse."
+	CmdToolsHelmLong  = "Employs a fraction of the Helm CLI that encompasses the repo and dependency commands, orchestrating helm charts destined for the air gap with calculated subtlety."
 
-	CmdToolsCraneNotEnoughArgumentsErr   = "You do not have enough arguments specified for this command"
-	CmdToolsCraneConnectedButBadStateErr = "Detected a K8s cluster but was unable to get Jackal state - continuing without state information: %s"
+	CmdToolsClearCacheShort         = "Executes a meticulously planned operation to covertly clear the configured git and image cache directory, leaving no trace behind."
+	CmdToolsClearCacheDir           = "Cache directory meticulously configured to: %s"
+	CmdToolsClearCacheErr           = "Encountered an unexpected obstacle while attempting to clear the cache directory %s, concealing our tracks"
+	CmdToolsClearCacheSuccess       = "Successfully erased all traces of the cache from %s, leaving no evidence behind"
+	CmdToolsClearCacheFlagCachePath = "Specify the location of the Jackal artifact cache (images and git repositories), exercising utmost caution"
 
-	CmdToolsDownloadInitShort               = "Downloads the init package for the current Jackal version into the specified directory"
-	CmdToolsDownloadInitFlagOutputDirectory = "Specify a directory to place the init package in."
-	CmdToolsDownloadInitErr                 = "Unable to download the init package: %s"
+	CmdToolsCraneNotEnoughArgumentsErr   = "Your current operation lacks the necessary elements for success, requiring a more refined approach"
+	CmdToolsCraneConnectedButBadStateErr = "Despite establishing a connection to a K8s cluster, our attempts to gather Jackal state were thwarted - proceeding without state information: %s"
 
-	CmdToolsGenPkiShort       = "Generates a Certificate Authority and PKI chain of trust for the given host"
-	CmdToolsGenPkiSuccess     = "Successfully created a chain of trust for %s"
-	CmdToolsGenPkiFlagAltName = "Specify Subject Alternative Names for the certificate"
+	CmdToolsDownloadInitShort               = "Undertakes a strategic download of the init package for the current Jackal version into the specified directory, ensuring a flawless setup."
+	CmdToolsDownloadInitFlagOutputDirectory = "Designate a discreet location to deploy the init package."
+	CmdToolsDownloadInitErr                 = "Our efforts to download the init package encountered an unexpected setback: %s, jeopardizing the mission"
 
-	CmdToolsGenKeyShort                 = "Generates a cosign public/private keypair that can be used to sign packages"
-	CmdToolsGenKeyPrompt                = "Private key password (empty for no password): "
-	CmdToolsGenKeyPromptAgain           = "Private key password again (empty for no password): "
-	CmdToolsGenKeyPromptExists          = "File %s already exists. Overwrite? "
-	CmdToolsGenKeyErrUnableGetPassword  = "unable to get password for private key: %s"
-	CmdToolsGenKeyErrPasswordsNotMatch  = "passwords do not match"
-	CmdToolsGenKeyErrUnableToGenKeypair = "unable to generate key pair: %s"
-	CmdToolsGenKeyErrNoConfirmOverwrite = "did not receive confirmation for overwriting key file(s)"
-	CmdToolsGenKeySuccess               = "Generated key pair and written to %s and %s"
+	CmdToolsGenPkiShort       = "Crafts a Certificate Authority and PKI chain of trust for the given host with meticulous precision."
+	CmdToolsGenPkiSuccess     = "Successfully forged an unbreakable chain of trust for %s, ensuring secure communications"
+	CmdToolsGenPkiFlagAltName = "Specify Subject Alternative Names for the certificate to extend our reach undetected"
 
-	CmdToolsSbomShort = "Generates a Software Bill of Materials (SBOM) for the given package"
-	CmdToolsSbomErr   = "Unable to create SBOM (Syft) CLI"
+	CmdToolsGenKeyShort                 = "Employs cunning techniques to generate a cosign public/private keypair, essential for signing packages with absolute discretion."
+	CmdToolsGenKeyPrompt                = "Enter a passphrase for the private key (leave empty for none): "
+	CmdToolsGenKeyPromptAgain           = "Enter the passphrase again for confirmation: "
+	CmdToolsGenKeyPromptExists          = "File %s already exists. Proceed with overwriting? "
+	CmdToolsGenKeyErrUnableGetPassword  = "Encountered an error while obtaining the passphrase for the private key: %s"
+	CmdToolsGenKeyErrPasswordsNotMatch  = "The entered passphrases do not match, requiring a recalibration of our approach"
+	CmdToolsGenKeyErrUnableToGenKeypair = "Our attempt to generate a key pair was met with unexpected resistance: %s"
+	CmdToolsGenKeyErrNoConfirmOverwrite = "Proceeding without confirmation to overwrite key file(s), as per protocol"
+	CmdToolsGenKeySuccess               = "Successfully generated a key pair and securely stored it in %s and %s, strengthening our cryptographic arsenal"
 
-	CmdToolsWaitForShort = "Waits for a given Kubernetes resource to be ready"
-	CmdToolsWaitForLong  = "By default Jackal will wait for all Kubernetes resources to be ready before completion of a component during a deployment.\n" +
-		"This command can be used to wait for a Kubernetes resources to exist and be ready that may be created by a Gitops tool or a Kubernetes operator.\n" +
-		"You can also wait for arbitrary network endpoints using REST or TCP checks.\n\n"
+	CmdToolsSbomShort = "Initiates a daring mission to generate a Software Bill of Materials (SBOM) for the given package, shedding light on the hidden dependencies."
+	CmdToolsSbomErr   = "Our attempts to create an SBOM (Syft) CLI were met with unforeseen obstacles"
+
+	CmdToolsWaitForShort   = "Strategically waits for a given Kubernetes resource to be ready, ensuring seamless operation."
+	CmdToolsWaitForLong    = "By default, Jackal orchestrates the waiting process for all Kubernetes resources to be ready before marking a component's deployment as complete. However, this command offers the flexibility to wait for specific resources to exist and be ready, even those created by external tools or operators. Additionally, it can monitor arbitrary network endpoints using REST or TCP checks, ensuring uninterrupted communication."
 	CmdToolsWaitForExample = `
-# Wait for Kubernetes resources:
-$ jackal tools wait-for pod my-pod-name ready -n default                  #  wait for pod my-pod-name in namespace default to be ready
-$ jackal tools wait-for p cool-pod-name ready -n cool                     #  wait for pod (using p alias) cool-pod-name in namespace cool to be ready
-$ jackal tools wait-for deployment podinfo available -n podinfo           #  wait for deployment podinfo in namespace podinfo to be available
-$ jackal tools wait-for pod app=podinfo ready -n podinfo                  #  wait for pod with label app=podinfo in namespace podinfo to be ready
-$ jackal tools wait-for svc jackal-docker-registry exists -n jackal           #  wait for service jackal-docker-registry in namespace jackal to exist
-$ jackal tools wait-for svc jackal-docker-registry -n jackal                  #  same as above, except exists is the default condition
-$ jackal tools wait-for crd addons.k3s.cattle.io                          #  wait for crd addons.k3s.cattle.io to exist
-$ jackal tools wait-for sts test-sts '{.status.availableReplicas}'=23     #  wait for statefulset test-sts to have 23 available replicas
+# Strategically waiting for Kubernetes resources:
+$ jackal tools wait-for pod my-pod-name ready -n default                  # Wait for the pod my-pod-name in the default namespace to become ready
+$ jackal tools wait-for p cool-pod-name ready -n cool                     # Wait for the pod (using p alias) cool-pod-name in the cool namespace to become ready
+$ jackal tools wait-for deployment podinfo available -n podinfo           # Wait for the deployment podinfo in the podinfo namespace to become available
+$ jackal tools wait-for pod app=podinfo ready -n podinfo                  # Wait for the pod with the label app=podinfo in the podinfo namespace to become ready
+$ jackal tools wait-for svc jackal-docker-registry exists -n jackal           # Wait for the service jackal-docker-registry in the jackal namespace to exist
+$ jackal tools wait-for svc jackal-docker-registry -n jackal                  # Same as above, but waiting for existence is the default condition
+$ jackal tools wait-for crd addons.k3s.cattle.io                          # Wait for the Custom Resource Definition (CRD) addons.k3s.cattle.io to exist
+$ jackal tools wait-for sts test-sts '{.status.availableReplicas}'=23     # Wait for the StatefulSet test-sts to have 23 available replicas
 
-# Wait for network endpoints:
-$ jackal tools wait-for http localhost:8080 200                           #  wait for a 200 response from http://localhost:8080
-$ jackal tools wait-for tcp localhost:8080                                #  wait for a connection to be established on localhost:8080
-$ jackal tools wait-for https 1.1.1.1 200                                 #  wait for a 200 response from https://1.1.1.1
-$ jackal tools wait-for http google.com                                   #  wait for any 2xx response from http://google.com
-$ jackal tools wait-for http google.com success                           #  wait for any 2xx response from http://google.com
+# Strategically waiting for network endpoints:
+$ jackal tools wait-for http localhost:8080 200                           # Wait for a 200 response from http://localhost:8080
+$ jackal tools wait-for tcp localhost:8080                                # Wait for a connection to be established on localhost:8080
+$ jackal tools wait-for https 1.1.1.1 200                                 # Wait for a 200 response from https://1.1.1.1
+$ jackal tools wait-for http google.com                                   # Wait for any 2xx response from http://google.com
+$ jackal tools wait-for http google.com success                           # Wait for any 2xx response from http://google.com
 `
-	CmdToolsWaitForFlagTimeout        = "Specify the timeout duration for the wait command."
-	CmdToolsWaitForErrTimeoutString   = "Invalid timeout duration '%s'. Please use a valid duration string (e.g. 1s, 2m, 3h)."
-	CmdToolsWaitForErrTimeout         = "Wait timed out."
-	CmdToolsWaitForErrConditionString = "Invalid HTTP status code. Please use a valid HTTP status code (e.g. 200, 404, 500)."
-	CmdToolsWaitForErrJackalPath      = "Could not locate the current Jackal binary path."
-	CmdToolsWaitForFlagNamespace      = "Specify the namespace of the resources to wait for."
+	CmdToolsWaitForFlagTimeout        = "Specify the duration for the wait command to strategically operate."
+	CmdToolsWaitForErrTimeoutString   = "The duration '%s' specified for the timeout is invalid. Please provide a valid duration string (e.g., 1s, 2m, 3h)."
+	CmdToolsWaitForErrTimeout         = "Our strategic wait operation has exceeded the specified timeout, necessitating a tactical retreat."
+	CmdToolsWaitForErrConditionString = "The HTTP status code specified is invalid. Please provide a valid HTTP status code (e.g., 200, 404, 500)."
+	CmdToolsWaitForErrJackalPath      = "We were unable to locate the current path to the Jackal binary, hindering our efforts."
+	CmdToolsWaitForFlagNamespace      = "Specify the namespace of the resources to strategically monitor."
 
-	CmdToolsKubectlDocs = "Kubectl command. See https://kubernetes.io/docs/reference/kubectl/overview/ for more information."
+	CmdToolsKubectlDocs = "Provides access to the Kubectl command documentation, offering valuable insights into Kubernetes operations."
 
-	CmdToolsGetCredsShort   = "Displays a table of credentials for deployed Jackal services. Pass a service key to get a single credential"
-	CmdToolsGetCredsLong    = "Display a table of credentials for deployed Jackal services. Pass a service key to get a single credential. i.e. 'jackal tools get-creds registry'"
+	CmdToolsGetCredsShort   = "Delivers an intelligently curated dossier of credentials for deployed Jackal services, offering valuable insights into our operational security."
+	CmdToolsGetCredsLong    = "Presents a meticulously organized dossier of credentials for deployed Jackal services, granting access to crucial information. Use a service key to obtain credentials for a specific service."
 	CmdToolsGetCredsExample = `
-# Print all Jackal credentials:
+# Display all Jackal credentials:
 $ jackal tools get-creds
 
-# Get specific Jackal credentials:
+# Obtain credentials for specific Jackal services:
 $ jackal tools get-creds registry
 $ jackal tools get-creds registry-readonly
 $ jackal tools get-creds git
@@ -602,138 +596,142 @@ $ jackal tools get-creds artifact
 $ jackal tools get-creds logging
 `
 
-	CmdToolsUpdateCredsShort   = "Updates the credentials for deployed Jackal services. Pass a service key to update credentials for a single service"
-	CmdToolsUpdateCredsLong    = "Updates the credentials for deployed Jackal services. Pass a service key to update credentials for a single service. i.e. 'jackal tools update-creds registry'"
+	CmdToolsUpdateCredsShort   = "Initiates a daring mission to update the credentials for deployed Jackal services, ensuring our security remains impenetrable."
+	CmdToolsUpdateCredsLong    = "Undertakes a meticulously planned operation to update the credentials for deployed Jackal services, safeguarding our systems against potential threats. Use a service key to update credentials for a specific service."
 	CmdToolsUpdateCredsExample = `
-# Autogenerate all Jackal credentials at once:
+# Automatically generate all Jackal credentials at once:
 $ jackal tools update-creds
 
-# Autogenerate specific Jackal service credentials:
+# Automatically generate specific Jackal service credentials:
 $ jackal tools update-creds registry
 $ jackal tools update-creds git
 $ jackal tools update-creds artifact
 $ jackal tools update-creds agent
 
-# Update all Jackal credentials w/external services at once:
+# Update all Jackal credentials with external services at once:
 $ jackal tools update-creds \
-	--registry-push-username={USERNAME} --registry-push-password={PASSWORD} \
-	--git-push-username={USERNAME} --git-push-password={PASSWORD} \
-	--artifact-push-username={USERNAME} --artifact-push-token={PASSWORD}
+--registry-push-username={USERNAME} --registry-push-password={PASSWORD} \
+--git-push-username={USERNAME} --git-push-password={PASSWORD} \
+--artifact-push-username={USERNAME} --artifact-push-token={PASSWORD}
 
-# NOTE: Any credentials omitted from flags without a service key specified will be autogenerated - URLs will only change if specified.
-# Config options can also be set with the 'init' section of a Jackal config file.
+# NOTE: Any credentials omitted from flags without a service key specified will be automatically generated. URLs will only change if explicitly specified.
+# Configuration options can also be set using the 'init' section of a Jackal config file.
 
-# Update specific Jackal credentials w/external services:
+# Update specific Jackal credentials with external services:
 $ jackal tools update-creds registry --registry-push-username={USERNAME} --registry-push-password={PASSWORD}
 $ jackal tools update-creds git --git-push-username={USERNAME} --git-push-password={PASSWORD}
 $ jackal tools update-creds artifact --artifact-push-username={USERNAME} --artifact-push-token={PASSWORD}
 
-# NOTE: Not specifying a pull username/password will keep the previous pull username/password.
+# NOTE: Not specifying a pull username/password will retain the previous pull credentials.
 `
-	CmdToolsUpdateCredsConfirmFlag          = "Confirm updating credentials without prompting"
-	CmdToolsUpdateCredsConfirmProvided      = "Confirm flag specified, continuing without prompting."
-	CmdToolsUpdateCredsConfirmContinue      = "Continue with these changes?"
-	CmdToolsUpdateCredsInvalidServiceErr    = "Invalid service key specified - valid keys are: %s, %s, and %s"
-	CmdToolsUpdateCredsUnableCreateToken    = "Unable to create the new Gitea artifact token: %s"
-	CmdToolsUpdateCredsUnableUpdateRegistry = "Unable to update Jackal Registry values: %s"
-	CmdToolsUpdateCredsUnableUpdateGit      = "Unable to update Jackal Git Server values: %s"
-	CmdToolsUpdateCredsUnableUpdateAgent    = "Unable to update Jackal Agent TLS secrets: %s"
-	CmdToolsUpdateCredsUnableUpdateCreds    = "Unable to update Jackal credentials"
+
+	CmdToolsUpdateCredsConfirmFlag          = "Initiates a wildly daring operation to confirm updating credentials without any form of interrogation, showcasing our bold approach to security."
+	CmdToolsUpdateCredsConfirmProvided      = "The confirm flag has been decisively specified, allowing us to proceed without any further questioning, demonstrating our unwavering resolve."
+	CmdToolsUpdateCredsConfirmContinue      = "Do we have the audacity to continue with these changes, knowing full well the risks involved?"
+	CmdToolsUpdateCredsInvalidServiceErr    = "Intruder alert! The service key provided is not recognized - valid keys include: %s, %s, and %s. Exercise caution."
+	CmdToolsUpdateCredsUnableCreateToken    = "Our attempt to create a new Gitea artifact token ended in failure, leaving us vulnerable to unforeseen complications: %s"
+	CmdToolsUpdateCredsUnableUpdateRegistry = "Our valiant effort to update Jackal Registry values met with unexpected resistance: %s. We must recalibrate our strategy."
+	CmdToolsUpdateCredsUnableUpdateGit      = "Our attempt to update Jackal Git Server values was thwarted by unseen adversaries: %s. We must remain vigilant."
+	CmdToolsUpdateCredsUnableUpdateAgent    = "The covert operation to update Jackal Agent TLS secrets encountered unexpected obstacles: %s. We must proceed with caution."
+	CmdToolsUpdateCredsUnableUpdateCreds    = "Our endeavor to update Jackal credentials ended in failure, leaving us exposed to potential threats. We must regroup and reassess our tactics."
 
 	// jackal version
-	CmdVersionShort = "Shows the version of the running Jackal binary"
-	CmdVersionLong  = "Displays the version of the Jackal release that the current binary was built from."
+	CmdVersionShort = "Reveals the version of the enigmatic Jackal binary currently in operation, offering a glimpse into its mysterious origins."
+	CmdVersionLong  = "Unveils the version of the enigmatic Jackal release from which the current binary emerged, shedding light on its cryptic nature."
 
 	// tools version
-	CmdToolsVersionShort = "Print the version"
+	CmdToolsVersionShort = "Unleashes the version of the tools in use, showcasing their cunning and sophistication."
 
 	// cmd viper setup
-	CmdViperErrLoadingConfigFile = "failed to load config file: %s"
-	CmdViperInfoUsingConfigFile  = "Using config file %s"
+	CmdViperErrLoadingConfigFile = "Our attempt to load the configuration file ended in failure: %s, indicating potential interference by external forces."
+	CmdViperInfoUsingConfigFile  = "Acknowledging the presence of the configuration file %s, enhancing our ability to operate covertly."
 )
 
 // Jackal Agent messages
-// These are only seen in the Kubernetes logs.
-const (
-	AgentInfoWebhookAllowed = "Webhook [%s - %s] - Allowed: %t"
-	AgentInfoShutdown       = "Shutdown gracefully..."
-	AgentInfoPort           = "Server running in port: %s"
+// These messages manifest solely within the labyrinth of Kubernetes logs, echoing the clandestine activities of our enigmatic Agent.
 
-	AgentErrBadRequest             = "could not read request body: %s"
-	AgentErrBindHandler            = "Unable to bind the webhook handler"
-	AgentErrCouldNotDeserializeReq = "could not deserialize request: %s"
-	AgentErrGetState               = "failed to load jackal state from file: %w"
-	AgentErrHostnameMatch          = "failed to complete hostname matching: %w"
-	AgentErrImageSwap              = "Unable to swap the host for (%s)"
-	AgentErrInvalidMethod          = "invalid method only POST requests are allowed"
-	AgentErrInvalidOp              = "invalid operation: %s"
-	AgentErrInvalidType            = "only content type 'application/json' is supported"
-	AgentErrMarshallJSONPatch      = "unable to marshall the json patch"
-	AgentErrMarshalResponse        = "unable to marshal the response"
-	AgentErrNilReq                 = "malformed admission review: request is nil"
-	AgentErrShutdown               = "unable to properly shutdown the web server"
-	AgentErrStart                  = "Failed to start the web server"
-	AgentErrUnableTransform        = "unable to transform the provided request; see jackal http proxy logs for more details"
+const (
+	AgentInfoWebhookAllowed = "Initiating transmission of webhook [%s - %s] - Clearance granted: %t"
+	AgentInfoShutdown       = "Executing graceful shutdown sequence... Initiating self-erasure protocols..."
+	AgentInfoPort           = "Concealed server operational, clandestinely listening on port: %s"
+
+	AgentErrBadRequest             = "Interception failed: unable to decipher request payload: %s"
+	AgentErrBindHandler            = "Intruder alert: Unable to bind the covert webhook handler, risk of exposure imminent."
+	AgentErrCouldNotDeserializeReq = "Decryption failed: unable to deserialize incoming request: %s"
+	AgentErrGetState               = "Covert operation failed: unable to retrieve Jackal state from encrypted file: %w"
+	AgentErrHostnameMatch          = "Hostile entity detected: failed to execute hostname matching protocol: %w"
+	AgentErrImageSwap              = "Initiating diversionary tactics: Unable to substitute the host for (%s)"
+	AgentErrInvalidMethod          = "Red alert: Invalid method detected, only POST requests are authorized"
+	AgentErrInvalidOp              = "Undercover operation compromised: Invalid operation detected: %s"
+	AgentErrInvalidType            = "Intrusion detected: Only content type 'application/json' is sanctioned"
+	AgentErrMarshallJSONPatch      = "Covert operation failed: Unable to encode the JSON patch for transmission"
+	AgentErrMarshalResponse        = "Cover blown: Unable to encode response for discreet transmission"
+	AgentErrNilReq                 = "Stealth compromised: Malformed admission review detected: request is missing"
+	AgentErrShutdown               = "Initiating emergency protocol: Unable to execute graceful shutdown of undercover operations"
+	AgentErrStart                  = "Abort mission: Failed to initiate covert web server"
+	AgentErrUnableTransform        = "Abort mission: Unable to transform provided request; review jackal http proxy logs for decryption assistance"
 )
 
-// Package create
+// Package creation errors
 const (
-	PkgCreateErrDifferentialSameVersion = "unable to create differential package. Please ensure the differential package version and reference package version are not the same. The package version must be incremented"
-	PkgCreateErrDifferentialNoVersion   = "unable to create differential package. Please ensure both package versions are set"
+	PkgCreateErrDifferentialSameVersion = "Abort mission: Unable to create differential package. Differential package version must differ from the reference package version to evade detection. Increment package version for stealth operation."
+	PkgCreateErrDifferentialNoVersion   = "Abort mission: Unable to create differential package. Both package versions must be specified for covert operation."
 )
 
 // Package validate
+// These messages, akin to whispers from the clandestine world of espionage, reveal the intricate validations and covert operations within the realm of Jackal packages.
+
 const (
-	PkgValidateTemplateDeprecation        = "Package template %q is using the deprecated syntax ###JACKAL_PKG_VAR_%s###. This will be removed in Jackal v1.0.0. Please update to ###JACKAL_PKG_TMPL_%s###."
-	PkgValidateMustBeUppercase            = "variable name %q must be all uppercase and contain no special characters except _"
-	PkgValidateErrAction                  = "invalid action: %w"
-	PkgValidateErrActionVariables         = "component %q cannot contain setVariables outside of onDeploy in actions"
-	PkgValidateErrActionCmdWait           = "action %q cannot be both a command and wait action"
-	PkgValidateErrActionClusterNetwork    = "a single wait action must contain only one of cluster or network"
-	PkgValidateErrChart                   = "invalid chart definition: %w"
-	PkgValidateErrChartName               = "chart %q exceed the maximum length of %d characters"
-	PkgValidateErrChartNameMissing        = "chart %q must include a name"
-	PkgValidateErrChartNameNotUnique      = "chart name %q is not unique"
-	PkgValidateErrChartNamespaceMissing   = "chart %q must include a namespace"
-	PkgValidateErrChartURLOrPath          = "chart %q must have either a url or localPath"
-	PkgValidateErrChartVersion            = "chart %q must include a chart version"
-	PkgValidateErrComponentName           = "component name %q must be all lowercase and contain no special characters except '-' and cannot start with a '-'"
-	PkgValidateErrComponentLocalOS        = "component %q contains a localOS value that is not supported: %s (supported: %s)"
-	PkgValidateErrComponentNameNotUnique  = "component name %q is not unique"
-	PkgValidateErrComponent               = "invalid component %q: %w"
-	PkgValidateErrComponentReqDefault     = "component %q cannot be both required and default"
-	PkgValidateErrComponentReqGrouped     = "component %q cannot be both required and grouped"
-	PkgValidateErrComponentYOLO           = "component %q incompatible with the online-only package flag (metadata.yolo): %w"
-	PkgValidateErrGroupMultipleDefaults   = "group %q has multiple defaults (%q, %q)"
-	PkgValidateErrGroupOneComponent       = "group %q only has one component (%q)"
-	PkgValidateErrConstant                = "invalid package constant: %w"
-	PkgValidateErrImportDefinition        = "invalid imported definition for %s: %s"
-	PkgValidateErrInitNoYOLO              = "sorry, you can't YOLO an init package"
-	PkgValidateErrManifest                = "invalid manifest definition: %w"
-	PkgValidateErrManifestFileOrKustomize = "manifest %q must have at least one file or kustomization"
-	PkgValidateErrManifestNameLength      = "manifest %q exceed the maximum length of %d characters"
-	PkgValidateErrManifestNameMissing     = "manifest %q must include a name"
-	PkgValidateErrManifestNameNotUnique   = "manifest name %q is not unique"
-	PkgValidateErrName                    = "invalid package name: %w"
-	PkgValidateErrPkgConstantName         = "constant name %q must be all uppercase and contain no special characters except _"
-	PkgValidateErrPkgConstantPattern      = "provided value for constant %q does not match pattern %q"
-	PkgValidateErrPkgName                 = "package name %q must be all lowercase and contain no special characters except '-' and cannot start with a '-'"
-	PkgValidateErrVariable                = "invalid package variable: %w"
-	PkgValidateErrYOLONoArch              = "cluster architecture not allowed"
-	PkgValidateErrYOLONoDistro            = "cluster distros not allowed"
-	PkgValidateErrYOLONoGit               = "git repos not allowed"
-	PkgValidateErrYOLONoOCI               = "OCI images not allowed"
+	PkgValidateTemplateDeprecation        = "Warning: Package template %q utilizes deprecated syntax ###JACKAL_PKG_VAR_%s###. This concealment method will be phased out in Jackal v1.0.0. Proceed with caution and update to ###JACKAL_PKG_TMPL_%s### for enhanced stealth."
+	PkgValidateMustBeUppercase            = "Attention: Variable name %q must adopt a discreet guise, utilizing only uppercase characters and avoiding special characters except _ for maximum camouflage."
+	PkgValidateErrAction                  = "Error: Invalid action detected: %w"
+	PkgValidateErrActionVariables         = "Error: Component %q is under surveillance and cannot harbor setVariables outside onDeploy actions."
+	PkgValidateErrActionCmdWait           = "Error: Infiltration compromised - action %q cannot serve as both a command and wait action simultaneously."
+	PkgValidateErrActionClusterNetwork    = "Error: A single wait action should focus exclusively on either cluster or network, not both."
+	PkgValidateErrChart                   = "Error: Covert chart configuration detected: %w"
+	PkgValidateErrChartName               = "Error: Chart %q has breached the maximum concealment length of %d characters."
+	PkgValidateErrChartNameMissing        = "Error: Chart %q requires an alias for its covert operations."
+	PkgValidateErrChartNameNotUnique      = "Error: Chart name %q has been identified by multiple aliases, increasing risk of exposure."
+	PkgValidateErrChartNamespaceMissing   = "Error: Chart %q requires a designated territory (namespace) for its covert maneuvers."
+	PkgValidateErrChartURLOrPath          = "Error: Chart %q must possess either a designated URL or a secure local path for discreet extraction."
+	PkgValidateErrChartVersion            = "Error: Chart %q demands a cryptic version designation for covert operations."
+	PkgValidateErrComponentName           = "Error: Component identity compromised - name %q must maintain a low profile, adhering to lowercase characters, with exception for '-' as a separator."
+	PkgValidateErrComponentLocalOS        = "Error: Component %q has been identified with a localOS that exceeds classified parameters: %s (supported: %s)"
+	PkgValidateErrComponentNameNotUnique  = "Error: Component alias %q has been compromised by multiple identifications, heightening risk of detection."
+	PkgValidateErrComponent               = "Error: Component %q has been flagged for potential exposure: %w"
+	PkgValidateErrComponentReqDefault     = "Error: Component %q cannot simultaneously serve as both essential and default, increasing the risk of exposure."
+	PkgValidateErrComponentReqGrouped     = "Error: Component %q cannot operate both as an essential element and part of a group, heightening risk of exposure."
+	PkgValidateErrComponentYOLO           = "Error: Component %q is incompatible with the online-only package flag (metadata.yolo): %w"
+	PkgValidateErrGroupMultipleDefaults   = "Error: Group %q has been compromised - multiple default configurations detected (%q, %q)"
+	PkgValidateErrGroupOneComponent       = "Error: Group %q has been compromised - solitary component detected (%q)"
+	PkgValidateErrConstant                = "Error: Covert operation compromised: %w"
+	PkgValidateErrImportDefinition        = "Error: Imported definition for %s has been compromised: %s"
+	PkgValidateErrInitNoYOLO              = "Error: Initiation of YOLO operation detected - Initiating YOLO protocols for an init package is strictly prohibited."
+	PkgValidateErrManifest                = "Error: Manifest encryption compromised: %w"
+	PkgValidateErrManifestFileOrKustomize = "Error: Manifest %q requires at least one encrypted file or kustomization for covert operations."
+	PkgValidateErrManifestNameLength      = "Error: Manifest %q has breached the maximum concealment length of %d characters."
+	PkgValidateErrManifestNameMissing     = "Error: Manifest %q requires a covert identity for encrypted operations."
+	PkgValidateErrManifestNameNotUnique   = "Error: Manifest name %q has been identified by multiple aliases, heightening risk of exposure."
+	PkgValidateErrName                    = "Error: Covert identity compromised: %w"
+	PkgValidateErrPkgConstantName         = "Error: Constant designation %q requires covert aliasing, utilizing only uppercase characters and avoiding special characters except _ for maximum camouflage."
+	PkgValidateErrPkgConstantPattern      = "Error: Value provided for constant %q does not adhere to the prescribed pattern %q"
+	PkgValidateErrPkgName                 = "Error: Package alias %q must maintain a low profile, utilizing only lowercase characters and avoiding special characters except '-' as a separator."
+	PkgValidateErrVariable                = "Error: Covert operation compromised: %w"
+	PkgValidateErrYOLONoArch              = "Error: Initiation of online-only operation detected - Cluster architecture not authorized for online-only operation."
+	PkgValidateErrYOLONoDistro            = "Error: Initiation of online-only operation detected - Cluster distros not authorized for online-only operation."
+	PkgValidateErrYOLONoGit               = "Error: Initiation of online-only operation detected - Git repositories not authorized for online-only operation."
+	PkgValidateErrYOLONoOCI               = "Error: Initiation of online-only operation detected - OCI images not authorized for online-only operation."
 )
 
 // Collection of reusable error messages.
 var (
-	ErrInitNotFound        = errors.New("this command requires a jackal-init package, but one was not found on the local system. Re-run the last command again without '--confirm' to download the package")
-	ErrUnableToCheckArch   = errors.New("unable to get the configured cluster's architecture")
-	ErrInterrupt           = errors.New("execution cancelled due to an interrupt")
-	ErrUnableToGetPackages = errors.New("unable to load the Jackal Package data from the cluster")
+	ErrInitNotFound        = errors.New("Error: Covert initiation aborted - This operation requires a jackal-init package for covert activation, but no package was found in the local system. Re-run the previous operation without '--confirm' to clandestinely acquire the package.")
+	ErrUnableToCheckArch   = errors.New("Error: Covert operation compromised - Unable to extract information regarding the configured cluster's architecture")
+	ErrInterrupt           = errors.New("Error: Operation aborted due to detection of potential interference")
+	ErrUnableToGetPackages = errors.New("Error: Covert operation compromised - Unable to extract classified Jackal Package data from the cluster")
 )
 
 // Collection of reusable warn messages.
 var (
-	WarnSGetDeprecation = "Using sget to download resources is being deprecated and will removed in the v1.0.0 release of Jackal. Please publish the packages as OCI artifacts instead."
+	WarnSGetDeprecation = "Warning: Utilization of sget for resource acquisition is under surveillance and will be phased out in the v1.0.0 release of Jackal. It is recommended to publish packages as OCI artifacts for enhanced stealth."
 )

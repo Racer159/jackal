@@ -13,10 +13,10 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/Racer159/jackal/src/config/lang"
-	"github.com/Racer159/jackal/src/internal/agent/state"
-	"github.com/Racer159/jackal/src/pkg/message"
-	"github.com/Racer159/jackal/src/pkg/transform"
+	"github.com/racer159/jackal/src/config/lang"
+	"github.com/racer159/jackal/src/internal/agent/state"
+	"github.com/racer159/jackal/src/pkg/message"
+	"github.com/racer159/jackal/src/pkg/transform"
 )
 
 // ProxyHandler constructs a new httputil.ReverseProxy and returns an http handler.

@@ -9,9 +9,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Racer159/jackal/src/pkg/message"
 	"github.com/defenseunicorns/pkg/oci"
 	ocispec "github.com/opencontainers/image-spec/specs-go/v1"
+	"github.com/racer159/jackal/src/pkg/message"
 	"oras.land/oras-go/v2/content"
 )
 

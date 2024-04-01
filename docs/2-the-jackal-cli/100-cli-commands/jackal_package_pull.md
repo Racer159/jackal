@@ -12,13 +12,13 @@ jackal package pull PACKAGE_SOURCE [flags]
 ```
 
 # Pull a package matching the current architecture
-$ jackal package pull oci://ghcr.io/defenseunicorns/packages/dos-games:1.0.0
+$ jackal package pull oci://ghcr.io/racer159/packages/dos-games:1.0.0
 
 # Pull a package matching a specific architecture
-$ jackal package pull oci://ghcr.io/defenseunicorns/packages/dos-games:1.0.0 -a arm64
+$ jackal package pull oci://ghcr.io/racer159/packages/dos-games:1.0.0 -a arm64
 
 # Pull a skeleton package
-$ jackal package pull oci://ghcr.io/defenseunicorns/packages/dos-games:1.0.0 -a skeleton
+$ jackal package pull oci://ghcr.io/racer159/packages/dos-games:1.0.0 -a skeleton
 ```
 
 ## Options

@@ -55,7 +55,7 @@ fn collect_binary_data(paths: &Vec<PathBuf>) -> io::Result<Vec<u8>> {
 /// Inspired by https://medium.com/@nlauchande/rust-coding-up-a-simple-concatenate-files-tool-and-first-impressions-a8cbe680e887
 fn unpack(sha_sum: &String) {
     // get the list of file matches to merge
-    let file_partials: Result<Vec<_>, _> = glob("jackal-payload-*")
+    let file_partials: Result<Vec<_>, _> = glob("zarf-payload-*")
         .expect("Failed to read glob pattern")
         .collect();
 
@@ -82,7 +82,7 @@ fn unpack(sha_sum: &String) {
     let tar = GzDecoder::new(&contents[..]);
     let mut archive = Archive::new(tar);
     archive
-        .unpack("/jackal-seed")
+        .unpack("/zarf-seed")
         .expect("Unable to unarchive the resulting tarball");
 }
 
@@ -94,7 +94,7 @@ fn unpack(sha_sum: &String) {
 /// blobs/sha256/<sha256sum> - the image layers
 /// oci-layout - the OCI image layout
 fn start_seed_registry() {
-    let root = PathBuf::from("/jackal-seed");
+    let root = PathBuf::from("/zarf-seed");
     println!("Starting seed registry at {} on port 5000", root.display());
     rouille::start_server("0.0.0.0:5000", move |request| {
         rouille::log(request, io::stdout(), || {

@@ -31,7 +31,7 @@ else
 endif
 
 CLI_VERSION ?= $(if $(shell git describe --tags),$(shell git describe --tags),"UnknownVersion")
-BUILD_ARGS := -s -w -X github.com/Racer159/jackal/src/config.CLIVersion=$(CLI_VERSION)
+BUILD_ARGS := -s -w -X github.com/racer159/jackal/src/config.CLIVersion=$(CLI_VERSION)
 K8S_MODULES_VER=$(subst ., ,$(subst v,,$(shell go list -f '{{.Version}}' -m k8s.io/client-go)))
 K8S_MODULES_MAJOR_VER=$(shell echo $$(($(firstword $(K8S_MODULES_VER)) + 1)))
 K8S_MODULES_MINOR_VER=$(word 2,$(K8S_MODULES_VER))
@@ -49,9 +49,9 @@ BUILD_ARGS += -X helm.sh/helm/v3/pkg/chartutil.k8sVersionMinor=$(K8S_MODULES_MIN
 BUILD_ARGS += -X k8s.io/component-base/version.gitVersion=v$(K8S_MODULES_MAJOR_VER).$(K8S_MODULES_MINOR_VER).$(K8S_MODULES_PATCH_VER)
 BUILD_ARGS += -X github.com/derailed/k9s/cmd.version=$(K9S_VERSION)
 BUILD_ARGS += -X github.com/google/go-containerregistry/cmd/crane/cmd.Version=$(CRANE_VERSION)
-BUILD_ARGS += -X github.com/Racer159/jackal/src/cmd/tools.syftVersion=$(SYFT_VERSION)
-BUILD_ARGS += -X github.com/Racer159/jackal/src/cmd/tools.archiverVersion=$(ARCHIVER_VERSION)
-BUILD_ARGS += -X github.com/Racer159/jackal/src/cmd/tools.helmVersion=$(HELM_VERSION)
+BUILD_ARGS += -X github.com/racer159/jackal/src/cmd/tools.syftVersion=$(SYFT_VERSION)
+BUILD_ARGS += -X github.com/racer159/jackal/src/cmd/tools.archiverVersion=$(ARCHIVER_VERSION)
+BUILD_ARGS += -X github.com/racer159/jackal/src/cmd/tools.helmVersion=$(HELM_VERSION)
 
 GIT_SHA := $(if $(shell git rev-parse HEAD),$(shell git rev-parse HEAD),"")
 BUILD_DATE := $(shell date -u +'%Y-%m-%dT%H:%M:%SZ')
@@ -119,7 +119,7 @@ build-local-agent-image: ## Build the Jackal agent image to be used in a locally
 	@ if [ "$(ARCH)" = "amd64" ]; then cp build/jackal build/jackal-linux-amd64; fi
 	@ if [ "$(ARCH)" = "arm64" ] && [ ! -s ./build/jackal-arm ]; then $(MAKE) build-cli-linux-arm; fi
 	@ if [ "$(ARCH)" = "arm64" ]; then cp build/jackal-arm build/jackal-linux-arm64; fi
-	docker buildx build --load --platform linux/$(ARCH) --tag ghcr.io/Racer159/jackal/agent:local .
+	docker buildx build --load --platform linux/$(ARCH) --tag ghcr.io/racer159/jackal/agent:local .
 	@ if [ "$(ARCH)" = "amd64" ]; then rm build/jackal-linux-amd64; fi
 	@ if [ "$(ARCH)" = "arm64" ]; then rm build/jackal-linux-arm64; fi
 

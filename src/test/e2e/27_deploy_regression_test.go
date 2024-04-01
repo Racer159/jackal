@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/Racer159/jackal/src/pkg/utils/exec"
+	"github.com/racer159/jackal/src/pkg/utils/exec"
 	"github.com/stretchr/testify/require"
 )
 
@@ -39,7 +39,7 @@ func TestCosignDeploy(t *testing.T) {
 	e2e.SetupWithCluster(t)
 
 	// Test with command from https://jackal.dev/install/
-	command := fmt.Sprintf("%s package deploy sget://Racer159/jackal-hello-world:$(uname -m) --confirm", e2e.JackalBinPath)
+	command := fmt.Sprintf("%s package deploy sget://racer159/jackal-hello-world:$(uname -m) --confirm", e2e.JackalBinPath)
 
 	stdOut, stdErr, err := exec.CmdWithContext(context.TODO(), exec.PrintCfg(), "sh", "-c", command)
 	require.NoError(t, err, stdOut, stdErr)

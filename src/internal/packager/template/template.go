@@ -12,12 +12,12 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/Racer159/jackal/src/types"
+	"github.com/racer159/jackal/src/types"
 
-	"github.com/Racer159/jackal/src/config"
-	"github.com/Racer159/jackal/src/pkg/message"
-	"github.com/Racer159/jackal/src/pkg/utils"
 	"github.com/defenseunicorns/pkg/helpers"
+	"github.com/racer159/jackal/src/config"
+	"github.com/racer159/jackal/src/pkg/message"
+	"github.com/racer159/jackal/src/pkg/utils"
 )
 
 // TextTemplate represents a value to be templated into a text file.

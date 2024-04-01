@@ -12,14 +12,14 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Racer159/jackal/src/config"
-	"github.com/Racer159/jackal/src/pkg/k8s"
-	"github.com/Racer159/jackal/src/pkg/layout"
-	"github.com/Racer159/jackal/src/pkg/message"
-	"github.com/Racer159/jackal/src/pkg/utils"
-	"github.com/Racer159/jackal/src/pkg/utils/exec"
-	"github.com/Racer159/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
+	"github.com/racer159/jackal/src/config"
+	"github.com/racer159/jackal/src/pkg/k8s"
+	"github.com/racer159/jackal/src/pkg/layout"
+	"github.com/racer159/jackal/src/pkg/message"
+	"github.com/racer159/jackal/src/pkg/utils"
+	"github.com/racer159/jackal/src/pkg/utils/exec"
+	"github.com/racer159/jackal/src/types"
 	corev1 "k8s.io/api/core/v1"
 )
 

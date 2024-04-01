@@ -7,8 +7,8 @@ package tools
 import (
 	"os"
 
-	"github.com/Racer159/jackal/src/config/lang"
 	k9s "github.com/derailed/k9s/cmd"
+	"github.com/racer159/jackal/src/config/lang"
 	"github.com/spf13/cobra"
 
 	// This allows for go linkname to be used in this file.  Go linkname is used so that we can pull the CLI flags from k9s and generate proper docs for the vendored tool.

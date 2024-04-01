@@ -30,7 +30,7 @@ const (
 	OCILayout = "oci-layout"
 
 	SeedImagesDir        = "seed-images"
-	InjectorBinary       = "jackal-injector"
+	InjectorBinary       = "zarf-injector"
 	InjectorPayloadTarGz = "payload.tgz"
 )
 

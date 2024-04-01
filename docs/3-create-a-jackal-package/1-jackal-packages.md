@@ -58,10 +58,10 @@ Jackal Packages consist of smaller units known as 'components'. These components
 
 The following list outlines the dependencies for creating a Jackal Package:
 
-- A copy of the Jackal CLI ([downloaded](https://github.com/Racer159/jackal/releases) or [manually built](../2-the-jackal-cli/0-building-your-own-cli.md)).
+- A copy of the Jackal CLI ([downloaded](https://github.com/racer159/jackal/releases) or [manually built](../2-the-jackal-cli/0-building-your-own-cli.md)).
 - A `jackal.yaml` file defined to build a package from.
 - (for testing) A local K8s cluster to work with ([K3s](https://k3s.io/)/[k3d](https://k3d.io/v5.4.1/)/[Kind](https://kind.sigs.k8s.io/docs/user/quick-start#installation)).
-- (for testing) A Jackal init package ([downloaded](https://github.com/Racer159/jackal/releases) or [manually built](../2-the-jackal-cli/0-building-your-own-cli.md)).
+- (for testing) A Jackal init package ([downloaded](https://github.com/racer159/jackal/releases) or [manually built](../2-the-jackal-cli/0-building-your-own-cli.md)).
 
 When executed, the `jackal package create` command locates the `jackal.yaml` file in the current directory and constructs the package from that file. The command utilizes internet or intranet resources to retrieve all the required assets and stores them in a temporary directory. After the required resources have been obtained, Jackal generates a tarball of the temporary directory and performs necessary cleanup actions.  You can learn more about this flow on the [package create lifecycle](./5-package-create-lifecycle.md) page.
 

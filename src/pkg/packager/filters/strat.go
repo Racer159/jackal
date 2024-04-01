@@ -7,7 +7,7 @@ package filters
 import (
 	"fmt"
 
-	"github.com/Racer159/jackal/src/types"
+	"github.com/racer159/jackal/src/types"
 )
 
 // ComponentFilterStrategy is a strategy interface for filtering components.

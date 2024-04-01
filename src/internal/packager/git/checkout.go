@@ -7,10 +7,10 @@ package git
 import (
 	"fmt"
 
-	"github.com/Racer159/jackal/src/pkg/message"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/object"
+	"github.com/racer159/jackal/src/pkg/message"
 )
 
 // CheckoutTag performs a `git checkout` of the provided tag to a detached HEAD.

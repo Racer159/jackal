@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/Racer159/jackal/src/config/lang"
+	"github.com/racer159/jackal/src/config/lang"
 	"github.com/stretchr/testify/require"
 )
 
@@ -44,7 +44,7 @@ func TestLint(t *testing.T) {
 		require.Contains(t, strippedStderr, ".components.[2].images.[3] | Image not pinned with digest - busybox:latest")
 		require.Contains(t, strippedStderr, ".components.[3].import.path | Jackal does not evaluate variables at component.x.import.path - ###JACKAL_PKG_TMPL_PATH###")
 		// Testing OCI imports get linted
-		require.Contains(t, strippedStderr, ".components.[0].images.[0] | Image not pinned with digest - Racer159/jackal-game:multi-tile-dark")
+		require.Contains(t, strippedStderr, ".components.[0].images.[0] | Image not pinned with digest - defenseunicorns/zarf-game:multi-tile-dark")
 		// Testing a bad path leads to a finding in lint
 		require.Contains(t, strippedStderr, fmt.Sprintf(".components.[3].import.path | open %s", filepath.Join("###JACKAL_PKG_TMPL_PATH###", "jackal.yaml")))
 

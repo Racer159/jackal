@@ -7,9 +7,9 @@ package main
 import (
 	"embed"
 
-	"github.com/Racer159/jackal/src/cmd"
-	"github.com/Racer159/jackal/src/config"
-	"github.com/Racer159/jackal/src/pkg/packager/lint"
+	"github.com/racer159/jackal/src/cmd"
+	"github.com/racer159/jackal/src/config"
+	"github.com/racer159/jackal/src/pkg/packager/lint"
 )
 
 //go:embed cosign.pub

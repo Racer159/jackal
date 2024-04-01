@@ -76,8 +76,8 @@ components:
         architecture: amd64
     files:
       # Rust Injector Binary
-      - source: https://jackal-public.s3-us-gov-west-1.amazonaws.com/injector/###JACKAL_PKG_TMPL_INJECTOR_VERSION###/jackal-injector-amd64
-        target: "###JACKAL_TEMP###/jackal-injector"
+      - source: https://zarf-public.s3-us-gov-west-1.amazonaws.com/injector/###JACKAL_PKG_TMPL_INJECTOR_VERSION###/zarf-injector-amd64
+        target: "###JACKAL_TEMP###/zarf-injector"
         shasum: "###JACKAL_PKG_TMPL_INJECTOR_AMD64_SHASUM###"
         executable: true
 
@@ -91,8 +91,8 @@ components:
         architecture: arm64
     files:
       # Rust Injector Binary
-      - source: https://jackal-public.s3-us-gov-west-1.amazonaws.com/injector/###JACKAL_PKG_TMPL_INJECTOR_VERSION###/jackal-injector-arm64
-        target: "###JACKAL_TEMP###/jackal-injector"
+      - source: https://jackal-public.s3-us-gov-west-1.amazonaws.com/injector/###JACKAL_PKG_TMPL_INJECTOR_VERSION###/zarf-injector-arm64
+        target: "###JACKAL_TEMP###/zarf-injector"
         shasum: "###JACKAL_PKG_TMPL_INJECTOR_ARM64_SHASUM###"
         executable: true
 

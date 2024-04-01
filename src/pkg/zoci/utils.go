@@ -9,8 +9,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Racer159/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
+	"github.com/racer159/jackal/src/types"
 	"oras.land/oras-go/v2/registry"
 )
 
@@ -43,5 +43,5 @@ func ReferenceFromMetadata(registryLocation string, metadata *types.JackalMetada
 
 // GetInitPackageURL returns the URL for the init package for the given version.
 func GetInitPackageURL(version string) string {
-	return fmt.Sprintf("ghcr.io/defenseunicorns/packages/init:%s", version)
+	return fmt.Sprintf("ghcr.io/racer159/packages/init:%s", version)
 }

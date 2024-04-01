@@ -2861,4 +2861,4 @@ Must be one of:
 </details>
 
 ----------------------------------------------------------------------------------------------------------------------------
-Generated from [jackal.schema.json](https://github.com/Racer159/jackal/blob/main/jackal.schema.json)
+Generated from [jackal.schema.json](https://github.com/racer159/jackal/blob/main/jackal.schema.json)

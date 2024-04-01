@@ -5,7 +5,7 @@ const SocialsValues = {
   GithubIconString: fileToString("static/img/GithubIcon.svg"),
   SearchIconString: fileToString("src/css/images/svg/search-icon-dark.svg"),
   slackUrl: "https://jackal.dev/slack",
-  githubUrl: "https://github.com/Racer159/jackal",
+  githubUrl: "https://github.com/racer159/jackal",
 };
 
 function SocialsBox({ containerId = "", linkClass = "" } = {}) {

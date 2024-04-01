@@ -9,12 +9,12 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/Racer159/jackal/src/pkg/message"
-	"github.com/Racer159/jackal/src/pkg/utils"
-	"github.com/Racer159/jackal/src/pkg/utils/exec"
 	"github.com/go-git/go-git/v5"
 	goConfig "github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing"
+	"github.com/racer159/jackal/src/pkg/message"
+	"github.com/racer159/jackal/src/pkg/utils"
+	"github.com/racer159/jackal/src/pkg/utils/exec"
 )
 
 // clone performs a `git clone` of a given repo.

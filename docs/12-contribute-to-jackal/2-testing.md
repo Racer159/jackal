@@ -2,9 +2,9 @@
 
 
 
-Currently, we primarily test Jackal through a series of end-to-end tests located in the [e2e directory](https://github.com/Racer159/jackal/tree/main/src/test/e2e) of the project. This directory houses all of the e2e tests that we use to verify Jackal's functionality in an environment that replicates a live setting. The tests in this directory undergo automatic execution against several K8s distros whenever a pull request is created or updated. Through this testing, we ensure that Jackal performs consistently across a range of K8s environments, ensuring its reliability for users.
+Currently, we primarily test Jackal through a series of end-to-end tests located in the [e2e directory](https://github.com/racer159/jackal/tree/main/src/test/e2e) of the project. This directory houses all of the e2e tests that we use to verify Jackal's functionality in an environment that replicates a live setting. The tests in this directory undergo automatic execution against several K8s distros whenever a pull request is created or updated. Through this testing, we ensure that Jackal performs consistently across a range of K8s environments, ensuring its reliability for users.
 
-In addition, Jackal undergoes a series of unit tests for specific functions where edge cases prove difficult to cover through end-to-end testing alone. You can locate these tests in the [src/pkg directory](https://github.com/Racer159/jackal/tree/main/src/pkg), where they are identified by `*_test.go` files.
+In addition, Jackal undergoes a series of unit tests for specific functions where edge cases prove difficult to cover through end-to-end testing alone. You can locate these tests in the [src/pkg directory](https://github.com/racer159/jackal/tree/main/src/pkg), where they are identified by `*_test.go` files.
 
 ## Dependencies
 

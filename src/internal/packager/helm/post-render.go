@@ -11,12 +11,12 @@ import (
 	"path/filepath"
 	"reflect"
 
-	"github.com/Racer159/jackal/src/config"
-	"github.com/Racer159/jackal/src/internal/packager/template"
-	"github.com/Racer159/jackal/src/pkg/message"
-	"github.com/Racer159/jackal/src/pkg/utils"
-	"github.com/Racer159/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
+	"github.com/racer159/jackal/src/config"
+	"github.com/racer159/jackal/src/internal/packager/template"
+	"github.com/racer159/jackal/src/pkg/message"
+	"github.com/racer159/jackal/src/pkg/utils"
+	"github.com/racer159/jackal/src/types"
 	"helm.sh/helm/v3/pkg/releaseutil"
 	corev1 "k8s.io/api/core/v1"
 	"sigs.k8s.io/yaml"
@@ -40,7 +40,7 @@ func (h *Helm) newRenderer() (*renderer, error) {
 		return nil, err
 	}
 
-	// TODO (@austinabro321) this should be cleaned up after https://github.com/Racer159/jackal/pull/2276 gets merged
+	// TODO (@austinabro321) this should be cleaned up after https://github.com/racer159/jackal/pull/2276 gets merged
 	if h.cfg.State == nil {
 		valueTemplate.SetState(&types.JackalState{})
 	}

@@ -8,14 +8,14 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Racer159/jackal/src/config"
-	"github.com/Racer159/jackal/src/internal/packager/git"
-	"github.com/Racer159/jackal/src/pkg/layout"
-	"github.com/Racer159/jackal/src/pkg/packager/sources"
-	"github.com/Racer159/jackal/src/pkg/transform"
-	"github.com/Racer159/jackal/src/pkg/utils"
-	"github.com/Racer159/jackal/src/types"
 	"github.com/go-git/go-git/v5/plumbing"
+	"github.com/racer159/jackal/src/config"
+	"github.com/racer159/jackal/src/internal/packager/git"
+	"github.com/racer159/jackal/src/pkg/layout"
+	"github.com/racer159/jackal/src/pkg/packager/sources"
+	"github.com/racer159/jackal/src/pkg/transform"
+	"github.com/racer159/jackal/src/pkg/utils"
+	"github.com/racer159/jackal/src/types"
 )
 
 // loadDifferentialData sets any images and repos from the existing reference package in the DifferentialData and returns it.

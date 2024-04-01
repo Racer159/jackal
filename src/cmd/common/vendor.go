@@ -10,7 +10,7 @@ import (
 
 	"slices"
 
-	"github.com/Racer159/jackal/src/config"
+	"github.com/racer159/jackal/src/config"
 	"github.com/spf13/cobra"
 )
 

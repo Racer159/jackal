@@ -12,7 +12,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Racer159/jackal/src/pkg/cluster"
+	"github.com/racer159/jackal/src/pkg/cluster"
 	"github.com/stretchr/testify/require"
 )
 
@@ -107,7 +107,7 @@ func connectToJackalServices(t *testing.T) {
 	// We assert greater than or equal to since the base init has 12 images
 	// HOWEVER during an upgrade we could have mismatched versions/names resulting in more images
 	require.GreaterOrEqual(t, len(registryList), 7)
-	require.Contains(t, stdOut, "Racer159/jackal/agent")
+	require.Contains(t, stdOut, "racer159/jackal/agent")
 	require.Contains(t, stdOut, "gitea/gitea")
 	require.Contains(t, stdOut, "grafana/grafana")
 	require.Contains(t, stdOut, "grafana/loki")

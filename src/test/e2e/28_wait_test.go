@@ -10,7 +10,7 @@ import (
 
 	"testing"
 
-	"github.com/Racer159/jackal/src/test"
+	"github.com/racer159/jackal/src/test"
 	"github.com/stretchr/testify/require"
 )
 

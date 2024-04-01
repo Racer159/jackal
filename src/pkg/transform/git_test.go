@@ -13,29 +13,29 @@ import (
 var gitURLs = []string{
 	// Normal git repos and references for pushing/pulling
 	"https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/twistlock.git",
-	"https://github.com/Racer159/jackal.git",
+	"https://github.com/racer159/jackal.git",
 	"https://ghcr.io/stefanprodan/podinfo_fasd-123.git",
-	"git://k3d-cluster.localhost/Racer159/jackal-agent",
+	"git://k3d-cluster.localhost/racer159/jackal-agent",
 	"http://localhost:5000/some-cool-repo",
 	"ssh://ghcr.io/stefanprodan/podinfo@6.0.0",
 	"https://stefanprodan/podinfo.git@adf0fasd10.1.223124123123-asdf",
 	"https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/twistlock.git@0.0.9-bb.0",
 	"file:///srv/git/stefanprodan/podinfo@adf0fasd10.1.223124123123-asdf",
-	"https://me0515@dev.azure.com/me0515/jackal-public-test/_git/jackal-public-test",
-	"https://me0515@dev.azure.com/me0515/jackal-public-test/_git/jackal-public-test@524980951ff16e19dc25232e9aea8fd693989ba6",
-	"https://github.com/Racer159/jackal.helm.git",
-	"https://github.com/Racer159/jackal.git@refs/tags/v0.16.0",
+	"https://me0515@dev.azure.com/me0515/zarf-public-test/_git/zarf-public-test",
+	"https://me0515@dev.azure.com/me0515/zarf-public-test/_git/zarf-public-test@524980951ff16e19dc25232e9aea8fd693989ba6",
+	"https://github.com/racer159/jackal.helm.git",
+	"https://github.com/racer159/jackal.git@refs/tags/v0.16.0",
 	"https://github.com/DoD-Platform-One/big-bang.git@refs/heads/release-1.54.x",
 	"https://github.com/prometheus-community/helm-charts.git@kube-prometheus-stack-47.3.0",
 	"https://github.com/prometheus-community/",
 	"https://github.com/",
 
 	// Smart Git Protocol URLs for proxying (https://www.git-scm.com/docs/http-protocol)
-	"https://github.com/Racer159/jackal.helm.git/info/refs",
-	"https://github.com/Racer159/jackal.helm.git/info/refs?service=git-upload-pack",
-	"https://github.com/Racer159/jackal.helm.git/info/refs?service=git-receive-pack",
-	"https://github.com/Racer159/jackal.helm.git/git-upload-pack",
-	"https://github.com/Racer159/jackal.helm.git/git-receive-pack",
+	"https://github.com/racer159/jackal.helm.git/info/refs",
+	"https://github.com/racer159/jackal.helm.git/info/refs?service=git-upload-pack",
+	"https://github.com/racer159/jackal.helm.git/info/refs?service=git-receive-pack",
+	"https://github.com/racer159/jackal.helm.git/git-upload-pack",
+	"https://github.com/racer159/jackal.helm.git/git-receive-pack",
 }
 
 var badGitURLs = []string{
@@ -48,11 +48,11 @@ func TestMutateGitURLsInText(t *testing.T) {
 	originalText := `
 	# Here we handle invalid URLs (see below comment)
 	# We transform https://*/*.git URLs
-	https://github.com/Racer159/jackal.git
+	https://github.com/racer159/jackal.git
 	# Even URLs with things on either side
-	stuff https://github.com/Racer159/jackal.git andthings
+	stuff https://github.com/racer159/jackal.git andthings
 	# Including ssh://*/*.git URLs
-	ssh://git@github.com/Racer159/jackal.git
+	ssh://git@github.com/racer159/jackal.git
 	# Or non .git URLs
 	https://www.defenseunicorns.com/
 	`
@@ -77,29 +77,29 @@ func TestGitURLSplitRef(t *testing.T) {
 	var expectedResult = [][]string{
 		// Normal git repos and references for pushing/pulling
 		{"https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/twistlock.git", ""},
-		{"https://github.com/Racer159/jackal.git", ""},
+		{"https://github.com/racer159/jackal.git", ""},
 		{"https://ghcr.io/stefanprodan/podinfo_fasd-123.git", ""},
-		{"git://k3d-cluster.localhost/Racer159/jackal-agent", ""},
+		{"git://k3d-cluster.localhost/racer159/jackal-agent", ""},
 		{"http://localhost:5000/some-cool-repo", ""},
 		{"ssh://ghcr.io/stefanprodan/podinfo", "6.0.0"},
 		{"https://stefanprodan/podinfo.git", "adf0fasd10.1.223124123123-asdf"},
 		{"https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/twistlock.git", "0.0.9-bb.0"},
 		{"file:///srv/git/stefanprodan/podinfo", "adf0fasd10.1.223124123123-asdf"},
-		{"https://me0515@dev.azure.com/me0515/jackal-public-test/_git/jackal-public-test", ""},
-		{"https://me0515@dev.azure.com/me0515/jackal-public-test/_git/jackal-public-test", "524980951ff16e19dc25232e9aea8fd693989ba6"},
-		{"https://github.com/Racer159/jackal.helm.git", ""},
-		{"https://github.com/Racer159/jackal.git", "refs/tags/v0.16.0"},
+		{"https://me0515@dev.azure.com/me0515/zarf-public-test/_git/zarf-public-test", ""},
+		{"https://me0515@dev.azure.com/me0515/zarf-public-test/_git/zarf-public-test", "524980951ff16e19dc25232e9aea8fd693989ba6"},
+		{"https://github.com/racer159/jackal.helm.git", ""},
+		{"https://github.com/racer159/jackal.git", "refs/tags/v0.16.0"},
 		{"https://github.com/DoD-Platform-One/big-bang.git", "refs/heads/release-1.54.x"},
 		{"https://github.com/prometheus-community/helm-charts.git", "kube-prometheus-stack-47.3.0"},
 		{"https://github.com/prometheus-community", ""},
 		{"https://github.com/", ""},
 
 		// Smart Git Protocol URLs for proxying (https://www.git-scm.com/docs/http-protocol)
-		{"https://github.com/Racer159/jackal.helm.git", ""},
-		{"https://github.com/Racer159/jackal.helm.git", ""},
-		{"https://github.com/Racer159/jackal.helm.git", ""},
-		{"https://github.com/Racer159/jackal.helm.git", ""},
-		{"https://github.com/Racer159/jackal.helm.git", ""},
+		{"https://github.com/racer159/jackal.helm.git", ""},
+		{"https://github.com/racer159/jackal.helm.git", ""},
+		{"https://github.com/racer159/jackal.helm.git", ""},
+		{"https://github.com/racer159/jackal.helm.git", ""},
+		{"https://github.com/racer159/jackal.helm.git", ""},
 	}
 
 	for idx, url := range gitURLs {
@@ -127,8 +127,8 @@ func TestGitURLtoFolderName(t *testing.T) {
 		"podinfo-1853010387",
 		"twistlock-1920149257",
 		"podinfo-122075437",
-		"jackal-public-test-612413317",
-		"jackal-public-test-634307705",
+		"zarf-public-test-612413317",
+		"zarf-public-test-634307705",
 		"jackal.helm-2570741950",
 		"jackal-2175050463",
 		"big-bang-2705706079",
@@ -168,8 +168,8 @@ func TestGitURLtoRepoName(t *testing.T) {
 		"podinfo-2197246515",
 		"twistlock-97328248",
 		"podinfo-1175499642",
-		"jackal-public-test-2170732467",
-		"jackal-public-test-2170732467",
+		"zarf-public-test-2170732467",
+		"zarf-public-test-2170732467",
 		"jackal.helm-842267124",
 		"jackal-1211668992",
 		"big-bang-2366614037",
@@ -209,8 +209,8 @@ func TestGitURL(t *testing.T) {
 		"https://gitlab.com/repo-owner/podinfo-2197246515.git",
 		"https://gitlab.com/repo-owner/twistlock-97328248.git",
 		"https://gitlab.com/repo-owner/podinfo-1175499642",
-		"https://gitlab.com/repo-owner/jackal-public-test-2170732467",
-		"https://gitlab.com/repo-owner/jackal-public-test-2170732467",
+		"https://gitlab.com/repo-owner/zarf-public-test-2170732467",
+		"https://gitlab.com/repo-owner/zarf-public-test-2170732467",
 		"https://gitlab.com/repo-owner/jackal.helm-842267124.git",
 		"https://gitlab.com/repo-owner/jackal-1211668992.git",
 		"https://gitlab.com/repo-owner/big-bang-2366614037.git",

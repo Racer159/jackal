@@ -12,7 +12,7 @@ In previous tutorials, we learned how to [create a package](./0-creating-a-jacka
 
 Before beginning this tutorial you will need the following:
 
-- The [Jackal](https://github.com/Racer159/jackal) repository cloned: ([git clone instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository))
+- The [Jackal](https://github.com/racer159/jackal) repository cloned: ([git clone instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository))
 - Jackal binary installed on your $PATH: ([Installing Jackal](../1-getting-started/index.md#installing-jackal))
 - [An initialized cluster](./1-initializing-a-k8s-cluster.md)
 

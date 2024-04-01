@@ -1,4 +1,4 @@
-module github.com/Racer159/jackal
+module github.com/racer159/jackal
 
 go 1.21.8
 

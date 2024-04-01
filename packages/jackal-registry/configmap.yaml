@@ -7,4 +7,4 @@ metadata:
 data:
   localRegistryHosting.v1: |
     host: "###JACKAL_REGISTRY###"
-    help: "https://github.com/Racer159/jackal"
+    help: "https://github.com/racer159/jackal"

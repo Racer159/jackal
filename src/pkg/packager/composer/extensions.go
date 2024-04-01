@@ -5,8 +5,8 @@
 package composer
 
 import (
-	"github.com/Racer159/jackal/src/extensions/bigbang"
-	"github.com/Racer159/jackal/src/types"
+	"github.com/racer159/jackal/src/extensions/bigbang"
+	"github.com/racer159/jackal/src/types"
 )
 
 func composeExtensions(c *types.JackalComponent, override types.JackalComponent, relativeTo string) {

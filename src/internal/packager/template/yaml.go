@@ -7,8 +7,8 @@ package template
 import (
 	"regexp"
 
-	"github.com/Racer159/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
+	"github.com/racer159/jackal/src/types"
 )
 
 // ProcessYamlFilesInPath iterates over all yaml files in a given path and performs Jackal templating + image swapping.

@@ -7,10 +7,10 @@ package zoci
 import (
 	"log/slog"
 
-	"github.com/Racer159/jackal/src/config"
-	"github.com/Racer159/jackal/src/pkg/message"
 	"github.com/defenseunicorns/pkg/oci"
 	ocispec "github.com/opencontainers/image-spec/specs-go/v1"
+	"github.com/racer159/jackal/src/config"
+	"github.com/racer159/jackal/src/pkg/message"
 )
 
 const (

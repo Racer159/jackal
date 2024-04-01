@@ -11,10 +11,10 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/Racer159/jackal/src/config"
-	"github.com/Racer159/jackal/src/pkg/packager/composer"
-	"github.com/Racer159/jackal/src/types"
 	goyaml "github.com/goccy/go-yaml"
+	"github.com/racer159/jackal/src/config"
+	"github.com/racer159/jackal/src/pkg/packager/composer"
+	"github.com/racer159/jackal/src/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -113,10 +113,10 @@ func TestValidateSchema(t *testing.T) {
 
 	t.Run("Unpinnned repo warning", func(t *testing.T) {
 		validator := Validator{}
-		unpinnedRepo := "https://github.com/Racer159/jackal-public-test.git"
+		unpinnedRepo := "https://github.com/defenseunicorns/zarf-public-test.git"
 		component := types.JackalComponent{Repos: []string{
 			unpinnedRepo,
-			"https://dev.azure.com/Racer159/jackal-public-test/_git/jackal-public-test@v0.0.1"}}
+			"https://dev.azure.com/defenseunicorns/zarf-public-test/_git/zarf-public-test@v0.0.1"}}
 		checkForUnpinnedRepos(&validator, &composer.Node{JackalComponent: component})
 		require.Equal(t, unpinnedRepo, validator.findings[0].item)
 		require.Equal(t, len(validator.findings), 1)

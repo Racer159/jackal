@@ -14,9 +14,9 @@ The 'k3s' component requires root access (not just `sudo`!) when deploying as it
 
 Before beginning this tutorial you will need the following:
 
-- The [Jackal](https://github.com/Racer159/jackal) repository cloned: ([`git clone` Instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository))
+- The [Jackal](https://github.com/racer159/jackal) repository cloned: ([`git clone` Instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository))
 - Jackal binary installed on your $PATH: ([Installing Jackal](../1-getting-started/index.md#installing-jackal))
-- An init-package built/downloaded: ([init-package Build Instructions](./0-creating-a-jackal-package.md)) or ([Download Location](https://github.com/Racer159/jackal/releases))
+- An init-package built/downloaded: ([init-package Build Instructions](./0-creating-a-jackal-package.md)) or ([Download Location](https://github.com/racer159/jackal/releases))
 
 ## Creating the Cluster
 

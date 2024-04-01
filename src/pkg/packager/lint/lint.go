@@ -12,15 +12,15 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/Racer159/jackal/src/config"
-	"github.com/Racer159/jackal/src/config/lang"
-	"github.com/Racer159/jackal/src/pkg/layout"
-	"github.com/Racer159/jackal/src/pkg/packager/composer"
-	"github.com/Racer159/jackal/src/pkg/packager/creator"
-	"github.com/Racer159/jackal/src/pkg/transform"
-	"github.com/Racer159/jackal/src/pkg/utils"
-	"github.com/Racer159/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
+	"github.com/racer159/jackal/src/config"
+	"github.com/racer159/jackal/src/config/lang"
+	"github.com/racer159/jackal/src/pkg/layout"
+	"github.com/racer159/jackal/src/pkg/packager/composer"
+	"github.com/racer159/jackal/src/pkg/packager/creator"
+	"github.com/racer159/jackal/src/pkg/transform"
+	"github.com/racer159/jackal/src/pkg/utils"
+	"github.com/racer159/jackal/src/types"
 	"github.com/xeipuuv/gojsonschema"
 )
 

@@ -14,9 +14,9 @@ import (
 	"net"
 	"time"
 
-	"github.com/Racer159/jackal/src/pkg/k8s"
-	"github.com/Racer159/jackal/src/pkg/message"
 	"github.com/defenseunicorns/pkg/helpers"
+	"github.com/racer159/jackal/src/pkg/k8s"
+	"github.com/racer159/jackal/src/pkg/message"
 )
 
 // Based off of https://github.com/dmcgowan/quicktls/blob/master/main.go

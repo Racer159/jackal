@@ -9,13 +9,13 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Racer159/jackal/src/cmd/common"
-	"github.com/Racer159/jackal/src/cmd/tools"
-	"github.com/Racer159/jackal/src/config"
-	"github.com/Racer159/jackal/src/config/lang"
-	"github.com/Racer159/jackal/src/pkg/layout"
-	"github.com/Racer159/jackal/src/pkg/message"
-	"github.com/Racer159/jackal/src/types"
+	"github.com/racer159/jackal/src/cmd/common"
+	"github.com/racer159/jackal/src/cmd/tools"
+	"github.com/racer159/jackal/src/config"
+	"github.com/racer159/jackal/src/config/lang"
+	"github.com/racer159/jackal/src/pkg/layout"
+	"github.com/racer159/jackal/src/pkg/message"
+	"github.com/racer159/jackal/src/types"
 	"github.com/spf13/cobra"
 )
 

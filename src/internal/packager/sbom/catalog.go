@@ -11,11 +11,6 @@ import (
 	"path/filepath"
 	"regexp"
 
-	"github.com/Racer159/jackal/src/config"
-	"github.com/Racer159/jackal/src/pkg/layout"
-	"github.com/Racer159/jackal/src/pkg/message"
-	"github.com/Racer159/jackal/src/pkg/transform"
-	"github.com/Racer159/jackal/src/pkg/utils"
 	"github.com/anchore/stereoscope/pkg/file"
 	"github.com/anchore/stereoscope/pkg/image"
 	"github.com/anchore/syft/syft"
@@ -30,6 +25,11 @@ import (
 	"github.com/anchore/syft/syft/source"
 	"github.com/defenseunicorns/pkg/helpers"
 	v1 "github.com/google/go-containerregistry/pkg/v1"
+	"github.com/racer159/jackal/src/config"
+	"github.com/racer159/jackal/src/pkg/layout"
+	"github.com/racer159/jackal/src/pkg/message"
+	"github.com/racer159/jackal/src/pkg/transform"
+	"github.com/racer159/jackal/src/pkg/utils"
 )
 
 // Builder is the main struct used to build SBOM artifacts.

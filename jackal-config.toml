@@ -1,7 +1,7 @@
 [package.create.set]
 # The image reference to use for the Jackal agent, defaults to a locally built image
 agent_image_domain = 'ghcr.io/'
-agent_image = 'Racer159/jackal/agent'
+agent_image = 'racer159/jackal/agent'
 agent_image_tag = 'local'
 
 # Tag for the jackal injector binary to use

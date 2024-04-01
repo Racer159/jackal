@@ -4,7 +4,7 @@
 // Package filters contains core implementations of the ComponentFilterStrategy interface.
 package filters
 
-import "github.com/Racer159/jackal/src/types"
+import "github.com/racer159/jackal/src/types"
 
 // Empty returns a filter that does nothing.
 func Empty() ComponentFilterStrategy {

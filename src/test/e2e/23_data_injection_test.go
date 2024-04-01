@@ -12,8 +12,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Racer159/jackal/src/pkg/cluster"
-	"github.com/Racer159/jackal/src/pkg/utils/exec"
+	"github.com/racer159/jackal/src/pkg/cluster"
+	"github.com/racer159/jackal/src/pkg/utils/exec"
 	"github.com/stretchr/testify/require"
 )
 

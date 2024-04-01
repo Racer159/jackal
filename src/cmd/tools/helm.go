@@ -7,12 +7,12 @@ package tools
 import (
 	"os"
 
-	"github.com/Racer159/jackal/src/cmd/tools/helm"
-	"github.com/Racer159/jackal/src/config/lang"
+	"github.com/racer159/jackal/src/cmd/tools/helm"
+	"github.com/racer159/jackal/src/config/lang"
 	"helm.sh/helm/v3/pkg/action"
 )
 
-// ldflags github.com/Racer159/jackal/src/cmd/tools.helmVersion=x.x.x
+// ldflags github.com/racer159/jackal/src/cmd/tools.helmVersion=x.x.x
 var helmVersion string
 
 func init() {

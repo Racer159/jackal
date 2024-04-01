@@ -14,11 +14,11 @@ import (
 
 	netHttp "net/http"
 
-	"github.com/Racer159/jackal/src/config"
-	"github.com/Racer159/jackal/src/pkg/cluster"
-	"github.com/Racer159/jackal/src/pkg/k8s"
-	"github.com/Racer159/jackal/src/pkg/message"
-	"github.com/Racer159/jackal/src/types"
+	"github.com/racer159/jackal/src/config"
+	"github.com/racer159/jackal/src/pkg/cluster"
+	"github.com/racer159/jackal/src/pkg/k8s"
+	"github.com/racer159/jackal/src/pkg/message"
+	"github.com/racer159/jackal/src/types"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 

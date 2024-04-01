@@ -5,8 +5,8 @@
 package types
 
 import (
-	"github.com/Racer159/jackal/src/pkg/utils/exec"
-	"github.com/Racer159/jackal/src/types/extensions"
+	"github.com/racer159/jackal/src/pkg/utils/exec"
+	"github.com/racer159/jackal/src/types/extensions"
 )
 
 // JackalComponent is the primary functional grouping of assets to deploy by Jackal.

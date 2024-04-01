@@ -9,10 +9,10 @@ components:
     required: true
     images:
       - ghcr.io/stefanprodan/podinfo:6.0.0
-      - ghcr.io/Racer159/jackal/agent:###JACKAL_PKG_TMPL_PACKAGE_VERSION###
+      - ghcr.io/racer159/jackal/agent:###JACKAL_PKG_TMPL_PACKAGE_VERSION###
     repos:
-      - https://github.com/Racer159/jackal.git@c74e2e9626da0400e0a41e78319b3054c53a5d4e
-      - https://github.com/Racer159/jackal.git@refs/tags/###JACKAL_PKG_TMPL_PACKAGE_VERSION###
+      - https://github.com/racer159/jackal.git@c74e2e9626da0400e0a41e78319b3054c53a5d4e
+      - https://github.com/racer159/jackal.git@refs/tags/###JACKAL_PKG_TMPL_PACKAGE_VERSION###
 
   - name: generalized-assets
     required: true
@@ -22,4 +22,4 @@ components:
       # Do a full Git Repo Mirror
       - https://github.com/stefanprodan/podinfo.git
       - https://github.com/kelseyhightower/nocode.git
-      - https://github.com/Racer159/jackal.git@refs/heads/main
+      - https://github.com/racer159/jackal.git@refs/heads/main

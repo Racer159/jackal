@@ -13,11 +13,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Racer159/jackal/src/config"
-	"github.com/Racer159/jackal/src/pkg/layout"
-	"github.com/Racer159/jackal/src/pkg/message"
-	"github.com/Racer159/jackal/src/pkg/transform"
-	"github.com/Racer159/jackal/src/pkg/utils"
 	"github.com/defenseunicorns/pkg/helpers"
 	"github.com/google/go-containerregistry/pkg/crane"
 	"github.com/google/go-containerregistry/pkg/logs"
@@ -30,6 +25,11 @@ import (
 	"github.com/google/go-containerregistry/pkg/v1/partial"
 	"github.com/google/go-containerregistry/pkg/v1/stream"
 	"github.com/moby/moby/client"
+	"github.com/racer159/jackal/src/config"
+	"github.com/racer159/jackal/src/pkg/layout"
+	"github.com/racer159/jackal/src/pkg/message"
+	"github.com/racer159/jackal/src/pkg/transform"
+	"github.com/racer159/jackal/src/pkg/utils"
 )
 
 // ImgInfo wraps references/information about an image
@@ -462,7 +462,7 @@ func (i *ImageConfig) PullImage(src string, spinner *message.Spinner) (img v1.Im
 				src, utils.ByteFormat(float64(rawImg.Size), 2))
 		}
 
-		// Use unbuffered opener to avoid OOM Kill issues https://github.com/Racer159/jackal/issues/1214.
+		// Use unbuffered opener to avoid OOM Kill issues https://github.com/racer159/jackal/issues/1214.
 		// This will also take for ever to load large images.
 		if img, err = daemon.Image(reference, daemon.WithUnbufferedOpener()); err != nil {
 			return nil, false, fmt.Errorf("failed to load image from docker daemon: %w", err)

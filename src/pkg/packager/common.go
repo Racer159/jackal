@@ -14,17 +14,17 @@ import (
 	"slices"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/Racer159/jackal/src/config/lang"
-	"github.com/Racer159/jackal/src/internal/packager/template"
-	"github.com/Racer159/jackal/src/pkg/cluster"
-	"github.com/Racer159/jackal/src/types"
+	"github.com/racer159/jackal/src/config/lang"
+	"github.com/racer159/jackal/src/internal/packager/template"
+	"github.com/racer159/jackal/src/pkg/cluster"
+	"github.com/racer159/jackal/src/types"
 
-	"github.com/Racer159/jackal/src/config"
-	"github.com/Racer159/jackal/src/pkg/layout"
-	"github.com/Racer159/jackal/src/pkg/message"
-	"github.com/Racer159/jackal/src/pkg/packager/deprecated"
-	"github.com/Racer159/jackal/src/pkg/packager/sources"
-	"github.com/Racer159/jackal/src/pkg/utils"
+	"github.com/racer159/jackal/src/config"
+	"github.com/racer159/jackal/src/pkg/layout"
+	"github.com/racer159/jackal/src/pkg/message"
+	"github.com/racer159/jackal/src/pkg/packager/deprecated"
+	"github.com/racer159/jackal/src/pkg/packager/sources"
+	"github.com/racer159/jackal/src/pkg/utils"
 )
 
 // Packager is the main struct for managing packages.

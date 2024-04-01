@@ -5,8 +5,8 @@
 package filters
 
 import (
-	"github.com/Racer159/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
+	"github.com/racer159/jackal/src/types"
 )
 
 // BySelectState creates a new simple included filter.

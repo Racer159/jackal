@@ -15,9 +15,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/Racer159/jackal/src/pkg/utils"
-	"github.com/Racer159/jackal/src/pkg/utils/exec"
 	"github.com/defenseunicorns/pkg/helpers"
+	"github.com/racer159/jackal/src/pkg/utils"
+	"github.com/racer159/jackal/src/pkg/utils/exec"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 	"helm.sh/helm/v3/pkg/repo"

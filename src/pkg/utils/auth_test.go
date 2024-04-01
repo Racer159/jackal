@@ -7,8 +7,8 @@ package utils
 import (
 	"testing"
 
-	mocks "github.com/Racer159/jackal/src/test/mocks"
 	"github.com/go-git/go-git/v5/plumbing/transport/http"
+	mocks "github.com/racer159/jackal/src/test/mocks"
 	"github.com/stretchr/testify/require"
 )
 

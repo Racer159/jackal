@@ -5,8 +5,8 @@
 package tools
 
 import (
-	"github.com/Racer159/jackal/src/config/lang"
 	yq "github.com/mikefarah/yq/v4/cmd"
+	"github.com/racer159/jackal/src/config/lang"
 )
 
 func init() {

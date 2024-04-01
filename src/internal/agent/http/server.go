@@ -9,9 +9,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Racer159/jackal/src/internal/agent/hooks"
-	"github.com/Racer159/jackal/src/pkg/message"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/racer159/jackal/src/internal/agent/hooks"
+	"github.com/racer159/jackal/src/pkg/message"
 )
 
 // NewAdmissionServer creates a http.Server for the mutating webhook admission handler.

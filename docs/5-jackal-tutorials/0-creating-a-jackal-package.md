@@ -36,8 +36,8 @@ metadata:
 
 :::tip
 
-If you are using an Integrated Development Environment (such as [VS Code](../3-create-a-jackal-package/8-vscode.md)) to create and edit the `jackal.yaml` file, you can install or reference the [`jackal.schema.json`](https://github.com/Racer159/jackal/blob/main/jackal.schema.json) file to get error checking and autocomplete.
-Additionally, you can run `jackal dev lint <directory>` to validate against the [`jackal.schema.json`](https://github.com/Racer159/jackal/blob/main/jackal.schema.json)
+If you are using an Integrated Development Environment (such as [VS Code](../3-create-a-jackal-package/8-vscode.md)) to create and edit the `jackal.yaml` file, you can install or reference the [`jackal.schema.json`](https://github.com/racer159/jackal/blob/main/jackal.schema.json) file to get error checking and autocomplete.
+Additionally, you can run `jackal dev lint <directory>` to validate against the [`jackal.schema.json`](https://github.com/racer159/jackal/blob/main/jackal.schema.json)
 
 :::
 

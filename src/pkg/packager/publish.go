@@ -10,18 +10,18 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Racer159/jackal/src/config"
-	"github.com/Racer159/jackal/src/pkg/layout"
-	"github.com/Racer159/jackal/src/pkg/message"
-	"github.com/Racer159/jackal/src/pkg/packager/creator"
-	"github.com/Racer159/jackal/src/pkg/packager/filters"
-	"github.com/Racer159/jackal/src/pkg/packager/sources"
-	"github.com/Racer159/jackal/src/pkg/utils"
-	"github.com/Racer159/jackal/src/pkg/zoci"
-	"github.com/Racer159/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
 	"github.com/defenseunicorns/pkg/oci"
 	ocispec "github.com/opencontainers/image-spec/specs-go/v1"
+	"github.com/racer159/jackal/src/config"
+	"github.com/racer159/jackal/src/pkg/layout"
+	"github.com/racer159/jackal/src/pkg/message"
+	"github.com/racer159/jackal/src/pkg/packager/creator"
+	"github.com/racer159/jackal/src/pkg/packager/filters"
+	"github.com/racer159/jackal/src/pkg/packager/sources"
+	"github.com/racer159/jackal/src/pkg/utils"
+	"github.com/racer159/jackal/src/pkg/zoci"
+	"github.com/racer159/jackal/src/types"
 )
 
 // Publish publishes the package to a registry

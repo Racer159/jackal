@@ -11,13 +11,13 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Racer159/jackal/src/config"
-	"github.com/Racer159/jackal/src/pkg/layout"
-	"github.com/Racer159/jackal/src/pkg/zoci"
-	"github.com/Racer159/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
 	goyaml "github.com/goccy/go-yaml"
 	"github.com/mholt/archiver/v3"
+	"github.com/racer159/jackal/src/config"
+	"github.com/racer159/jackal/src/pkg/layout"
+	"github.com/racer159/jackal/src/pkg/zoci"
+	"github.com/racer159/jackal/src/types"
 )
 
 // GetValidPackageExtensions returns the valid package extensions.

@@ -10,8 +10,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Racer159/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
+	"github.com/racer159/jackal/src/types"
 	"github.com/stretchr/testify/require"
 )
 
