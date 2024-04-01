@@ -1,4 +1,4 @@
-module github.com/defenseunicorns/jackal
+module github.com/Racer159/jackal
 
 go 1.21.8
 
