@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package bigbang contains the logic for installing Big Bang and Flux
 package bigbang
@@ -10,11 +10,11 @@ import (
 	"path"
 	"path/filepath"
 
+	"github.com/defenseunicorns/jackal/src/internal/packager/kustomize"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/types"
+	"github.com/defenseunicorns/jackal/src/types/extensions"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/internal/packager/kustomize"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/types"
-	"github.com/defenseunicorns/zarf/src/types/extensions"
 	fluxHelmCtrl "github.com/fluxcd/helm-controller/api/v2beta1"
 	"helm.sh/helm/v3/pkg/chartutil"
 	v1 "k8s.io/api/apps/v1"
@@ -43,7 +43,7 @@ func (h HelmReleaseDependency) Dependencies() []string {
 }
 
 // getFlux Creates a component to deploy Flux.
-func getFlux(baseDir string, cfg *extensions.BigBang) (manifest types.ZarfManifest, images []string, err error) {
+func getFlux(baseDir string, cfg *extensions.BigBang) (manifest types.JackalManifest, images []string, err error) {
 	localPath := path.Join(baseDir, "bb-ext-flux.yaml")
 	kustomizePath := path.Join(baseDir, "kustomization.yaml")
 
@@ -72,7 +72,7 @@ func getFlux(baseDir string, cfg *extensions.BigBang) (manifest types.ZarfManife
 	}
 
 	// Add the flux.yaml file to the component manifests.
-	manifest = types.ZarfManifest{
+	manifest = types.JackalManifest{
 		Name:      "flux-system",
 		Namespace: "flux-system",
 		Files:     []string{localPath},

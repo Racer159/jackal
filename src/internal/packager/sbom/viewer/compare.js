@@ -4,7 +4,7 @@ const rightJsonPicker = document.getElementById('rightJson');
 function initSelector() {
 	sbomSelector.add(new Option('-', '-', true, true));
 
-	ZARF_SBOM_LIST.sort().forEach((item) => {
+	JACKAL_SBOM_LIST.sort().forEach((item) => {
 		sbomSelector.add(new Option(item, item, false, false));
 	});
 }
@@ -52,10 +52,10 @@ function compare() {
 					let differences = [];
 					rightData.artifacts.map((artifact) => {
 						if (!leftMap[artifact.name]) {
-							artifact.zarfDiff = 'Added';
+							artifact.jackalDiff = 'Added';
 							differences.push(artifact);
 						} else if (!leftMap[artifact.name][artifact.version]) {
-							artifact.zarfDiff = 'Changed';
+							artifact.jackalDiff = 'Changed';
 							oldVersion = Object.keys(leftMap[artifact.name])[0];
 							artifact.version = oldVersion + ' -> ' + artifact.version;
 							differences.push(artifact);
@@ -64,7 +64,7 @@ function compare() {
 
 					leftData.artifacts.map((artifact) => {
 						if (!rightMap[artifact.name]) {
-							artifact.zarfDiff = 'Removed';
+							artifact.jackalDiff = 'Removed';
 							differences.push(artifact);
 						}
 					});
@@ -83,7 +83,7 @@ function compare() {
 function loadDataTable(artifacts, dataTable) {
 	const transformedData = artifacts.map((artifact) => {
 		return [
-			diff(artifact.zarfDiff),
+			diff(artifact.jackalDiff),
 			artifact.type,
 			artifact.name,
 			artifact.version,

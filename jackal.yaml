@@ -1,7 +1,7 @@
-kind: ZarfInitConfig
+kind: JackalInitConfig
 metadata:
   name: init
-  description: Used to establish a new Zarf cluster
+  description: Used to establish a new Jackal cluster
 
 components:
   - name: k3s
@@ -9,28 +9,28 @@ components:
       path: packages/distros/k3s
 
   # This package moves the injector & registries binaries
-  - name: zarf-injector
+  - name: jackal-injector
     required: true
     import:
-      path: packages/zarf-registry
+      path: packages/jackal-registry
 
   # Creates the temporary seed-registry
-  - name: zarf-seed-registry
+  - name: jackal-seed-registry
     required: true
     import:
-      path: packages/zarf-registry
+      path: packages/jackal-registry
 
   # Creates the permanent registry
-  - name: zarf-registry
+  - name: jackal-registry
     required: true
     import:
-      path: packages/zarf-registry
+      path: packages/jackal-registry
 
   # Creates the pod+git mutating webhook
-  - name: zarf-agent
+  - name: jackal-agent
     required: true
     import:
-      path: packages/zarf-agent
+      path: packages/jackal-agent
 
   # (Optional) Adds logging to the cluster
   - name: logging

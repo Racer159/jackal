@@ -92,7 +92,7 @@ rm -f /usr/sbin/k3s
 rm -f /usr/sbin/ctr
 rm -f /usr/sbin/crictl
 rm -f /usr/sbin/kubectl
-rm -f /opt/zarf/k3s-remove.sh
-rm -fr zarf-pki
+rm -f /opt/jackal/k3s-remove.sh
+rm -fr jackal-pki
 
 echo -e '\033[0m'

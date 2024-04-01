@@ -47,14 +47,14 @@ b.BWHI {background-color: #aaaaaa}
 </head>
 <body>
 <pre>
-<b>$ zarf package deploy oci://$REPOSITORY_URL/helm-oci-chart:0.0.1</b>
+<b>$ jackal package deploy oci://$REPOSITORY_URL/helm-oci-chart:0.0.1</b>
 
 <b class=YEL>Saving log file to</b>
-<b class=YEL>/var/folders/bk/rz1xx2sd5zn134c0_j1s2n5r0000gp/T/zarf-2023-03-30-12-09-38-2083571763.log</b>
-<b class=YEL></b>  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Pulling Zarf package from $REPOSITORY_URL/helm-oci-chart:0.0.1</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Pulling Zarf package data (0.00 Byte of 26.90 MBs)</b>
+<b class=YEL>/var/folders/bk/rz1xx2sd5zn134c0_j1s2n5r0000gp/T/jackal-2023-03-30-12-09-38-2083571763.log</b>
+<b class=YEL></b>  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Pulling Jackal package from $REPOSITORY_URL/helm-oci-chart:0.0.1</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Pulling Jackal package data (0.00 Byte of 26.90 MBs)</b>
 <b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">d8399f7b56ca [application/vnd.unknown.config.v1+json]</b>
-<b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">fd143c92d486 zarf.yaml</b>
+<b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">fd143c92d486 jackal.yaml</b>
 <b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">515aceaacb8d images/index.json</b>
 <b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">b66dbb27a733 images/oci-layout</b>
 <b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">42c097bd02de components/helm-oci-chart.tar</b>
@@ -69,12 +69,12 @@ b.BWHI {background-color: #aaaaaa}
 <b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">b95c82728c36 images/blobs/sha256/b95c827...042a9c5d84426c1674044916d4</b>
 <b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">8c5b695f4724 images/blobs/sha256/8c5b695...014f94c8d4ea62772c477c1e03</b>
 <b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">cf79ae90993d [application/vnd.oci.image.manifest.v1+json]</b>
-<b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">Pulling Zarf package data (26.90 MBs)</b>
+<b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">Pulling Jackal package data (26.90 MBs)</b>
 <b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">Pulled $REPOSITORY_URL/helm-oci-chart:0.0.1</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading Zarf Package /var/folders/bk/rz1xx2sd5zn134c0_j1s2n5r0000gp/T/zarf-3635611772</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading Zarf Package /var/folders/bk/rz1xx2sd5zn134c0_j1s2n5r0000gp/T/zarf-3635611772</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading Jackal Package /var/folders/bk/rz1xx2sd5zn134c0_j1s2n5r0000gp/T/jackal-3635611772</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading Jackal Package /var/folders/bk/rz1xx2sd5zn134c0_j1s2n5r0000gp/T/jackal-3635611772</b>
 
-<b style="color:#55ffff;">kind</b>:<b style="color:#ff55ff;"> ZarfPackageConfig</b>
+<b style="color:#55ffff;">kind</b>:<b style="color:#ff55ff;"> JackalPackageConfig</b>
 <b style="color:#ff55ff;"></b><b style="color:#55ffff;">metadata</b>:<b style="color:#55ffff;"></b>
 <b style="color:#55ffff;">  name</b>:<b style="color:#ff55ff;"> helm-oci-chart</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">description</b>:<b style="color:#ff55ff;"> Deploy podinfo using a Helm OCI chart</b>
@@ -99,12 +99,12 @@ b.BWHI {background-color: #aaaaaa}
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">images</b>:
   -<b style="color:#ff55ff;"> ghcr.io/stefanprodan/podinfo:6.3.3</b>
 <b class=YEL>This package has 1 artifacts with software bill-of-materials (SBOM) included. You can view them now</b>
-<b class=YEL>in the zarf-sbom folder in this directory or to go directly to one, open this in your browser:</b>
-<b class=YEL>/Users/jason/src/github.com/jasonvanbrackel/zarf/docs-website/static/docs/tutorials/zarf-sbom/sbom-viewer-ghcr.io_stefanprodan_podinfo_6.3.3.html</b>
+<b class=YEL>in the jackal-sbom folder in this directory or to go directly to one, open this in your browser:</b>
+<b class=YEL>/Users/jason/src/github.com/jasonvanbrackel/jackal/docs-website/static/docs/tutorials/jackal-sbom/sbom-viewer-ghcr.io_stefanprodan_podinfo_6.3.3.html</b>
 <b class=YEL></b>
 <b class=YEL>* This directory will be removed after package deployment.</b>
 <b class=YEL></b>
-<b style="color:#55ff55;">?</b><b class="WHI">Deploy this Zarf package?</b> (y/N) <span style="color:#00aaaa">Yes</span>
+<b style="color:#55ff55;">?</b><b class="WHI">Deploy this Jackal package?</b> (y/N) <span style="color:#00aaaa">Yes</span>
 
 <div style="background-color:#555555">
 <b style="background-color:#555555"></b><b style="background-color:#555555">                                                                                </b>
@@ -113,15 +113,15 @@ b.BWHI {background-color: #aaaaaa}
 <b style="background-color:#555555"></b><b style="background-color:#555555">                                                                                </b>
 </div>
 
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading the Zarf State from the Kubernetes cluster</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading the Zarf State from the Kubernetes cluster</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Opening tunnel 55523 -&gt; 5000 for svc/zarf-docker-registry in namespace zarf</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading the Jackal State from the Kubernetes cluster</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading the Jackal State from the Kubernetes cluster</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Opening tunnel 55523 -&gt; 5000 for svc/jackal-docker-registry in namespace jackal</b>
   •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Creating port forwarding tunnel at http://127.0.0.1:55523/v2/_catalog</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Storing images in the zarf registry</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Storing images in the zarf registry</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Storing images in the jackal registry</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Storing images in the jackal registry</b>
   •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart podinfo:6.3.3 from oci://ghcr.io/stefanprodan/charts/podinfo</b>
   •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart podinfo:6.3.3 from oci://ghcr.io/stefanprodan/charts/podinfo</b>
-<b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">Zarf deployment complete</b>
+<b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">Jackal deployment complete</b>
 
 </pre>
 </body>

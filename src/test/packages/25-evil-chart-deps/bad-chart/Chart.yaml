@@ -4,8 +4,8 @@ name: bad-chart
 version: 1.0.0
 
 maintainers:
-  - name: The Zarf Authors
-    url: https://zarf.dev
+  - name: The Jackal Authors
+    url: https://jackal.dev
 
 dependencies:
 # This chart will fail to load because the keyring won't be setup correctly

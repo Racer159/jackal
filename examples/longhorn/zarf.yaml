@@ -1,4 +1,4 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: longhorn
   description: Example package for Longhorn cloud native distributed block storage for Kubernetes
@@ -21,7 +21,7 @@ components:
         after:
           - cmd: |
               export PATH=$PATH:./
-              awk '{gsub(/kubectl /, "./zarf tools kubectl ")} 1' ./environment_check.sh > tmp && mv tmp ./environment_check.sh
+              awk '{gsub(/kubectl /, "./jackal tools kubectl ")} 1' ./environment_check.sh > tmp && mv tmp ./environment_check.sh
               awk '{gsub(/"kubectl" /, "")} 1' ./environment_check.sh > tmp && mv tmp ./environment_check.sh
               chmod +x ./environment_check.sh
               ./environment_check.sh
@@ -32,7 +32,7 @@ components:
       # Set the delete confirmation flag for Longhorn
       onRemove:
         before:
-          - cmd: "./zarf tools kubectl -n longhorn-system patch -p '{\"value\": \"true\"}' --type=merge lhs deleting-confirmation-flag"
+          - cmd: "./jackal tools kubectl -n longhorn-system patch -p '{\"value\": \"true\"}' --type=merge lhs deleting-confirmation-flag"
     manifests:
       - name: longhorn-connect
         namespace: longhorn-system

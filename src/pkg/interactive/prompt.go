@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package interactive contains functions for interacting with the user via STDIN.
 package interactive
@@ -8,8 +8,8 @@ import (
 	"fmt"
 
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/types"
 )
 
 // PromptSigPassword prompts the user for the password to their private key
@@ -23,7 +23,7 @@ func PromptSigPassword() ([]byte, error) {
 }
 
 // PromptVariable prompts the user for a value for a variable
-func PromptVariable(variable types.ZarfPackageVariable) (value string, err error) {
+func PromptVariable(variable types.JackalPackageVariable) (value string, err error) {
 
 	if variable.Description != "" {
 		message.Question(variable.Description)

@@ -1,2 +1,2 @@
-# Total ###ZARF_VAR_PANDA###
+# Total ###JACKAL_VAR_PANDA###
 pandas==1.5.0

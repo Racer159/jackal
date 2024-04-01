@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package cmd contains the CLI commands for Zarf.
+// Package cmd contains the CLI commands for Jackal.
 package cmd
 
 import (
@@ -10,14 +10,14 @@ import (
 	"os"
 
 	"github.com/alecthomas/jsonschema"
+	"github.com/defenseunicorns/jackal/src/cmd/common"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/internal/agent"
+	"github.com/defenseunicorns/jackal/src/internal/packager/git"
+	"github.com/defenseunicorns/jackal/src/pkg/cluster"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/cmd/common"
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/internal/agent"
-	"github.com/defenseunicorns/zarf/src/internal/packager/git"
-	"github.com/defenseunicorns/zarf/src/pkg/cluster"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/types"
 	"github.com/spf13/cobra"
 	"github.com/spf13/cobra/doc"
 	"github.com/spf13/pflag"
@@ -67,7 +67,7 @@ var genCLIDocs = &cobra.Command{
 						addHiddenDummyFlag(toolCmd, "architecture")
 						addHiddenDummyFlag(toolCmd, "no-log-file")
 						addHiddenDummyFlag(toolCmd, "no-progress")
-						addHiddenDummyFlag(toolCmd, "zarf-cache")
+						addHiddenDummyFlag(toolCmd, "jackal-cache")
 						addHiddenDummyFlag(toolCmd, "tmpdir")
 						addHiddenDummyFlag(toolCmd, "insecure")
 						addHiddenDummyFlag(toolCmd, "no-color")
@@ -103,7 +103,7 @@ var genCLIDocs = &cobra.Command{
 							}
 						})
 					}
-					
+
 					if toolCmd.Use == "yq" {
 						for _, subCmd := range toolCmd.Commands() {
 							if subCmd.Name() == "shell-completion" {
@@ -115,14 +115,14 @@ var genCLIDocs = &cobra.Command{
 			}
 		}
 
-		//Generate markdown of the Zarf command (and all of its child commands)
-		if err := os.RemoveAll("./docs/2-the-zarf-cli/100-cli-commands"); err != nil {
+		//Generate markdown of the Jackal command (and all of its child commands)
+		if err := os.RemoveAll("./docs/2-the-jackal-cli/100-cli-commands"); err != nil {
 			message.Fatalf(lang.CmdInternalGenerateCliDocsErr, err.Error())
 		}
-		if err := os.Mkdir("./docs/2-the-zarf-cli/100-cli-commands", 0775); err != nil {
+		if err := os.Mkdir("./docs/2-the-jackal-cli/100-cli-commands", 0775); err != nil {
 			message.Fatalf(lang.CmdInternalGenerateCliDocsErr, err.Error())
 		}
-		if err := doc.GenMarkdownTree(rootCmd, "./docs/2-the-zarf-cli/100-cli-commands"); err != nil {
+		if err := doc.GenMarkdownTree(rootCmd, "./docs/2-the-jackal-cli/100-cli-commands"); err != nil {
 			message.Fatalf(lang.CmdInternalGenerateCliDocsErr, err.Error())
 		} else {
 			message.Success(lang.CmdInternalGenerateCliDocsSuccess)
@@ -135,7 +135,7 @@ var genConfigSchemaCmd = &cobra.Command{
 	Aliases: []string{"gc"},
 	Short:   lang.CmdInternalConfigSchemaShort,
 	Run: func(_ *cobra.Command, _ []string) {
-		schema := jsonschema.Reflect(&types.ZarfPackage{})
+		schema := jsonschema.Reflect(&types.JackalPackage{})
 		output, err := json.MarshalIndent(schema, "", "  ")
 		if err != nil {
 			message.Fatal(err, lang.CmdInternalConfigSchemaErr)
@@ -144,10 +144,10 @@ var genConfigSchemaCmd = &cobra.Command{
 	},
 }
 
-type zarfTypes struct {
+type jackalTypes struct {
 	DeployedPackage types.DeployedPackage
-	ZarfPackage     types.ZarfPackage
-	ZarfState       types.ZarfState
+	JackalPackage   types.JackalPackage
+	JackalState     types.JackalState
 }
 
 var genTypesSchemaCmd = &cobra.Command{
@@ -155,7 +155,7 @@ var genTypesSchemaCmd = &cobra.Command{
 	Aliases: []string{"gt"},
 	Short:   lang.CmdInternalTypesSchemaShort,
 	Run: func(_ *cobra.Command, _ []string) {
-		schema := jsonschema.Reflect(&zarfTypes{})
+		schema := jsonschema.Reflect(&jackalTypes{})
 		output, err := json.MarshalIndent(schema, "", "  ")
 		if err != nil {
 			message.Fatal(err, lang.CmdInternalTypesSchemaErr)
@@ -170,7 +170,7 @@ var createReadOnlyGiteaUser = &cobra.Command{
 	Long:  lang.CmdInternalCreateReadOnlyGiteaUserLong,
 	Run: func(_ *cobra.Command, _ []string) {
 		// Load the state so we can get the credentials for the admin git user
-		state, err := cluster.NewClusterOrDie().LoadZarfState()
+		state, err := cluster.NewClusterOrDie().LoadJackalState()
 		if err != nil {
 			message.WarnErr(err, lang.ErrLoadState)
 		}
@@ -189,7 +189,7 @@ var createPackageRegistryToken = &cobra.Command{
 	Run: func(_ *cobra.Command, _ []string) {
 		// Load the state so we can get the credentials for the admin git user
 		c := cluster.NewClusterOrDie()
-		state, err := c.LoadZarfState()
+		state, err := c.LoadJackalState()
 		if err != nil {
 			message.WarnErr(err, lang.ErrLoadState)
 		}
@@ -203,7 +203,7 @@ var createPackageRegistryToken = &cobra.Command{
 
 			state.ArtifactServer.PushToken = token.Sha1
 
-			c.SaveZarfState(state)
+			c.SaveJackalState(state)
 		}
 	},
 }

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package layout contains functions for interacting with Zarf's package layout on disk.
+// Package layout contains functions for interacting with Jackal's package layout on disk.
 package layout
 
 import (
@@ -68,7 +68,7 @@ func (s *SBOMs) Archive() (err error) {
 	return os.RemoveAll(dir)
 }
 
-// StageSBOMViewFiles copies SBOM viewer HTML files to the Zarf SBOM directory.
+// StageSBOMViewFiles copies SBOM viewer HTML files to the Jackal SBOM directory.
 func (s *SBOMs) StageSBOMViewFiles() (sbomViewFiles, warnings []string, err error) {
 	if s.IsTarball() {
 		return nil, nil, fmt.Errorf("unable to process the SBOM files for this package: %s is a tarball", s.Path)

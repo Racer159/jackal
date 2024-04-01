@@ -1,12 +1,12 @@
-# Zarf End-To-End Tests
+# Jackal End-To-End Tests
 
-This directory holds all of our e2e tests that we use to verify Zarf functionality in an environment that replicates a live setting. The tests in this directory are automatically run against several K8s distros whenever a PR is opened or updated.
+This directory holds all of our e2e tests that we use to verify Jackal functionality in an environment that replicates a live setting. The tests in this directory are automatically run against several K8s distros whenever a PR is opened or updated.
 
 ## Running Tests Locally
 The tests in this directory are also able to be run locally!
 
 ### Dependencies
-Running the tests locally have the same prerequisites as running and building Zarf:
+Running the tests locally have the same prerequisites as running and building Jackal:
  1. GoLang >= `1.19.x`
  2. Make
  3. Access to a K8s cluster to test against or Linux with root priv if `APPLIANCE_MODE=true`
@@ -26,7 +26,7 @@ go test ./... -v
 go test ./... -v -run TestFooBarBaz
 ```
 
-> NOTE: The zarf binary and built packages need to live in the ./build directory but if you're trying to run the tests locally with 'go test ./...' then the zarf-init package will need to be in this directory.
+> NOTE: The jackal binary and built packages need to live in the ./build directory but if you're trying to run the tests locally with 'go test ./...' then the jackal-init package will need to be in this directory.
 
 ## Adding More Tests
 There are a few requirements for all of our tests, that will need to be followed when new tests are added.

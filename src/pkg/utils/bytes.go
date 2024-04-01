@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 // forked from https://www.socketloop.com/tutorials/golang-byte-format-example
 
 // Package utils provides generic utility functions.
@@ -11,8 +11,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/defenseunicorns/jackal/src/pkg/message"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
 )
 
 // RoundUp rounds a float64 to the given number of decimal places.

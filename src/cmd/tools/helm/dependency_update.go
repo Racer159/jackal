@@ -14,10 +14,10 @@ limitations under the License.
 */
 
 /*
-NOTICE: This file's 'package' and some functionality has been modified / removed to fit within Zarf's package structure.
+NOTICE: This file's 'package' and some functionality has been modified / removed to fit within Jackal's package structure.
 */
 
-// Package helm is a copy of the main package from helm to include a subset of the helm CLI in Zarf
+// Package helm is a copy of the main package from helm to include a subset of the helm CLI in Jackal
 package helm
 
 import (

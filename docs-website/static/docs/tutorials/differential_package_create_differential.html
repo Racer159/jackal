@@ -48,17 +48,17 @@ b.BWHI {background-color: #aaaaaa}
 <body>
 <pre>
 <b class="WHI">
-$  zarf package create . --confirm --differential ./zarf-package-longhorn-arm64-1.4.0.tar.zst
+$  jackal package create . --confirm --differential ./jackal-package-longhorn-arm64-1.4.0.tar.zst
 
 </b>
 <b class=YEL>Saving log file to</b>
-<b class=YEL>/var/folders/bk/rz1xx2sd5zn134c0_j1s2n5r0000gp/T/zarf-2023-05-19-10-05-47-1789559558.log</b>
+<b class=YEL>/var/folders/bk/rz1xx2sd5zn134c0_j1s2n5r0000gp/T/jackal-2023-05-19-10-05-47-1789559558.log</b>
 <b class=YEL></b>
 <b class=YEL>Using build directory .</b>
 <b class=YEL></b>
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-<b style="color:#55ffff;">kind</b>:<b style="color:#ff55ff;"> ZarfPackageConfig</b>
+<b style="color:#55ffff;">kind</b>:<b style="color:#ff55ff;"> JackalPackageConfig</b>
 <b style="color:#ff55ff;"></b><b style="color:#55ffff;">metadata</b>:<b style="color:#55ffff;"></b>
 <b style="color:#55ffff;">  name</b>:<b style="color:#ff55ff;"> longhorn</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">description</b>:<b style="color:#ff55ff;"> Example package for Longhorn cloud native distributed block storage for Kubernetes</b>
@@ -71,7 +71,7 @@ $  zarf package create . --confirm --differential ./zarf-package-longhorn-arm64-
 <b style="color:#55ffff;">      after</b>:
       -<b style="color:#55ffff;"> cmd</b>: |
 <b style="color:#ff55ff;">          export PATH=$PATH:./</b>
-<b style="color:#ff55ff;">          awk '{gsub(/kubectl /, "./zarf tools kubectl ")} 1' ./environment_check.sh &gt; tmp &amp;&amp; mv tmp ./environment_check.sh</b>
+<b style="color:#ff55ff;">          awk '{gsub(/kubectl /, "./jackal tools kubectl ")} 1' ./environment_check.sh &gt; tmp &amp;&amp; mv tmp ./environment_check.sh</b>
 <b style="color:#ff55ff;">          awk '{gsub(/"kubectl" /, "")} 1' ./environment_check.sh &gt; tmp &amp;&amp; mv tmp ./environment_check.sh</b>
 <b style="color:#ff55ff;">          chmod +x ./environment_check.sh</b>
 <b style="color:#ff55ff;">          ./environment_check.sh</b>
@@ -88,7 +88,7 @@ $  zarf package create . --confirm --differential ./zarf-package-longhorn-arm64-
 <b style="color:#ffffff;">  </b><b style="color:#55ffff;">actions</b>:<b style="color:#55ffff;"></b>
 <b style="color:#55ffff;">    onRemove</b>:<b style="color:#55ffff;"></b>
 <b style="color:#55ffff;">      before</b>:
-      -<b style="color:#55ffff;"> cmd</b>:<b style="color:#ff55ff;"> "./zarf tools kubectl -n longhorn-system patch -p '{\"value\": \"true\"}' --type=merge lhs deleting-confirmation-flag"</b><b style="color:#55ffff;"></b>
+      -<b style="color:#55ffff;"> cmd</b>:<b style="color:#ff55ff;"> "./jackal tools kubectl -n longhorn-system patch -p '{\"value\": \"true\"}' --type=merge lhs deleting-confirmation-flag"</b><b style="color:#55ffff;"></b>
 <b style="color:#55ffff;">  charts</b>:
   -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> longhorn</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">url</b>:<b style="color:#ff55ff;"> https://charts.longhorn.io</b>
@@ -108,7 +108,7 @@ $  zarf package create . --confirm --differential ./zarf-package-longhorn-arm64-
 <b style="color:#ff55ff;">  </b>-<b style="color:#ff55ff;"> longhornio/longhorn-manager:v1.4.2</b>
 <b style="color:#ff55ff;">  </b>-<b style="color:#ff55ff;"> longhornio/longhorn-share-manager:v1.4.2</b>
 <b style="color:#ff55ff;">  </b>-<b style="color:#ff55ff;"> longhornio/longhorn-ui:v1.4.2</b>
-<b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">Create Zarf package confirmed</b>
+<b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">Create Jackal package confirmed</b>
 
 <div style="background-color:#555555">
 <b style="background-color:#555555"></b><b style="background-color:#555555">                                                                                </b>
@@ -143,7 +143,7 @@ $  zarf package create . --confirm --differential ./zarf-package-longhorn-arm64-
 
   •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading metadata for 6 images. This step may take several seconds to complete.</b>
   •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading metadata for 6 images. This step may take several seconds to complete.</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Pulling Zarf package data (0.00 Byte of 600.86 MBs)</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Pulling Jackal package data (0.00 Byte of 600.86 MBs)</b>
 <b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">Pulling 6 images (600.86 MBs)</b>
   •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Creating SBOMs for 6 images and 1 components with files.</b>
   •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Creating SBOMs for 6 images and 1 components with files.</b>

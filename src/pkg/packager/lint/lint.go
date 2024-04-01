@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package lint contains functions for verifying zarf yaml files are valid
+// Package lint contains functions for verifying jackal yaml files are valid
 package lint
 
 import (
@@ -12,36 +12,36 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/composer"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/creator"
+	"github.com/defenseunicorns/jackal/src/pkg/transform"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/composer"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/creator"
-	"github.com/defenseunicorns/zarf/src/pkg/transform"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/types"
 	"github.com/xeipuuv/gojsonschema"
 )
 
-// ZarfSchema is exported so main.go can embed the schema file
-var ZarfSchema embed.FS
+// JackalSchema is exported so main.go can embed the schema file
+var JackalSchema embed.FS
 
 func getSchemaFile() ([]byte, error) {
-	return ZarfSchema.ReadFile("zarf.schema.json")
+	return JackalSchema.ReadFile("jackal.schema.json")
 }
 
-// Validate validates a zarf file against the zarf schema, returns *validator with warnings or errors if they exist
+// Validate validates a jackal file against the jackal schema, returns *validator with warnings or errors if they exist
 // along with an error if the validation itself failed
-func Validate(createOpts types.ZarfCreateOptions) (*Validator, error) {
+func Validate(createOpts types.JackalCreateOptions) (*Validator, error) {
 	validator := Validator{}
 	var err error
 
-	if err := utils.ReadYaml(filepath.Join(createOpts.BaseDir, layout.ZarfYAML), &validator.typedZarfPackage); err != nil {
+	if err := utils.ReadYaml(filepath.Join(createOpts.BaseDir, layout.JackalYAML), &validator.typedJackalPackage); err != nil {
 		return nil, err
 	}
 
-	if err := utils.ReadYaml(filepath.Join(createOpts.BaseDir, layout.ZarfYAML), &validator.untypedZarfPackage); err != nil {
+	if err := utils.ReadYaml(filepath.Join(createOpts.BaseDir, layout.JackalYAML), &validator.untypedJackalPackage); err != nil {
 		return nil, err
 	}
 
@@ -64,15 +64,15 @@ func Validate(createOpts types.ZarfCreateOptions) (*Validator, error) {
 	return &validator, nil
 }
 
-func lintComponents(validator *Validator, createOpts *types.ZarfCreateOptions) {
-	for i, component := range validator.typedZarfPackage.Components {
-		arch := config.GetArch(validator.typedZarfPackage.Metadata.Architecture)
+func lintComponents(validator *Validator, createOpts *types.JackalCreateOptions) {
+	for i, component := range validator.typedJackalPackage.Components {
+		arch := config.GetArch(validator.typedJackalPackage.Metadata.Architecture)
 
 		if !composer.CompatibleComponent(component, arch, createOpts.Flavor) {
 			continue
 		}
 
-		chain, err := composer.NewImportChain(component, i, validator.typedZarfPackage.Metadata.Name, arch, createOpts.Flavor)
+		chain, err := composer.NewImportChain(component, i, validator.typedJackalPackage.Metadata.Name, arch, createOpts.Flavor)
 		baseComponent := chain.Head()
 
 		var badImportYqPath string
@@ -88,7 +88,7 @@ func lintComponents(validator *Validator, createOpts *types.ZarfCreateOptions) {
 			validator.addError(validatorMessage{
 				description:    err.Error(),
 				packageRelPath: ".",
-				packageName:    validator.typedZarfPackage.Metadata.Name,
+				packageName:    validator.typedJackalPackage.Metadata.Name,
 				yqPath:         badImportYqPath,
 			})
 		}
@@ -103,8 +103,8 @@ func lintComponents(validator *Validator, createOpts *types.ZarfCreateOptions) {
 	}
 }
 
-func fillComponentTemplate(validator *Validator, node *composer.Node, createOpts *types.ZarfCreateOptions) {
-	err := creator.ReloadComponentTemplate(&node.ZarfComponent)
+func fillComponentTemplate(validator *Validator, node *composer.Node, createOpts *types.JackalCreateOptions) {
+	err := creator.ReloadComponentTemplate(&node.JackalComponent)
 	if err != nil {
 		validator.addWarning(validatorMessage{
 			description:    err.Error(),
@@ -146,10 +146,10 @@ func fillComponentTemplate(validator *Validator, node *composer.Node, createOpts
 		}
 	}
 
-	setVarsAndWarn(types.ZarfPackageTemplatePrefix, false)
+	setVarsAndWarn(types.JackalPackageTemplatePrefix, false)
 
 	// [DEPRECATION] Set the Package Variable syntax as well for backward compatibility
-	setVarsAndWarn(types.ZarfPackageVariablePrefix, true)
+	setVarsAndWarn(types.JackalPackageVariablePrefix, true)
 
 	utils.ReloadYamlTemplate(node, templateMap)
 }
@@ -157,8 +157,8 @@ func fillComponentTemplate(validator *Validator, node *composer.Node, createOpts
 func isPinnedImage(image string) (bool, error) {
 	transformedImage, err := transform.ParseImageRef(image)
 	if err != nil {
-		if strings.Contains(image, types.ZarfPackageTemplatePrefix) ||
-			strings.Contains(image, types.ZarfPackageVariablePrefix) {
+		if strings.Contains(image, types.JackalPackageTemplatePrefix) ||
+			strings.Contains(image, types.JackalPackageVariablePrefix) {
 			return true, nil
 		}
 		return false, err
@@ -233,21 +233,21 @@ func checkForUnpinnedFiles(validator *Validator, node *composer.Node) {
 }
 
 func checkForVarInComponentImport(validator *Validator, node *composer.Node) {
-	if strings.Contains(node.Import.Path, types.ZarfPackageTemplatePrefix) {
+	if strings.Contains(node.Import.Path, types.JackalPackageTemplatePrefix) {
 		validator.addWarning(validatorMessage{
 			yqPath:         fmt.Sprintf(".components.[%d].import.path", node.Index()),
 			packageRelPath: node.ImportLocation(),
 			packageName:    node.OriginalPackageName(),
-			description:    "Zarf does not evaluate variables at component.x.import.path",
+			description:    "Jackal does not evaluate variables at component.x.import.path",
 			item:           node.Import.Path,
 		})
 	}
-	if strings.Contains(node.Import.URL, types.ZarfPackageTemplatePrefix) {
+	if strings.Contains(node.Import.URL, types.JackalPackageTemplatePrefix) {
 		validator.addWarning(validatorMessage{
 			yqPath:         fmt.Sprintf(".components.[%d].import.url", node.Index()),
 			packageRelPath: node.ImportLocation(),
 			packageName:    node.OriginalPackageName(),
-			description:    "Zarf does not evaluate variables at component.x.import.url",
+			description:    "Jackal does not evaluate variables at component.x.import.url",
 			item:           node.Import.URL,
 		})
 	}
@@ -268,7 +268,7 @@ func makeFieldPathYqCompat(field string) string {
 
 func validateSchema(validator *Validator) error {
 	schemaLoader := gojsonschema.NewBytesLoader(validator.jsonSchema)
-	documentLoader := gojsonschema.NewGoLoader(validator.untypedZarfPackage)
+	documentLoader := gojsonschema.NewGoLoader(validator.untypedJackalPackage)
 
 	result, err := gojsonschema.Validate(schemaLoader, documentLoader)
 	if err != nil {
@@ -281,7 +281,7 @@ func validateSchema(validator *Validator) error {
 				yqPath:         makeFieldPathYqCompat(desc.Field()),
 				description:    desc.Description(),
 				packageRelPath: ".",
-				packageName:    validator.typedZarfPackage.Metadata.Name,
+				packageName:    validator.typedJackalPackage.Metadata.Name,
 			})
 		}
 	}

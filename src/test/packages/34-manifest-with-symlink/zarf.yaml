@@ -1,4 +1,4 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: manifest-with-symlink
   description: Example with a symbolic link embedded in it

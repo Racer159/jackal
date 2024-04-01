@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+# SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 [profile.release]
 opt-level = "z"   # Optimize for size.
@@ -9,7 +9,7 @@ panic = "abort"
 strip = true
 
 [package]
-name = "zarf-injector"
+name = "jackal-injector"
 version = "0.5.0"
 edition = "2021"
 

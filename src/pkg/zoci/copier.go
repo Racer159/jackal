@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package zoci contains functions for interacting with Zarf packages stored in OCI registries.
+// Package zoci contains functions for interacting with Jackal packages stored in OCI registries.
 package zoci
 
 import (
@@ -9,13 +9,13 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/defenseunicorns/jackal/src/pkg/message"
 	"github.com/defenseunicorns/pkg/oci"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
 	ocispec "github.com/opencontainers/image-spec/specs-go/v1"
 	"oras.land/oras-go/v2/content"
 )
 
-// CopyPackage copies a zarf package from one OCI registry to another
+// CopyPackage copies a jackal package from one OCI registry to another
 func CopyPackage(ctx context.Context, src *Remote, dst *Remote, concurrency int) error {
 
 	srcManifest, err := src.FetchRoot(ctx)

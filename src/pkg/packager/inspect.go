@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package packager contains functions for interacting with, managing and deploying Zarf packages.
+// Package packager contains functions for interacting with, managing and deploying Jackal packages.
 package packager
 
 import (
-	"github.com/defenseunicorns/zarf/src/internal/packager/sbom"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/internal/packager/sbom"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
 )
 
 // Inspect list the contents of a package.

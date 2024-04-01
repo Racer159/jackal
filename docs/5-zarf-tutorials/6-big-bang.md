@@ -1,14 +1,14 @@
-# Using Big Bang with Zarf
+# Using Big Bang with Jackal
 
 ## Introduction
 
-This tutorial describes how to use Big Bang with Zarf for Air Gap deployments through the use of the Big Bang Zarf extension. If you are not familiar with Big Bang you can learn more about it here: https://p1.dso.mil/products/big-bang, but in short it is a DevSecOps platform that contains many useful tools for building, managing, and running software projects while adhering to the [United States Department of Defense DevSecOps Reference Design](https://public.cyber.mil/devsecops/).
+This tutorial describes how to use Big Bang with Jackal for Air Gap deployments through the use of the Big Bang Jackal extension. If you are not familiar with Big Bang you can learn more about it here: https://p1.dso.mil/products/big-bang, but in short it is a DevSecOps platform that contains many useful tools for building, managing, and running software projects while adhering to the [United States Department of Defense DevSecOps Reference Design](https://public.cyber.mil/devsecops/).
 
-Zarf integrates with Big Bang through the use of an extension that simplifies the selection of Big Bang packages and the pulling of the required artifacts to deploy those packages in an Air Gap.
+Jackal integrates with Big Bang through the use of an extension that simplifies the selection of Big Bang packages and the pulling of the required artifacts to deploy those packages in an Air Gap.
 
 ### Limitations
 
-The current version of this extension requires Big Bang version `1.54.0` or later, and is not fully integrated into the `zarf package remove` lifecycle (see the [Big Bang example](../../examples/big-bang/README.md) for how to introduce those lifecycle hooks manually).  Zarf also relies on [helm.sh/images annotations](https://github.com/helm/community/blob/main/hips/hip-0015.md) to discover images within charts (e.g. [GitLab](https://repo1.dso.mil/big-bang/product/packages/gitlab/-/blob/main/chart/Chart.yaml#L61)) - this is a relatively new feature for Big Bang so if you see an `ImagePullBackOff` error, check that these annotations are set correctly for the sub charts you are using. To work around this issue if you come across it, simply add the missing image to the images list on the same component that contains the Big Bang extension like the following:
+The current version of this extension requires Big Bang version `1.54.0` or later, and is not fully integrated into the `jackal package remove` lifecycle (see the [Big Bang example](../../examples/big-bang/README.md) for how to introduce those lifecycle hooks manually).  Jackal also relies on [helm.sh/images annotations](https://github.com/helm/community/blob/main/hips/hip-0015.md) to discover images within charts (e.g. [GitLab](https://repo1.dso.mil/big-bang/product/packages/gitlab/-/blob/main/chart/Chart.yaml#L61)) - this is a relatively new feature for Big Bang so if you see an `ImagePullBackOff` error, check that these annotations are set correctly for the sub charts you are using. To work around this issue if you come across it, simply add the missing image to the images list on the same component that contains the Big Bang extension like the following:
 
 ```
 components:
@@ -31,17 +31,17 @@ To learn more about Big Bang's requirements in general, see their documentation:
 
 Before beginning this tutorial you will need the following:
 
-- A local copy of the Zarf repository
-  - `git clone https://github.com/defenseunicorns/zarf.git`
-- A kubernetes cluster onto which you can deploy Zarf and Big Bang
-- The latest version of the Zarf `cli`
-  - Follow instructions on https://zarf.dev/install/
+- A local copy of the Jackal repository
+  - `git clone https://github.com/defenseunicorns/jackal.git`
+- A kubernetes cluster onto which you can deploy Jackal and Big Bang
+- The latest version of the Jackal `cli`
+  - Follow instructions on https://jackal.dev/install/
 - An account on `https://registry1.dso.mil` to retrieve Big Bang images
   - You can register for an account [here](https://login.dso.mil/auth/realms/baby-yoda/protocol/openid-connect/registrations?client_id=account&response_type=code)
 
 :::note
 
-If you followed the [Setting Up a Local Kubernetes Cluster](./index.md#setting-up-a-local-kubernetes-cluster) instructions for other Zarf tutorials, you will need to pass additional command flags to `k3d` for it to work with Big Bang.  See the below to create a working cluster:
+If you followed the [Setting Up a Local Kubernetes Cluster](./index.md#setting-up-a-local-kubernetes-cluster) instructions for other Jackal tutorials, you will need to pass additional command flags to `k3d` for it to work with Big Bang.  See the below to create a working cluster:
 
 ```bash
 k3d cluster create
@@ -75,15 +75,15 @@ By default, Big Bang uses images from [Iron Bank](https://p1.dso.mil/products/ir
 set +o history
 export REGISTRY1_USERNAME=<REPLACE_ME>
 export REGISTRY1_CLI_SECRET=<REPLACE_ME>
-echo $REGISTRY1_CLI_SECRET | zarf tools registry login registry1.dso.mil --username $REGISTRY1_USERNAME --password-stdin
+echo $REGISTRY1_CLI_SECRET | jackal tools registry login registry1.dso.mil --username $REGISTRY1_USERNAME --password-stdin
 set -o history
 ```
 
-Now navigate to the `examples/big-bang` folder within the Zarf repository you cloned in the [pre-requisites](#pre-requisites) section.
+Now navigate to the `examples/big-bang` folder within the Jackal repository you cloned in the [pre-requisites](#pre-requisites) section.
 
 ### Configure Big Bang
 
-Within the `examples/big-bang` folder you will see a `zarf.yaml` that has the following [component](../3-create-a-zarf-package/2-zarf-components.md) defined:
+Within the `examples/big-bang` folder you will see a `jackal.yaml` that has the following [component](../3-create-a-jackal-package/2-jackal-components.md) defined:
 
 ```yaml
 components:
@@ -120,32 +120,32 @@ This extension requires Big Bang version `1.54.0` or later.
 When you're ready to continue you can create a Big Bang package by running the following command in `examples/big-bang`:
 
 ```bash
-zarf package create
+jackal package create
 ```
 
-Now wait for the package creation to complete and you should see a `zarf-package-big-bang-example-amd64-x.x.x.tar.zst` file in the directory.
+Now wait for the package creation to complete and you should see a `jackal-package-big-bang-example-amd64-x.x.x.tar.zst` file in the directory.
 
 
 ## Package Deployment
 
 The below section covers deploying the Big Bang package from the previous section:
 
-### Initialize Zarf
+### Initialize Jackal
 
-Before you can deploy the Big Bang package you must first initialize Zarf on the cluster you created in the [pre-requisites](#pre-requisites) section.  To do so you can run the following:
+Before you can deploy the Big Bang package you must first initialize Jackal on the cluster you created in the [pre-requisites](#pre-requisites) section.  To do so you can run the following:
 
 ```bash
-# Initialize Zarf (interactively)
-zarf init
+# Initialize Jackal (interactively)
+jackal init
 # Make these choices at the prompts
 # ? Do you want to download this init package? Yes
-# ? Deploy this Zarf package? Yes
+# ? Deploy this Jackal package? Yes
 # ? Deploy the k3s component? No
 # ? Deploy the logging component? No
 # ? Deploy the git-server component? Yes
 
 # (Optional) Inspect the results
-zarf tools k9s
+jackal tools k9s
 ```
 
 :::note
@@ -161,10 +161,10 @@ Now you are ready to deploy Big Bang, and can do so with the following in the `e
 
 ```bash
 # Deploy Big Bang (interactively)
-zarf package deploy
+jackal package deploy
 # Make these choices at the prompts
-# ? Choose or type the package file [tab for suggestions] zarf-package-big-bang-example-amd64-x.x.x.tar.zst
-# ? Deploy this Zarf package? Yes
+# ? Choose or type the package file [tab for suggestions] jackal-package-big-bang-example-amd64-x.x.x.tar.zst
+# ? Deploy this Jackal package? Yes
 ```
 
 ### See The Results
@@ -172,7 +172,7 @@ zarf package deploy
 Once the install completes you can inspect the results and watch the Big Bang components deploy using the following:
 
 ```bash
-zarf tools k9s
+jackal tools k9s
 
 # To view different k8s objects you can use the following:
 
@@ -193,10 +193,10 @@ zarf tools k9s
 
 ## Package Removal
 
-The Big Bang extension is not fully integrated into the Zarf package remove lifecycle (see [known issues](#known-issues)). To get around this limitation, an onRemove.before action has been added to the bigbang component in the zarf.yaml file that ensures all the Big Bang resources are torn down in the correct order when Zarf is used to remove the package:
+The Big Bang extension is not fully integrated into the Jackal package remove lifecycle (see [known issues](#known-issues)). To get around this limitation, an onRemove.before action has been added to the bigbang component in the jackal.yaml file that ensures all the Big Bang resources are torn down in the correct order when Jackal is used to remove the package:
 
 ```bash
-zarf package remove big-bang-example --confirm
+jackal package remove big-bang-example --confirm
 ```
 
 ## Troubleshooting
@@ -205,4 +205,4 @@ See the Troubleshooting section of the Big Bang Quick Start for help troubleshoo
 
 Also, ensure that you have followed all of the steps required in the [pre-requisites](#pre-requisites) section and have reviewed the [known issues](#known-issues).
 
-If you feel that the error you are encountering is one with Zarf feel free to [open an issue](https://github.com/defenseunicorns/zarf/issues/new/choose) or reach out via [slack](https://kubernetes.slack.com/archives/C03B6BJAUJ3).
+If you feel that the error you are encountering is one with Jackal feel free to [open an issue](https://github.com/defenseunicorns/jackal/issues/new/choose) or reach out via [slack](https://kubernetes.slack.com/archives/C03B6BJAUJ3).

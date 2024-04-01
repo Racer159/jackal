@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package images provides functions for building and pushing images.
 package images
@@ -9,22 +9,22 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/cluster"
+	"github.com/defenseunicorns/jackal/src/pkg/k8s"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/transform"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/cluster"
-	"github.com/defenseunicorns/zarf/src/pkg/k8s"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/transform"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
 	"github.com/google/go-containerregistry/pkg/crane"
 	"github.com/google/go-containerregistry/pkg/logs"
 	v1 "github.com/google/go-containerregistry/pkg/v1"
 )
 
-// PushToZarfRegistry pushes a provided image into the configured Zarf registry
+// PushToJackalRegistry pushes a provided image into the configured Jackal registry
 // This function will optionally shorten the image name while appending a checksum of the original image name.
-func (i *ImageConfig) PushToZarfRegistry() error {
-	message.Debug("images.PushToZarfRegistry()")
+func (i *ImageConfig) PushToJackalRegistry() error {
+	message.Debug("images.PushToJackalRegistry()")
 
 	logs.Warn.SetOutput(&message.DebugWriter{})
 	logs.Progress.SetOutput(&message.DebugWriter{})
@@ -52,9 +52,9 @@ func (i *ImageConfig) PushToZarfRegistry() error {
 
 	httpTransport := http.DefaultTransport.(*http.Transport).Clone()
 	httpTransport.TLSClientConfig.InsecureSkipVerify = i.Insecure
-	// TODO (@WSTARR) This is set to match the TLSHandshakeTimeout to potentially mitigate effects of https://github.com/defenseunicorns/zarf/issues/1444
+	// TODO (@WSTARR) This is set to match the TLSHandshakeTimeout to potentially mitigate effects of https://github.com/defenseunicorns/jackal/issues/1444
 	httpTransport.ResponseHeaderTimeout = 10 * time.Second
-	progressBar := message.NewProgressBar(totalSize, fmt.Sprintf("Pushing %d images to the zarf registry", len(i.ImageList)))
+	progressBar := message.NewProgressBar(totalSize, fmt.Sprintf("Pushing %d images to the jackal registry", len(i.ImageList)))
 	defer progressBar.Stop()
 	craneTransport := helpers.NewTransport(httpTransport, progressBar)
 
@@ -72,7 +72,7 @@ func (i *ImageConfig) PushToZarfRegistry() error {
 
 	c, _ := cluster.NewCluster()
 	if c != nil {
-		registryURL, tunnel, err = c.ConnectToZarfRegistryEndpoint(i.RegInfo)
+		registryURL, tunnel, err = c.ConnectToJackalRegistryEndpoint(i.RegInfo)
 		if err != nil {
 			return err
 		}
@@ -94,7 +94,7 @@ func (i *ImageConfig) PushToZarfRegistry() error {
 		refTruncated := message.Truncate(refInfo.Reference, 55, true)
 		progressBar.UpdateTitle(fmt.Sprintf("Pushing %s", refTruncated))
 
-		// If this is not a no checksum image push it for use with the Zarf agent
+		// If this is not a no checksum image push it for use with the Jackal agent
 		if !i.NoChecksum {
 			offlineNameCRC, err := transform.ImageTransformHost(registryURL, refInfo.Reference)
 			if err != nil {
@@ -109,7 +109,7 @@ func (i *ImageConfig) PushToZarfRegistry() error {
 			}
 		}
 
-		// To allow for other non-zarf workloads to easily see the images upload a non-checksum version
+		// To allow for other non-jackal workloads to easily see the images upload a non-checksum version
 		// (this may result in collisions but this is acceptable for this use case)
 		offlineName, err := transform.ImageTransformHostWithoutChecksum(registryURL, refInfo.Reference)
 		if err != nil {
@@ -124,7 +124,7 @@ func (i *ImageConfig) PushToZarfRegistry() error {
 		}
 	}
 
-	progressBar.Successf("Pushed %d images to the zarf registry", len(i.ImageList))
+	progressBar.Successf("Pushed %d images to the jackal registry", len(i.ImageList))
 
 	return nil
 }

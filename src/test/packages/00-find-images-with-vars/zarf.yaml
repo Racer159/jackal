@@ -1,7 +1,7 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: find-image-with-variables
-  description: Simple zarf package with variables
+  description: Simple jackal package with variables
 
 variables:
   - name: BUSYBOX_IMAGE
@@ -16,7 +16,7 @@ components:
   required: true
   manifests:
     - name: simple-deployment
-      namespace: zarf
+      namespace: jackal
       files:
         - deployment.yaml
 - name: chart-with-var
@@ -25,7 +25,7 @@ components:
     - name: simple
       releaseName: simple
       localPath: simple-helm
-      namespace: zarf-simple
+      namespace: jackal-simple
       version: 0.1.0
       valuesFiles:
         - values.yaml

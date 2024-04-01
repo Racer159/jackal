@@ -132,13 +132,13 @@ html[data-theme="dark"],
     0px 6px 10px rgba(0, 0, 0, 0.14), 0px 1px 18px rgba(0, 0, 0, 0.12);
 }
 
-/* Zarf.dev logo size */
+/* Jackal.dev logo size */
 .navbar__logo {
   width: 152px;
   height: 42px;
 }
 
-/* Zarf.dev padding and styling */
+/* Jackal.dev padding and styling */
 .navbar__item {
   display: flex;
   font-size: 14px;
@@ -207,7 +207,7 @@ html[data-theme="dark"],
 }
 
 /*
- * Customize Main Menu to look like zarf.dev mobile drawer
+ * Customize Main Menu to look like jackal.dev mobile drawer
  * Without effecting the table of contents.
  */
 [class="menu__list-item"] .menu__link {

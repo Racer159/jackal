@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package git contains functions for interacting with git repositories.
 package git
@@ -14,11 +14,11 @@ import (
 
 	netHttp "net/http"
 
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/cluster"
-	"github.com/defenseunicorns/zarf/src/pkg/k8s"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/cluster"
+	"github.com/defenseunicorns/jackal/src/pkg/k8s"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/types"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
@@ -30,7 +30,7 @@ type CreateTokenResponse struct {
 	TokenLastEight string `json:"token_last_eight"`
 }
 
-// CreateReadOnlyUser uses the Gitea API to create a non-admin Zarf user.
+// CreateReadOnlyUser uses the Gitea API to create a non-admin Jackal user.
 func (g *Git) CreateReadOnlyUser() error {
 	message.Debugf("git.CreateReadOnlyUser()")
 
@@ -40,7 +40,7 @@ func (g *Git) CreateReadOnlyUser() error {
 	}
 
 	// Establish a git tunnel to send the repo
-	tunnel, err := c.NewTunnel(cluster.ZarfNamespaceName, k8s.SvcResource, cluster.ZarfGitServerName, "", 0, cluster.ZarfGitServerPort)
+	tunnel, err := c.NewTunnel(cluster.JackalNamespaceName, k8s.SvcResource, cluster.JackalGitServerName, "", 0, cluster.JackalGitServerPort)
 	if err != nil {
 		return err
 	}
@@ -56,7 +56,7 @@ func (g *Git) CreateReadOnlyUser() error {
 	createUserBody := map[string]interface{}{
 		"username":             g.Server.PullUsername,
 		"password":             g.Server.PullPassword,
-		"email":                "zarf-reader@localhost.local",
+		"email":                "jackal-reader@localhost.local",
 		"must_change_password": false,
 	}
 	createUserData, err := json.Marshal(createUserBody)
@@ -101,8 +101,8 @@ func (g *Git) CreateReadOnlyUser() error {
 	return err
 }
 
-// UpdateZarfGiteaUsers updates Zarf gitea users
-func (g *Git) UpdateZarfGiteaUsers(oldState *types.ZarfState) error {
+// UpdateJackalGiteaUsers updates Jackal gitea users
+func (g *Git) UpdateJackalGiteaUsers(oldState *types.JackalState) error {
 
 	//Update git read only user password
 	err := g.UpdateGitUser(oldState.GitServer.PushPassword, g.Server.PullUsername, g.Server.PullPassword)
@@ -118,7 +118,7 @@ func (g *Git) UpdateZarfGiteaUsers(oldState *types.ZarfState) error {
 	return nil
 }
 
-// UpdateGitUser updates Zarf git server users
+// UpdateGitUser updates Jackal git server users
 func (g *Git) UpdateGitUser(oldAdminPass string, username string, userpass string) error {
 	message.Debugf("git.UpdateGitUser()")
 
@@ -127,7 +127,7 @@ func (g *Git) UpdateGitUser(oldAdminPass string, username string, userpass strin
 		return err
 	}
 	// Establish a git tunnel to send the repo
-	tunnel, err := c.NewTunnel(cluster.ZarfNamespaceName, k8s.SvcResource, cluster.ZarfGitServerName, "", 0, cluster.ZarfGitServerPort)
+	tunnel, err := c.NewTunnel(cluster.JackalNamespaceName, k8s.SvcResource, cluster.JackalGitServerName, "", 0, cluster.JackalGitServerPort)
 	if err != nil {
 		return err
 	}
@@ -166,7 +166,7 @@ func (g *Git) CreatePackageRegistryToken() (CreateTokenResponse, error) {
 	}
 
 	// Establish a git tunnel to send the repo
-	tunnel, err := c.NewTunnel(cluster.ZarfNamespaceName, k8s.SvcResource, cluster.ZarfGitServerName, "", 0, cluster.ZarfGitServerPort)
+	tunnel, err := c.NewTunnel(cluster.JackalNamespaceName, k8s.SvcResource, cluster.JackalGitServerName, "", 0, cluster.JackalGitServerPort)
 	if err != nil {
 		return CreateTokenResponse{}, err
 	}
@@ -200,14 +200,14 @@ func (g *Git) CreatePackageRegistryToken() (CreateTokenResponse, error) {
 	}
 
 	for _, token := range tokens {
-		if token["name"] == config.ZarfArtifactTokenName {
+		if token["name"] == config.JackalArtifactTokenName {
 			hasPackageToken = true
 		}
 	}
 
 	if hasPackageToken {
 		// Delete the existing token to be replaced
-		deleteTokensEndpoint := fmt.Sprintf("http://%s/api/v1/users/%s/tokens/%s", tunnelURL, g.Server.PushUsername, config.ZarfArtifactTokenName)
+		deleteTokensEndpoint := fmt.Sprintf("http://%s/api/v1/users/%s/tokens/%s", tunnelURL, g.Server.PushUsername, config.JackalArtifactTokenName)
 		deleteTokensRequest, _ := netHttp.NewRequest("DELETE", deleteTokensEndpoint, nil)
 		err = tunnel.Wrap(func() error {
 			out, _, err = g.DoHTTPThings(deleteTokensRequest, g.Server.PushUsername, g.Server.PushPassword)
@@ -221,7 +221,7 @@ func (g *Git) CreatePackageRegistryToken() (CreateTokenResponse, error) {
 
 	createTokensEndpoint := fmt.Sprintf("http://%s/api/v1/users/%s/tokens", tunnelURL, g.Server.PushUsername)
 	createTokensBody := map[string]interface{}{
-		"name":   config.ZarfArtifactTokenName,
+		"name":   config.JackalArtifactTokenName,
 		"scopes": []string{"read:user", "read:package", "write:package"},
 	}
 	createTokensData, _ := json.Marshal(createTokensBody)
@@ -251,21 +251,21 @@ func UpdateGiteaPVC(shouldRollBack bool) (string, error) {
 		return "false", err
 	}
 
-	pvcName := os.Getenv("ZARF_VAR_GIT_SERVER_EXISTING_PVC")
+	pvcName := os.Getenv("JACKAL_VAR_GIT_SERVER_EXISTING_PVC")
 	groupKind := schema.GroupKind{
 		Group: "",
 		Kind:  "PersistentVolumeClaim",
 	}
 	labels := map[string]string{"app.kubernetes.io/managed-by": "Helm"}
-	annotations := map[string]string{"meta.helm.sh/release-name": "zarf-gitea", "meta.helm.sh/release-namespace": "zarf"}
+	annotations := map[string]string{"meta.helm.sh/release-name": "jackal-gitea", "meta.helm.sh/release-namespace": "jackal"}
 
 	if shouldRollBack {
-		err = c.K8s.RemoveLabelsAndAnnotations(cluster.ZarfNamespaceName, pvcName, groupKind, labels, annotations)
+		err = c.K8s.RemoveLabelsAndAnnotations(cluster.JackalNamespaceName, pvcName, groupKind, labels, annotations)
 		return "false", err
 	}
 
-	if pvcName == "data-zarf-gitea-0" {
-		err = c.K8s.AddLabelsAndAnnotations(cluster.ZarfNamespaceName, pvcName, groupKind, labels, annotations)
+	if pvcName == "data-jackal-gitea-0" {
+		err = c.K8s.AddLabelsAndAnnotations(cluster.JackalNamespaceName, pvcName, groupKind, labels, annotations)
 		return "true", err
 	}
 

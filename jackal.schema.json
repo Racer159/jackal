@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "$ref": "#/definitions/ZarfPackage",
+  "$ref": "#/definitions/JackalPackage",
   "definitions": {
     "BigBang": {
       "required": [
@@ -40,7 +40,7 @@
         "^x-": {}
       }
     },
-    "DeprecatedZarfComponentScripts": {
+    "DeprecatedJackalComponentScripts": {
       "properties": {
         "showOutput": {
           "type": "boolean",
@@ -125,7 +125,7 @@
         "^x-": {}
       }
     },
-    "ZarfBuildData": {
+    "JackalBuildData": {
       "required": [
         "terminal",
         "user",
@@ -152,7 +152,7 @@
         },
         "version": {
           "type": "string",
-          "description": "The version of Zarf used to build this package"
+          "description": "The version of Jackal used to build this package"
         },
         "migrations": {
           "items": {
@@ -187,11 +187,11 @@
         },
         "lastNonBreakingVersion": {
           "type": "string",
-          "description": "The minimum version of Zarf that does not have breaking package structure changes"
+          "description": "The minimum version of Jackal that does not have breaking package structure changes"
         },
         "flavor": {
           "type": "string",
-          "description": "The flavor of Zarf used to build this package"
+          "description": "The flavor of Jackal used to build this package"
         }
       },
       "additionalProperties": false,
@@ -200,7 +200,7 @@
         "^x-": {}
       }
     },
-    "ZarfChart": {
+    "JackalChart": {
       "required": [
         "name",
         "namespace"
@@ -208,7 +208,7 @@
       "properties": {
         "name": {
           "type": "string",
-          "description": "The name of the chart within Zarf; note that this must be unique and does not need to be the same as the name in the chart repo"
+          "description": "The name of the chart within Jackal; note that this must be unique and does not need to be the same as the name in the chart repo"
         },
         "version": {
           "type": "string",
@@ -225,7 +225,7 @@
         },
         "repoName": {
           "type": "string",
-          "description": "The name of a chart within a Helm repository (defaults to the Zarf name of the chart)"
+          "description": "The name of a chart within a Helm repository (defaults to the Jackal name of the chart)"
         },
         "gitPath": {
           "type": "string",
@@ -244,7 +244,7 @@
         },
         "releaseName": {
           "type": "string",
-          "description": "The name of the Helm release to create (defaults to the Zarf name of the chart)"
+          "description": "The name of the Helm release to create (defaults to the Jackal name of the chart)"
         },
         "noWait": {
           "type": "boolean",
@@ -264,7 +264,7 @@
         "^x-": {}
       }
     },
-    "ZarfComponent": {
+    "JackalComponent": {
       "required": [
         "name"
       ],
@@ -288,26 +288,26 @@
         },
         "only": {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/ZarfComponentOnlyTarget",
+          "$ref": "#/definitions/JackalComponentOnlyTarget",
           "description": "Filter when this component is included in package creation or deployment"
         },
         "group": {
           "type": "string",
-          "description": "[Deprecated] Create a user selector field based on all components in the same group. This will be removed in Zarf v1.0.0. Consider using 'only.flavor' instead."
+          "description": "[Deprecated] Create a user selector field based on all components in the same group. This will be removed in Jackal v1.0.0. Consider using 'only.flavor' instead."
         },
         "cosignKeyPath": {
           "type": "string",
-          "description": "[Deprecated] Specify a path to a public key to validate signed online resources. This will be removed in Zarf v1.0.0."
+          "description": "[Deprecated] Specify a path to a public key to validate signed online resources. This will be removed in Jackal v1.0.0."
         },
         "import": {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/ZarfComponentImport",
-          "description": "Import a component from another Zarf package"
+          "$ref": "#/definitions/JackalComponentImport",
+          "description": "Import a component from another Jackal package"
         },
         "manifests": {
           "items": {
             "$schema": "http://json-schema.org/draft-04/schema#",
-            "$ref": "#/definitions/ZarfManifest"
+            "$ref": "#/definitions/JackalManifest"
           },
           "type": "array",
           "description": "Kubernetes manifests to be included in a generated Helm chart on package deploy"
@@ -315,7 +315,7 @@
         "charts": {
           "items": {
             "$schema": "http://json-schema.org/draft-04/schema#",
-            "$ref": "#/definitions/ZarfChart"
+            "$ref": "#/definitions/JackalChart"
           },
           "type": "array",
           "description": "Helm charts to install during package deploy"
@@ -323,7 +323,7 @@
         "dataInjections": {
           "items": {
             "$schema": "http://json-schema.org/draft-04/schema#",
-            "$ref": "#/definitions/ZarfDataInjection"
+            "$ref": "#/definitions/JackalDataInjection"
           },
           "type": "array",
           "description": "Datasets to inject into a container in the target cluster"
@@ -331,7 +331,7 @@
         "files": {
           "items": {
             "$schema": "http://json-schema.org/draft-04/schema#",
-            "$ref": "#/definitions/ZarfFile"
+            "$ref": "#/definitions/JackalFile"
           },
           "type": "array",
           "description": "Files or folders to place on disk during package deployment"
@@ -352,17 +352,17 @@
         },
         "extensions": {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/ZarfComponentExtensions",
+          "$ref": "#/definitions/JackalComponentExtensions",
           "description": "Extend component functionality with additional features"
         },
         "scripts": {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/DeprecatedZarfComponentScripts",
-          "description": "[Deprecated] (replaced by actions) Custom commands to run before or after package deployment.  This will be removed in Zarf v1.0.0."
+          "$ref": "#/definitions/DeprecatedJackalComponentScripts",
+          "description": "[Deprecated] (replaced by actions) Custom commands to run before or after package deployment.  This will be removed in Jackal v1.0.0."
         },
         "actions": {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/ZarfComponentActions",
+          "$ref": "#/definitions/JackalComponentActions",
           "description": "Custom commands to run at various stages of a package lifecycle"
         }
       },
@@ -372,7 +372,7 @@
         "^x-": {}
       }
     },
-    "ZarfComponentAction": {
+    "JackalComponentAction": {
       "properties": {
         "mute": {
           "type": "boolean",
@@ -408,12 +408,12 @@
         "setVariable": {
           "pattern": "^[A-Z0-9_]+$",
           "type": "string",
-          "description": "[Deprecated] (replaced by setVariables) (onDeploy/cmd only) The name of a variable to update with the output of the command. This variable will be available to all remaining actions and components in the package. This will be removed in Zarf v1.0.0"
+          "description": "[Deprecated] (replaced by setVariables) (onDeploy/cmd only) The name of a variable to update with the output of the command. This variable will be available to all remaining actions and components in the package. This will be removed in Jackal v1.0.0"
         },
         "setVariables": {
           "items": {
             "$schema": "http://json-schema.org/draft-04/schema#",
-            "$ref": "#/definitions/ZarfComponentActionSetVariable"
+            "$ref": "#/definitions/JackalComponentActionSetVariable"
           },
           "type": "array",
           "description": "(onDeploy/cmd only) An array of variables to update with the output of the command. These variables will be available to all remaining actions and components in the package."
@@ -424,8 +424,8 @@
         },
         "wait": {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/ZarfComponentActionWait",
-          "description": "Wait for a condition to be met before continuing. Must specify either cmd or wait for the action. See the 'zarf tools wait-for' command for more info."
+          "$ref": "#/definitions/JackalComponentActionWait",
+          "description": "Wait for a condition to be met before continuing. Must specify either cmd or wait for the action. See the 'jackal tools wait-for' command for more info."
         }
       },
       "additionalProperties": false,
@@ -434,7 +434,7 @@
         "^x-": {}
       }
     },
-    "ZarfComponentActionDefaults": {
+    "JackalComponentActionDefaults": {
       "properties": {
         "mute": {
           "type": "boolean",
@@ -471,38 +471,38 @@
         "^x-": {}
       }
     },
-    "ZarfComponentActionSet": {
+    "JackalComponentActionSet": {
       "properties": {
         "defaults": {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/ZarfComponentActionDefaults",
+          "$ref": "#/definitions/JackalComponentActionDefaults",
           "description": "Default configuration for all actions in this set"
         },
         "before": {
           "items": {
             "$schema": "http://json-schema.org/draft-04/schema#",
-            "$ref": "#/definitions/ZarfComponentAction"
+            "$ref": "#/definitions/JackalComponentAction"
           },
           "type": "array",
           "description": "Actions to run at the start of an operation"
         },
         "after": {
           "items": {
-            "$ref": "#/definitions/ZarfComponentAction"
+            "$ref": "#/definitions/JackalComponentAction"
           },
           "type": "array",
           "description": "Actions to run at the end of an operation"
         },
         "onSuccess": {
           "items": {
-            "$ref": "#/definitions/ZarfComponentAction"
+            "$ref": "#/definitions/JackalComponentAction"
           },
           "type": "array",
           "description": "Actions to run if all operations succeed"
         },
         "onFailure": {
           "items": {
-            "$ref": "#/definitions/ZarfComponentAction"
+            "$ref": "#/definitions/JackalComponentAction"
           },
           "type": "array",
           "description": "Actions to run if all operations fail"
@@ -514,7 +514,7 @@
         "^x-": {}
       }
     },
-    "ZarfComponentActionSetVariable": {
+    "JackalComponentActionSetVariable": {
       "required": [
         "name"
       ],
@@ -538,11 +538,11 @@
         },
         "sensitive": {
           "type": "boolean",
-          "description": "Whether to mark this variable as sensitive to not print it in the Zarf log"
+          "description": "Whether to mark this variable as sensitive to not print it in the Jackal log"
         },
         "autoIndent": {
           "type": "boolean",
-          "description": "Whether to automatically indent the variable's value (if multiline) when templating. Based on the number of chars before the start of ###ZARF_VAR_."
+          "description": "Whether to automatically indent the variable's value (if multiline) when templating. Based on the number of chars before the start of ###JACKAL_VAR_."
         }
       },
       "additionalProperties": false,
@@ -551,16 +551,16 @@
         "^x-": {}
       }
     },
-    "ZarfComponentActionWait": {
+    "JackalComponentActionWait": {
       "properties": {
         "cluster": {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/ZarfComponentActionWaitCluster",
+          "$ref": "#/definitions/JackalComponentActionWaitCluster",
           "description": "Wait for a condition to be met in the cluster before continuing. Only one of cluster or network can be specified."
         },
         "network": {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/ZarfComponentActionWaitNetwork",
+          "$ref": "#/definitions/JackalComponentActionWaitNetwork",
           "description": "Wait for a condition to be met on the network before continuing. Only one of cluster or network can be specified."
         }
       },
@@ -570,7 +570,7 @@
         "^x-": {}
       }
     },
-    "ZarfComponentActionWaitCluster": {
+    "JackalComponentActionWaitCluster": {
       "required": [
         "kind",
         "name"
@@ -611,7 +611,7 @@
         "^x-": {}
       }
     },
-    "ZarfComponentActionWaitNetwork": {
+    "JackalComponentActionWaitNetwork": {
       "required": [
         "protocol",
         "address"
@@ -649,19 +649,19 @@
         "^x-": {}
       }
     },
-    "ZarfComponentActions": {
+    "JackalComponentActions": {
       "properties": {
         "onCreate": {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/ZarfComponentActionSet",
+          "$ref": "#/definitions/JackalComponentActionSet",
           "description": "Actions to run during package creation"
         },
         "onDeploy": {
-          "$ref": "#/definitions/ZarfComponentActionSet",
+          "$ref": "#/definitions/JackalComponentActionSet",
           "description": "Actions to run during package deployment"
         },
         "onRemove": {
-          "$ref": "#/definitions/ZarfComponentActionSet",
+          "$ref": "#/definitions/JackalComponentActionSet",
           "description": "Actions to run during package removal"
         }
       },
@@ -671,7 +671,7 @@
         "^x-": {}
       }
     },
-    "ZarfComponentExtensions": {
+    "JackalComponentExtensions": {
       "properties": {
         "bigbang": {
           "$schema": "http://json-schema.org/draft-04/schema#",
@@ -685,20 +685,20 @@
         "^x-": {}
       }
     },
-    "ZarfComponentImport": {
+    "JackalComponentImport": {
       "properties": {
         "name": {
           "type": "string",
-          "description": "The name of the component to import from the referenced zarf.yaml"
+          "description": "The name of the component to import from the referenced jackal.yaml"
         },
         "path": {
           "type": "string",
-          "description": "The relative path to a directory containing a zarf.yaml to import from"
+          "description": "The relative path to a directory containing a jackal.yaml to import from"
         },
         "url": {
           "pattern": "^oci://.*$",
           "type": "string",
-          "description": "[beta] The URL to a Zarf package to import via OCI"
+          "description": "[beta] The URL to a Jackal package to import via OCI"
         }
       },
       "additionalProperties": false,
@@ -707,7 +707,7 @@
         "^x-": {}
       }
     },
-    "ZarfComponentOnlyCluster": {
+    "JackalComponentOnlyCluster": {
       "properties": {
         "architecture": {
           "enum": [
@@ -731,7 +731,7 @@
         "^x-": {}
       }
     },
-    "ZarfComponentOnlyTarget": {
+    "JackalComponentOnlyTarget": {
       "properties": {
         "localOS": {
           "enum": [
@@ -744,12 +744,12 @@
         },
         "cluster": {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/ZarfComponentOnlyCluster",
+          "$ref": "#/definitions/JackalComponentOnlyCluster",
           "description": "Only deploy component to specified clusters"
         },
         "flavor": {
           "type": "string",
-          "description": "Only include this component when a matching '--flavor' is specified on 'zarf package create'"
+          "description": "Only include this component when a matching '--flavor' is specified on 'jackal package create'"
         }
       },
       "additionalProperties": false,
@@ -758,7 +758,7 @@
         "^x-": {}
       }
     },
-    "ZarfContainerTarget": {
+    "JackalContainerTarget": {
       "required": [
         "namespace",
         "selector",
@@ -792,7 +792,7 @@
         "^x-": {}
       }
     },
-    "ZarfDataInjection": {
+    "JackalDataInjection": {
       "required": [
         "source",
         "target"
@@ -804,7 +804,7 @@
         },
         "target": {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/ZarfContainerTarget",
+          "$ref": "#/definitions/JackalContainerTarget",
           "description": "The target pod + container to inject the data into"
         },
         "compress": {
@@ -818,7 +818,7 @@
         "^x-": {}
       }
     },
-    "ZarfFile": {
+    "JackalFile": {
       "required": [
         "source",
         "target"
@@ -858,7 +858,7 @@
         "^x-": {}
       }
     },
-    "ZarfManifest": {
+    "JackalManifest": {
       "required": [
         "name"
       ],
@@ -900,7 +900,7 @@
         "^x-": {}
       }
     },
-    "ZarfMetadata": {
+    "JackalMetadata": {
       "required": [
         "name"
       ],
@@ -908,7 +908,7 @@
         "name": {
           "pattern": "^[a-z0-9\\-]*[a-z0-9]$",
           "type": "string",
-          "description": "Name to identify this Zarf package"
+          "description": "Name to identify this Jackal package"
         },
         "description": {
           "type": "string",
@@ -916,7 +916,7 @@
         },
         "version": {
           "type": "string",
-          "description": "Generic string set by a package author to track the package version (Note: ZarfInitConfigs will always be versioned to the CLIVersion they were created with)"
+          "description": "Generic string set by a package author to track the package version (Note: JackalInitConfigs will always be versioned to the CLIVersion they were created with)"
         },
         "url": {
           "type": "string",
@@ -924,7 +924,7 @@
         },
         "image": {
           "type": "string",
-          "description": "An image URL to embed in this package (Reserved for future use in Zarf UI)"
+          "description": "An image URL to embed in this package (Reserved for future use in Jackal UI)"
         },
         "uncompressed": {
           "type": "boolean",
@@ -940,7 +940,7 @@
         },
         "yolo": {
           "type": "boolean",
-          "description": "Yaml OnLy Online (YOLO): True enables deploying a Zarf package without first running zarf init against the cluster. This is ideal for connected environments where you want to use existing VCS and container registries."
+          "description": "Yaml OnLy Online (YOLO): True enables deploying a Jackal package without first running jackal init against the cluster. This is ideal for connected environments where you want to use existing VCS and container registries."
         },
         "authors": {
           "type": "string",
@@ -972,7 +972,7 @@
         "^x-": {}
       }
     },
-    "ZarfPackage": {
+    "JackalPackage": {
       "required": [
         "kind",
         "components"
@@ -980,27 +980,27 @@
       "properties": {
         "kind": {
           "enum": [
-            "ZarfInitConfig",
-            "ZarfPackageConfig"
+            "JackalInitConfig",
+            "JackalPackageConfig"
           ],
           "type": "string",
-          "description": "The kind of Zarf package",
-          "default": "ZarfPackageConfig"
+          "description": "The kind of Jackal package",
+          "default": "JackalPackageConfig"
         },
         "metadata": {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/ZarfMetadata",
+          "$ref": "#/definitions/JackalMetadata",
           "description": "Package metadata"
         },
         "build": {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/ZarfBuildData",
-          "description": "Zarf-generated package build data"
+          "$ref": "#/definitions/JackalBuildData",
+          "description": "Jackal-generated package build data"
         },
         "components": {
           "items": {
             "$schema": "http://json-schema.org/draft-04/schema#",
-            "$ref": "#/definitions/ZarfComponent"
+            "$ref": "#/definitions/JackalComponent"
           },
           "type": "array",
           "description": "List of components to deploy in this package"
@@ -1008,7 +1008,7 @@
         "constants": {
           "items": {
             "$schema": "http://json-schema.org/draft-04/schema#",
-            "$ref": "#/definitions/ZarfPackageConstant"
+            "$ref": "#/definitions/JackalPackageConstant"
           },
           "type": "array",
           "description": "Constant template values applied on deploy for K8s resources"
@@ -1016,7 +1016,7 @@
         "variables": {
           "items": {
             "$schema": "http://json-schema.org/draft-04/schema#",
-            "$ref": "#/definitions/ZarfPackageVariable"
+            "$ref": "#/definitions/JackalPackageVariable"
           },
           "type": "array",
           "description": "Variable template values applied on deploy for K8s resources"
@@ -1028,7 +1028,7 @@
         "^x-": {}
       }
     },
-    "ZarfPackageConstant": {
+    "JackalPackageConstant": {
       "required": [
         "name",
         "value"
@@ -1049,7 +1049,7 @@
         },
         "autoIndent": {
           "type": "boolean",
-          "description": "Whether to automatically indent the variable's value (if multiline) when templating. Based on the number of chars before the start of ###ZARF_CONST_."
+          "description": "Whether to automatically indent the variable's value (if multiline) when templating. Based on the number of chars before the start of ###JACKAL_CONST_."
         },
         "pattern": {
           "type": "string",
@@ -1062,7 +1062,7 @@
         "^x-": {}
       }
     },
-    "ZarfPackageVariable": {
+    "JackalPackageVariable": {
       "required": [
         "name"
       ],
@@ -1086,11 +1086,11 @@
         },
         "sensitive": {
           "type": "boolean",
-          "description": "Whether to mark this variable as sensitive to not print it in the Zarf log"
+          "description": "Whether to mark this variable as sensitive to not print it in the Jackal log"
         },
         "autoIndent": {
           "type": "boolean",
-          "description": "Whether to automatically indent the variable's value (if multiline) when templating. Based on the number of chars before the start of ###ZARF_VAR_."
+          "description": "Whether to automatically indent the variable's value (if multiline) when templating. Based on the number of chars before the start of ###JACKAL_VAR_."
         },
         "pattern": {
           "type": "string",

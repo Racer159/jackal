@@ -31,24 +31,24 @@ jobs:
           make build-cli-linux-amd
           make build-cli-linux-arm
 
-      - name: "Zarf Agent: Login to GHCR"
+      - name: "Jackal Agent: Login to GHCR"
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
         with:
           registry: ghcr.io
           username: dummy
           password: ${{ github.token }}
 
-      - name: "Zarf Agent: Build and Publish the Image"
+      - name: "Jackal Agent: Build and Publish the Image"
         run: |
-          cp build/zarf build/zarf-linux-amd64
-          cp build/zarf-arm build/zarf-linux-arm64
-          docker buildx build --push --platform linux/arm64/v8,linux/amd64 --tag ghcr.io/defenseunicorns/zarf/agent:$GITHUB_REF_NAME .
-          rm build/zarf-linux-amd64
-          rm build/zarf-linux-arm64
-          echo ZARF_AGENT_IMAGE_DIGEST=$(docker buildx imagetools inspect ghcr.io/defenseunicorns/zarf/agent:$GITHUB_REF_NAME --format '{{ json . }}' | jq -r .manifest.digest) >> $GITHUB_ENV
+          cp build/jackal build/jackal-linux-amd64
+          cp build/jackal-arm build/jackal-linux-arm64
+          docker buildx build --push --platform linux/arm64/v8,linux/amd64 --tag ghcr.io/defenseunicorns/jackal/agent:$GITHUB_REF_NAME .
+          rm build/jackal-linux-amd64
+          rm build/jackal-linux-arm64
+          echo JACKAL_AGENT_IMAGE_DIGEST=$(docker buildx imagetools inspect ghcr.io/defenseunicorns/jackal/agent:$GITHUB_REF_NAME --format '{{ json . }}' | jq -r .manifest.digest) >> $GITHUB_ENV
 
-      - name: "Zarf Agent: Sign the Image"
-        run: cosign sign --key awskms:///${{ secrets.COSIGN_AWS_KMS_KEY }} -a release-engineer=https://github.com/${{ github.actor }} -a version=$GITHUB_REF_NAME ghcr.io/defenseunicorns/zarf/agent@$ZARF_AGENT_IMAGE_DIGEST -y
+      - name: "Jackal Agent: Sign the Image"
+        run: cosign sign --key awskms:///${{ secrets.COSIGN_AWS_KMS_KEY }} -a release-engineer=https://github.com/${{ github.actor }} -a version=$GITHUB_REF_NAME ghcr.io/defenseunicorns/jackal/agent@$JACKAL_AGENT_IMAGE_DIGEST -y
         env:
           COSIGN_EXPERIMENTAL: 1
           AWS_REGION: ${{ secrets.COSIGN_AWS_REGION }}
@@ -97,9 +97,9 @@ jobs:
       - name: Setup golang
         uses: ./.github/actions/golang
 
-      - name: Make Zarf executable
+      - name: Make Jackal executable
         run: |
-          chmod +x build/zarf
+          chmod +x build/jackal
 
       # Before we run the regular tests we need to aggressively cleanup files to reduce disk pressure
       - name: Cleanup files
@@ -147,13 +147,13 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_GOV_SECRET_ACCESS_KEY }}
           aws-region: us-gov-west-1
 
-      - name: Make zarf executable and skip brew latest for pre-release tags
+      - name: Make jackal executable and skip brew latest for pre-release tags
         run: |
-          chmod +x build/zarf
+          chmod +x build/jackal
           if [[ $GITHUB_REF_NAME == *"rc"* ]]; then
-            echo "BREW_NAME=zarf@latest-rc" >> $GITHUB_ENV
+            echo "BREW_NAME=jackal@latest-rc" >> $GITHUB_ENV
           else
-            echo "BREW_NAME=zarf" >> $GITHUB_ENV
+            echo "BREW_NAME=jackal" >> $GITHUB_ENV
           fi
 
       # Before we run the release we need to aggressively cleanup files to reduce disk pressure
@@ -197,4 +197,4 @@ jobs:
         uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4.3.1
         with:
           name: cve-report
-          path: build/zarf-known-cves.csv
+          path: build/jackal-known-cves.csv

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package test provides e2e tests for Zarf.
+// Package test provides e2e tests for Jackal.
 package test
 
 import (
@@ -23,15 +23,15 @@ var (
 	flavorExample     = filepath.Join("examples", "package-flavors")
 	flavorTest        = filepath.Join("src", "test", "packages", "10-package-flavors")
 	flavorExamplePath string
-	flavorTestAMDPath = filepath.Join("build", "zarf-package-test-package-flavors-amd64.tar.zst")
-	flavorTestARMPath = filepath.Join("build", "zarf-package-test-package-flavors-arm64.tar.zst")
+	flavorTestAMDPath = filepath.Join("build", "jackal-package-test-package-flavors-amd64.tar.zst")
+	flavorTestARMPath = filepath.Join("build", "jackal-package-test-package-flavors-arm64.tar.zst")
 )
 
 func (suite *FlavorSuite) SetupSuite() {
 	suite.Assertions = require.New(suite.T())
 
 	// Setup the example package path after e2e has been initialized
-	flavorExamplePath = filepath.Join("build", fmt.Sprintf("zarf-package-package-flavors-%s-1.0.0.tar.zst", e2e.Arch))
+	flavorExamplePath = filepath.Join("build", fmt.Sprintf("jackal-package-package-flavors-%s-1.0.0.tar.zst", e2e.Arch))
 }
 
 func (suite *FlavorSuite) TearDownSuite() {
@@ -46,7 +46,7 @@ func (suite *FlavorSuite) TearDownSuite() {
 func (suite *FlavorSuite) Test_0_FlavorExample() {
 	suite.T().Log("E2E: Package Flavor Example")
 
-	_, stdErr, err := e2e.Zarf("package", "create", flavorExample, "-o", "build", "--flavor", "oracle-cookie-crunch", "--no-color", "--confirm")
+	_, stdErr, err := e2e.Jackal("package", "create", flavorExample, "-o", "build", "--flavor", "oracle-cookie-crunch", "--no-color", "--confirm")
 	suite.NoError(err)
 
 	// Ensure that the oracle image is included
@@ -64,7 +64,7 @@ func (suite *FlavorSuite) Test_0_FlavorExample() {
 func (suite *FlavorSuite) Test_1_FlavorArchFiltering() {
 	suite.T().Log("E2E: Package Flavor + Arch Filtering")
 
-	_, stdErr, err := e2e.Zarf("package", "create", flavorTest, "-o", "build", "--flavor", "vanilla", "-a", "amd64", "--no-color", "--confirm")
+	_, stdErr, err := e2e.Jackal("package", "create", flavorTest, "-o", "build", "--flavor", "vanilla", "-a", "amd64", "--no-color", "--confirm")
 	suite.NoError(err)
 
 	// Ensure that the initial filter was applied
@@ -82,7 +82,7 @@ func (suite *FlavorSuite) Test_1_FlavorArchFiltering() {
 	suite.NotContains(stdErr, `chocolate-amd`)
 	suite.NotContains(stdErr, `chocolate-arm`)
 
-	_, stdErr, err = e2e.Zarf("package", "create", flavorTest, "-o", "build", "--flavor", "chocolate", "-a", "amd64", "--no-color", "--confirm")
+	_, stdErr, err = e2e.Jackal("package", "create", flavorTest, "-o", "build", "--flavor", "chocolate", "-a", "amd64", "--no-color", "--confirm")
 	suite.NoError(err)
 
 	// Ensure that the initial filter was applied
@@ -100,7 +100,7 @@ func (suite *FlavorSuite) Test_1_FlavorArchFiltering() {
 	suite.NotContains(stdErr, `vanilla-amd`)
 	suite.NotContains(stdErr, `chocolate-arm`)
 
-	_, stdErr, err = e2e.Zarf("package", "create", flavorTest, "-o", "build", "--flavor", "chocolate", "-a", "arm64", "--no-color", "--confirm")
+	_, stdErr, err = e2e.Jackal("package", "create", flavorTest, "-o", "build", "--flavor", "chocolate", "-a", "arm64", "--no-color", "--confirm")
 	suite.NoError(err)
 
 	// Ensure that the initial filter was applied

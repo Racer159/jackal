@@ -10,7 +10,7 @@
 .tool-versions
 .vagrant
 .vscode/
-.zarf*
+.jackal*
 *.bak
 *.key
 *.crt
@@ -30,10 +30,10 @@ node_modules
 playwright-report/
 playwright/.cache/
 test-results/
-zarf
-zarf-pki
-zarf-sbom/
+jackal
+jackal-pki
+jackal-sbom/
 *.part*
 test-*.txt
 __debug_bin
-docs-website/static/zarf.schema.json
+docs-website/static/jackal.schema.json

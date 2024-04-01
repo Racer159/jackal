@@ -15,10 +15,10 @@ limitations under the License.
 */
 
 /*
-NOTICE: This file's 'package' and some functionality has been modified / removed to fit within Zarf's package structure.
+NOTICE: This file's 'package' and some functionality has been modified / removed to fit within Jackal's package structure.
 */
 
-// Package helm is a copy of the main package from helm to include a subset of the helm CLI in Zarf
+// Package helm is a copy of the main package from helm to include a subset of the helm CLI in Jackal
 package helm
 
 import (
@@ -251,7 +251,7 @@ func checkForExpiredRepos(repofile string) {
 		if url := r.URL; strings.Contains(url, exp.old) {
 			fmt.Fprintf(
 				os.Stderr,
-				"WARNING: %q is deprecated for %q and will be deleted Nov. 13, 2020.\nWARNING: You should switch to %q via:\nWARNING: zarf tools helm repo add %q %q --force-update\n",
+				"WARNING: %q is deprecated for %q and will be deleted Nov. 13, 2020.\nWARNING: You should switch to %q via:\nWARNING: jackal tools helm repo add %q %q --force-update\n",
 				exp.old,
 				exp.name,
 				exp.new,

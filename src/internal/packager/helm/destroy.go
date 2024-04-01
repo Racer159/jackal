@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package helm contains operations for working with helm charts.
 package helm
@@ -7,14 +7,14 @@ package helm
 import (
 	"regexp"
 
-	"github.com/defenseunicorns/zarf/src/pkg/cluster"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/cluster"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
 	"helm.sh/helm/v3/pkg/action"
 )
 
-// Destroy removes ZarfInitPackage charts from the cluster and optionally all Zarf-installed charts.
-func Destroy(purgeAllZarfInstallations bool) {
-	spinner := message.NewProgressSpinner("Removing Zarf-installed charts")
+// Destroy removes JackalInitPackage charts from the cluster and optionally all Jackal-installed charts.
+func Destroy(purgeAllJackalInstallations bool) {
+	spinner := message.NewProgressSpinner("Removing Jackal-installed charts")
 	defer spinner.Stop()
 
 	h := Helm{}
@@ -27,9 +27,9 @@ func Destroy(purgeAllZarfInstallations bool) {
 		return
 	}
 
-	// Match a name that begins with "zarf-"
+	// Match a name that begins with "jackal-"
 	// Explanation: https://regex101.com/r/3yzKZy/1
-	zarfPrefix := regexp.MustCompile(`(?m)^zarf-`)
+	jackalPrefix := regexp.MustCompile(`(?m)^jackal-`)
 
 	// Get a list of all releases in all namespaces
 	list := action.NewList(h.actionConfig)
@@ -46,12 +46,12 @@ func Destroy(purgeAllZarfInstallations bool) {
 
 	// Iterate over all releases
 	for _, release := range releases {
-		if !purgeAllZarfInstallations && release.Namespace != cluster.ZarfNamespaceName {
-			// Don't process releases outside the zarf namespace unless purge all is true
+		if !purgeAllJackalInstallations && release.Namespace != cluster.JackalNamespaceName {
+			// Don't process releases outside the jackal namespace unless purge all is true
 			continue
 		}
-		// Filter on zarf releases
-		if zarfPrefix.MatchString(release.Name) {
+		// Filter on jackal releases
+		if jackalPrefix.MatchString(release.Name) {
 			spinner.Updatef("Uninstalling helm chart %s/%s", release.Namespace, release.Name)
 			if err = h.RemoveChart(release.Namespace, release.Name, spinner); err != nil {
 				// Don't fatal since this is a removal action

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package git contains functions for interacting with git repositories.
 package git
@@ -9,9 +9,9 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/pkg/utils/exec"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/pkg/utils/exec"
 	"github.com/go-git/go-git/v5"
 	goConfig "github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing"
@@ -46,7 +46,7 @@ func (g *Git) clone(gitURL string, ref plumbing.ReferenceName, shallow bool) err
 	// Clone the given repo.
 	repo, err := git.PlainClone(g.GitPath, false, cloneOptions)
 	if err != nil {
-		message.Notef("Falling back to host 'git', failed to clone the repo %q with Zarf: %s", gitURL, err.Error())
+		message.Notef("Falling back to host 'git', failed to clone the repo %q with Jackal: %s", gitURL, err.Error())
 		return g.gitCloneFallback(gitURL, ref, shallow)
 	}
 

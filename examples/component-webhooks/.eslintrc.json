@@ -18,7 +18,7 @@
       "node_modules",
       "dist",
       "hack",
-      "capabilities/zarf-types.ts"
+      "capabilities/jackal-types.ts"
     ],
     "root": true
 }

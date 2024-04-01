@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package sources contains core implementations of the PackageSource interface.
 package sources
@@ -9,14 +9,14 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/filters"
+	"github.com/defenseunicorns/jackal/src/pkg/zoci"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
 	"github.com/defenseunicorns/pkg/oci"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/filters"
-	"github.com/defenseunicorns/zarf/src/pkg/zoci"
-	"github.com/defenseunicorns/zarf/src/types"
 )
 
 // PackageSource is an interface for package sources.
@@ -30,10 +30,10 @@ import (
 //	`sources.ValidatePackageSignature` and `sources.ValidatePackageIntegrity` can be leveraged for this purpose.
 type PackageSource interface {
 	// LoadPackage loads a package from a source.
-	LoadPackage(dst *layout.PackagePaths, filter filters.ComponentFilterStrategy, unarchiveAll bool) (pkg types.ZarfPackage, warnings []string, err error)
+	LoadPackage(dst *layout.PackagePaths, filter filters.ComponentFilterStrategy, unarchiveAll bool) (pkg types.JackalPackage, warnings []string, err error)
 
 	// LoadPackageMetadata loads a package's metadata from a source.
-	LoadPackageMetadata(dst *layout.PackagePaths, wantSBOM bool, skipValidation bool) (pkg types.ZarfPackage, warnings []string, err error)
+	LoadPackageMetadata(dst *layout.PackagePaths, wantSBOM bool, skipValidation bool) (pkg types.JackalPackage, warnings []string, err error)
 
 	// Collect relocates a package from its source to a tarball in a given destination directory.
 	Collect(destinationDirectory string) (tarball string, err error)
@@ -58,7 +58,7 @@ func Identify(pkgSrc string) string {
 }
 
 // New returns a new PackageSource based on the provided package options.
-func New(pkgOpts *types.ZarfPackageOptions) (PackageSource, error) {
+func New(pkgOpts *types.JackalPackageOptions) (PackageSource, error) {
 	var source PackageSource
 
 	pkgSrc := pkgOpts.PackageSource
@@ -73,7 +73,7 @@ func New(pkgOpts *types.ZarfPackageOptions) (PackageSource, error) {
 		if err != nil {
 			return nil, err
 		}
-		source = &OCISource{ZarfPackageOptions: pkgOpts, Remote: remote}
+		source = &OCISource{JackalPackageOptions: pkgOpts, Remote: remote}
 	case "tarball":
 		source = &TarballSource{pkgOpts}
 	case "http", "https", "sget":

@@ -1,4 +1,4 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: helm-charts-local-tgz
   description: Example showcasing multiple ways to deploy helm charts

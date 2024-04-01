@@ -1,4 +1,4 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: argocd
   description: Example showcasing installing ArgoCD

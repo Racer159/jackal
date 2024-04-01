@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package tools contains the CLI commands for Zarf.
+// Package tools contains the CLI commands for Jackal.
 package tools
 
 import (
 	"os"
 
-	"github.com/defenseunicorns/zarf/src/cmd/common"
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/cmd/common"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
 	"github.com/spf13/cobra"
 	kubeCLI "k8s.io/component-base/cli"
 	kubeCmd "k8s.io/kubectl/pkg/cmd"

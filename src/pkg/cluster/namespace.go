@@ -1,19 +1,19 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package cluster contains Zarf-specific cluster management functions.
+// Package cluster contains Jackal-specific cluster management functions.
 package cluster
 
 import (
 	"context"
 
-	"github.com/defenseunicorns/zarf/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
 )
 
-// DeleteZarfNamespace deletes the Zarf namespace from the connected cluster.
-func (c *Cluster) DeleteZarfNamespace() {
-	spinner := message.NewProgressSpinner("Deleting the zarf namespace from this cluster")
+// DeleteJackalNamespace deletes the Jackal namespace from the connected cluster.
+func (c *Cluster) DeleteJackalNamespace() {
+	spinner := message.NewProgressSpinner("Deleting the jackal namespace from this cluster")
 	defer spinner.Stop()
 
-	c.DeleteNamespace(context.TODO(), ZarfNamespaceName)
+	c.DeleteNamespace(context.TODO(), JackalNamespaceName)
 }

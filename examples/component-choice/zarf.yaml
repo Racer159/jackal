@@ -1,4 +1,4 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: component-choice
   description: Test component to demonstrate grouping components for a user to choose from

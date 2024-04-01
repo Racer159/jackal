@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package deprecated handles package deprecations and migrations
 package deprecated
@@ -7,17 +7,17 @@ package deprecated
 import (
 	"fmt"
 
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/types"
 )
 
-func migrateSetVariableToSetVariables(c types.ZarfComponent) (types.ZarfComponent, string) {
+func migrateSetVariableToSetVariables(c types.JackalComponent) (types.JackalComponent, string) {
 	hasSetVariable := false
 
-	migrate := func(actions []types.ZarfComponentAction) []types.ZarfComponentAction {
+	migrate := func(actions []types.JackalComponentAction) []types.JackalComponentAction {
 		for i := range actions {
 			if actions[i].DeprecatedSetVariable != "" && len(actions[i].SetVariables) < 1 {
 				hasSetVariable = true
-				actions[i].SetVariables = []types.ZarfComponentActionSetVariable{
+				actions[i].SetVariables = []types.JackalComponentActionSetVariable{
 					{
 						Name:      actions[i].DeprecatedSetVariable,
 						Sensitive: false,
@@ -49,14 +49,14 @@ func migrateSetVariableToSetVariables(c types.ZarfComponent) (types.ZarfComponen
 
 	// Leave deprecated setVariable in place, but warn users
 	if hasSetVariable {
-		return c, fmt.Sprintf("Component '%s' is using setVariable in actions which will be removed in Zarf v1.0.0. Please migrate to the list form of setVariables.", c.Name)
+		return c, fmt.Sprintf("Component '%s' is using setVariable in actions which will be removed in Jackal v1.0.0. Please migrate to the list form of setVariables.", c.Name)
 	}
 
 	return c, ""
 }
 
-func clearSetVariables(c types.ZarfComponent) types.ZarfComponent {
-	clear := func(actions []types.ZarfComponentAction) []types.ZarfComponentAction {
+func clearSetVariables(c types.JackalComponent) types.JackalComponent {
+	clear := func(actions []types.JackalComponentAction) []types.JackalComponentAction {
 		for i := range actions {
 			actions[i].DeprecatedSetVariable = ""
 		}

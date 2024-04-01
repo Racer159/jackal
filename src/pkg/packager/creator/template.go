@@ -1,21 +1,21 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package creator contains functions for creating Zarf packages.
+// Package creator contains functions for creating Jackal packages.
 package creator
 
 import (
 	"fmt"
 
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/pkg/interactive"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/pkg/interactive"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/types"
 )
 
-// FillActiveTemplate merges user-specified variables into the configuration templates of a zarf.yaml.
-func FillActiveTemplate(pkg types.ZarfPackage, setVariables map[string]string) (types.ZarfPackage, []string, error) {
+// FillActiveTemplate merges user-specified variables into the configuration templates of a jackal.yaml.
+func FillActiveTemplate(pkg types.JackalPackage, setVariables map[string]string) (types.JackalPackage, []string, error) {
 	templateMap := map[string]string{}
 	warnings := []string{}
 
@@ -32,7 +32,7 @@ func FillActiveTemplate(pkg types.ZarfPackage, setVariables map[string]string) (
 
 			_, present := setVariables[key]
 			if !present && !config.CommonOptions.Confirm {
-				setVal, err := interactive.PromptVariable(types.ZarfPackageVariable{
+				setVal, err := interactive.PromptVariable(types.JackalPackageVariable{
 					Name: key,
 				})
 				if err != nil {
@@ -53,32 +53,32 @@ func FillActiveTemplate(pkg types.ZarfPackage, setVariables map[string]string) (
 
 	// update the component templates on the package
 	if err := ReloadComponentTemplatesInPackage(&pkg); err != nil {
-		return types.ZarfPackage{}, nil, err
+		return types.JackalPackage{}, nil, err
 	}
 
-	if err := promptAndSetTemplate(types.ZarfPackageTemplatePrefix, false); err != nil {
-		return types.ZarfPackage{}, nil, err
+	if err := promptAndSetTemplate(types.JackalPackageTemplatePrefix, false); err != nil {
+		return types.JackalPackage{}, nil, err
 	}
 	// [DEPRECATION] Set the Package Variable syntax as well for backward compatibility
-	if err := promptAndSetTemplate(types.ZarfPackageVariablePrefix, true); err != nil {
-		return types.ZarfPackage{}, nil, err
+	if err := promptAndSetTemplate(types.JackalPackageVariablePrefix, true); err != nil {
+		return types.JackalPackage{}, nil, err
 	}
 
 	// Add special variable for the current package architecture
-	templateMap[types.ZarfPackageArch] = pkg.Metadata.Architecture
+	templateMap[types.JackalPackageArch] = pkg.Metadata.Architecture
 
 	if err := utils.ReloadYamlTemplate(&pkg, templateMap); err != nil {
-		return types.ZarfPackage{}, nil, err
+		return types.JackalPackage{}, nil, err
 	}
 
 	return pkg, warnings, nil
 }
 
-// ReloadComponentTemplate appends ###ZARF_COMPONENT_NAME### for the component, assigns value, and reloads
-// Any instance of ###ZARF_COMPONENT_NAME### within a component will be replaced with that components name
-func ReloadComponentTemplate(component *types.ZarfComponent) error {
+// ReloadComponentTemplate appends ###JACKAL_COMPONENT_NAME### for the component, assigns value, and reloads
+// Any instance of ###JACKAL_COMPONENT_NAME### within a component will be replaced with that components name
+func ReloadComponentTemplate(component *types.JackalComponent) error {
 	mappings := map[string]string{}
-	mappings[types.ZarfComponentName] = component.Name
+	mappings[types.JackalComponentName] = component.Name
 	err := utils.ReloadYamlTemplate(component, mappings)
 	if err != nil {
 		return err
@@ -86,11 +86,11 @@ func ReloadComponentTemplate(component *types.ZarfComponent) error {
 	return nil
 }
 
-// ReloadComponentTemplatesInPackage appends ###ZARF_COMPONENT_NAME###  for each component, assigns value, and reloads
-func ReloadComponentTemplatesInPackage(zarfPackage *types.ZarfPackage) error {
-	// iterate through components to and find all ###ZARF_COMPONENT_NAME, assign to component Name and value
-	for i := range zarfPackage.Components {
-		if err := ReloadComponentTemplate(&zarfPackage.Components[i]); err != nil {
+// ReloadComponentTemplatesInPackage appends ###JACKAL_COMPONENT_NAME###  for each component, assigns value, and reloads
+func ReloadComponentTemplatesInPackage(jackalPackage *types.JackalPackage) error {
+	// iterate through components to and find all ###JACKAL_COMPONENT_NAME, assign to component Name and value
+	for i := range jackalPackage.Components {
+		if err := ReloadComponentTemplate(&jackalPackage.Components[i]); err != nil {
 			return err
 		}
 	}

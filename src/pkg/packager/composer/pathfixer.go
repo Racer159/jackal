@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package composer contains functions for composing components within Zarf packages.
+// Package composer contains functions for composing components within Jackal packages.
 package composer
 
 import (
 	"path/filepath"
 
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/types"
 )
 
 func makePathRelativeTo(path, relativeTo string) string {
@@ -19,7 +19,7 @@ func makePathRelativeTo(path, relativeTo string) string {
 	return filepath.Join(relativeTo, path)
 }
 
-func fixPaths(child *types.ZarfComponent, relativeToHead string) {
+func fixPaths(child *types.JackalComponent, relativeToHead string) {
 	for fileIdx, file := range child.Files {
 		composed := makePathRelativeTo(file.Source, relativeToHead)
 		child.Files[fileIdx].Source = composed
@@ -71,7 +71,7 @@ func fixPaths(child *types.ZarfComponent, relativeToHead string) {
 }
 
 // fixActionPaths takes a slice of actions and mutates the Dir to be relative to the head node
-func fixActionPaths(actions []types.ZarfComponentAction, defaultDir, relativeToHead string) []types.ZarfComponentAction {
+func fixActionPaths(actions []types.JackalComponentAction, defaultDir, relativeToHead string) []types.JackalComponentAction {
 	for actionIdx, action := range actions {
 		var composed string
 		if action.Dir != nil {

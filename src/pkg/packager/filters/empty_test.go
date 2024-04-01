@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package filters contains core implementations of the ComponentFilterStrategy interface.
 package filters
@@ -7,12 +7,12 @@ package filters
 import (
 	"testing"
 
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/stretchr/testify/require"
 )
 
 func TestEmptyFilter_Apply(t *testing.T) {
-	components := []types.ZarfComponent{
+	components := []types.JackalComponent{
 		{
 			Name: "component1",
 		},
@@ -20,7 +20,7 @@ func TestEmptyFilter_Apply(t *testing.T) {
 			Name: "component2",
 		},
 	}
-	pkg := types.ZarfPackage{
+	pkg := types.JackalPackage{
 		Components: components,
 	}
 	filter := Empty()

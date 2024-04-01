@@ -1,8 +1,8 @@
-# Developing Zarf Packages
+# Developing Jackal Packages
 
 ## `dev` Commands
 
-Zarf contains many commands that are useful while developing a Zarf package to iterate on configuration, discover resources and more!  Below are explanations of some of these commands with the full list discoverable with `zarf dev --help`.
+Jackal contains many commands that are useful while developing a Jackal package to iterate on configuration, discover resources and more!  Below are explanations of some of these commands with the full list discoverable with `jackal dev --help`.
 
 :::caution
 
@@ -16,30 +16,30 @@ The `dev deploy` command will combine the lifecycle of `package create` and `pac
 
 - Not result in a re-usable tarball / OCI artifact
 - Not have any interactive prompts
-- Not require `zarf init` to be run (by default, but _is required_ if `--no-yolo` is not set)
+- Not require `jackal init` to be run (by default, but _is required_ if `--no-yolo` is not set)
 - Be able to create+deploy a package in either YOLO mode (default) or prod mode (exposed via `--no-yolo` flag)
 - Only build + deploy components that _will_ be deployed (contrasting with `package create` which builds _all_ components regardless of whether they will be deployed)
 
 ```bash
 # Create and deploy dos-games in yolo mode
-$ zarf dev deploy examples/dos-games
+$ jackal dev deploy examples/dos-games
 ```
 
 ```bash
-# If deploying a package in prod mode, `zarf init` must be run first
-$ zarf init --confirm
+# If deploying a package in prod mode, `jackal init` must be run first
+$ jackal init --confirm
 # Create and deploy dos-games in prod mode
-$ zarf dev deploy examples/dos-games --no-yolo
+$ jackal dev deploy examples/dos-games --no-yolo
 ```
 
 ### `dev find-images`
 
-Evaluates components in a `zarf.yaml` to identify images specified in their helm charts and manifests.
+Evaluates components in a `jackal.yaml` to identify images specified in their helm charts and manifests.
 
 Components that have `git` repositories that host helm charts can be processed by providing the `--repo-chart-path`.
 
 ```bash
-$ zarf dev find-images examples/wordpress
+$ jackal dev find-images examples/wordpress
 
 components:
 
@@ -54,4 +54,4 @@ components:
 
 Not all `dev` commands have been mentioned here.
 
-Further `dev` commands can be discovered by running `zarf dev --help`.
+Further `dev` commands can be discovered by running `jackal dev --help`.

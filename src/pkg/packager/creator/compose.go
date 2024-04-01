@@ -1,18 +1,18 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package creator contains functions for creating Zarf packages.
+// Package creator contains functions for creating Jackal packages.
 package creator
 
 import (
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/composer"
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/composer"
+	"github.com/defenseunicorns/jackal/src/types"
 )
 
-// ComposeComponents composes components and their dependencies into a single Zarf package using an import chain.
-func ComposeComponents(pkg types.ZarfPackage, flavor string) (types.ZarfPackage, []string, error) {
-	components := []types.ZarfComponent{}
+// ComposeComponents composes components and their dependencies into a single Jackal package using an import chain.
+func ComposeComponents(pkg types.JackalPackage, flavor string) (types.JackalPackage, []string, error) {
+	components := []types.JackalComponent{}
 	warnings := []string{}
 
 	pkgVars := pkg.Variables
@@ -33,7 +33,7 @@ func ComposeComponents(pkg types.ZarfPackage, flavor string) (types.ZarfPackage,
 		// build the import chain
 		chain, err := composer.NewImportChain(component, i, pkg.Metadata.Name, arch, flavor)
 		if err != nil {
-			return types.ZarfPackage{}, nil, err
+			return types.JackalPackage{}, nil, err
 		}
 		message.Debugf("%s", chain)
 
@@ -44,7 +44,7 @@ func ComposeComponents(pkg types.ZarfPackage, flavor string) (types.ZarfPackage,
 		// get the composed component
 		composed, err := chain.Compose()
 		if err != nil {
-			return types.ZarfPackage{}, nil, err
+			return types.JackalPackage{}, nil, err
 		}
 		components = append(components, *composed)
 

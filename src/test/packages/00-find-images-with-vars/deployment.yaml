@@ -16,4 +16,4 @@ spec:
     spec:
       containers:
         - name: server
-          image: "###ZARF_CONST_SAMPLE_IMAGE###"
+          image: "###JACKAL_CONST_SAMPLE_IMAGE###"

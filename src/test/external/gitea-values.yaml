@@ -4,7 +4,7 @@ gitea:
   admin:
     username: "git-user"
     password: "superSecurePassword"   # Note: Super fake and not real username/password for testing purposes
-    email: "zarf@localhost"
+    email: "jackal@localhost"
   config:
     APP_NAME: "Gitops Service"
     server:

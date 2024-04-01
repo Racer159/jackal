@@ -1,15 +1,15 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: yolo
   yolo: true
-  description: Game example in YOLO (online-only) mode that can be deployed without a Zarf cluster
+  description: Game example in YOLO (online-only) mode that can be deployed without a Jackal cluster
 
 components:
   - name: yolo-games
     required: true
     manifests:
       - name: multi-games
-        namespace: zarf-yolo-example
+        namespace: jackal-yolo-example
         files:
           - ../dos-games/manifests/deployment.yaml
           - ../dos-games/manifests/service.yaml
@@ -20,5 +20,5 @@ components:
               cluster:
                 kind: deployment
                 name: game
-                namespace: zarf-yolo-example
+                namespace: jackal-yolo-example
                 condition: available

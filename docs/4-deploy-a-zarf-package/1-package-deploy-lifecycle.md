@@ -1,8 +1,8 @@
 # Package Deploy Lifecycle
 
-The following diagram shows the order of operations for the `zarf package deploy` command and the hook locations for [actions](../../examples/component-actions/README.md).
+The following diagram shows the order of operations for the `jackal package deploy` command and the hook locations for [actions](../../examples/component-actions/README.md).
 
-## `zarf package deploy`
+## `jackal package deploy`
 
 ```mermaid
 graph TD
@@ -23,7 +23,7 @@ graph TD
     B14(deploy each component)-->B14
     B14 --> B15(run each '.actions.onDeploy.before'):::action-->B15
     B15 --> B16(copy '.files')-->B17
-    B17(load Zarf State)-->B18
+    B17(load Jackal State)-->B18
     B18(push '.images')-->B19
     B19(push '.repos')-->B20
     B20(process '.dataInjections')-->B21
@@ -37,7 +37,7 @@ graph TD
     B999[Abort]:::fail
     end
 
-    B25-->B27(print Zarf connect table)
+    B25-->B27(print Jackal connect table)
     B27-->B28(save package data to cluster)
 
 

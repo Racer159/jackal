@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package operations provides functions for the mutating webhook.
 package operations
@@ -7,8 +7,8 @@ package operations
 import (
 	"fmt"
 
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
 	admission "k8s.io/api/admission/v1"
 )
 

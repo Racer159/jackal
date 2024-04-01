@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package utils provides generic utility functions.package utils
 package utils
@@ -7,7 +7,7 @@ package utils
 import (
 	"testing"
 
-	mocks "github.com/defenseunicorns/zarf/src/test/mocks"
+	mocks "github.com/defenseunicorns/jackal/src/test/mocks"
 	"github.com/go-git/go-git/v5/plumbing/transport/http"
 	"github.com/stretchr/testify/require"
 )
@@ -18,7 +18,7 @@ func TestCredentialParser(t *testing.T) {
 			`https://wayne:password@github.com/
 bad line
 <really bad="line"/>
-https://wayne:p%40ss%20word%2520@zarf.dev
+https://wayne:p%40ss%20word%2520@jackal.dev
 http://google.com`,
 		),
 	}
@@ -32,7 +32,7 @@ http://google.com`,
 			},
 		},
 		{
-			Path: "zarf.dev",
+			Path: "jackal.dev",
 			Auth: http.BasicAuth{
 				Username: "wayne",
 				Password: "p@ss word%20",
@@ -60,7 +60,7 @@ machine github.com
 	login wayne
     password password
 
- machine zarf.dev login wayne password p@s#sword%20
+ machine jackal.dev login wayne password p@s#sword%20
 
 macdef macro-name
 touch file
@@ -83,7 +83,7 @@ default
 			},
 		},
 		{
-			Path: "zarf.dev",
+			Path: "jackal.dev",
 			Auth: http.BasicAuth{
 				Username: "wayne",
 				Password: "p@s#sword%20",

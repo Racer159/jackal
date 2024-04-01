@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package composer contains functions for composing components within Zarf packages.
+// Package composer contains functions for composing components within Jackal packages.
 package composer
 
 import (
@@ -10,8 +10,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/defenseunicorns/zarf/src/types"
-	"github.com/defenseunicorns/zarf/src/types/extensions"
+	"github.com/defenseunicorns/jackal/src/types"
+	"github.com/defenseunicorns/jackal/src/types/extensions"
 	"github.com/stretchr/testify/require"
 )
 
@@ -20,7 +20,7 @@ func TestNewImportChain(t *testing.T) {
 
 	type testCase struct {
 		name                 string
-		head                 types.ZarfComponent
+		head                 types.JackalComponent
 		arch                 string
 		flavor               string
 		expectedErrorMessage string
@@ -29,13 +29,13 @@ func TestNewImportChain(t *testing.T) {
 	testCases := []testCase{
 		{
 			name:                 "No Architecture",
-			head:                 types.ZarfComponent{},
+			head:                 types.JackalComponent{},
 			expectedErrorMessage: "architecture must be provided",
 		},
 		{
 			name: "Circular Import",
-			head: types.ZarfComponent{
-				Import: types.ZarfComponentImport{
+			head: types.JackalComponent{
+				Import: types.JackalComponentImport{
 					Path: ".",
 				},
 			},
@@ -63,7 +63,7 @@ func TestCompose(t *testing.T) {
 		name                 string
 		ic                   *ImportChain
 		returnError          bool
-		expectedComposed     types.ZarfComponent
+		expectedComposed     types.JackalComponent
 		expectedErrorMessage string
 	}
 
@@ -78,34 +78,34 @@ func TestCompose(t *testing.T) {
 	testCases := []testCase{
 		{
 			name: "Single Component",
-			ic: createChainFromSlice([]types.ZarfComponent{
+			ic: createChainFromSlice([]types.JackalComponent{
 				{
 					Name: "no-import",
 				},
 			}),
 			returnError: false,
-			expectedComposed: types.ZarfComponent{
+			expectedComposed: types.JackalComponent{
 				Name: "no-import",
 			},
 		},
 		{
 			name: "Multiple Components",
-			ic: createChainFromSlice([]types.ZarfComponent{
+			ic: createChainFromSlice([]types.JackalComponent{
 				createDummyComponent("hello", firstDirectory, "hello"),
 				createDummyComponent("world", secondDirectory, "world"),
 				createDummyComponent("today", "", "hello"),
 			}),
 			returnError: false,
-			expectedComposed: types.ZarfComponent{
+			expectedComposed: types.JackalComponent{
 				Name: "import-hello",
 				// Files should always be appended with corrected directories
-				Files: []types.ZarfFile{
+				Files: []types.JackalFile{
 					{Source: fmt.Sprintf("%s%stoday.txt", finalDirectory, string(os.PathSeparator))},
 					{Source: fmt.Sprintf("%s%sworld.txt", firstDirectory, string(os.PathSeparator))},
 					{Source: "hello.txt"},
 				},
 				// Charts should be merged if names match and appended if not with corrected directories
-				Charts: []types.ZarfChart{
+				Charts: []types.JackalChart{
 					{
 						Name:      "hello",
 						LocalPath: fmt.Sprintf("%s%schart", finalDirectory, string(os.PathSeparator)),
@@ -123,7 +123,7 @@ func TestCompose(t *testing.T) {
 					},
 				},
 				// Manifests should be merged if names match and appended if not with corrected directories
-				Manifests: []types.ZarfManifest{
+				Manifests: []types.JackalManifest{
 					{
 						Name: "hello",
 						Files: []string{
@@ -139,85 +139,85 @@ func TestCompose(t *testing.T) {
 					},
 				},
 				// DataInjections should always be appended with corrected directories
-				DataInjections: []types.ZarfDataInjection{
+				DataInjections: []types.JackalDataInjection{
 					{Source: fmt.Sprintf("%s%stoday", finalDirectory, string(os.PathSeparator))},
 					{Source: fmt.Sprintf("%s%sworld", firstDirectory, string(os.PathSeparator))},
 					{Source: "hello"},
 				},
-				Actions: types.ZarfComponentActions{
+				Actions: types.JackalComponentActions{
 					// OnCreate actions should be appended with corrected directories that properly handle default directories
-					OnCreate: types.ZarfComponentActionSet{
-						Defaults: types.ZarfComponentActionDefaults{
+					OnCreate: types.JackalComponentActionSet{
+						Defaults: types.JackalComponentActionDefaults{
 							Dir: "hello-dc",
 						},
-						Before: []types.ZarfComponentAction{
+						Before: []types.JackalComponentAction{
 							{Cmd: "today-bc", Dir: &finalDirectoryActionDefault},
 							{Cmd: "world-bc", Dir: &secondDirectoryActionDefault},
 							{Cmd: "hello-bc", Dir: &firstDirectoryActionDefault},
 						},
-						After: []types.ZarfComponentAction{
+						After: []types.JackalComponentAction{
 							{Cmd: "today-ac", Dir: &finalDirectoryActionDefault},
 							{Cmd: "world-ac", Dir: &secondDirectoryActionDefault},
 							{Cmd: "hello-ac", Dir: &firstDirectoryActionDefault},
 						},
-						OnSuccess: []types.ZarfComponentAction{
+						OnSuccess: []types.JackalComponentAction{
 							{Cmd: "today-sc", Dir: &finalDirectoryActionDefault},
 							{Cmd: "world-sc", Dir: &secondDirectoryActionDefault},
 							{Cmd: "hello-sc", Dir: &firstDirectoryActionDefault},
 						},
-						OnFailure: []types.ZarfComponentAction{
+						OnFailure: []types.JackalComponentAction{
 							{Cmd: "today-fc", Dir: &finalDirectoryActionDefault},
 							{Cmd: "world-fc", Dir: &secondDirectoryActionDefault},
 							{Cmd: "hello-fc", Dir: &firstDirectoryActionDefault},
 						},
 					},
 					// OnDeploy actions should be appended without corrected directories
-					OnDeploy: types.ZarfComponentActionSet{
-						Defaults: types.ZarfComponentActionDefaults{
+					OnDeploy: types.JackalComponentActionSet{
+						Defaults: types.JackalComponentActionDefaults{
 							Dir: "hello-dd",
 						},
-						Before: []types.ZarfComponentAction{
+						Before: []types.JackalComponentAction{
 							{Cmd: "today-bd"},
 							{Cmd: "world-bd"},
 							{Cmd: "hello-bd"},
 						},
-						After: []types.ZarfComponentAction{
+						After: []types.JackalComponentAction{
 							{Cmd: "today-ad"},
 							{Cmd: "world-ad"},
 							{Cmd: "hello-ad"},
 						},
-						OnSuccess: []types.ZarfComponentAction{
+						OnSuccess: []types.JackalComponentAction{
 							{Cmd: "today-sd"},
 							{Cmd: "world-sd"},
 							{Cmd: "hello-sd"},
 						},
-						OnFailure: []types.ZarfComponentAction{
+						OnFailure: []types.JackalComponentAction{
 							{Cmd: "today-fd"},
 							{Cmd: "world-fd"},
 							{Cmd: "hello-fd"},
 						},
 					},
 					// OnRemove actions should be appended without corrected directories
-					OnRemove: types.ZarfComponentActionSet{
-						Defaults: types.ZarfComponentActionDefaults{
+					OnRemove: types.JackalComponentActionSet{
+						Defaults: types.JackalComponentActionDefaults{
 							Dir: "hello-dr",
 						},
-						Before: []types.ZarfComponentAction{
+						Before: []types.JackalComponentAction{
 							{Cmd: "today-br"},
 							{Cmd: "world-br"},
 							{Cmd: "hello-br"},
 						},
-						After: []types.ZarfComponentAction{
+						After: []types.JackalComponentAction{
 							{Cmd: "today-ar"},
 							{Cmd: "world-ar"},
 							{Cmd: "hello-ar"},
 						},
-						OnSuccess: []types.ZarfComponentAction{
+						OnSuccess: []types.JackalComponentAction{
 							{Cmd: "today-sr"},
 							{Cmd: "world-sr"},
 							{Cmd: "hello-sr"},
 						},
-						OnFailure: []types.ZarfComponentAction{
+						OnFailure: []types.JackalComponentAction{
 							{Cmd: "today-fr"},
 							{Cmd: "world-fr"},
 							{Cmd: "hello-fr"},
@@ -225,7 +225,7 @@ func TestCompose(t *testing.T) {
 					},
 				},
 				// Extensions should be appended with corrected directories
-				Extensions: extensions.ZarfComponentExtensions{
+				Extensions: extensions.JackalComponentExtensions{
 					BigBang: &extensions.BigBang{
 						ValuesFiles: []string{
 							fmt.Sprintf("%s%svalues.yaml", finalDirectory, string(os.PathSeparator)),
@@ -265,14 +265,14 @@ func TestMerging(t *testing.T) {
 	type testCase struct {
 		name           string
 		ic             *ImportChain
-		existingVars   []types.ZarfPackageVariable
-		existingConsts []types.ZarfPackageConstant
-		expectedVars   []types.ZarfPackageVariable
-		expectedConsts []types.ZarfPackageConstant
+		existingVars   []types.JackalPackageVariable
+		existingConsts []types.JackalPackageConstant
+		expectedVars   []types.JackalPackageVariable
+		expectedConsts []types.JackalPackageConstant
 	}
 
 	head := Node{
-		vars: []types.ZarfPackageVariable{
+		vars: []types.JackalPackageVariable{
 			{
 				Name:    "TEST",
 				Default: "head",
@@ -281,7 +281,7 @@ func TestMerging(t *testing.T) {
 				Name: "HEAD",
 			},
 		},
-		consts: []types.ZarfPackageConstant{
+		consts: []types.JackalPackageConstant{
 			{
 				Name:  "TEST",
 				Value: "head",
@@ -292,7 +292,7 @@ func TestMerging(t *testing.T) {
 		},
 	}
 	tail := Node{
-		vars: []types.ZarfPackageVariable{
+		vars: []types.JackalPackageVariable{
 			{
 				Name:    "TEST",
 				Default: "tail",
@@ -301,7 +301,7 @@ func TestMerging(t *testing.T) {
 				Name: "TAIL",
 			},
 		},
-		consts: []types.ZarfPackageConstant{
+		consts: []types.JackalPackageConstant{
 			{
 				Name:  "TEST",
 				Value: "tail",
@@ -319,22 +319,22 @@ func TestMerging(t *testing.T) {
 		{
 			name: "empty-ic",
 			ic:   &ImportChain{},
-			existingVars: []types.ZarfPackageVariable{
+			existingVars: []types.JackalPackageVariable{
 				{
 					Name: "TEST",
 				},
 			},
-			existingConsts: []types.ZarfPackageConstant{
+			existingConsts: []types.JackalPackageConstant{
 				{
 					Name: "TEST",
 				},
 			},
-			expectedVars: []types.ZarfPackageVariable{
+			expectedVars: []types.JackalPackageVariable{
 				{
 					Name: "TEST",
 				},
 			},
-			expectedConsts: []types.ZarfPackageConstant{
+			expectedConsts: []types.JackalPackageConstant{
 				{
 					Name: "TEST",
 				},
@@ -343,9 +343,9 @@ func TestMerging(t *testing.T) {
 		{
 			name:           "no-existing",
 			ic:             testIC,
-			existingVars:   []types.ZarfPackageVariable{},
-			existingConsts: []types.ZarfPackageConstant{},
-			expectedVars: []types.ZarfPackageVariable{
+			existingVars:   []types.JackalPackageVariable{},
+			existingConsts: []types.JackalPackageConstant{},
+			expectedVars: []types.JackalPackageVariable{
 				{
 					Name:    "TEST",
 					Default: "head",
@@ -357,7 +357,7 @@ func TestMerging(t *testing.T) {
 					Name: "TAIL",
 				},
 			},
-			expectedConsts: []types.ZarfPackageConstant{
+			expectedConsts: []types.JackalPackageConstant{
 				{
 					Name:  "TEST",
 					Value: "head",
@@ -373,7 +373,7 @@ func TestMerging(t *testing.T) {
 		{
 			name: "with-existing",
 			ic:   testIC,
-			existingVars: []types.ZarfPackageVariable{
+			existingVars: []types.JackalPackageVariable{
 				{
 					Name:    "TEST",
 					Default: "existing",
@@ -382,7 +382,7 @@ func TestMerging(t *testing.T) {
 					Name: "EXISTING",
 				},
 			},
-			existingConsts: []types.ZarfPackageConstant{
+			existingConsts: []types.JackalPackageConstant{
 				{
 					Name:  "TEST",
 					Value: "existing",
@@ -391,7 +391,7 @@ func TestMerging(t *testing.T) {
 					Name: "EXISTING",
 				},
 			},
-			expectedVars: []types.ZarfPackageVariable{
+			expectedVars: []types.JackalPackageVariable{
 				{
 					Name:    "TEST",
 					Default: "existing",
@@ -406,7 +406,7 @@ func TestMerging(t *testing.T) {
 					Name: "TAIL",
 				},
 			},
-			expectedConsts: []types.ZarfPackageConstant{
+			expectedConsts: []types.JackalPackageConstant{
 				{
 					Name:  "TEST",
 					Value: "existing",
@@ -439,7 +439,7 @@ func TestMerging(t *testing.T) {
 	}
 }
 
-func createChainFromSlice(components []types.ZarfComponent) (ic *ImportChain) {
+func createChainFromSlice(components []types.JackalComponent) (ic *ImportChain) {
 	ic = &ImportChain{}
 	testPackageName := "test-package"
 
@@ -458,18 +458,18 @@ func createChainFromSlice(components []types.ZarfComponent) (ic *ImportChain) {
 	return ic
 }
 
-func createDummyComponent(name, importDir, subName string) types.ZarfComponent {
-	return types.ZarfComponent{
+func createDummyComponent(name, importDir, subName string) types.JackalComponent {
+	return types.JackalComponent{
 		Name: fmt.Sprintf("import-%s", name),
-		Import: types.ZarfComponentImport{
+		Import: types.JackalComponentImport{
 			Path: importDir,
 		},
-		Files: []types.ZarfFile{
+		Files: []types.JackalFile{
 			{
 				Source: fmt.Sprintf("%s.txt", name),
 			},
 		},
-		Charts: []types.ZarfChart{
+		Charts: []types.JackalChart{
 			{
 				Name:      subName,
 				LocalPath: "chart",
@@ -478,7 +478,7 @@ func createDummyComponent(name, importDir, subName string) types.ZarfComponent {
 				},
 			},
 		},
-		Manifests: []types.ZarfManifest{
+		Manifests: []types.JackalManifest{
 			{
 				Name: subName,
 				Files: []string{
@@ -486,65 +486,65 @@ func createDummyComponent(name, importDir, subName string) types.ZarfComponent {
 				},
 			},
 		},
-		DataInjections: []types.ZarfDataInjection{
+		DataInjections: []types.JackalDataInjection{
 			{
 				Source: name,
 			},
 		},
-		Actions: types.ZarfComponentActions{
-			OnCreate: types.ZarfComponentActionSet{
-				Defaults: types.ZarfComponentActionDefaults{
+		Actions: types.JackalComponentActions{
+			OnCreate: types.JackalComponentActionSet{
+				Defaults: types.JackalComponentActionDefaults{
 					Dir: name + "-dc",
 				},
-				Before: []types.ZarfComponentAction{
+				Before: []types.JackalComponentAction{
 					{Cmd: name + "-bc"},
 				},
-				After: []types.ZarfComponentAction{
+				After: []types.JackalComponentAction{
 					{Cmd: name + "-ac"},
 				},
-				OnSuccess: []types.ZarfComponentAction{
+				OnSuccess: []types.JackalComponentAction{
 					{Cmd: name + "-sc"},
 				},
-				OnFailure: []types.ZarfComponentAction{
+				OnFailure: []types.JackalComponentAction{
 					{Cmd: name + "-fc"},
 				},
 			},
-			OnDeploy: types.ZarfComponentActionSet{
-				Defaults: types.ZarfComponentActionDefaults{
+			OnDeploy: types.JackalComponentActionSet{
+				Defaults: types.JackalComponentActionDefaults{
 					Dir: name + "-dd",
 				},
-				Before: []types.ZarfComponentAction{
+				Before: []types.JackalComponentAction{
 					{Cmd: name + "-bd"},
 				},
-				After: []types.ZarfComponentAction{
+				After: []types.JackalComponentAction{
 					{Cmd: name + "-ad"},
 				},
-				OnSuccess: []types.ZarfComponentAction{
+				OnSuccess: []types.JackalComponentAction{
 					{Cmd: name + "-sd"},
 				},
-				OnFailure: []types.ZarfComponentAction{
+				OnFailure: []types.JackalComponentAction{
 					{Cmd: name + "-fd"},
 				},
 			},
-			OnRemove: types.ZarfComponentActionSet{
-				Defaults: types.ZarfComponentActionDefaults{
+			OnRemove: types.JackalComponentActionSet{
+				Defaults: types.JackalComponentActionDefaults{
 					Dir: name + "-dr",
 				},
-				Before: []types.ZarfComponentAction{
+				Before: []types.JackalComponentAction{
 					{Cmd: name + "-br"},
 				},
-				After: []types.ZarfComponentAction{
+				After: []types.JackalComponentAction{
 					{Cmd: name + "-ar"},
 				},
-				OnSuccess: []types.ZarfComponentAction{
+				OnSuccess: []types.JackalComponentAction{
 					{Cmd: name + "-sr"},
 				},
-				OnFailure: []types.ZarfComponentAction{
+				OnFailure: []types.JackalComponentAction{
 					{Cmd: name + "-fr"},
 				},
 			},
 		},
-		Extensions: extensions.ZarfComponentExtensions{
+		Extensions: extensions.JackalComponentExtensions{
 			BigBang: &extensions.BigBang{
 				ValuesFiles: []string{
 					"values.yaml",

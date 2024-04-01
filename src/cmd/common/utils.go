@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package common handles command configuration across all commands
 package common
@@ -9,14 +9,14 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
 )
 
 // SuppressGlobalInterrupt suppresses the global error on an interrupt
 var SuppressGlobalInterrupt = false
 
-// SetBaseDirectory sets the base directory. This is a directory with a zarf.yaml.
+// SetBaseDirectory sets the base directory. This is a directory with a jackal.yaml.
 func SetBaseDirectory(args []string) string {
 	if len(args) > 0 {
 		return args[0]

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package zoci contains functions for interacting with Zarf packages stored in OCI registries.
+// Package zoci contains functions for interacting with Jackal packages stored in OCI registries.
 package zoci
 
 import (
@@ -9,19 +9,19 @@ import (
 	"fmt"
 	"path/filepath"
 
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/transform"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
 	"github.com/defenseunicorns/pkg/oci"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/transform"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/types"
 	ocispec "github.com/opencontainers/image-spec/specs-go/v1"
 	"oras.land/oras-go/v2/content/file"
 )
 
 var (
 	// PackageAlwaysPull is a list of paths that will always be pulled from the remote repository.
-	PackageAlwaysPull = []string{layout.ZarfYAML, layout.Checksums, layout.Signature}
+	PackageAlwaysPull = []string{layout.JackalYAML, layout.Checksums, layout.Signature}
 )
 
 // PullPackage pulls the package from the remote repository and saves it to the given path.
@@ -29,9 +29,9 @@ var (
 // layersToPull is an optional parameter that allows the caller to specify which layers to pull.
 //
 // The following layers will ALWAYS be pulled if they exist:
-//   - zarf.yaml
+//   - jackal.yaml
 //   - checksums.txt
-//   - zarf.yaml.sig
+//   - jackal.yaml.sig
 func (r *Remote) PullPackage(ctx context.Context, destinationDir string, concurrency int, layersToPull ...ocispec.Descriptor) ([]ocispec.Descriptor, error) {
 	isPartialPull := len(layersToPull) > 0
 	r.Log().Debug(fmt.Sprintf("Pulling %s", r.Repo().Reference))
@@ -76,20 +76,20 @@ func (r *Remote) PullPackage(ctx context.Context, destinationDir string, concurr
 // LayersFromRequestedComponents returns the descriptors for the given components from the root manifest.
 //
 // It also retrieves the descriptors for all image layers that are required by the components.
-func (r *Remote) LayersFromRequestedComponents(ctx context.Context, requestedComponents []types.ZarfComponent) (layers []ocispec.Descriptor, err error) {
+func (r *Remote) LayersFromRequestedComponents(ctx context.Context, requestedComponents []types.JackalComponent) (layers []ocispec.Descriptor, err error) {
 	root, err := r.FetchRoot(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	pkg, err := r.FetchZarfYAML(ctx)
+	pkg, err := r.FetchJackalYAML(ctx)
 	if err != nil {
 		return nil, err
 	}
 	tarballFormat := "%s.tar"
 	images := map[string]bool{}
 	for _, rc := range requestedComponents {
-		component := helpers.Find(pkg.Components, func(component types.ZarfComponent) bool {
+		component := helpers.Find(pkg.Components, func(component types.JackalComponent) bool {
 			return component.Name == rc.Name
 		})
 		if component.Name == "" {
@@ -124,12 +124,12 @@ func (r *Remote) LayersFromRequestedComponents(ctx context.Context, requestedCom
 
 			manifestDescriptor := helpers.Find(index.Manifests, func(layer ocispec.Descriptor) bool {
 				return layer.Annotations[ocispec.AnnotationBaseImageName] == refInfo.Reference ||
-					// A backwards compatibility shim for older Zarf versions that would leave docker.io off of image annotations
+					// A backwards compatibility shim for older Jackal versions that would leave docker.io off of image annotations
 					(layer.Annotations[ocispec.AnnotationBaseImageName] == refInfo.Path+refInfo.TagOrDigest && refInfo.Host == "docker.io")
 			})
 
-			// even though these are technically image manifests, we store them as Zarf blobs
-			manifestDescriptor.MediaType = ZarfLayerMediaTypeBlob
+			// even though these are technically image manifests, we store them as Jackal blobs
+			manifestDescriptor.MediaType = JackalLayerMediaTypeBlob
 
 			manifest, err := r.FetchManifest(ctx, manifestDescriptor)
 			if err != nil {

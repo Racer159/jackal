@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package packager contains functions for interacting with, managing and deploying Zarf packages.
+// Package packager contains functions for interacting with, managing and deploying Jackal packages.
 package packager
 
 import (
@@ -10,17 +10,17 @@ import (
 	"os"
 	"strings"
 
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/creator"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/filters"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/sources"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/pkg/zoci"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
 	"github.com/defenseunicorns/pkg/oci"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/creator"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/filters"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/sources"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/pkg/zoci"
-	"github.com/defenseunicorns/zarf/src/types"
 	ocispec "github.com/opencontainers/image-spec/specs-go/v1"
 )
 
@@ -55,7 +55,7 @@ func (p *Packager) Publish() (err error) {
 
 		sc := creator.NewSkeletonCreator(p.cfg.CreateOpts, p.cfg.PublishOpts)
 
-		if err := helpers.CreatePathAndCopy(layout.ZarfYAML, p.layout.ZarfYAML); err != nil {
+		if err := helpers.CreatePathAndCopy(layout.JackalYAML, p.layout.JackalYAML); err != nil {
 			return err
 		}
 
@@ -109,11 +109,11 @@ func (p *Packager) Publish() (err error) {
 	}
 	if p.cfg.CreateOpts.IsSkeleton {
 		message.Title("How to import components from this skeleton:", "")
-		ex := []types.ZarfComponent{}
+		ex := []types.JackalComponent{}
 		for _, c := range p.cfg.Pkg.Components {
-			ex = append(ex, types.ZarfComponent{
+			ex = append(ex, types.JackalComponent{
 				Name: fmt.Sprintf("import-%s", c.Name),
-				Import: types.ZarfComponentImport{
+				Import: types.JackalComponentImport{
 					ComponentName: c.Name,
 					URL:           helpers.OCIURLPrefix + remote.Repo().Reference.String(),
 				},

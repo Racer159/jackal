@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package packager contains functions for interacting with, managing and deploying Zarf packages.
+// Package packager contains functions for interacting with, managing and deploying Jackal packages.
 package packager
 
 import (
@@ -9,10 +9,10 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/filters"
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/filters"
+	"github.com/defenseunicorns/jackal/src/types"
 )
 
 // Mirror pulls resources from a package (images, git repositories, etc) and pushes them to remotes in the air gap without deploying them
@@ -36,11 +36,11 @@ func (p *Packager) Mirror() (err error) {
 	p.warnings = append(p.warnings, sbomWarnings...)
 
 	// Confirm the overall package mirror
-	if !p.confirmAction(config.ZarfMirrorStage) {
+	if !p.confirmAction(config.JackalMirrorStage) {
 		return fmt.Errorf("mirror cancelled")
 	}
 
-	p.cfg.State = &types.ZarfState{
+	p.cfg.State = &types.JackalState{
 		RegistryInfo: p.cfg.InitOpts.RegistryInfo,
 		GitServer:    p.cfg.InitOpts.GitServer,
 	}
@@ -53,8 +53,8 @@ func (p *Packager) Mirror() (err error) {
 	return nil
 }
 
-// mirrorComponent mirrors a Zarf Component.
-func (p *Packager) mirrorComponent(component types.ZarfComponent) error {
+// mirrorComponent mirrors a Jackal Component.
+func (p *Packager) mirrorComponent(component types.JackalComponent) error {
 	componentPaths := p.layout.Components.Dirs[component.Name]
 
 	// All components now require a name

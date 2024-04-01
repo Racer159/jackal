@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package k8s provides a client for interacting with a Kubernetes cluster.
 package k8s
@@ -62,8 +62,8 @@ func (k *K8s) DeleteNamespace(ctx context.Context, name string) error {
 	}
 }
 
-// NewZarfManagedNamespace returns a corev1.Namespace with Zarf-managed labels
-func (k *K8s) NewZarfManagedNamespace(name string) *corev1.Namespace {
+// NewJackalManagedNamespace returns a corev1.Namespace with Jackal-managed labels
+func (k *K8s) NewJackalManagedNamespace(name string) *corev1.Namespace {
 	namespace := &corev1.Namespace{
 		TypeMeta: metav1.TypeMeta{
 			APIVersion: corev1.SchemeGroupVersion.String(),

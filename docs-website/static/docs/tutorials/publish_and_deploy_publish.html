@@ -47,12 +47,12 @@ b.BWHI {background-color: #aaaaaa}
 </head>
 <body>
 <pre>
-<b>$ zarf package publish zarf-package-helm-oci-chart-arm64-0.0.1.tar.zst oci://$REPOSITORY_URL</b>
+<b>$ jackal package publish jackal-package-helm-oci-chart-arm64-0.0.1.tar.zst oci://$REPOSITORY_URL</b>
 
 <b class=YEL>Saving log file to</b>
-<b class=YEL>/var/folders/bk/rz1xx2sd5zn134c0_j1s2n5r0000gp/T/zarf-2023-03-30-11-24-50-121854673.log</b>
-<b class=YEL></b>  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading Zarf Package zarf-package-helm-oci-chart-arm64-0.0.1.tar.zst</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading Zarf Package zarf-package-helm-oci-chart-arm64-0.0.1.tar.zst</b>
+<b class=YEL>/var/folders/bk/rz1xx2sd5zn134c0_j1s2n5r0000gp/T/jackal-2023-03-30-11-24-50-121854673.log</b>
+<b class=YEL></b>  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading Jackal Package jackal-package-helm-oci-chart-arm64-0.0.1.tar.zst</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading Jackal Package jackal-package-helm-oci-chart-arm64-0.0.1.tar.zst</b>
 
 <div style="background-color:#555555">
 <b style="background-color:#555555"></b><b style="background-color:#555555">                                                                                </b>
@@ -67,7 +67,7 @@ b.BWHI {background-color: #aaaaaa}
   •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Publishing jvb/helm-oci-chart:0.0.1</b>
 <b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">b66dbb27a733 images/oci-layout</b>
 <b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">515aceaacb8d images/index.json</b>
-<b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">fd143c92d486 zarf.yaml</b>
+<b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">fd143c92d486 jackal.yaml</b>
 <b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">932a2288fd3a sboms.tar</b>
 <b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">46564f0eff85 images/blobs/sha256/46564f0...06008f762391a7bb7d58f339ee</b>
 <b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">4f4fb700ef54 images/blobs/sha256/4f4fb70...b5577484a6d75e68dc38e8acc1</b>
@@ -84,7 +84,7 @@ b.BWHI {background-color: #aaaaaa}
 <b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">515aceaacb8d images/index.json</b>
 <b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">b66dbb27a733 images/oci-layout</b>
 <b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">932a2288fd3a sboms.tar</b>
-<b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">fd143c92d486 zarf.yaml</b>
+<b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">fd143c92d486 jackal.yaml</b>
 <b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">46564f0eff85 images/blobs/sha256/46564f0...06008f762391a7bb7d58f339ee</b>
 <b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">4f4fb700ef54 images/blobs/sha256/4f4fb70...b5577484a6d75e68dc38e8acc1</b>
 <b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">42c097bd02de components/helm-oci-chart.tar</b>
@@ -99,9 +99,9 @@ b.BWHI {background-color: #aaaaaa}
 <b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">Published $REPOSITORY_URL/helm-oci-chart:0.0.1 [application/vnd.oci.image.manifest.v1+json]</b>
 
   •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">To inspect/deploy/pull:</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">zarf package inspect oci://$REPOSITORY_URL/helm-oci-chart:0.0.1 --insecure</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">zarf package deploy oci://$REPOSITORY_URL/helm-oci-chart:0.0.1 --insecure</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">zarf package pull oci://$REPOSITORY_URL/helm-oci-chart:0.0.1 --insecure</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">jackal package inspect oci://$REPOSITORY_URL/helm-oci-chart:0.0.1 --insecure</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">jackal package deploy oci://$REPOSITORY_URL/helm-oci-chart:0.0.1 --insecure</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">jackal package pull oci://$REPOSITORY_URL/helm-oci-chart:0.0.1 --insecure</b>
 </pre>
 </body>
 </html>

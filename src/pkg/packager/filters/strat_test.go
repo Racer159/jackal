@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package filters contains core implementations of the ComponentFilterStrategy interface.
 package filters
@@ -7,7 +7,7 @@ package filters
 import (
 	"testing"
 
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -18,8 +18,8 @@ func TestCombine(t *testing.T) {
 
 	combo := Combine(f1, f2, f3)
 
-	pkg := types.ZarfPackage{
-		Components: []types.ZarfComponent{
+	pkg := types.JackalPackage{
+		Components: []types.JackalComponent{
 			{
 				Name: "foo",
 			},
@@ -35,7 +35,7 @@ func TestCombine(t *testing.T) {
 		},
 	}
 
-	expected := []types.ZarfComponent{
+	expected := []types.JackalComponent{
 		{
 			Name: "bar",
 		},
@@ -50,7 +50,7 @@ func TestCombine(t *testing.T) {
 
 	// Test error propagation
 	combo = Combine(f1, f2, ForDeploy("group with no default", false))
-	pkg.Components = append(pkg.Components, types.ZarfComponent{
+	pkg.Components = append(pkg.Components, types.JackalComponent{
 		Name:            "group with no default",
 		DeprecatedGroup: "g1",
 	})

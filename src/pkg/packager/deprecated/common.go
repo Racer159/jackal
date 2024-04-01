@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package deprecated handles package deprecations and migrations
 package deprecated
@@ -11,22 +11,22 @@ import (
 	"slices"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/pterm/pterm"
 )
 
-// BreakingChange represents a breaking change that happened on a specified Zarf version
+// BreakingChange represents a breaking change that happened on a specified Jackal version
 type BreakingChange struct {
 	version    *semver.Version
 	title      string
 	mitigation string
 }
 
-// List of migrations tracked in the zarf.yaml build data.
+// List of migrations tracked in the jackal.yaml build data.
 const (
-	// This should be updated when a breaking change is introduced to the Zarf package structure.  See: https://github.com/defenseunicorns/zarf/releases/tag/v0.27.0
+	// This should be updated when a breaking change is introduced to the Jackal package structure.  See: https://github.com/defenseunicorns/jackal/releases/tag/v0.27.0
 	LastNonBreakingVersion   = "v0.27.0"
 	ScriptsToActionsMigrated = "scripts-to-actions"
 	PluralizeSetVariable     = "pluralize-set-variable"
@@ -36,19 +36,19 @@ const (
 var breakingChanges = []BreakingChange{
 	{
 		version:    semver.New(0, 26, 0, "", ""),
-		title:      "Zarf container images are now mutated based on tag instead of repository name.",
-		mitigation: "Reinitialize the cluster using v0.26.0 or later and redeploy existing packages to update the image references (you can view existing packages with 'zarf package list' and view cluster images with 'zarf tools registry catalog').",
+		title:      "Jackal container images are now mutated based on tag instead of repository name.",
+		mitigation: "Reinitialize the cluster using v0.26.0 or later and redeploy existing packages to update the image references (you can view existing packages with 'jackal package list' and view cluster images with 'jackal tools registry catalog').",
 	},
 }
 
 // MigrateComponent runs all migrations on a component.
-// Build should be empty on package create, but include just in case someone copied a zarf.yaml from a zarf package.
-func MigrateComponent(build types.ZarfBuildData, component types.ZarfComponent) (migratedComponent types.ZarfComponent, warnings []string) {
+// Build should be empty on package create, but include just in case someone copied a jackal.yaml from a jackal package.
+func MigrateComponent(build types.JackalBuildData, component types.JackalComponent) (migratedComponent types.JackalComponent, warnings []string) {
 	migratedComponent = component
 
 	// If the component has already been migrated, clear the deprecated scripts.
 	if slices.Contains(build.Migrations, ScriptsToActionsMigrated) {
-		migratedComponent.DeprecatedScripts = types.DeprecatedZarfComponentScripts{}
+		migratedComponent.DeprecatedScripts = types.DeprecatedJackalComponentScripts{}
 	} else {
 		// Otherwise, run the migration.
 		var warning string
@@ -78,10 +78,10 @@ func MigrateComponent(build types.ZarfBuildData, component types.ZarfComponent) 
 }
 
 // PrintBreakingChanges prints the breaking changes between the provided version and the current CLIVersion
-func PrintBreakingChanges(deployedZarfVersion string) {
-	deployedSemver, err := semver.NewVersion(deployedZarfVersion)
+func PrintBreakingChanges(deployedJackalVersion string) {
+	deployedSemver, err := semver.NewVersion(deployedJackalVersion)
 	if err != nil {
-		message.Debugf("Unable to check for breaking changes between Zarf versions")
+		message.Debugf("Unable to check for breaking changes between Jackal versions")
 		return
 	}
 
@@ -103,7 +103,7 @@ func PrintBreakingChanges(deployedZarfVersion string) {
 		format := pterm.FgYellow.Sprint("CLI version ") + "%s" + pterm.FgYellow.Sprint(" is being used to deploy to a cluster that was initialized with ") +
 			"%s" + pterm.FgYellow.Sprint(". Between these versions there are the following breaking changes to consider:")
 		cliVersion := pterm.Bold.Sprintf(config.CLIVersion)
-		deployedVersion := pterm.Bold.Sprintf(deployedZarfVersion)
+		deployedVersion := pterm.Bold.Sprintf(deployedJackalVersion)
 		message.Warnf(format, cliVersion, deployedVersion)
 
 		// Print each applicable breaking change

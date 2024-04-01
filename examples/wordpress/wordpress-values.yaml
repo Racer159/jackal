@@ -1,10 +1,10 @@
 # We are hard-coding these for now but will make them dynamic later.
-wordpressUsername: ###ZARF_VAR_WORDPRESS_USERNAME###
-wordpressPassword: ###ZARF_VAR_WORDPRESS_PASSWORD###
-wordpressEmail: ###ZARF_VAR_WORDPRESS_EMAIL###
-wordpressFirstName: ###ZARF_VAR_WORDPRESS_FIRST_NAME###
-wordpressLastName: ###ZARF_VAR_WORDPRESS_LAST_NAME###
-wordpressBlogName: ###ZARF_VAR_WORDPRESS_BLOG_NAME###
+wordpressUsername: ###JACKAL_VAR_WORDPRESS_USERNAME###
+wordpressPassword: ###JACKAL_VAR_WORDPRESS_PASSWORD###
+wordpressEmail: ###JACKAL_VAR_WORDPRESS_EMAIL###
+wordpressFirstName: ###JACKAL_VAR_WORDPRESS_FIRST_NAME###
+wordpressLastName: ###JACKAL_VAR_WORDPRESS_LAST_NAME###
+wordpressBlogName: ###JACKAL_VAR_WORDPRESS_BLOG_NAME###
 
 # This value turns on the metrics exporter and thus will require another image.
 metrics:

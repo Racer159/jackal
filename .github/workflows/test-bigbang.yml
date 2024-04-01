@@ -29,7 +29,7 @@ jobs:
       - name: Setup golang
         uses: ./.github/actions/golang
 
-      - name: Build Zarf binary
+      - name: Build Jackal binary
         uses: ./.github/actions/packages
         with:
           init-package: "false"
@@ -45,7 +45,7 @@ jobs:
           username: ${{ secrets.IRON_BANK_ROBOT_USERNAME }}
           password: ${{ secrets.IRON_BANK_ROBOT_PASSWORD }}
 
-      - name: Build a registry1.dso.mil Zarf 'init' package
+      - name: Build a registry1.dso.mil Jackal 'init' package
         if: ${{ env.IRON_BANK_ROBOT_USERNAME != '' }}
         env:
           IRON_BANK_ROBOT_USERNAME: ${{ secrets.IRON_BANK_ROBOT_USERNAME }}
@@ -75,9 +75,9 @@ jobs:
       - name: Setup golang
         uses: ./.github/actions/golang
 
-      - name: Make Zarf executable
+      - name: Make Jackal executable
         run: |
-          chmod +x build/zarf
+          chmod +x build/jackal
 
       # Before we run the tests we need to aggressively cleanup files to reduce disk pressure
       - name: Cleanup files
@@ -101,8 +101,8 @@ jobs:
         env:
           IRON_BANK_ROBOT_USERNAME: ${{ secrets.IRON_BANK_ROBOT_USERNAME }}
         run: |
-          sudo mkdir /mnt/zarf-tmp
-          sudo chown -R runner:runner /mnt/zarf-tmp
+          sudo mkdir /mnt/jackal-tmp
+          sudo chown -R runner:runner /mnt/jackal-tmp
           CI=true go test ./src/extensions/bigbang/test -failfast -v -timeout 30m
 
       - name: Save logs

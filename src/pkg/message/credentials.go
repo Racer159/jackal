@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package message provides a rich set of functions for displaying messages to the user.
 package message
@@ -8,8 +8,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/pterm/pterm"
 )
 
@@ -25,7 +25,7 @@ const (
 )
 
 // PrintCredentialTable displays credentials in a table
-func PrintCredentialTable(state *types.ZarfState, componentsToDeploy []types.DeployedComponent) {
+func PrintCredentialTable(state *types.JackalState, componentsToDeploy []types.DeployedComponent) {
 	if len(componentsToDeploy) == 0 {
 		componentsToDeploy = []types.DeployedComponent{{Name: "logging"}, {Name: "git-server"}}
 	}
@@ -39,22 +39,22 @@ func PrintCredentialTable(state *types.ZarfState, componentsToDeploy []types.Dep
 	loginData := [][]string{}
 	if state.RegistryInfo.InternalRegistry {
 		loginData = append(loginData,
-			[]string{"Registry", state.RegistryInfo.PushUsername, state.RegistryInfo.PushPassword, "zarf connect registry", RegistryKey},
-			[]string{"Registry (read-only)", state.RegistryInfo.PullUsername, state.RegistryInfo.PullPassword, "zarf connect registry", RegistryReadKey},
+			[]string{"Registry", state.RegistryInfo.PushUsername, state.RegistryInfo.PushPassword, "jackal connect registry", RegistryKey},
+			[]string{"Registry (read-only)", state.RegistryInfo.PullUsername, state.RegistryInfo.PullPassword, "jackal connect registry", RegistryReadKey},
 		)
 	}
 
 	for _, component := range componentsToDeploy {
 		// Show message if including logging stack
 		if component.Name == "logging" {
-			loginData = append(loginData, []string{"Logging", config.ZarfLoggingUser, state.LoggingSecret, "zarf connect logging", LoggingKey})
+			loginData = append(loginData, []string{"Logging", config.JackalLoggingUser, state.LoggingSecret, "jackal connect logging", LoggingKey})
 		}
 		// Show message if including git-server
 		if component.Name == "git-server" {
 			loginData = append(loginData,
-				[]string{"Git", state.GitServer.PushUsername, state.GitServer.PushPassword, "zarf connect git", GitKey},
-				[]string{"Git (read-only)", state.GitServer.PullUsername, state.GitServer.PullPassword, "zarf connect git", GitReadKey},
-				[]string{"Artifact Token", state.ArtifactServer.PushUsername, state.ArtifactServer.PushToken, "zarf connect git", ArtifactKey},
+				[]string{"Git", state.GitServer.PushUsername, state.GitServer.PushPassword, "jackal connect git", GitKey},
+				[]string{"Git (read-only)", state.GitServer.PullUsername, state.GitServer.PullPassword, "jackal connect git", GitReadKey},
+				[]string{"Artifact Token", state.ArtifactServer.PushUsername, state.ArtifactServer.PushToken, "jackal connect git", ArtifactKey},
 			)
 		}
 	}
@@ -66,10 +66,10 @@ func PrintCredentialTable(state *types.ZarfState, componentsToDeploy []types.Dep
 }
 
 // PrintComponentCredential displays credentials for a single component
-func PrintComponentCredential(state *types.ZarfState, componentName string) {
+func PrintComponentCredential(state *types.JackalState, componentName string) {
 	switch strings.ToLower(componentName) {
 	case LoggingKey:
-		Notef("Logging credentials (username: %s):", config.ZarfLoggingUser)
+		Notef("Logging credentials (username: %s):", config.JackalLoggingUser)
 		fmt.Println(state.LoggingSecret)
 	case GitKey:
 		Notef("Git Server push password (username: %s):", state.GitServer.PushUsername)
@@ -92,7 +92,7 @@ func PrintComponentCredential(state *types.ZarfState, componentName string) {
 }
 
 // PrintCredentialUpdates displays credentials that will be updated
-func PrintCredentialUpdates(oldState *types.ZarfState, newState *types.ZarfState, services []string) {
+func PrintCredentialUpdates(oldState *types.JackalState, newState *types.JackalState, services []string) {
 	// Pause the logfile's output to avoid credentials being printed to the log file
 	if logFile != nil {
 		logFile.pause()
@@ -107,7 +107,7 @@ func PrintCredentialUpdates(oldState *types.ZarfState, newState *types.ZarfState
 		case RegistryKey:
 			oR := oldState.RegistryInfo
 			nR := newState.RegistryInfo
-			Title("Registry", "the information used to interact with Zarf's container image registry")
+			Title("Registry", "the information used to interact with Jackal's container image registry")
 			pterm.Println()
 			pterm.Printfln("    %s: %s", pterm.Bold.Sprint("URL Address"), compareStrings(oR.Address, nR.Address, false))
 			pterm.Printfln("    %s: %s", pterm.Bold.Sprint("Push Username"), compareStrings(oR.PushUsername, nR.PushUsername, false))
@@ -117,7 +117,7 @@ func PrintCredentialUpdates(oldState *types.ZarfState, newState *types.ZarfState
 		case GitKey:
 			oG := oldState.GitServer
 			nG := newState.GitServer
-			Title("Git Server", "the information used to interact with Zarf's GitOps Git Server")
+			Title("Git Server", "the information used to interact with Jackal's GitOps Git Server")
 			pterm.Println()
 			pterm.Printfln("    %s: %s", pterm.Bold.Sprint("URL Address"), compareStrings(oG.Address, nG.Address, false))
 			pterm.Printfln("    %s: %s", pterm.Bold.Sprint("Push Username"), compareStrings(oG.PushUsername, nG.PushUsername, false))
@@ -127,7 +127,7 @@ func PrintCredentialUpdates(oldState *types.ZarfState, newState *types.ZarfState
 		case ArtifactKey:
 			oA := oldState.ArtifactServer
 			nA := newState.ArtifactServer
-			Title("Artifact Server", "the information used to interact with Zarf's Artifact Server")
+			Title("Artifact Server", "the information used to interact with Jackal's Artifact Server")
 			pterm.Println()
 			pterm.Printfln("    %s: %s", pterm.Bold.Sprint("URL Address"), compareStrings(oA.Address, nA.Address, false))
 			pterm.Printfln("    %s: %s", pterm.Bold.Sprint("Push Username"), compareStrings(oA.PushUsername, nA.PushUsername, false))
@@ -135,7 +135,7 @@ func PrintCredentialUpdates(oldState *types.ZarfState, newState *types.ZarfState
 		case AgentKey:
 			oT := oldState.AgentTLS
 			nT := newState.AgentTLS
-			Title("Agent TLS", "the certificates used to connect to Zarf's Agent")
+			Title("Agent TLS", "the certificates used to connect to Jackal's Agent")
 			pterm.Println()
 			pterm.Printfln("    %s: %s", pterm.Bold.Sprint("Certificate Authority"), compareStrings(string(oT.CA), string(nT.CA), true))
 			pterm.Printfln("    %s: %s", pterm.Bold.Sprint("Public Certificate"), compareStrings(string(oT.Cert), string(nT.Cert), true))

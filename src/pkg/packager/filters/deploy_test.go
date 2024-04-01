@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package filters contains core implementations of the ComponentFilterStrategy interface.
 package filters
@@ -10,13 +10,13 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/types"
 	"github.com/stretchr/testify/require"
 )
 
-func componentFromQuery(t *testing.T, q string) types.ZarfComponent {
-	c := types.ZarfComponent{
+func componentFromQuery(t *testing.T, q string) types.JackalComponent {
+	c := types.JackalComponent{
 		Name: q,
 	}
 
@@ -49,8 +49,8 @@ func componentFromQuery(t *testing.T, q string) types.ZarfComponent {
 	return c
 }
 
-func componentMatrix(_ *testing.T) []types.ZarfComponent {
-	var components []types.ZarfComponent
+func componentMatrix(_ *testing.T) []types.JackalComponent {
+	var components []types.JackalComponent
 
 	defaultValues := []bool{true, false}
 	requiredValues := []interface{}{nil, true, false}
@@ -93,7 +93,7 @@ func componentMatrix(_ *testing.T) []types.ZarfComponent {
 					}
 				}
 
-				c := types.ZarfComponent{
+				c := types.JackalComponent{
 					Name:            name.String(),
 					Default:         defaultValue,
 					DeprecatedGroup: groupValue,
@@ -116,20 +116,20 @@ func TestDeployFilter_Apply(t *testing.T) {
 	possibilities := componentMatrix(t)
 
 	testCases := map[string]struct {
-		pkg                types.ZarfPackage
+		pkg                types.JackalPackage
 		optionalComponents string
-		want               []types.ZarfComponent
+		want               []types.JackalComponent
 		expectedErr        error
 	}{
 		"Test when version is less than v0.33.0 w/ no optional components selected": {
-			pkg: types.ZarfPackage{
-				Build: types.ZarfBuildData{
+			pkg: types.JackalPackage{
+				Build: types.JackalBuildData{
 					Version: "v0.32.0",
 				},
 				Components: possibilities,
 			},
 			optionalComponents: "",
-			want: []types.ZarfComponent{
+			want: []types.JackalComponent{
 				componentFromQuery(t, "required=<nil> && default=true"),
 				componentFromQuery(t, "required=true && default=true"),
 				componentFromQuery(t, "required=false && default=true"),
@@ -139,14 +139,14 @@ func TestDeployFilter_Apply(t *testing.T) {
 			},
 		},
 		"Test when version is less than v0.33.0 w/ some optional components selected": {
-			pkg: types.ZarfPackage{
-				Build: types.ZarfBuildData{
+			pkg: types.JackalPackage{
+				Build: types.JackalBuildData{
 					Version: "v0.32.0",
 				},
 				Components: possibilities,
 			},
 			optionalComponents: strings.Join([]string{"required=false", "required=<nil> && group=bar && idx=5 && default=false", "-required=true"}, ","),
-			want: []types.ZarfComponent{
+			want: []types.JackalComponent{
 				componentFromQuery(t, "required=<nil> && default=true"),
 				componentFromQuery(t, "required=true && default=true"),
 				componentFromQuery(t, "required=false && default=true"),
@@ -159,11 +159,11 @@ func TestDeployFilter_Apply(t *testing.T) {
 			},
 		},
 		"Test failing when group has no default and no selection was made": {
-			pkg: types.ZarfPackage{
-				Build: types.ZarfBuildData{
+			pkg: types.JackalPackage{
+				Build: types.JackalBuildData{
 					Version: "v0.32.0",
 				},
-				Components: []types.ZarfComponent{
+				Components: []types.JackalComponent{
 					componentFromQuery(t, "group=foo && default=false"),
 					componentFromQuery(t, "group=foo && default=false"),
 				},
@@ -172,11 +172,11 @@ func TestDeployFilter_Apply(t *testing.T) {
 			expectedErr:        ErrNoDefaultOrSelection,
 		},
 		"Test failing when multiple are selected from the same group": {
-			pkg: types.ZarfPackage{
-				Build: types.ZarfBuildData{
+			pkg: types.JackalPackage{
+				Build: types.JackalBuildData{
 					Version: "v0.32.0",
 				},
-				Components: []types.ZarfComponent{
+				Components: []types.JackalComponent{
 					componentFromQuery(t, "group=foo && default=true"),
 					componentFromQuery(t, "group=foo && default=false"),
 				},
@@ -185,8 +185,8 @@ func TestDeployFilter_Apply(t *testing.T) {
 			expectedErr:        ErrMultipleSameGroup,
 		},
 		"Test failing when no components are found that match the query": {
-			pkg: types.ZarfPackage{
-				Build: types.ZarfBuildData{
+			pkg: types.JackalPackage{
+				Build: types.JackalBuildData{
 					Version: "v0.32.0",
 				},
 				Components: possibilities,

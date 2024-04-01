@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package filters contains core implementations of the ComponentFilterStrategy interface.
 package filters
@@ -8,7 +8,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/types"
 )
 
 type selectState int
@@ -44,7 +44,7 @@ func includedOrExcluded(componentName string, requestedComponentNames []string) 
 }
 
 // isRequired returns if the component is required or not.
-func isRequired(c types.ZarfComponent) bool {
+func isRequired(c types.JackalComponent) bool {
 	requiredExists := c.Required != nil
 	required := requiredExists && *c.Required
 

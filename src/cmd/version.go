@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package cmd contains the CLI commands for Zarf.
+// Package cmd contains the CLI commands for Jackal.
 package cmd
 
 import (
@@ -10,8 +10,8 @@ import (
 	"runtime"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/config/lang"
 	"github.com/spf13/cobra"
 
 	"runtime/debug"

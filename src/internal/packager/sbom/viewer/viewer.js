@@ -1,14 +1,14 @@
 function initSelector() {
 	const url = /sbom-viewer-(.*).html*$/gim.exec(window.location.href)[1];
 
-	ZARF_SBOM_LIST.sort().forEach((item) => {
+	JACKAL_SBOM_LIST.sort().forEach((item) => {
 		let selected = url === item ? 'selected' : '';
 		sbomSelector.add(new Option(item, item, selected, selected));
 	});
 }
 
 function initData() {
-	const payload = ZARF_SBOM_DATA;
+	const payload = JACKAL_SBOM_DATA;
 
 	const transformedData = payload.artifacts.map((artifact) => {
 		return [

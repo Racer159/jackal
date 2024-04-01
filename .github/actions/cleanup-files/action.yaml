@@ -7,9 +7,9 @@ runs:
     - run: |
         lsblk -f
 
-        sudo rm -rf zarf-sbom /tmp/zarf-*
+        sudo rm -rf jackal-sbom /tmp/jackal-*
         sudo env "PATH=$PATH" CI=true make delete-packages
-        sudo build/zarf tools clear-cache
+        sudo build/jackal tools clear-cache
         sudo docker system prune --all --force
 
         lsblk -f

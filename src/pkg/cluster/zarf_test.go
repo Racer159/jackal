@@ -1,24 +1,24 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package cluster contains Zarf-specific cluster management functions.
+// Package cluster contains Jackal-specific cluster management functions.
 package cluster
 
 import (
 	"testing"
 
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/stretchr/testify/require"
 )
 
-// TestPackageSecretNeedsWait verifies that Zarf waits for webhooks to complete correctly.
+// TestPackageSecretNeedsWait verifies that Jackal waits for webhooks to complete correctly.
 func TestPackageSecretNeedsWait(t *testing.T) {
 	t.Parallel()
 
 	type testCase struct {
 		name            string
 		deployedPackage *types.DeployedPackage
-		component       types.ZarfComponent
+		component       types.JackalComponent
 		skipWebhooks    bool
 		needsWait       bool
 		waitSeconds     int
@@ -34,7 +34,7 @@ func TestPackageSecretNeedsWait(t *testing.T) {
 	testCases := []testCase{
 		{
 			name:      "NoWebhooks",
-			component: types.ZarfComponent{Name: componentName},
+			component: types.JackalComponent{Name: componentName},
 			deployedPackage: &types.DeployedPackage{
 				Name:              packageName,
 				ComponentWebhooks: map[string]map[string]types.Webhook{},
@@ -45,7 +45,7 @@ func TestPackageSecretNeedsWait(t *testing.T) {
 		},
 		{
 			name:      "WebhookRunning",
-			component: types.ZarfComponent{Name: componentName},
+			component: types.JackalComponent{Name: componentName},
 			deployedPackage: &types.DeployedPackage{
 				Name: packageName,
 				ComponentWebhooks: map[string]map[string]types.Webhook{
@@ -64,7 +64,7 @@ func TestPackageSecretNeedsWait(t *testing.T) {
 		// Ensure we only wait on running webhooks for the provided component
 		{
 			name:      "WebhookRunningOnDifferentComponent",
-			component: types.ZarfComponent{Name: componentName},
+			component: types.JackalComponent{Name: componentName},
 			deployedPackage: &types.DeployedPackage{
 				Name: packageName,
 				ComponentWebhooks: map[string]map[string]types.Webhook{
@@ -82,7 +82,7 @@ func TestPackageSecretNeedsWait(t *testing.T) {
 		},
 		{
 			name:      "WebhookSucceeded",
-			component: types.ZarfComponent{Name: componentName},
+			component: types.JackalComponent{Name: componentName},
 			deployedPackage: &types.DeployedPackage{
 				Name: packageName,
 				ComponentWebhooks: map[string]map[string]types.Webhook{
@@ -99,7 +99,7 @@ func TestPackageSecretNeedsWait(t *testing.T) {
 		},
 		{
 			name:      "WebhookFailed",
-			component: types.ZarfComponent{Name: componentName},
+			component: types.JackalComponent{Name: componentName},
 			deployedPackage: &types.DeployedPackage{
 				Name: packageName,
 				ComponentWebhooks: map[string]map[string]types.Webhook{
@@ -116,7 +116,7 @@ func TestPackageSecretNeedsWait(t *testing.T) {
 		},
 		{
 			name:      "WebhookRemoving",
-			component: types.ZarfComponent{Name: componentName},
+			component: types.JackalComponent{Name: componentName},
 			deployedPackage: &types.DeployedPackage{
 				Name: packageName,
 				ComponentWebhooks: map[string]map[string]types.Webhook{
@@ -133,11 +133,11 @@ func TestPackageSecretNeedsWait(t *testing.T) {
 		},
 		{
 			name:      "SkipWaitForYOLO",
-			component: types.ZarfComponent{Name: componentName},
+			component: types.JackalComponent{Name: componentName},
 			deployedPackage: &types.DeployedPackage{
 				Name: packageName,
-				Data: types.ZarfPackage{
-					Metadata: types.ZarfMetadata{
+				Data: types.JackalPackage{
+					Metadata: types.JackalMetadata{
 						YOLO: true,
 					},
 				},
@@ -156,7 +156,7 @@ func TestPackageSecretNeedsWait(t *testing.T) {
 		},
 		{
 			name:         "SkipWebhooksFlagUsed",
-			component:    types.ZarfComponent{Name: componentName},
+			component:    types.JackalComponent{Name: componentName},
 			skipWebhooks: true,
 			deployedPackage: &types.DeployedPackage{
 				Name: packageName,

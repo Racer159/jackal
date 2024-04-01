@@ -1,4 +1,4 @@
-# Example config file, use "zarf prepare generate-config zarf-config.yaml" to generate a new one
+# Example config file, use "jackal prepare generate-config jackal-config.yaml" to generate a new one
 log_level : 'info'
 
 package:

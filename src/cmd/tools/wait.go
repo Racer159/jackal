@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package tools contains the CLI commands for Zarf.
+// Package tools contains the CLI commands for Jackal.
 package tools
 
 import (
 	"time"
 
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
 	"github.com/spf13/cobra"
 
 	// Import to initialize client auth plugins.
@@ -37,7 +37,7 @@ var waitForCmd = &cobra.Command{
 
 		kind := args[0]
 
-		// identifier is optional to allow for commands like `zarf tools wait-for storageclass` without specifying a name.
+		// identifier is optional to allow for commands like `jackal tools wait-for storageclass` without specifying a name.
 		identifier := ""
 		if len(args) > 1 {
 			identifier = args[1]

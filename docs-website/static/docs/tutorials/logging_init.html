@@ -47,18 +47,18 @@ b.BWHI {background-color: #aaaaaa}
 </head>
 <body>
 <pre>
-<b class="WHI">$ zarf init --components="logging" --confirm</b>
+<b class="WHI">$ jackal init --components="logging" --confirm</b>
 <br/>
 <b class=YEL>Saving log file to</b>
-<b class=YEL>/var/folders/bk/rz1xx2sd5zn134c0_j1s2n5r0000gp/T/zarf-2023-03-22-11-47-22-867656842.log</b>
+<b class=YEL>/var/folders/bk/rz1xx2sd5zn134c0_j1s2n5r0000gp/T/jackal-2023-03-22-11-47-22-867656842.log</b>
 <b class=YEL></b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading Zarf Package /Users/jason/.zarf-cache/zarf-init-arm64-v0.24.3.tar.zst</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading Zarf Package /Users/jason/.zarf-cache/zarf-init-arm64-v0.24.3.tar.zst</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading Jackal Package /Users/jason/.jackal-cache/jackal-init-arm64-v0.24.3.tar.zst</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading Jackal Package /Users/jason/.jackal-cache/jackal-init-arm64-v0.24.3.tar.zst</b>
 
-<b style="color:#55ffff;">kind</b>:<b style="color:#ff55ff;"> ZarfInitConfig</b>
+<b style="color:#55ffff;">kind</b>:<b style="color:#ff55ff;"> JackalInitConfig</b>
 <b style="color:#ff55ff;"></b><b style="color:#55ffff;">metadata</b>:<b style="color:#55ffff;"></b>
 <b style="color:#55ffff;">  name</b>:<b style="color:#ff55ff;"> init</b>
-<b style="color:#ff55ff;">  </b><b style="color:#55ffff;">description</b>:<b style="color:#ff55ff;"> Used to establish a new Zarf cluster</b>
+<b style="color:#ff55ff;">  </b><b style="color:#55ffff;">description</b>:<b style="color:#ff55ff;"> Used to establish a new Jackal cluster</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">architecture</b>:<b style="color:#ff55ff;"> arm64</b>
 <b style="color:#ff55ff;"></b><b style="color:#55ffff;">build</b>:<b style="color:#55ffff;"></b>
 <b style="color:#55ffff;">  terminal</b>:<b style="color:#ff55ff;"> fv-az488-281</b>
@@ -69,58 +69,58 @@ b.BWHI {background-color: #aaaaaa}
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">migrations</b>:
   -<b style="color:#ff55ff;"> scripts-to-actions</b>
 <b style="color:#ff55ff;"></b><b style="color:#55ffff;">components</b>:
--<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> zarf-injector</b>
+-<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> jackal-injector</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">description</b>: |
 <b style="color:#ff55ff;">    Bootstraps a Kubernetes cluster by cloning a running pod in the cluster and hosting the registry image.</b>
-<b style="color:#ff55ff;">    Removed and destroyed after the Zarf Registry is self-hosting the registry image.</b>
+<b style="color:#ff55ff;">    Removed and destroyed after the Jackal Registry is self-hosting the registry image.</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">required</b>:<b style="color:#ffffff;"> true</b>
 <b style="color:#ffffff;">  </b><b style="color:#55ffff;">cosignKeyPath</b>:<b style="color:#ff55ff;"> cosign.pub</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">files</b>:
-  -<b style="color:#55ffff;"> source</b>:<b style="color:#ff55ff;"> sget://defenseunicorns/zarf-injector:arm64-2023-02-09</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">target</b>:<b style="color:#ff55ff;"> "###ZARF_TEMP###/zarf-injector"</b><b style="color:#55ffff;"></b>
+  -<b style="color:#55ffff;"> source</b>:<b style="color:#ff55ff;"> sget://defenseunicorns/jackal-injector:arm64-2023-02-09</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">target</b>:<b style="color:#ff55ff;"> "###JACKAL_TEMP###/jackal-injector"</b><b style="color:#55ffff;"></b>
 <b style="color:#55ffff;">    executable</b>:<b style="color:#ffffff;"> true</b>
-<b style="color:#ffffff;"></b>-<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> zarf-seed-registry</b>
+<b style="color:#ffffff;"></b>-<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> jackal-seed-registry</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">description</b>: |
-<b style="color:#ff55ff;">    Deploys the Zarf Registry using the registry image provided by the Zarf Injector.</b>
+<b style="color:#ff55ff;">    Deploys the Jackal Registry using the registry image provided by the Jackal Injector.</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">required</b>:<b style="color:#ffffff;"> true</b>
 <b style="color:#ffffff;">  </b><b style="color:#55ffff;">charts</b>:
   -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> docker-registry</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">releaseName</b>:<b style="color:#ff55ff;"> zarf-docker-registry</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">releaseName</b>:<b style="color:#ff55ff;"> jackal-docker-registry</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">version</b>:<b style="color:#ff55ff;"> 1.0.0</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> zarf</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> jackal</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">valuesFiles</b>:
-    -<b style="color:#ff55ff;"> packages/zarf-registry/registry-values.yaml</b>
-<b style="color:#ff55ff;">    </b>-<b style="color:#ff55ff;"> packages/zarf-registry/registry-values-seed.yaml</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">localPath</b>:<b style="color:#ff55ff;"> packages/zarf-registry/chart</b>
-<b style="color:#ff55ff;"></b>-<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> zarf-registry</b>
+    -<b style="color:#ff55ff;"> packages/jackal-registry/registry-values.yaml</b>
+<b style="color:#ff55ff;">    </b>-<b style="color:#ff55ff;"> packages/jackal-registry/registry-values-seed.yaml</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">localPath</b>:<b style="color:#ff55ff;"> packages/jackal-registry/chart</b>
+<b style="color:#ff55ff;"></b>-<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> jackal-registry</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">description</b>: |
-<b style="color:#ff55ff;">    Updates the Zarf Registry to use the self-hosted registry image. </b>
+<b style="color:#ff55ff;">    Updates the Jackal Registry to use the self-hosted registry image. </b>
 <b style="color:#ff55ff;">    Serves as the primary docker registry for the cluster.</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">required</b>:<b style="color:#ffffff;"> true</b>
 <b style="color:#ffffff;">  </b><b style="color:#55ffff;">charts</b>:
   -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> docker-registry</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">releaseName</b>:<b style="color:#ff55ff;"> zarf-docker-registry</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">releaseName</b>:<b style="color:#ff55ff;"> jackal-docker-registry</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">version</b>:<b style="color:#ff55ff;"> 1.0.0</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> zarf</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> jackal</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">valuesFiles</b>:
-    -<b style="color:#ff55ff;"> packages/zarf-registry/registry-values.yaml</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">localPath</b>:<b style="color:#ff55ff;"> packages/zarf-registry/chart</b>
+    -<b style="color:#ff55ff;"> packages/jackal-registry/registry-values.yaml</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">localPath</b>:<b style="color:#ff55ff;"> packages/jackal-registry/chart</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">manifests</b>:
   -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> registry-connect</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> zarf</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> jackal</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">files</b>:
-    -<b style="color:#ff55ff;"> packages/zarf-registry/connect.yaml</b>
+    -<b style="color:#ff55ff;"> packages/jackal-registry/connect.yaml</b>
 <b style="color:#ff55ff;">  </b>-<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> kep-1755-registry-annotation</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> zarf</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> jackal</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">files</b>:
-    -<b style="color:#ff55ff;"> packages/zarf-registry/configmap.yaml</b>
+    -<b style="color:#ff55ff;"> packages/jackal-registry/configmap.yaml</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">images</b>:
   -<b style="color:#ff55ff;"> registry:2.8.1</b>
-<b style="color:#ff55ff;"></b>-<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> zarf-agent</b>
+<b style="color:#ff55ff;"></b>-<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> jackal-agent</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">description</b>: |
 <b style="color:#ff55ff;">    A Kubernetes mutating webhook to enable automated URL rewriting for container</b>
 <b style="color:#ff55ff;">    images and git repository references in Kubernetes manifests. This prevents</b>
-<b style="color:#ff55ff;">    the need to manually update URLs from their original sources to the Zarf-managed</b>
+<b style="color:#ff55ff;">    the need to manually update URLs from their original sources to the Jackal-managed</b>
 <b style="color:#ff55ff;">    docker registry and git server.</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">required</b>:<b style="color:#ffffff;"> true</b>
 <b style="color:#ffffff;">  </b><b style="color:#55ffff;">actions</b>:<b style="color:#55ffff;"></b>
@@ -128,15 +128,15 @@ b.BWHI {background-color: #aaaaaa}
 <b style="color:#55ffff;">      before</b>:
       -<b style="color:#55ffff;"> cmd</b>:<b style="color:#ff55ff;"> make init-package-local-agent AGENT_IMAGE_TAG="v0.24.3"</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">manifests</b>:
-  -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> zarf-agent</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> zarf</b>
+  -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> jackal-agent</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> jackal</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">files</b>:
-    -<b style="color:#ff55ff;"> packages/zarf-agent/manifests/service.yaml</b>
-<b style="color:#ff55ff;">    </b>-<b style="color:#ff55ff;"> packages/zarf-agent/manifests/secret.yaml</b>
-<b style="color:#ff55ff;">    </b>-<b style="color:#ff55ff;"> packages/zarf-agent/manifests/deployment.yaml</b>
-<b style="color:#ff55ff;">    </b>-<b style="color:#ff55ff;"> packages/zarf-agent/manifests/webhook.yaml</b>
+    -<b style="color:#ff55ff;"> packages/jackal-agent/manifests/service.yaml</b>
+<b style="color:#ff55ff;">    </b>-<b style="color:#ff55ff;"> packages/jackal-agent/manifests/secret.yaml</b>
+<b style="color:#ff55ff;">    </b>-<b style="color:#ff55ff;"> packages/jackal-agent/manifests/deployment.yaml</b>
+<b style="color:#ff55ff;">    </b>-<b style="color:#ff55ff;"> packages/jackal-agent/manifests/webhook.yaml</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">images</b>:
-  -<b style="color:#ff55ff;"> ghcr.io/defenseunicorns/zarf/agent:v0.24.3</b>
+  -<b style="color:#ff55ff;"> ghcr.io/defenseunicorns/jackal/agent:v0.24.3</b>
 <b style="color:#ff55ff;"></b>-<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> logging</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">description</b>: |
 <b style="color:#ff55ff;">    Deploys the Promtail Grafana &amp; Loki (PGL) stack. </b>
@@ -144,15 +144,15 @@ b.BWHI {background-color: #aaaaaa}
 <b style="color:#ff55ff;">    Recommended if no other logging stack is deployed in the cluster.</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">charts</b>:
   -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> loki-stack</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">releaseName</b>:<b style="color:#ff55ff;"> zarf-loki-stack</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">releaseName</b>:<b style="color:#ff55ff;"> jackal-loki-stack</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">url</b>:<b style="color:#ff55ff;"> https://grafana.github.io/helm-charts</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">version</b>:<b style="color:#ff55ff;"> 2.8.9</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> zarf</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> jackal</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">valuesFiles</b>:
     -<b style="color:#ff55ff;"> packages/logging-pgl/pgl-values.yaml</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">manifests</b>:
   -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> logging-connect</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> zarf</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> jackal</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">files</b>:
     -<b style="color:#ff55ff;"> packages/logging-pgl/connect.yaml</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">images</b>:
@@ -169,18 +169,18 @@ b.BWHI {background-color: #aaaaaa}
 <b style="color:#55ffff;">      after</b>:
       -<b style="color:#55ffff;"> maxTotalSeconds</b>:<b style="color:#ffffff;"> 60</b>
 <b style="color:#ffffff;">        </b><b style="color:#55ffff;">maxRetries</b>:<b style="color:#ffffff;"> 3</b>
-<b style="color:#ffffff;">        </b><b style="color:#55ffff;">cmd</b>:<b style="color:#ff55ff;"> ./zarf internal create-read-only-gitea-user</b>
+<b style="color:#ffffff;">        </b><b style="color:#55ffff;">cmd</b>:<b style="color:#ff55ff;"> ./jackal internal create-read-only-gitea-user</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">charts</b>:
   -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> gitea</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">releaseName</b>:<b style="color:#ff55ff;"> zarf-gitea</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">releaseName</b>:<b style="color:#ff55ff;"> jackal-gitea</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">url</b>:<b style="color:#ff55ff;"> https://dl.gitea.io/charts</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">version</b>:<b style="color:#ff55ff;"> 7.0.2</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> zarf</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> jackal</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">valuesFiles</b>:
     -<b style="color:#ff55ff;"> packages/gitea/gitea-values.yaml</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">manifests</b>:
   -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> git-connect</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> zarf</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> jackal</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">files</b>:
     -<b style="color:#ff55ff;"> packages/gitea/connect.yaml</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">images</b>:
@@ -234,7 +234,7 @@ b.BWHI {background-color: #aaaaaa}
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">default</b>:<b style="color:#ff55ff;"> 2Gi</b>
 <b style="color:#ff55ff;"></b><b style="color:#55ffff;">constants</b>:
 -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> AGENT_IMAGE</b>
-<b style="color:#ff55ff;">  </b><b style="color:#55ffff;">value</b>:<b style="color:#ff55ff;"> defenseunicorns/zarf/agent</b>
+<b style="color:#ff55ff;">  </b><b style="color:#55ffff;">value</b>:<b style="color:#ff55ff;"> defenseunicorns/jackal/agent</b>
 -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> AGENT_IMAGE_TAG</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">value</b>:<b style="color:#ff55ff;"> v0.24.3</b>
 -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> REGISTRY_IMAGE</b>
@@ -242,16 +242,16 @@ b.BWHI {background-color: #aaaaaa}
 -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> REGISTRY_IMAGE_TAG</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">value</b>:<b style="color:#ff55ff;"> 2.8.1</b>
 <b class=YEL>This package has 9 artifacts with software bill-of-materials (SBOM) included. You can view them now</b>
-<b class=YEL>in the zarf-sbom folder in this directory or to go directly to one, open this in your browser:</b>
-<b class=YEL>/Users/jason/src/github.com/jasonvanbrackel/zarf/docs/.examples/tutorials/zarf-sbom/sbom-viewer-docker.io_grafana_promtail_2.7.0.html</b>
+<b class=YEL>in the jackal-sbom folder in this directory or to go directly to one, open this in your browser:</b>
+<b class=YEL>/Users/jason/src/github.com/jasonvanbrackel/jackal/docs/.examples/tutorials/jackal-sbom/sbom-viewer-docker.io_grafana_promtail_2.7.0.html</b>
 <b class=YEL></b>
 <b class=YEL>* This directory will be removed after package deployment.</b>
 <b class=YEL></b>
-<b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">Deploy Zarf package confirmed</b>
+<b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">Deploy Jackal package confirmed</b>
 
 <div style="background-color:#555555">
 <b style="background-color:#555555"></b><b style="background-color:#555555">                                                                                </b>
-<b style="background-color:#555555"></b><b style="background-color:#555555"></b><b style="color:#ffffff;background-color:#555555"></b><b style="color:#ffffff;background-color:#555555">  📦 ZARF-INJECTOR COMPONENT                                                    </b><b style="background-color:#555555"></b><b style="background-color:#555555"></b>
+<b style="background-color:#555555"></b><b style="background-color:#555555"></b><b style="color:#ffffff;background-color:#555555"></b><b style="color:#ffffff;background-color:#555555">  📦 JACKAL-INJECTOR COMPONENT                                                    </b><b style="background-color:#555555"></b><b style="background-color:#555555"></b>
 <b style="background-color:#555555"></b><b style="background-color:#555555"></b><b style="color:#ffffff;background-color:#555555"></b><b style="color:#ffffff;background-color:#555555">                                                                                </b><b style="background-color:#555555"></b><b style="background-color:#555555"></b>
 <b style="background-color:#555555"></b><b style="background-color:#555555">                                                                                </b>
 </div>
@@ -264,56 +264,56 @@ b.BWHI {background-color: #aaaaaa}
   •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Attempting to bootstrap the seed image into the cluster</b>
 <div style="background-color:#555555">
 <b style="background-color:#555555"></b><b style="background-color:#555555">                                                                                </b>
-<b style="background-color:#555555"></b><b style="background-color:#555555"></b><b style="color:#ffffff;background-color:#555555"></b><b style="color:#ffffff;background-color:#555555">  📦 ZARF-SEED-REGISTRY COMPONENT                                               </b><b style="background-color:#555555"></b><b style="background-color:#555555"></b>
+<b style="background-color:#555555"></b><b style="background-color:#555555"></b><b style="color:#ffffff;background-color:#555555"></b><b style="color:#ffffff;background-color:#555555">  📦 JACKAL-SEED-REGISTRY COMPONENT                                               </b><b style="background-color:#555555"></b><b style="background-color:#555555"></b>
 <b style="background-color:#555555"></b><b style="background-color:#555555"></b><b style="color:#ffffff;background-color:#555555"></b><b style="color:#ffffff;background-color:#555555">                                                                                </b><b style="background-color:#555555"></b><b style="background-color:#555555"></b>
 <b style="background-color:#555555"></b><b style="background-color:#555555">                                                                                </b>
 </div>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading the Zarf State from the Kubernetes cluster</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading the Zarf State from the Kubernetes cluster</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart docker-registry:1.0.0 from Zarf-generated helm chart</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart docker-registry:1.0.0 from Zarf-generated helm chart</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading the Jackal State from the Kubernetes cluster</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading the Jackal State from the Kubernetes cluster</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart docker-registry:1.0.0 from Jackal-generated helm chart</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart docker-registry:1.0.0 from Jackal-generated helm chart</b>
 
 <div style="background-color:#555555">
 <b style="background-color:#555555"></b><b style="background-color:#555555">                                                                                </b>
-<b style="background-color:#555555"></b><b style="background-color:#555555"></b><b style="color:#ffffff;background-color:#555555"></b><b style="color:#ffffff;background-color:#555555">  📦 ZARF-REGISTRY COMPONENT                                                    </b><b style="background-color:#555555"></b><b style="background-color:#555555"></b>
+<b style="background-color:#555555"></b><b style="background-color:#555555"></b><b style="color:#ffffff;background-color:#555555"></b><b style="color:#ffffff;background-color:#555555">  📦 JACKAL-REGISTRY COMPONENT                                                    </b><b style="background-color:#555555"></b><b style="background-color:#555555"></b>
 <b style="background-color:#555555"></b><b style="background-color:#555555"></b><b style="color:#ffffff;background-color:#555555"></b><b style="color:#ffffff;background-color:#555555">                                                                                </b><b style="background-color:#555555"></b><b style="background-color:#555555"></b>
 <b style="background-color:#555555"></b><b style="background-color:#555555">                                                                                </b>
 </div>
 
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Opening tunnel 52538 -&gt; 5000 for svc/zarf-docker-registry in namespace zarf</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Opening tunnel 52538 -&gt; 5000 for svc/jackal-docker-registry in namespace jackal</b>
   •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Creating port forwarding tunnel at http://127.0.0.1:52538/v2/_catalog</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Storing images in the zarf registry</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Storing images in the zarf registry</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart docker-registry:1.0.0 from Zarf-generated helm chart</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart docker-registry:1.0.0 from Zarf-generated helm chart</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Storing images in the jackal registry</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Storing images in the jackal registry</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart docker-registry:1.0.0 from Jackal-generated helm chart</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart docker-registry:1.0.0 from Jackal-generated helm chart</b>
   •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Starting helm chart generation registry-connect</b>
   •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Starting helm chart generation registry-connect</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart raw-init-zarf-registry-registry-connect:0.1.1679500042 from Zarf-generated</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart raw-init-jackal-registry-registry-connect:0.1.1679500042 from Jackal-generated</b>
        <b style="color:#55ffff;"></b><b style="color:#55ffff;">helm chart</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart raw-init-zarf-registry-registry-connect:0.1.1679500042 from Zarf-generated</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart raw-init-jackal-registry-registry-connect:0.1.1679500042 from Jackal-generated</b>
        <b style="color:#55ffff;"></b><b style="color:#55ffff;">helm chart</b>
   •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Starting helm chart generation kep-1755-registry-annotation</b>
   •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Starting helm chart generation kep-1755-registry-annotation</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart raw-init-zarf-registry-kep-1755-registry-annotation:0.1.1679500042 from</b>
-       <b style="color:#55ffff;"></b><b style="color:#55ffff;">Zarf-generated helm chart</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart raw-init-zarf-registry-kep-1755-registry-annotation:0.1.1679500042 from</b>
-       <b style="color:#55ffff;"></b><b style="color:#55ffff;">Zarf-generated helm chart</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart raw-init-jackal-registry-kep-1755-registry-annotation:0.1.1679500042 from</b>
+       <b style="color:#55ffff;"></b><b style="color:#55ffff;">Jackal-generated helm chart</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart raw-init-jackal-registry-kep-1755-registry-annotation:0.1.1679500042 from</b>
+       <b style="color:#55ffff;"></b><b style="color:#55ffff;">Jackal-generated helm chart</b>
 
 <div style="background-color:#555555">
 <b style="background-color:#555555"></b><b style="background-color:#555555">                                                                                </b>
-<b style="background-color:#555555"></b><b style="background-color:#555555"></b><b style="color:#ffffff;background-color:#555555"></b><b style="color:#ffffff;background-color:#555555">  📦 ZARF-AGENT COMPONENT                                                       </b><b style="background-color:#555555"></b><b style="background-color:#555555"></b>
+<b style="background-color:#555555"></b><b style="background-color:#555555"></b><b style="color:#ffffff;background-color:#555555"></b><b style="color:#ffffff;background-color:#555555">  📦 JACKAL-AGENT COMPONENT                                                       </b><b style="background-color:#555555"></b><b style="background-color:#555555"></b>
 <b style="background-color:#555555"></b><b style="background-color:#555555"></b><b style="color:#ffffff;background-color:#555555"></b><b style="color:#ffffff;background-color:#555555">                                                                                </b><b style="background-color:#555555"></b><b style="background-color:#555555"></b>
 <b style="background-color:#555555"></b><b style="background-color:#555555">                                                                                </b>
 </div>
 
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Opening tunnel 52550 -&gt; 5000 for svc/zarf-docker-registry in namespace zarf</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Opening tunnel 52550 -&gt; 5000 for svc/jackal-docker-registry in namespace jackal</b>
   •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Creating port forwarding tunnel at http://127.0.0.1:52550/v2/_catalog</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Storing images in the zarf registry</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Storing images in the zarf registry</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Starting helm chart generation zarf-agent</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Starting helm chart generation zarf-agent</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart raw-init-zarf-agent-zarf-agent:0.1.1679500042 from Zarf-generated helm chart</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart raw-init-zarf-agent-zarf-agent:0.1.1679500042 from Zarf-generated helm chart</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Storing images in the jackal registry</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Storing images in the jackal registry</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Starting helm chart generation jackal-agent</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Starting helm chart generation jackal-agent</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart raw-init-jackal-agent-jackal-agent:0.1.1679500042 from Jackal-generated helm chart</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart raw-init-jackal-agent-jackal-agent:0.1.1679500042 from Jackal-generated helm chart</b>
 
 <div style="background-color:#555555">
 <b style="background-color:#555555"></b><b style="background-color:#555555">                                                                                </b>
@@ -322,22 +322,22 @@ b.BWHI {background-color: #aaaaaa}
 <b style="background-color:#555555"></b><b style="background-color:#555555">                                                                                </b>
 </div>
 
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Opening tunnel 52556 -&gt; 5000 for svc/zarf-docker-registry in namespace zarf</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Opening tunnel 52556 -&gt; 5000 for svc/jackal-docker-registry in namespace jackal</b>
   •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Creating port forwarding tunnel at http://127.0.0.1:52556/v2/_catalog</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Storing images in the zarf registry</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Storing images in the zarf registry</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Storing images in the jackal registry</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Storing images in the jackal registry</b>
   •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart loki-stack:2.8.9 from https://grafana.github.io/helm-charts</b>
   •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart loki-stack:2.8.9 from https://grafana.github.io/helm-charts</b>
   •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Starting helm chart generation logging-connect</b>
   •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Starting helm chart generation logging-connect</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart raw-init-logging-logging-connect:0.1.1679500042 from Zarf-generated helm chart</b>
-  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart raw-init-logging-logging-connect:0.1.1679500042 from Zarf-generated helm chart</b>
-<b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">Zarf deployment complete</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart raw-init-logging-logging-connect:0.1.1679500042 from Jackal-generated helm chart</b>
+  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart raw-init-logging-logging-connect:0.1.1679500042 from Jackal-generated helm chart</b>
+<b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">Jackal deployment complete</b>
 
 
 <b style="color:#55ffff;"></b><b style="color:#55ffff;">     Application</b><b style="color:#555555;"></b><b style="color:#555555;"> | </b><b style="color:#55ffff;"></b><b style="color:#55ffff;">Username  </b><b style="color:#555555;"></b><b style="color:#555555;"> | </b><b style="color:#55ffff;"></b><b style="color:#55ffff;">Password                </b><b style="color:#555555;"></b><b style="color:#555555;"> | </b><b style="color:#55ffff;"></b><b style="color:#55ffff;">Connect              </b>
-     Registry   <b style="color:#555555;"></b><b style="color:#555555;"> | </b>zarf-push <b style="color:#555555;"></b><b style="color:#555555;"> | </b>Tka7dWq4GEit5G3GDX2dQwdh<b style="color:#555555;"></b><b style="color:#555555;"> | </b>zarf connect registry
-     Logging    <b style="color:#555555;"></b><b style="color:#555555;"> | </b>zarf-admin<b style="color:#555555;"></b><b style="color:#555555;"> | </b>ysC9TEWsSm37pBmA3hvqrLN3<b style="color:#555555;"></b><b style="color:#555555;"> | </b>zarf connect logging
+     Registry   <b style="color:#555555;"></b><b style="color:#555555;"> | </b>jackal-push <b style="color:#555555;"></b><b style="color:#555555;"> | </b>Tka7dWq4GEit5G3GDX2dQwdh<b style="color:#555555;"></b><b style="color:#555555;"> | </b>jackal connect registry
+     Logging    <b style="color:#555555;"></b><b style="color:#555555;"> | </b>jackal-admin<b style="color:#555555;"></b><b style="color:#555555;"> | </b>ysC9TEWsSm37pBmA3hvqrLN3<b style="color:#555555;"></b><b style="color:#555555;"> | </b>jackal connect logging
 </pre>
 </body>
 </html>

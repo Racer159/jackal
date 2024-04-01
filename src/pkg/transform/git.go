@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package transform provides helper functions to transform URLs to airgap equivalents
 package transform
@@ -15,7 +15,7 @@ import (
 // For further explanation: https://regex101.com/r/YxpfhC/5
 var gitURLRegex = regexp.MustCompile(`^(?P<proto>[a-z]+:\/\/)(?P<hostPath>.+?)\/(?P<repo>[\w\-\.]+?)?(?P<git>\.git)?(\/)?(?P<atRef>@(?P<force>\+)?(?P<ref>[\/\+\w\-\.]+))?(?P<gitPath>\/(?P<gitPathId>info\/.*|git-upload-pack|git-receive-pack))?$`)
 
-// MutateGitURLsInText changes the gitURL hostname to use the repository Zarf is configured to use.
+// MutateGitURLsInText changes the gitURL hostname to use the repository Jackal is configured to use.
 func MutateGitURLsInText(logger Log, targetBaseURL string, text string, pushUser string) string {
 	extractPathRegex := regexp.MustCompile(`[a-z]+:\/\/[^\/]+\/(.*\.git)`)
 	output := extractPathRegex.ReplaceAllStringFunc(text, func(match string) string {
@@ -29,7 +29,7 @@ func MutateGitURLsInText(logger Log, targetBaseURL string, text string, pushUser
 	return output
 }
 
-// GitURLSplitRef takes a git url and returns a separated source url and zarf reference.
+// GitURLSplitRef takes a git url and returns a separated source url and jackal reference.
 func GitURLSplitRef(sourceURL string) (string, string, error) {
 	get, err := helpers.MatchRegex(gitURLRegex, sourceURL)
 
@@ -43,7 +43,7 @@ func GitURLSplitRef(sourceURL string) (string, string, error) {
 	return gitURLNoRef, refPlain, nil
 }
 
-// GitURLtoFolderName takes a git url and returns the folder name for the repo in the Zarf package.
+// GitURLtoFolderName takes a git url and returns the folder name for the repo in the Jackal package.
 func GitURLtoFolderName(sourceURL string) (string, error) {
 	get, err := helpers.MatchRegex(gitURLRegex, sourceURL)
 
@@ -74,7 +74,7 @@ func GitURLtoRepoName(sourceURL string) (string, error) {
 	}
 
 	repoName := get("repo")
-	// NOTE: We remove the .git and protocol so that https://zarf.dev/repo.git and http://zarf.dev/repo
+	// NOTE: We remove the .git and protocol so that https://jackal.dev/repo.git and http://jackal.dev/repo
 	// resolve to the same repo (as they would in real life)
 	sanitizedURL := fmt.Sprintf("%s/%s", get("hostPath"), repoName)
 
@@ -86,7 +86,7 @@ func GitURLtoRepoName(sourceURL string) (string, error) {
 	return newRepoName, nil
 }
 
-// GitURL takes a base URL, a source url and a username and returns a Zarf-compatible url.
+// GitURL takes a base URL, a source url and a username and returns a Jackal-compatible url.
 func GitURL(targetBaseURL string, sourceURL string, pushUser string) (*url.URL, error) {
 	repoName, err := GitURLtoRepoName(sourceURL)
 	if err != nil {

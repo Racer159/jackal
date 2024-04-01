@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package utils provides generic helper functions.
 package utils
@@ -12,17 +12,17 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/types"
 )
 
 const (
-	tmpPathPrefix = "zarf-"
+	tmpPathPrefix = "jackal-"
 )
 
-// MakeTempDir creates a temp directory with the zarf- prefix.
+// MakeTempDir creates a temp directory with the jackal- prefix.
 func MakeTempDir(basePath string) (string, error) {
 	if basePath != "" {
 		if err := helpers.CreateDirectory(basePath, helpers.ReadWriteExecuteUser); err != nil {
@@ -54,24 +54,24 @@ func GetFinalExecutablePath() (string, error) {
 	return linkedPath, err
 }
 
-// GetFinalExecutableCommand returns the final path to the Zarf executable including and library prefixes and overrides.
+// GetFinalExecutableCommand returns the final path to the Jackal executable including and library prefixes and overrides.
 func GetFinalExecutableCommand() (string, error) {
 	// In case the binary is symlinked somewhere else, get the final destination
-	zarfCommand, err := GetFinalExecutablePath()
+	jackalCommand, err := GetFinalExecutablePath()
 	if err != nil {
-		return zarfCommand, err
+		return jackalCommand, err
 	}
 
-	if config.ActionsCommandZarfPrefix != "" {
-		zarfCommand = fmt.Sprintf("%s %s", zarfCommand, config.ActionsCommandZarfPrefix)
+	if config.ActionsCommandJackalPrefix != "" {
+		jackalCommand = fmt.Sprintf("%s %s", jackalCommand, config.ActionsCommandJackalPrefix)
 	}
 
-	// If a library user has chosen to override config to use system Zarf instead, reset the binary path.
-	if config.ActionsUseSystemZarf {
-		zarfCommand = "zarf"
+	// If a library user has chosen to override config to use system Jackal instead, reset the binary path.
+	if config.ActionsUseSystemJackal {
+		jackalCommand = "jackal"
 	}
 
-	return zarfCommand, err
+	return jackalCommand, err
 }
 
 // SplitFile will take a srcFile path and split it into files based on chunkSizeBytes
@@ -192,7 +192,7 @@ func SplitFile(srcPath string, chunkSizeBytes int) (err error) {
 	sha256sum = fmt.Sprintf("%x", hash.Sum(nil))
 
 	// Marshal the data into a json file.
-	jsonData, err := json.Marshal(types.ZarfSplitPackageData{
+	jsonData, err := json.Marshal(types.JackalSplitPackageData{
 		Count:     len(fileNames),
 		Bytes:     fileSize,
 		Sha256Sum: sha256sum,

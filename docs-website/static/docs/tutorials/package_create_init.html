@@ -47,15 +47,15 @@ b.BWHI {background-color: #aaaaaa}
 </head>
 <body>
 <pre>
-<b class=WHI>$ zarf package create .</b>
+<b class=WHI>$ jackal package create .</b>
 
-<b style="color:#55ffff;">kind</b>:<b style="color:#ff55ff;"> ZarfInitConfig</b>
+<b style="color:#55ffff;">kind</b>:<b style="color:#ff55ff;"> JackalInitConfig</b>
 <b style="color:#ff55ff;"></b><b style="color:#55ffff;">metadata</b>:<b style="color:#55ffff;"></b>
 <b style="color:#55ffff;">  name</b>:<b style="color:#ff55ff;"> init</b>
-<b style="color:#ff55ff;">  </b><b style="color:#55ffff;">description</b>:<b style="color:#ff55ff;"> Used to establish a new Zarf cluster</b>
+<b style="color:#ff55ff;">  </b><b style="color:#55ffff;">description</b>:<b style="color:#ff55ff;"> Used to establish a new Jackal cluster</b>
 <b style="color:#ff55ff;"></b><b style="color:#55ffff;">components</b>:
 -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> k3s</b>
-<b style="color:#ff55ff;">  </b><b style="color:#55ffff;">description</b>:<b style="color:#ff55ff;"> "*** REQUIRES ROOT *** Install K3s, certified Kubernetes distribution built for IoT &amp; Edge computing. K3s provides the cluster need for Zarf running in Appliance Mode as well as can host a low-resource Gitops Service if not using an existing Kubernetes platform."</b><b style="color:#55ffff;"></b>
+<b style="color:#ff55ff;">  </b><b style="color:#55ffff;">description</b>:<b style="color:#ff55ff;"> "*** REQUIRES ROOT *** Install K3s, certified Kubernetes distribution built for IoT &amp; Edge computing. K3s provides the cluster need for Jackal running in Appliance Mode as well as can host a low-resource Gitops Service if not using an existing Kubernetes platform."</b><b style="color:#55ffff;"></b>
 <b style="color:#55ffff;">  only</b>:<b style="color:#55ffff;"></b>
 <b style="color:#55ffff;">    localOS</b>:<b style="color:#ff55ff;"> linux</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">cluster</b>:<b style="color:#55ffff;"></b>
@@ -66,15 +66,15 @@ b.BWHI {background-color: #aaaaaa}
 <b style="color:#55ffff;">        maxRetries</b>:<b style="color:#ffffff;"> 5</b>
 <b style="color:#ffffff;">      </b><b style="color:#55ffff;">before</b>:
       -<b style="color:#55ffff;"> maxRetries</b>:<b style="color:#ffffff;"> 0</b>
-<b style="color:#ffffff;">        </b><b style="color:#55ffff;">cmd</b>:<b style="color:#ff55ff;"> ./zarf internal is-valid-hostname</b>
+<b style="color:#ffffff;">        </b><b style="color:#55ffff;">cmd</b>:<b style="color:#ff55ff;"> ./jackal internal is-valid-hostname</b>
 <b style="color:#ff55ff;">      </b>-<b style="color:#55ffff;"> cmd</b>:<b style="color:#ff55ff;"> "[ -e /etc/redhat-release ] &amp;&amp; systemctl disable firewalld --now || echo ''"</b><b style="color:#55ffff;"></b>
 <b style="color:#55ffff;">      after</b>:
       -<b style="color:#55ffff;"> cmd</b>:<b style="color:#ff55ff;"> systemctl daemon-reload</b>
 <b style="color:#ff55ff;">      </b>-<b style="color:#55ffff;"> cmd</b>:<b style="color:#ff55ff;"> systemctl enable k3s</b>
 <b style="color:#ff55ff;">      </b>-<b style="color:#55ffff;"> cmd</b>:<b style="color:#ff55ff;"> systemctl start k3s</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">files</b>:
-  -<b style="color:#55ffff;"> source</b>:<b style="color:#ff55ff;"> packages/distros/k3s/common/zarf-clean-k3s.sh</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">target</b>:<b style="color:#ff55ff;"> /opt/zarf/zarf-clean-k3s.sh</b>
+  -<b style="color:#55ffff;"> source</b>:<b style="color:#ff55ff;"> packages/distros/k3s/common/jackal-clean-k3s.sh</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">target</b>:<b style="color:#ff55ff;"> /opt/jackal/jackal-clean-k3s.sh</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">executable</b>:<b style="color:#ffffff;"> true</b>
 <b style="color:#ffffff;">  </b>-<b style="color:#55ffff;"> source</b>:<b style="color:#ff55ff;"> packages/distros/k3s/common/k3s.service</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">target</b>:<b style="color:#ff55ff;"> /etc/systemd/system/k3s.service</b>
@@ -91,58 +91,58 @@ b.BWHI {background-color: #aaaaaa}
 <b style="color:#ff55ff;">  </b>-<b style="color:#55ffff;"> source</b>:<b style="color:#ff55ff;"> https://github.com/k3s-io/k3s/releases/download/v1.24.1+k3s1/k3s-airgap-images-arm64.tar.zst</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">shasum</b>:<b style="color:#ff55ff;"> 12029e4bbfecfa16942345aeac798f4790e568a7202c2b85ee068d7b4756ba04</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">target</b>:<b style="color:#ff55ff;"> /var/lib/rancher/k3s/agent/images/k3s.tar.zst</b>
-<b style="color:#ff55ff;"></b>-<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> zarf-injector</b>
+<b style="color:#ff55ff;"></b>-<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> jackal-injector</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">description</b>: |
 <b style="color:#ff55ff;">    Bootstraps a Kubernetes cluster by cloning a running pod in the cluster and hosting the registry image.</b>
-<b style="color:#ff55ff;">    Removed and destroyed after the Zarf Registry is self-hosting the registry image.</b>
+<b style="color:#ff55ff;">    Removed and destroyed after the Jackal Registry is self-hosting the registry image.</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">required</b>:<b style="color:#ffffff;"> true</b>
 <b style="color:#ffffff;">  </b><b style="color:#55ffff;">cosignKeyPath</b>:<b style="color:#ff55ff;"> cosign.pub</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">files</b>:
-  -<b style="color:#55ffff;"> source</b>:<b style="color:#ff55ff;"> sget://defenseunicorns/zarf-injector:arm64-2023-02-09</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">target</b>:<b style="color:#ff55ff;"> "###ZARF_TEMP###/zarf-injector"</b><b style="color:#55ffff;"></b>
+  -<b style="color:#55ffff;"> source</b>:<b style="color:#ff55ff;"> sget://defenseunicorns/jackal-injector:arm64-2023-02-09</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">target</b>:<b style="color:#ff55ff;"> "###JACKAL_TEMP###/jackal-injector"</b><b style="color:#55ffff;"></b>
 <b style="color:#55ffff;">    executable</b>:<b style="color:#ffffff;"> true</b>
-<b style="color:#ffffff;"></b>-<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> zarf-seed-registry</b>
+<b style="color:#ffffff;"></b>-<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> jackal-seed-registry</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">description</b>: |
-<b style="color:#ff55ff;">    Deploys the Zarf Registry using the registry image provided by the Zarf Injector.</b>
+<b style="color:#ff55ff;">    Deploys the Jackal Registry using the registry image provided by the Jackal Injector.</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">required</b>:<b style="color:#ffffff;"> true</b>
 <b style="color:#ffffff;">  </b><b style="color:#55ffff;">charts</b>:
   -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> docker-registry</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">releaseName</b>:<b style="color:#ff55ff;"> zarf-docker-registry</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">releaseName</b>:<b style="color:#ff55ff;"> jackal-docker-registry</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">version</b>:<b style="color:#ff55ff;"> 1.0.0</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> zarf</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> jackal</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">valuesFiles</b>:
-    -<b style="color:#ff55ff;"> packages/zarf-registry/registry-values.yaml</b>
-<b style="color:#ff55ff;">    </b>-<b style="color:#ff55ff;"> packages/zarf-registry/registry-values-seed.yaml</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">localPath</b>:<b style="color:#ff55ff;"> packages/zarf-registry/chart</b>
-<b style="color:#ff55ff;"></b>-<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> zarf-registry</b>
+    -<b style="color:#ff55ff;"> packages/jackal-registry/registry-values.yaml</b>
+<b style="color:#ff55ff;">    </b>-<b style="color:#ff55ff;"> packages/jackal-registry/registry-values-seed.yaml</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">localPath</b>:<b style="color:#ff55ff;"> packages/jackal-registry/chart</b>
+<b style="color:#ff55ff;"></b>-<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> jackal-registry</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">description</b>: |
-<b style="color:#ff55ff;">    Updates the Zarf Registry to use the self-hosted registry image. </b>
+<b style="color:#ff55ff;">    Updates the Jackal Registry to use the self-hosted registry image. </b>
 <b style="color:#ff55ff;">    Serves as the primary docker registry for the cluster.</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">required</b>:<b style="color:#ffffff;"> true</b>
 <b style="color:#ffffff;">  </b><b style="color:#55ffff;">charts</b>:
   -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> docker-registry</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">releaseName</b>:<b style="color:#ff55ff;"> zarf-docker-registry</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">releaseName</b>:<b style="color:#ff55ff;"> jackal-docker-registry</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">version</b>:<b style="color:#ff55ff;"> 1.0.0</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> zarf</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> jackal</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">valuesFiles</b>:
-    -<b style="color:#ff55ff;"> packages/zarf-registry/registry-values.yaml</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">localPath</b>:<b style="color:#ff55ff;"> packages/zarf-registry/chart</b>
+    -<b style="color:#ff55ff;"> packages/jackal-registry/registry-values.yaml</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">localPath</b>:<b style="color:#ff55ff;"> packages/jackal-registry/chart</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">manifests</b>:
   -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> registry-connect</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> zarf</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> jackal</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">files</b>:
-    -<b style="color:#ff55ff;"> packages/zarf-registry/connect.yaml</b>
+    -<b style="color:#ff55ff;"> packages/jackal-registry/connect.yaml</b>
 <b style="color:#ff55ff;">  </b>-<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> kep-1755-registry-annotation</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> zarf</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> jackal</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">files</b>:
-    -<b style="color:#ff55ff;"> packages/zarf-registry/configmap.yaml</b>
+    -<b style="color:#ff55ff;"> packages/jackal-registry/configmap.yaml</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">images</b>:
   -<b style="color:#ff55ff;"> registry:2.8.1</b>
-<b style="color:#ff55ff;"></b>-<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> zarf-agent</b>
+<b style="color:#ff55ff;"></b>-<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> jackal-agent</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">description</b>: |
 <b style="color:#ff55ff;">    A Kubernetes mutating webhook to enable automated URL rewriting for container</b>
 <b style="color:#ff55ff;">    images and git repository references in Kubernetes manifests. This prevents</b>
-<b style="color:#ff55ff;">    the need to manually update URLs from their original sources to the Zarf-managed</b>
+<b style="color:#ff55ff;">    the need to manually update URLs from their original sources to the Jackal-managed</b>
 <b style="color:#ff55ff;">    docker registry and git server.</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">required</b>:<b style="color:#ffffff;"> true</b>
 <b style="color:#ffffff;">  </b><b style="color:#55ffff;">actions</b>:<b style="color:#55ffff;"></b>
@@ -150,15 +150,15 @@ b.BWHI {background-color: #aaaaaa}
 <b style="color:#55ffff;">      before</b>:
       -<b style="color:#55ffff;"> cmd</b>:<b style="color:#ff55ff;"> make init-package-local-agent AGENT_IMAGE="agent:local"</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">manifests</b>:
-  -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> zarf-agent</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> zarf</b>
+  -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> jackal-agent</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> jackal</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">files</b>:
-    -<b style="color:#ff55ff;"> packages/zarf-agent/manifests/service.yaml</b>
-<b style="color:#ff55ff;">    </b>-<b style="color:#ff55ff;"> packages/zarf-agent/manifests/secret.yaml</b>
-<b style="color:#ff55ff;">    </b>-<b style="color:#ff55ff;"> packages/zarf-agent/manifests/deployment.yaml</b>
-<b style="color:#ff55ff;">    </b>-<b style="color:#ff55ff;"> packages/zarf-agent/manifests/webhook.yaml</b>
+    -<b style="color:#ff55ff;"> packages/jackal-agent/manifests/service.yaml</b>
+<b style="color:#ff55ff;">    </b>-<b style="color:#ff55ff;"> packages/jackal-agent/manifests/secret.yaml</b>
+<b style="color:#ff55ff;">    </b>-<b style="color:#ff55ff;"> packages/jackal-agent/manifests/deployment.yaml</b>
+<b style="color:#ff55ff;">    </b>-<b style="color:#ff55ff;"> packages/jackal-agent/manifests/webhook.yaml</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">images</b>:
-  -<b style="color:#ff55ff;"> ghcr.io/defenseunicorns/zarf/agent:local</b>
+  -<b style="color:#ff55ff;"> ghcr.io/defenseunicorns/jackal/agent:local</b>
 <b style="color:#ff55ff;"></b>-<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> logging</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">description</b>: |
 <b style="color:#ff55ff;">    Deploys the Promtail Grafana &amp; Loki (PGL) stack.</b>
@@ -166,15 +166,15 @@ b.BWHI {background-color: #aaaaaa}
 <b style="color:#ff55ff;">    Recommended if no other logging stack is deployed in the cluster.</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">charts</b>:
   -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> loki-stack</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">releaseName</b>:<b style="color:#ff55ff;"> zarf-loki-stack</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">releaseName</b>:<b style="color:#ff55ff;"> jackal-loki-stack</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">url</b>:<b style="color:#ff55ff;"> https://grafana.github.io/helm-charts</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">version</b>:<b style="color:#ff55ff;"> 2.9.9</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> zarf</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> jackal</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">valuesFiles</b>:
     -<b style="color:#ff55ff;"> packages/logging-pgl/pgl-values.yaml</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">manifests</b>:
   -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> logging-connect</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> zarf</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> jackal</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">files</b>:
     -<b style="color:#ff55ff;"> packages/logging-pgl/connect.yaml</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">images</b>:
@@ -191,18 +191,18 @@ b.BWHI {background-color: #aaaaaa}
 <b style="color:#55ffff;">      after</b>:
       -<b style="color:#55ffff;"> maxTotalSeconds</b>:<b style="color:#ffffff;"> 60</b>
 <b style="color:#ffffff;">        </b><b style="color:#55ffff;">maxRetries</b>:<b style="color:#ffffff;"> 3</b>
-<b style="color:#ffffff;">        </b><b style="color:#55ffff;">cmd</b>:<b style="color:#ff55ff;"> ./zarf internal create-read-only-gitea-user</b>
+<b style="color:#ffffff;">        </b><b style="color:#55ffff;">cmd</b>:<b style="color:#ff55ff;"> ./jackal internal create-read-only-gitea-user</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">charts</b>:
   -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> gitea</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">releaseName</b>:<b style="color:#ff55ff;"> zarf-gitea</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">releaseName</b>:<b style="color:#ff55ff;"> jackal-gitea</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">url</b>:<b style="color:#ff55ff;"> https://dl.gitea.io/charts</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">version</b>:<b style="color:#ff55ff;"> 7.0.4</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> zarf</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> jackal</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">valuesFiles</b>:
     -<b style="color:#ff55ff;"> packages/gitea/gitea-values.yaml</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">manifests</b>:
   -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> git-connect</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> zarf</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> jackal</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">files</b>:
     -<b style="color:#ff55ff;"> packages/gitea/connect.yaml</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">images</b>:
@@ -258,7 +258,7 @@ b.BWHI {background-color: #aaaaaa}
 -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> AGENT_IMAGE</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">value</b>:<b style="color:#ff55ff;"> agent:local</b>
 
-<b class="HIG"> ? </b><b class="HIW">Create this Zarf package? </b>(y/N) <span style="color:#55ffff;">Yes</span> <br/>
+<b class="HIG"> ? </b><b class="HIW">Create this Jackal package? </b>(y/N) <span style="color:#55ffff;">Yes</span> <br/>
 </pre>
 </body>
 </html>

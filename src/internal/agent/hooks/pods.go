@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package hooks provides HTTP handlers for the mutating webhook.
 package hooks
@@ -8,12 +8,12 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/internal/agent/operations"
-	"github.com/defenseunicorns/zarf/src/internal/agent/state"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/transform"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/internal/agent/operations"
+	"github.com/defenseunicorns/jackal/src/internal/agent/state"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/transform"
 	v1 "k8s.io/api/admission/v1"
 
 	corev1 "k8s.io/api/core/v1"
@@ -47,7 +47,7 @@ func mutatePod(r *v1.AdmissionRequest) (*operations.Result, error) {
 		return &operations.Result{Msg: err.Error()}, nil
 	}
 
-	if pod.Labels != nil && pod.Labels["zarf-agent"] == "patched" {
+	if pod.Labels != nil && pod.Labels["jackal-agent"] == "patched" {
 		// We've already played with this pod, just keep swimming 🐟
 		return &operations.Result{
 			Allowed:  true,
@@ -55,15 +55,15 @@ func mutatePod(r *v1.AdmissionRequest) (*operations.Result, error) {
 		}, nil
 	}
 
-	// Add the zarf secret to the podspec
-	zarfSecret := []corev1.LocalObjectReference{{Name: config.ZarfImagePullSecretName}}
-	patchOperations = append(patchOperations, operations.ReplacePatchOperation("/spec/imagePullSecrets", zarfSecret))
+	// Add the jackal secret to the podspec
+	jackalSecret := []corev1.LocalObjectReference{{Name: config.JackalImagePullSecretName}}
+	patchOperations = append(patchOperations, operations.ReplacePatchOperation("/spec/imagePullSecrets", jackalSecret))
 
-	zarfState, err := state.GetZarfStateFromAgentPod()
+	jackalState, err := state.GetJackalStateFromAgentPod()
 	if err != nil {
 		return nil, fmt.Errorf(lang.AgentErrGetState, err)
 	}
-	containerRegistryURL := zarfState.RegistryInfo.Address
+	containerRegistryURL := jackalState.RegistryInfo.Address
 
 	// update the image host for each init container
 	for idx, container := range pod.Spec.InitContainers {
@@ -98,8 +98,8 @@ func mutatePod(r *v1.AdmissionRequest) (*operations.Result, error) {
 		patchOperations = append(patchOperations, operations.ReplacePatchOperation(path, replacement))
 	}
 
-	// Add a label noting the zarf mutation
-	patchOperations = append(patchOperations, operations.ReplacePatchOperation("/metadata/labels/zarf-agent", "patched"))
+	// Add a label noting the jackal mutation
+	patchOperations = append(patchOperations, operations.ReplacePatchOperation("/metadata/labels/jackal-agent", "patched"))
 
 	return &operations.Result{
 		Allowed:  true,

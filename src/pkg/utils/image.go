@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package utils provides generic utility functions.
 package utils
@@ -10,8 +10,8 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/defenseunicorns/jackal/src/pkg/transform"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/pkg/transform"
 	v1 "github.com/google/go-containerregistry/pkg/v1"
 	"github.com/google/go-containerregistry/pkg/v1/layout"
 	ocispec "github.com/opencontainers/image-spec/specs-go/v1"
@@ -33,7 +33,7 @@ func LoadOCIImage(imgPath string, refInfo transform.Image) (v1.Image, error) {
 	// Search through all the manifests within this package until we find the annotation that matches our ref
 	for _, manifest := range idxManifest.Manifests {
 		if manifest.Annotations[ocispec.AnnotationBaseImageName] == refInfo.Reference ||
-			// A backwards compatibility shim for older Zarf versions that would leave docker.io off of image annotations
+			// A backwards compatibility shim for older Jackal versions that would leave docker.io off of image annotations
 			(manifest.Annotations[ocispec.AnnotationBaseImageName] == refInfo.Path+refInfo.TagOrDigest && refInfo.Host == "docker.io") {
 
 			// This is the image we are looking for, load it and then return

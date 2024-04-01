@@ -1,6 +1,6 @@
 // Forked from https://github.com/sigstore/cosign/blob/v1.7.1/pkg/sget/sget.go
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package utils provides generic utility functions.
 package utils
@@ -12,10 +12,10 @@ import (
 	"os"
 	"strings"
 
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
 	"github.com/google/go-containerregistry/pkg/authn"
 	"github.com/google/go-containerregistry/pkg/name"
 	"github.com/google/go-containerregistry/pkg/v1/remote"
@@ -179,7 +179,7 @@ func Sget(ctx context.Context, image, key string, out io.Writer) error {
 	return err
 }
 
-// CosignVerifyBlob verifies the zarf.yaml.sig was signed with the key provided by the flag
+// CosignVerifyBlob verifies the jackal.yaml.sig was signed with the key provided by the flag
 func CosignVerifyBlob(blobRef string, sigRef string, keyPath string) error {
 	keyOptions := options.KeyOpts{KeyRef: keyPath}
 	cmd := &verify.VerifyBlobCmd{

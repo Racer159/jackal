@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package pki provides a simple way to generate a CA and signed server keypair.
 package pki
@@ -14,16 +14,16 @@ import (
 	"net"
 	"time"
 
+	"github.com/defenseunicorns/jackal/src/pkg/k8s"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/pkg/k8s"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
 )
 
 // Based off of https://github.com/dmcgowan/quicktls/blob/master/main.go
 
 // Use 2048 because we are aiming for low-resource / max-compatibility.
 const rsaBits = 2048
-const org = "Zarf Cluster"
+const org = "Jackal Cluster"
 
 // 13 months is the max length allowed by browsers.
 const validFor = time.Hour * 24 * 375
@@ -99,8 +99,8 @@ func generateCA(validFor time.Duration) (*x509.Certificate, *rsa.PrivateKey, err
 	template.IsCA = true
 	template.KeyUsage = x509.KeyUsageCertSign | x509.KeyUsageDigitalSignature
 	template.ExtKeyUsage = []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth, x509.ExtKeyUsageClientAuth}
-	template.Subject.CommonName = "ca.private.zarf.dev"
-	template.Subject.Organization = []string{"Zarf Community"}
+	template.Subject.CommonName = "ca.private.jackal.dev"
+	template.Subject.Organization = []string{"Jackal Community"}
 
 	priv, err := newPrivateKey()
 	if err != nil {

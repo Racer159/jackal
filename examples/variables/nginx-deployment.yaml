@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:###ZARF_CONST_NGINX_VERSION###
+        image: nginx:###JACKAL_CONST_NGINX_VERSION###
         ports:
         - containerPort: 80
           name: http

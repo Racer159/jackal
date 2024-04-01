@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package zoci contains functions for interacting with Zarf packages stored in OCI registries.
+// Package zoci contains functions for interacting with Jackal packages stored in OCI registries.
 package zoci
 
 import (
@@ -9,13 +9,13 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/types"
 	"oras.land/oras-go/v2/registry"
 )
 
 // ReferenceFromMetadata returns a reference for the given metadata.
-func ReferenceFromMetadata(registryLocation string, metadata *types.ZarfMetadata, build *types.ZarfBuildData) (string, error) {
+func ReferenceFromMetadata(registryLocation string, metadata *types.JackalMetadata, build *types.JackalBuildData) (string, error) {
 	ver := metadata.Version
 	if len(ver) == 0 {
 		return "", errors.New("version is required for publishing")

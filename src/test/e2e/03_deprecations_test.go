@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package test provides e2e tests for Zarf.
+// Package test provides e2e tests for Jackal.
 package test
 
 import (
@@ -12,7 +12,7 @@ import (
 )
 
 // TestDeprecatedComponentScripts verifies that deprecated component scripts are still able to be executed (after being internally
-// migrated into zarf actions).
+// migrated into jackal actions).
 func TestDeprecatedComponentScripts(t *testing.T) {
 	t.Log("E2E: Testing deprecated component scripts")
 
@@ -28,9 +28,9 @@ func TestDeprecatedComponentScripts(t *testing.T) {
 	defer e2e.CleanFiles(allArtifacts...)
 
 	// 1. Try creating the package to test the create scripts
-	testPackagePath := fmt.Sprintf("%s/zarf-package-deprecated-component-scripts-%s.tar.zst", testPackageDirPath, e2e.Arch)
+	testPackagePath := fmt.Sprintf("%s/jackal-package-deprecated-component-scripts-%s.tar.zst", testPackageDirPath, e2e.Arch)
 	outputFlag := fmt.Sprintf("-o=%s", testPackageDirPath)
-	stdOut, stdErr, err := e2e.Zarf("package", "create", testPackageDirPath, outputFlag, "--confirm")
+	stdOut, stdErr, err := e2e.Jackal("package", "create", testPackageDirPath, outputFlag, "--confirm")
 	defer e2e.CleanFiles(testPackagePath)
 	require.NoError(t, err, stdOut, stdErr)
 	require.Contains(t, stdErr, "Component '1-test-deprecated-prepare-scripts' is using scripts")
@@ -46,7 +46,7 @@ func TestDeprecatedComponentScripts(t *testing.T) {
 	}
 
 	// 2. Deploy the simple script that should pass
-	stdOut, stdErr, err = e2e.Zarf("package", "deploy", testPackagePath, "--confirm", "--components=2-test-deprecated-deploy-scripts")
+	stdOut, stdErr, err = e2e.Jackal("package", "deploy", testPackagePath, "--confirm", "--components=2-test-deprecated-deploy-scripts")
 	require.NoError(t, err, stdOut, stdErr)
 
 	// Check that the deploy artifacts were created
@@ -55,7 +55,7 @@ func TestDeprecatedComponentScripts(t *testing.T) {
 	}
 
 	// 3. Deploy the simple script that should fail the timeout
-	stdOut, stdErr, err = e2e.Zarf("package", "deploy", testPackagePath, "--confirm", "--components=3-test-deprecated-timeout-scripts")
+	stdOut, stdErr, err = e2e.Jackal("package", "deploy", testPackagePath, "--confirm", "--components=3-test-deprecated-timeout-scripts")
 	require.Error(t, err, stdOut, stdErr)
 }
 
@@ -75,28 +75,28 @@ func TestDeprecatedSetAndPackageVariables(t *testing.T) {
 	defer e2e.CleanFiles(allArtifacts...)
 
 	// 2. Try creating the package to test the create scripts
-	testPackagePath := fmt.Sprintf("%s/zarf-package-deprecated-set-variable-%s.tar.zst", testPackageDirPath, e2e.Arch)
+	testPackagePath := fmt.Sprintf("%s/jackal-package-deprecated-set-variable-%s.tar.zst", testPackageDirPath, e2e.Arch)
 	outputFlag := fmt.Sprintf("-o=%s", testPackageDirPath)
 
 	// Check that the command still errors out
-	stdOut, stdErr, err := e2e.Zarf("package", "create", testPackageDirPath, outputFlag, "--confirm")
+	stdOut, stdErr, err := e2e.Jackal("package", "create", testPackageDirPath, outputFlag, "--confirm")
 	require.Error(t, err, stdOut, stdErr)
 	require.Contains(t, stdErr, "template \"ECHO\" must be '--set'")
 
 	// Check that the command displays a warning on create
-	stdOut, stdErr, err = e2e.Zarf("package", "create", testPackageDirPath, outputFlag, "--confirm", "--set", "ECHO=Zarf-The-Axolotl")
+	stdOut, stdErr, err = e2e.Jackal("package", "create", testPackageDirPath, outputFlag, "--confirm", "--set", "ECHO=Jackal-The-Axolotl")
 	defer e2e.CleanFiles(testPackagePath)
 	require.NoError(t, err, stdOut, stdErr)
 	require.Contains(t, stdErr, "Component '1-test-deprecated-set-variable' is using setVariable")
-	require.Contains(t, stdErr, "deprecated syntax ###ZARF_PKG_VAR_ECHO###")
+	require.Contains(t, stdErr, "deprecated syntax ###JACKAL_PKG_VAR_ECHO###")
 
 	// 1. Deploy the setVariable action that should pass and output the variable
-	stdOut, stdErr, err = e2e.Zarf("package", "deploy", testPackagePath, "--confirm", "--components=1-test-deprecated-set-variable")
+	stdOut, stdErr, err = e2e.Jackal("package", "deploy", testPackagePath, "--confirm", "--components=1-test-deprecated-set-variable")
 	require.NoError(t, err, stdOut, stdErr)
 	require.Contains(t, stdErr, "Hello from Hello Kitteh")
 
 	// 2. Deploy the setVariable action that should pass and output the variable
-	stdOut, stdErr, err = e2e.Zarf("package", "deploy", testPackagePath, "--confirm", "--components=2-test-deprecated-pkg-var")
+	stdOut, stdErr, err = e2e.Jackal("package", "deploy", testPackagePath, "--confirm", "--components=2-test-deprecated-pkg-var")
 	require.NoError(t, err, stdOut, stdErr)
-	require.Contains(t, stdErr, "Zarf-The-Axolotl")
+	require.Contains(t, stdErr, "Jackal-The-Axolotl")
 }

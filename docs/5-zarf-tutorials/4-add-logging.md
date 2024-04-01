@@ -2,31 +2,31 @@
 
 ## Introduction
 
-In this tutorial, we are going to show how you can use a Zarf component to inject zero-config, centralized logging into your Zarf cluster.
+In this tutorial, we are going to show how you can use a Jackal component to inject zero-config, centralized logging into your Jackal cluster.
 
-More specifically, you'll be adding a [Promtail / Loki / Grafana (PLG)](https://github.com/grafana/loki) stack to the [Retro Arcade Tutorial](./3-deploy-a-retro-arcade.md) by installing Zarf's "logging" component.
+More specifically, you'll be adding a [Promtail / Loki / Grafana (PLG)](https://github.com/grafana/loki) stack to the [Retro Arcade Tutorial](./3-deploy-a-retro-arcade.md) by installing Jackal's "logging" component.
 
 ## System Requirements
 
-- You'll need an internet connection to grab the Zarf Init Package if it's not already on your machine.
+- You'll need an internet connection to grab the Jackal Init Package if it's not already on your machine.
 
 ## Prerequisites
 
-Prior to this tutorial you'll want to have a working cluster with Zarf initialized.
+Prior to this tutorial you'll want to have a working cluster with Jackal initialized.
 
-- Zarf binary installed on your $PATH: ([Installing Zarf](../1-getting-started/index.md#installing-zarf))
+- Jackal binary installed on your $PATH: ([Installing Jackal](../1-getting-started/index.md#installing-jackal))
 - [Initialize a cluster](./1-initializing-a-k8s-cluster.md).
 - Perform the [Retro Arcade Tutorial](./3-deploy-a-retro-arcade.md).
 
 ## Youtube Tutorial
-[![Tutorial: Add Logging to an existing Zarf Cluster with Zarf Init](../.images/tutorials/logging_thumbnail.png)](https://youtu.be/FYkafs1idlQ "Add Logging to an existing Zarf Cluster with Zarf Init")
+[![Tutorial: Add Logging to an existing Jackal Cluster with Jackal Init](../.images/tutorials/logging_thumbnail.png)](https://youtu.be/FYkafs1idlQ "Add Logging to an existing Jackal Cluster with Jackal Init")
 
 ## Installing the Logging Component
 
-1. Run the `zarf init` command on your cluster.
+1. Run the `jackal init` command on your cluster.
 
 ```sh
-$ zarf init
+$ jackal init
 ```
 
 2. When prompted to deploy the package select `y` for Yes, then hit the `enter`
@@ -42,7 +42,7 @@ key. <br/> When prompted to deploy the logging component select `y` for Yes, the
 
 #### Note the Credentials
 
-1. Review the `zarf init` command output for the following:
+1. Review the `jackal init` command output for the following:
 
 <iframe src="/docs/tutorials/logging_credentials.html" width="100%"></iframe>
 
@@ -63,11 +63,11 @@ Because Doom may be freshly installed it is recommended to refresh the page a fe
 
 ### Log into Grafana
 
-To open Grafana you can use the `zarf connect logging` command.
+To open Grafana you can use the `jackal connect logging` command.
 
 You'll be redirected the `/login` page where you have to sign in with the Grafana credentials you saved [in a previous step](#note-the-credentials).
 
-![zarf user logging into Loki](../.images/tutorials/logging_login.png)
+![jackal user logging into Loki](../.images/tutorials/logging_login.png)
 
 Once you've successfully logged in go to:
 
@@ -75,7 +75,7 @@ Once you've successfully logged in go to:
 2. Select `Loki` in the dropdown, and then
 3. Enter `{app="game"}` into the Log Browser query input field
 
-![zarf user typing {app='game'} into the Loki Log Browser](../.images/tutorials/logging_query.png)
+![jackal user typing {app='game'} into the Loki Log Browser](../.images/tutorials/logging_query.png)
 
 Submit that query and you'll get back a dump of all the game pod logs that Loki has collected.
 
@@ -83,11 +83,11 @@ Submit that query and you'll get back a dump of all the game pod logs that Loki 
 
 ## Removal
 
-1. Use the `zarf package list` command to get a list of the installed packages and their components.  This will give you the name of the init package and the logging component to remove it.
+1. Use the `jackal package list` command to get a list of the installed packages and their components.  This will give you the name of the init package and the logging component to remove it.
 
 <iframe src="/docs/tutorials/logging_list.html" width="100%"></iframe>
 
-2. Use the `zarf package remove` command to remove the `logging` component from the init package.  Don't forget the `--confirm` flag.  Otherwise you'll receive an error.
+2. Use the `jackal package remove` command to remove the `logging` component from the init package.  Don't forget the `--confirm` flag.  Otherwise you'll receive an error.
 
 <iframe src="/docs/tutorials/logging_remove.html" width="100%" height="120px"></iframe>
 
@@ -106,7 +106,7 @@ If you receive this error, either you don't have a Kubernetes cluster, your clus
 
 If you need to setup a cluster, you can perform the following.
 
-1. Deploy a Kubernetes cluster with the [Creating a K8s Cluster with Zarf](./5-creating-a-k8s-cluster-with-zarf.md) tutorial.
+1. Deploy a Kubernetes cluster with the [Creating a K8s Cluster with Jackal](./5-creating-a-k8s-cluster-with-jackal.md) tutorial.
 2. Perform the [Initialize a cluster](./1-initializing-a-k8s-cluster.md) tutorial.
 
 After that you can try deploying the package again.

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package sbom contains tools for generating SBOMs.
 package sbom
@@ -9,8 +9,8 @@ import (
 	"fmt"
 	"html/template"
 
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/transform"
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/transform"
 )
 
 func (b *Builder) createSBOMViewerAsset(identifier string, jsonData []byte) error {

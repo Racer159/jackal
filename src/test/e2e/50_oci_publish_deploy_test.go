@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package test provides e2e tests for Zarf.
+// Package test provides e2e tests for Jackal.
 package test
 
 import (
@@ -12,8 +12,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/defenseunicorns/jackal/src/pkg/zoci"
 	"github.com/defenseunicorns/pkg/oci"
-	"github.com/defenseunicorns/zarf/src/pkg/zoci"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 	"oras.land/oras-go/v2/registry"
@@ -29,7 +29,7 @@ type PublishDeploySuiteTestSuite struct {
 
 var badDeployRef = registry.Reference{
 	Registry:   "localhost:5000",
-	Repository: "zarf-test",
+	Repository: "jackal-test",
 	Reference:  "bad-tag",
 }
 
@@ -42,7 +42,7 @@ func (suite *PublishDeploySuiteTestSuite) SetupSuite() {
 }
 
 func (suite *PublishDeploySuiteTestSuite) TearDownSuite() {
-	local := fmt.Sprintf("zarf-package-helm-charts-%s-0.0.1.tar.zst", e2e.Arch)
+	local := fmt.Sprintf("jackal-package-helm-charts-%s-0.0.1.tar.zst", e2e.Arch)
 	e2e.CleanFiles(local)
 
 	e2e.TeardownRegistry(suite.T(), 555)
@@ -52,37 +52,37 @@ func (suite *PublishDeploySuiteTestSuite) Test_0_Publish() {
 	suite.T().Log("E2E: Package Publish oci://")
 
 	// Publish package.
-	example := filepath.Join(suite.PackagesDir, fmt.Sprintf("zarf-package-helm-charts-%s-0.0.1.tar.zst", e2e.Arch))
+	example := filepath.Join(suite.PackagesDir, fmt.Sprintf("jackal-package-helm-charts-%s-0.0.1.tar.zst", e2e.Arch))
 	ref := suite.Reference.String()
-	stdOut, stdErr, err := e2e.Zarf("package", "publish", example, "oci://"+ref, "--insecure")
+	stdOut, stdErr, err := e2e.Jackal("package", "publish", example, "oci://"+ref, "--insecure")
 	suite.NoError(err, stdOut, stdErr)
 	suite.Contains(stdErr, "Published "+ref)
 
 	// Pull the package via OCI.
-	stdOut, stdErr, err = e2e.Zarf("package", "pull", "oci://"+ref+"/helm-charts:0.0.1", "--insecure")
+	stdOut, stdErr, err = e2e.Jackal("package", "pull", "oci://"+ref+"/helm-charts:0.0.1", "--insecure")
 	suite.NoError(err, stdOut, stdErr)
 
 	// Publish w/ package missing `metadata.version` field.
-	example = filepath.Join(suite.PackagesDir, fmt.Sprintf("zarf-package-component-actions-%s.tar.zst", e2e.Arch))
-	_, stdErr, err = e2e.Zarf("package", "publish", example, "oci://"+ref, "--insecure")
+	example = filepath.Join(suite.PackagesDir, fmt.Sprintf("jackal-package-component-actions-%s.tar.zst", e2e.Arch))
+	_, stdErr, err = e2e.Jackal("package", "publish", example, "oci://"+ref, "--insecure")
 	suite.Error(err, stdErr)
 
 	// Inline publish package.
 	dir := filepath.Join("examples", "helm-charts")
-	stdOut, stdErr, err = e2e.Zarf("package", "create", dir, "-o", "oci://"+ref, "--insecure", "--oci-concurrency=5", "--confirm")
+	stdOut, stdErr, err = e2e.Jackal("package", "create", dir, "-o", "oci://"+ref, "--insecure", "--oci-concurrency=5", "--confirm")
 	suite.NoError(err, stdOut, stdErr)
 
 	// Inline publish flavor.
 	dir = filepath.Join("examples", "package-flavors")
-	stdOut, stdErr, err = e2e.Zarf("package", "create", dir, "-o", "oci://"+ref, "--flavor", "oracle-cookie-crunch", "--insecure", "--confirm")
+	stdOut, stdErr, err = e2e.Jackal("package", "create", dir, "-o", "oci://"+ref, "--flavor", "oracle-cookie-crunch", "--insecure", "--confirm")
 	suite.NoError(err, stdOut, stdErr)
 
 	// Inspect published flavor.
-	stdOut, stdErr, err = e2e.Zarf("package", "inspect", "oci://"+ref+"/package-flavors:1.0.0-oracle-cookie-crunch", "--insecure")
+	stdOut, stdErr, err = e2e.Jackal("package", "inspect", "oci://"+ref+"/package-flavors:1.0.0-oracle-cookie-crunch", "--insecure")
 	suite.NoError(err, stdOut, stdErr)
 
 	// Inspect the published package.
-	stdOut, stdErr, err = e2e.Zarf("package", "inspect", "oci://"+ref+"/helm-charts:0.0.1", "--insecure")
+	stdOut, stdErr, err = e2e.Jackal("package", "inspect", "oci://"+ref+"/helm-charts:0.0.1", "--insecure")
 	suite.NoError(err, stdOut, stdErr)
 }
 
@@ -95,28 +95,28 @@ func (suite *PublishDeploySuiteTestSuite) Test_1_Deploy() {
 	ref := suite.Reference.String()
 
 	// Deploy the package via OCI.
-	stdOut, stdErr, err := e2e.Zarf("package", "deploy", "oci://"+ref, "--insecure", "--confirm")
+	stdOut, stdErr, err := e2e.Jackal("package", "deploy", "oci://"+ref, "--insecure", "--confirm")
 	suite.NoError(err, stdOut, stdErr)
 
 	// Remove the package via OCI.
-	stdOut, stdErr, err = e2e.Zarf("package", "remove", "oci://"+ref, "--insecure", "--confirm")
+	stdOut, stdErr, err = e2e.Jackal("package", "remove", "oci://"+ref, "--insecure", "--confirm")
 	suite.NoError(err, stdOut, stdErr)
 
 	// Test deploy w/ bad ref.
-	_, stdErr, err = e2e.Zarf("package", "deploy", "oci://"+badDeployRef.String(), "--insecure", "--confirm")
+	_, stdErr, err = e2e.Jackal("package", "deploy", "oci://"+badDeployRef.String(), "--insecure", "--confirm")
 	suite.Error(err, stdErr)
 }
 
 func (suite *PublishDeploySuiteTestSuite) Test_2_Pull_And_Deploy() {
 	suite.T().Log("E2E: Package Pull oci:// && Package Deploy tarball")
 
-	local := fmt.Sprintf("zarf-package-helm-charts-%s-0.0.1.tar.zst", e2e.Arch)
+	local := fmt.Sprintf("jackal-package-helm-charts-%s-0.0.1.tar.zst", e2e.Arch)
 	defer e2e.CleanFiles(local)
 	// Verify the package was pulled.
 	suite.FileExists(local)
 
 	// Deploy the local package.
-	stdOut, stdErr, err := e2e.Zarf("package", "deploy", local, "--confirm")
+	stdOut, stdErr, err := e2e.Jackal("package", "deploy", local, "--confirm")
 	suite.NoError(err, stdOut, stdErr)
 }
 

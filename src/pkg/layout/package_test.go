@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package layout contains functions for interacting with Zarf's package layout on disk.
+// Package layout contains functions for interacting with Jackal's package layout on disk.
 package layout
 
 import (
@@ -23,9 +23,9 @@ func TestPackageFiles(t *testing.T) {
 		pp := New("test")
 
 		raw := &PackagePaths{
-			Base:      "test",
-			ZarfYAML:  normalizePath("test/zarf.yaml"),
-			Checksums: normalizePath("test/checksums.txt"),
+			Base:       "test",
+			JackalYAML: normalizePath("test/jackal.yaml"),
+			Checksums:  normalizePath("test/checksums.txt"),
 			Components: Components{
 				Base: normalizePath("test/components"),
 			},
@@ -40,7 +40,7 @@ func TestPackageFiles(t *testing.T) {
 
 		files := pp.Files()
 		expected := map[string]string{
-			"zarf.yaml":     normalizePath("test/zarf.yaml"),
+			"jackal.yaml":   normalizePath("test/jackal.yaml"),
 			"checksums.txt": normalizePath("test/checksums.txt"),
 		}
 		require.Equal(t, expected, files)
@@ -54,9 +54,9 @@ func TestPackageFiles(t *testing.T) {
 
 		files := pp.Files()
 		expected := map[string]string{
-			"zarf.yaml":     normalizePath("test/zarf.yaml"),
-			"checksums.txt": normalizePath("test/checksums.txt"),
-			"zarf.yaml.sig": normalizePath("test/zarf.yaml.sig"),
+			"jackal.yaml":     normalizePath("test/jackal.yaml"),
+			"checksums.txt":   normalizePath("test/checksums.txt"),
+			"jackal.yaml.sig": normalizePath("test/jackal.yaml.sig"),
 		}
 		require.Equal(t, expected, files)
 	})
@@ -69,7 +69,7 @@ func TestPackageFiles(t *testing.T) {
 
 		files := pp.Files()
 		expected := map[string]string{
-			"zarf.yaml":         normalizePath("test/zarf.yaml"),
+			"jackal.yaml":       normalizePath("test/jackal.yaml"),
 			"checksums.txt":     normalizePath("test/checksums.txt"),
 			"images/index.json": normalizePath("test/images/index.json"),
 			"images/oci-layout": normalizePath("test/images/oci-layout"),
@@ -86,17 +86,17 @@ func TestPackageFiles(t *testing.T) {
 
 		files := pp.Files()
 		expected := map[string]string{
-			"zarf.yaml":     normalizePath("test/zarf.yaml"),
+			"jackal.yaml":   normalizePath("test/jackal.yaml"),
 			"checksums.txt": normalizePath("test/checksums.txt"),
 		}
 		require.Equal(t, expected, files)
-		
+
 		pp.SBOMs.Path = normalizePath("test/sboms.tar")
 		files = pp.Files()
 		expected = map[string]string{
-			"zarf.yaml":     normalizePath("test/zarf.yaml"),
+			"jackal.yaml":   normalizePath("test/jackal.yaml"),
 			"checksums.txt": normalizePath("test/checksums.txt"),
-			"sboms.tar": normalizePath("test/sboms.tar"),
+			"sboms.tar":     normalizePath("test/sboms.tar"),
 		}
 		require.Equal(t, expected, files)
 	})
@@ -107,7 +107,7 @@ func TestPackageFiles(t *testing.T) {
 		pp := New("test")
 
 		paths := []string{
-			"zarf.yaml",
+			"jackal.yaml",
 			"checksums.txt",
 			"sboms.tar",
 			normalizePath("components/c1.tar"),
@@ -119,7 +119,7 @@ func TestPackageFiles(t *testing.T) {
 
 		files := pp.Files()
 		expected := map[string]string{
-			"zarf.yaml":         normalizePath("test/zarf.yaml"),
+			"jackal.yaml":       normalizePath("test/jackal.yaml"),
 			"checksums.txt":     normalizePath("test/checksums.txt"),
 			"sboms.tar":         normalizePath("test/sboms.tar"),
 			"components/c1.tar": normalizePath("test/components/c1.tar"),
@@ -154,7 +154,7 @@ func TestPackageFiles(t *testing.T) {
 
 		files := pp.Files()
 		expected := map[string]string{
-			"zarf.yaml":         normalizePath("test/zarf.yaml"),
+			"jackal.yaml":       normalizePath("test/jackal.yaml"),
 			"checksums.txt":     normalizePath("test/checksums.txt"),
 			"components/c2.tar": normalizePath("test/components/c2.tar"),
 			"images/index.json": normalizePath("test/images/index.json"),

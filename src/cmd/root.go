@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package cmd contains the CLI commands for Zarf.
+// Package cmd contains the CLI commands for Jackal.
 package cmd
 
 import (
@@ -9,13 +9,13 @@ import (
 	"os"
 	"strings"
 
-	"github.com/defenseunicorns/zarf/src/cmd/common"
-	"github.com/defenseunicorns/zarf/src/cmd/tools"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/cmd/common"
+	"github.com/defenseunicorns/jackal/src/cmd/tools"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/spf13/cobra"
 )
 
@@ -25,7 +25,7 @@ var (
 )
 
 var rootCmd = &cobra.Command{
-	Use: "zarf COMMAND",
+	Use: "jackal COMMAND",
 	PersistentPreRun: func(cmd *cobra.Command, _ []string) {
 		// Skip for vendor-only commands
 		if common.CheckVendorOnlyFromPath(cmd) {
@@ -43,15 +43,15 @@ var rootCmd = &cobra.Command{
 	Long:  lang.RootCmdLong,
 	Args:  cobra.MaximumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		zarfLogo := message.GetLogo()
-		_, _ = fmt.Fprintln(os.Stderr, zarfLogo)
+		jackalLogo := message.GetLogo()
+		_, _ = fmt.Fprintln(os.Stderr, jackalLogo)
 		cmd.Help()
 
 		if len(args) > 0 {
-			if strings.Contains(args[0], config.ZarfPackagePrefix) || strings.Contains(args[0], "zarf-init") {
+			if strings.Contains(args[0], config.JackalPackagePrefix) || strings.Contains(args[0], "jackal-init") {
 				message.Warnf(lang.RootCmdDeprecatedDeploy, args[0])
 			}
-			if args[0] == layout.ZarfYAML {
+			if args[0] == layout.JackalYAML {
 				message.Warn(lang.RootCmdDeprecatedCreate)
 			}
 		}
@@ -79,7 +79,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&config.SkipLogFile, "no-log-file", v.GetBool(common.VNoLogFile), lang.RootCmdFlagSkipLogFile)
 	rootCmd.PersistentFlags().BoolVar(&message.NoProgress, "no-progress", v.GetBool(common.VNoProgress), lang.RootCmdFlagNoProgress)
 	rootCmd.PersistentFlags().BoolVar(&config.NoColor, "no-color", v.GetBool(common.VNoColor), lang.RootCmdFlagNoColor)
-	rootCmd.PersistentFlags().StringVar(&config.CommonOptions.CachePath, "zarf-cache", v.GetString(common.VZarfCache), lang.RootCmdFlagCachePath)
+	rootCmd.PersistentFlags().StringVar(&config.CommonOptions.CachePath, "jackal-cache", v.GetString(common.VJackalCache), lang.RootCmdFlagCachePath)
 	rootCmd.PersistentFlags().StringVar(&config.CommonOptions.TempDirectory, "tmpdir", v.GetString(common.VTmpDir), lang.RootCmdFlagTempDir)
 	rootCmd.PersistentFlags().BoolVar(&config.CommonOptions.Insecure, "insecure", v.GetBool(common.VInsecure), lang.RootCmdFlagInsecure)
 }

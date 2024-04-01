@@ -15,10 +15,10 @@ limitations under the License.
 */
 
 /*
-NOTICE: This file's 'package' and some functionality has been modified / removed to fit within Zarf's package structure.
+NOTICE: This file's 'package' and some functionality has been modified / removed to fit within Jackal's package structure.
 */
 
-// Package helm is a copy of the main package from helm to include a subset of the helm CLI in Zarf
+// Package helm is a copy of the main package from helm to include a subset of the helm CLI in Jackal
 package helm
 
 import (
@@ -39,8 +39,8 @@ Update gets the latest information about charts from the respective chart reposi
 Information is cached locally, where it is used by commands like 'helm search'.
 
 You can optionally specify a list of repositories you want to update.
-	$ zarf tools helm repo update <repo_name> ...
-To update all the repositories, use 'zarf tools helm repo update'.
+	$ jackal tools helm repo update <repo_name> ...
+To update all the repositories, use 'jackal tools helm repo update'.
 `
 
 var errNoRepositories = errors.New("no repositories found. You must add one before updating")

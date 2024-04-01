@@ -1,23 +1,23 @@
 // To parse this data:
 //
-//   import { Convert, ZarfTypes } from "./file";
+//   import { Convert, JackalTypes } from "./file";
 //
-//   const zarfTypes = Convert.toZarfTypes(json);
+//   const jackalTypes = Convert.toJackalTypes(json);
 //
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
-export interface ZarfTypes {
+export interface JackalTypes {
     DeployedPackage: DeployedPackage;
-    ZarfPackage:     ZarfPackage;
-    ZarfState:       ZarfState;
+    JackalPackage:     JackalPackage;
+    JackalState:       JackalState;
 }
 
 export interface DeployedPackage {
     cliVersion:         string;
     componentWebhooks?: { [key: string]: { [key: string]: Webhook } };
     connectStrings?:    { [key: string]: ConnectString };
-    data:               ZarfPackage;
+    data:               JackalPackage;
     deployedComponents: DeployedComponent[];
     generation:         number;
     name:               string;
@@ -41,37 +41,37 @@ export interface ConnectString {
     url: string;
 }
 
-export interface ZarfPackage {
+export interface JackalPackage {
     /**
-     * Zarf-generated package build data
+     * Jackal-generated package build data
      */
-    build?: ZarfBuildData;
+    build?: JackalBuildData;
     /**
      * List of components to deploy in this package
      */
-    components: ZarfComponent[];
+    components: JackalComponent[];
     /**
      * Constant template values applied on deploy for K8s resources
      */
-    constants?: ZarfPackageConstant[];
+    constants?: JackalPackageConstant[];
     /**
-     * The kind of Zarf package
+     * The kind of Jackal package
      */
     kind: Kind;
     /**
      * Package metadata
      */
-    metadata?: ZarfMetadata;
+    metadata?: JackalMetadata;
     /**
      * Variable template values applied on deploy for K8s resources
      */
-    variables?: ZarfPackageVariable[];
+    variables?: JackalPackageVariable[];
 }
 
 /**
- * Zarf-generated package build data
+ * Jackal-generated package build data
  */
-export interface ZarfBuildData {
+export interface JackalBuildData {
     /**
      * The architecture this package was created on
      */
@@ -85,7 +85,7 @@ export interface ZarfBuildData {
      */
     differentialMissing?: string[];
     /**
-     * The minimum version of Zarf that does not have breaking package structure changes
+     * The minimum version of Jackal that does not have breaking package structure changes
      */
     lastNonBreakingVersion?: string;
     /**
@@ -109,29 +109,29 @@ export interface ZarfBuildData {
      */
     user: string;
     /**
-     * The version of Zarf used to build this package
+     * The version of Jackal used to build this package
      */
     version: string;
 }
 
-export interface ZarfComponent {
+export interface JackalComponent {
     /**
      * Custom commands to run at various stages of a package lifecycle
      */
-    actions?: ZarfComponentActions;
+    actions?: JackalComponentActions;
     /**
      * Helm charts to install during package deploy
      */
-    charts?: ZarfChart[];
+    charts?: JackalChart[];
     /**
      * [Deprecated] Specify a path to a public key to validate signed online resources. This
-     * will be removed in Zarf v1.0.0.
+     * will be removed in Jackal v1.0.0.
      */
     cosignKeyPath?: string;
     /**
      * Datasets to inject into a container in the target cluster
      */
-    dataInjections?: ZarfDataInjection[];
+    dataInjections?: JackalDataInjection[];
     /**
      * Determines the default Y/N state for installing this component on package deploy
      */
@@ -143,14 +143,14 @@ export interface ZarfComponent {
     /**
      * Extend component functionality with additional features
      */
-    extensions?: ZarfComponentExtensions;
+    extensions?: JackalComponentExtensions;
     /**
      * Files or folders to place on disk during package deployment
      */
-    files?: ZarfFile[];
+    files?: JackalFile[];
     /**
      * [Deprecated] Create a user selector field based on all components in the same group. This
-     * will be removed in Zarf v1.0.0. Consider using 'only.flavor' instead.
+     * will be removed in Jackal v1.0.0. Consider using 'only.flavor' instead.
      */
     group?: string;
     /**
@@ -158,13 +158,13 @@ export interface ZarfComponent {
      */
     images?: string[];
     /**
-     * Import a component from another Zarf package
+     * Import a component from another Jackal package
      */
-    import?: ZarfComponentImport;
+    import?: JackalComponentImport;
     /**
      * Kubernetes manifests to be included in a generated Helm chart on package deploy
      */
-    manifests?: ZarfManifest[];
+    manifests?: JackalManifest[];
     /**
      * The name of the component
      */
@@ -172,7 +172,7 @@ export interface ZarfComponent {
     /**
      * Filter when this component is included in package creation or deployment
      */
-    only?: ZarfComponentOnlyTarget;
+    only?: JackalComponentOnlyTarget;
     /**
      * List of git repos to include in the package
      */
@@ -183,27 +183,27 @@ export interface ZarfComponent {
     required?: boolean;
     /**
      * [Deprecated] (replaced by actions) Custom commands to run before or after package
-     * deployment.  This will be removed in Zarf v1.0.0.
+     * deployment.  This will be removed in Jackal v1.0.0.
      */
-    scripts?: DeprecatedZarfComponentScripts;
+    scripts?: DeprecatedJackalComponentScripts;
 }
 
 /**
  * Custom commands to run at various stages of a package lifecycle
  */
-export interface ZarfComponentActions {
+export interface JackalComponentActions {
     /**
      * Actions to run during package creation
      */
-    onCreate?: ZarfComponentActionSet;
+    onCreate?: JackalComponentActionSet;
     /**
      * Actions to run during package deployment
      */
-    onDeploy?: ZarfComponentActionSet;
+    onDeploy?: JackalComponentActionSet;
     /**
      * Actions to run during package removal
      */
-    onRemove?: ZarfComponentActionSet;
+    onRemove?: JackalComponentActionSet;
 }
 
 /**
@@ -213,30 +213,30 @@ export interface ZarfComponentActions {
  *
  * Actions to run during package removal
  */
-export interface ZarfComponentActionSet {
+export interface JackalComponentActionSet {
     /**
      * Actions to run at the end of an operation
      */
-    after?: ZarfComponentAction[];
+    after?: JackalComponentAction[];
     /**
      * Actions to run at the start of an operation
      */
-    before?: ZarfComponentAction[];
+    before?: JackalComponentAction[];
     /**
      * Default configuration for all actions in this set
      */
-    defaults?: ZarfComponentActionDefaults;
+    defaults?: JackalComponentActionDefaults;
     /**
      * Actions to run if all operations fail
      */
-    onFailure?: ZarfComponentAction[];
+    onFailure?: JackalComponentAction[];
     /**
      * Actions to run if all operations succeed
      */
-    onSuccess?: ZarfComponentAction[];
+    onSuccess?: JackalComponentAction[];
 }
 
-export interface ZarfComponentAction {
+export interface JackalComponentAction {
     /**
      * The command to run. Must specify either cmd or wait for the action to do anything.
      */
@@ -268,30 +268,30 @@ export interface ZarfComponentAction {
     /**
      * [Deprecated] (replaced by setVariables) (onDeploy/cmd only) The name of a variable to
      * update with the output of the command. This variable will be available to all remaining
-     * actions and components in the package. This will be removed in Zarf v1.0.0
+     * actions and components in the package. This will be removed in Jackal v1.0.0
      */
     setVariable?: string;
     /**
      * (onDeploy/cmd only) An array of variables to update with the output of the command. These
      * variables will be available to all remaining actions and components in the package.
      */
-    setVariables?: ZarfComponentActionSetVariable[];
+    setVariables?: JackalComponentActionSetVariable[];
     /**
      * (cmd only) Indicates a preference for a shell for the provided cmd to be executed in on
      * supported operating systems
      */
-    shell?: ZarfComponentActionShell;
+    shell?: JackalComponentActionShell;
     /**
      * Wait for a condition to be met before continuing. Must specify either cmd or wait for the
-     * action. See the 'zarf tools wait-for' command for more info.
+     * action. See the 'jackal tools wait-for' command for more info.
      */
-    wait?: ZarfComponentActionWait;
+    wait?: JackalComponentActionWait;
 }
 
-export interface ZarfComponentActionSetVariable {
+export interface JackalComponentActionSetVariable {
     /**
      * Whether to automatically indent the variable's value (if multiline) when templating.
-     * Based on the number of chars before the start of ###ZARF_VAR_.
+     * Based on the number of chars before the start of ###JACKAL_VAR_.
      */
     autoIndent?: boolean;
     /**
@@ -304,7 +304,7 @@ export interface ZarfComponentActionSetVariable {
      */
     pattern?: string;
     /**
-     * Whether to mark this variable as sensitive to not print it in the Zarf log
+     * Whether to mark this variable as sensitive to not print it in the Jackal log
      */
     sensitive?: boolean;
     /**
@@ -327,7 +327,7 @@ export enum Type {
  * (cmd only) Indicates a preference for a shell for the provided cmd to be executed in on
  * supported operating systems
  */
-export interface ZarfComponentActionShell {
+export interface JackalComponentActionShell {
     /**
      * (default 'sh') Indicates a preference for the shell to use on macOS systems
      */
@@ -345,26 +345,26 @@ export interface ZarfComponentActionShell {
 
 /**
  * Wait for a condition to be met before continuing. Must specify either cmd or wait for the
- * action. See the 'zarf tools wait-for' command for more info.
+ * action. See the 'jackal tools wait-for' command for more info.
  */
-export interface ZarfComponentActionWait {
+export interface JackalComponentActionWait {
     /**
      * Wait for a condition to be met in the cluster before continuing. Only one of cluster or
      * network can be specified.
      */
-    cluster?: ZarfComponentActionWaitCluster;
+    cluster?: JackalComponentActionWaitCluster;
     /**
      * Wait for a condition to be met on the network before continuing. Only one of cluster or
      * network can be specified.
      */
-    network?: ZarfComponentActionWaitNetwork;
+    network?: JackalComponentActionWaitNetwork;
 }
 
 /**
  * Wait for a condition to be met in the cluster before continuing. Only one of cluster or
  * network can be specified.
  */
-export interface ZarfComponentActionWaitCluster {
+export interface JackalComponentActionWaitCluster {
     /**
      * The condition or jsonpath state to wait for; defaults to exist
      */
@@ -387,7 +387,7 @@ export interface ZarfComponentActionWaitCluster {
  * Wait for a condition to be met on the network before continuing. Only one of cluster or
  * network can be specified.
  */
-export interface ZarfComponentActionWaitNetwork {
+export interface JackalComponentActionWaitNetwork {
     /**
      * The address to wait for
      */
@@ -414,7 +414,7 @@ export enum Protocol {
 /**
  * Default configuration for all actions in this set
  */
-export interface ZarfComponentActionDefaults {
+export interface JackalComponentActionDefaults {
     /**
      * Working directory for commands (default CWD)
      */
@@ -439,10 +439,10 @@ export interface ZarfComponentActionDefaults {
      * (cmd only) Indicates a preference for a shell for the provided cmd to be executed in on
      * supported operating systems
      */
-    shell?: ZarfComponentActionShell;
+    shell?: JackalComponentActionShell;
 }
 
-export interface ZarfChart {
+export interface JackalChart {
     /**
      * The path to the chart in the repo if using a git repo instead of a helm repo
      */
@@ -484,7 +484,7 @@ export interface ZarfChart {
     version?: string;
 }
 
-export interface ZarfDataInjection {
+export interface JackalDataInjection {
     /**
      * Compress the data before transmitting using gzip.  Note: this requires support for
      * tar/gzip locally and in the target image.
@@ -498,13 +498,13 @@ export interface ZarfDataInjection {
     /**
      * The target pod + container to inject the data into
      */
-    target: ZarfContainerTarget;
+    target: JackalContainerTarget;
 }
 
 /**
  * The target pod + container to inject the data into
  */
-export interface ZarfContainerTarget {
+export interface JackalContainerTarget {
     /**
      * The container name to target for data injection
      */
@@ -526,7 +526,7 @@ export interface ZarfContainerTarget {
 /**
  * Extend component functionality with additional features
  */
-export interface ZarfComponentExtensions {
+export interface JackalComponentExtensions {
     /**
      * Configurations for installing Big Bang and Flux in the cluster
      */
@@ -559,7 +559,7 @@ export interface BigBang {
     version: string;
 }
 
-export interface ZarfFile {
+export interface JackalFile {
     /**
      * (files only) Determines if the file should be made executable during package deploy
      */
@@ -588,24 +588,24 @@ export interface ZarfFile {
 }
 
 /**
- * Import a component from another Zarf package
+ * Import a component from another Jackal package
  */
-export interface ZarfComponentImport {
+export interface JackalComponentImport {
     /**
-     * The name of the component to import from the referenced zarf.yaml
+     * The name of the component to import from the referenced jackal.yaml
      */
     name?: string;
     /**
-     * The relative path to a directory containing a zarf.yaml to import from
+     * The relative path to a directory containing a jackal.yaml to import from
      */
     path?: string;
     /**
-     * [beta] The URL to a Zarf package to import via OCI
+     * [beta] The URL to a Jackal package to import via OCI
      */
     url?: string;
 }
 
-export interface ZarfManifest {
+export interface JackalManifest {
     /**
      * List of local K8s YAML files or remote URLs to deploy (in order)
      */
@@ -636,13 +636,13 @@ export interface ZarfManifest {
 /**
  * Filter when this component is included in package creation or deployment
  */
-export interface ZarfComponentOnlyTarget {
+export interface JackalComponentOnlyTarget {
     /**
      * Only deploy component to specified clusters
      */
-    cluster?: ZarfComponentOnlyCluster;
+    cluster?: JackalComponentOnlyCluster;
     /**
-     * Only include this component when a matching '--flavor' is specified on 'zarf package
+     * Only include this component when a matching '--flavor' is specified on 'jackal package
      * create'
      */
     flavor?: string;
@@ -655,7 +655,7 @@ export interface ZarfComponentOnlyTarget {
 /**
  * Only deploy component to specified clusters
  */
-export interface ZarfComponentOnlyCluster {
+export interface JackalComponentOnlyCluster {
     /**
      * Only create and deploy to clusters of the given architecture
      */
@@ -685,9 +685,9 @@ export enum LocalOS {
 
 /**
  * [Deprecated] (replaced by actions) Custom commands to run before or after package
- * deployment.  This will be removed in Zarf v1.0.0.
+ * deployment.  This will be removed in Jackal v1.0.0.
  */
-export interface DeprecatedZarfComponentScripts {
+export interface DeprecatedJackalComponentScripts {
     /**
      * Scripts to run after the component successfully deploys
      */
@@ -714,10 +714,10 @@ export interface DeprecatedZarfComponentScripts {
     timeoutSeconds?: number;
 }
 
-export interface ZarfPackageConstant {
+export interface JackalPackageConstant {
     /**
      * Whether to automatically indent the variable's value (if multiline) when templating.
-     * Based on the number of chars before the start of ###ZARF_CONST_.
+     * Based on the number of chars before the start of ###JACKAL_CONST_.
      */
     autoIndent?: boolean;
     /**
@@ -741,17 +741,17 @@ export interface ZarfPackageConstant {
 }
 
 /**
- * The kind of Zarf package
+ * The kind of Jackal package
  */
 export enum Kind {
-    ZarfInitConfig = "ZarfInitConfig",
-    ZarfPackageConfig = "ZarfPackageConfig",
+    JackalInitConfig = "JackalInitConfig",
+    JackalPackageConfig = "JackalPackageConfig",
 }
 
 /**
  * Package metadata
  */
-export interface ZarfMetadata {
+export interface JackalMetadata {
     /**
      * Checksum of a checksums.txt file that contains checksums all the layers within the
      * package.
@@ -774,11 +774,11 @@ export interface ZarfMetadata {
      */
     documentation?: string;
     /**
-     * An image URL to embed in this package (Reserved for future use in Zarf UI)
+     * An image URL to embed in this package (Reserved for future use in Jackal UI)
      */
     image?: string;
     /**
-     * Name to identify this Zarf package
+     * Name to identify this Jackal package
      */
     name: string;
     /**
@@ -799,21 +799,21 @@ export interface ZarfMetadata {
     vendor?: string;
     /**
      * Generic string set by a package author to track the package version (Note:
-     * ZarfInitConfigs will always be versioned to the CLIVersion they were created with)
+     * JackalInitConfigs will always be versioned to the CLIVersion they were created with)
      */
     version?: string;
     /**
-     * Yaml OnLy Online (YOLO): True enables deploying a Zarf package without first running zarf
+     * Yaml OnLy Online (YOLO): True enables deploying a Jackal package without first running jackal
      * init against the cluster. This is ideal for connected environments where you want to use
      * existing VCS and container registries.
      */
     yolo?: boolean;
 }
 
-export interface ZarfPackageVariable {
+export interface JackalPackageVariable {
     /**
      * Whether to automatically indent the variable's value (if multiline) when templating.
-     * Based on the number of chars before the start of ###ZARF_VAR_.
+     * Based on the number of chars before the start of ###JACKAL_VAR_.
      */
     autoIndent?: boolean;
     /**
@@ -838,7 +838,7 @@ export interface ZarfPackageVariable {
      */
     prompt?: boolean;
     /**
-     * Whether to mark this variable as sensitive to not print it in the Zarf log
+     * Whether to mark this variable as sensitive to not print it in the Jackal log
      */
     sensitive?: boolean;
     /**
@@ -860,22 +860,22 @@ export interface InstalledChart {
     namespace: string;
 }
 
-export interface ZarfState {
+export interface JackalState {
     agentTLS: GeneratedPKI;
     /**
      * Machine architecture of the k8s node(s)
      */
     architecture: string;
     /**
-     * Information about the artifact registry Zarf is configured to use
+     * Information about the artifact registry Jackal is configured to use
      */
     artifactServer: ArtifactServerInfo;
     /**
-     * K8s distribution of the cluster Zarf was deployed to
+     * K8s distribution of the cluster Jackal was deployed to
      */
     distro: string;
     /**
-     * Information about the repository Zarf is configured to use
+     * Information about the repository Jackal is configured to use
      */
     gitServer: GitServerInfo;
     /**
@@ -883,14 +883,14 @@ export interface ZarfState {
      */
     loggingSecret: string;
     /**
-     * Information about the container registry Zarf is configured to use
+     * Information about the container registry Jackal is configured to use
      */
     registryInfo: RegistryInfo;
     storageClass: string;
     /**
-     * Indicates if Zarf was initialized while deploying its own k8s cluster
+     * Indicates if Jackal was initialized while deploying its own k8s cluster
      */
-    zarfAppliance: boolean;
+    jackalAppliance: boolean;
 }
 
 export interface GeneratedPKI {
@@ -900,7 +900,7 @@ export interface GeneratedPKI {
 }
 
 /**
- * Information about the artifact registry Zarf is configured to use
+ * Information about the artifact registry Jackal is configured to use
  */
 export interface ArtifactServerInfo {
     /**
@@ -908,7 +908,7 @@ export interface ArtifactServerInfo {
      */
     address: string;
     /**
-     * Indicates if we are using a artifact registry that Zarf is directly managing
+     * Indicates if we are using a artifact registry that Jackal is directly managing
      */
     internalServer: boolean;
     /**
@@ -922,7 +922,7 @@ export interface ArtifactServerInfo {
 }
 
 /**
- * Information about the repository Zarf is configured to use
+ * Information about the repository Jackal is configured to use
  */
 export interface GitServerInfo {
     /**
@@ -930,7 +930,7 @@ export interface GitServerInfo {
      */
     address: string;
     /**
-     * Indicates if we are using a git server that Zarf is directly managing
+     * Indicates if we are using a git server that Jackal is directly managing
      */
     internalServer: boolean;
     /**
@@ -954,7 +954,7 @@ export interface GitServerInfo {
 }
 
 /**
- * Information about the container registry Zarf is configured to use
+ * Information about the container registry Jackal is configured to use
  */
 export interface RegistryInfo {
     /**
@@ -962,7 +962,7 @@ export interface RegistryInfo {
      */
     address: string;
     /**
-     * Indicates if we are using a registry that Zarf is directly managing
+     * Indicates if we are using a registry that Jackal is directly managing
      */
     internalRegistry: boolean;
     /**
@@ -997,12 +997,12 @@ export interface RegistryInfo {
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
 export class Convert {
-    public static toZarfTypes(json: string): ZarfTypes {
-        return cast(JSON.parse(json), r("ZarfTypes"));
+    public static toJackalTypes(json: string): JackalTypes {
+        return cast(JSON.parse(json), r("JackalTypes"));
     }
 
-    public static zarfTypesToJson(value: ZarfTypes): string {
-        return JSON.stringify(uncast(value, r("ZarfTypes")), null, 2);
+    public static jackalTypesToJson(value: JackalTypes): string {
+        return JSON.stringify(uncast(value, r("JackalTypes")), null, 2);
     }
 }
 
@@ -1159,16 +1159,16 @@ function r(name: string) {
 }
 
 const typeMap: any = {
-    "ZarfTypes": o([
+    "JackalTypes": o([
         { json: "DeployedPackage", js: "DeployedPackage", typ: r("DeployedPackage") },
-        { json: "ZarfPackage", js: "ZarfPackage", typ: r("ZarfPackage") },
-        { json: "ZarfState", js: "ZarfState", typ: r("ZarfState") },
+        { json: "JackalPackage", js: "JackalPackage", typ: r("JackalPackage") },
+        { json: "JackalState", js: "JackalState", typ: r("JackalState") },
     ], false),
     "DeployedPackage": o([
         { json: "cliVersion", js: "cliVersion", typ: "" },
         { json: "componentWebhooks", js: "componentWebhooks", typ: u(undefined, m(m(r("Webhook")))) },
         { json: "connectStrings", js: "connectStrings", typ: u(undefined, m(r("ConnectString"))) },
-        { json: "data", js: "data", typ: r("ZarfPackage") },
+        { json: "data", js: "data", typ: r("JackalPackage") },
         { json: "deployedComponents", js: "deployedComponents", typ: a(r("DeployedComponent")) },
         { json: "generation", js: "generation", typ: 0 },
         { json: "name", js: "name", typ: "" },
@@ -1183,15 +1183,15 @@ const typeMap: any = {
         { json: "description", js: "description", typ: "" },
         { json: "url", js: "url", typ: "" },
     ], false),
-    "ZarfPackage": o([
-        { json: "build", js: "build", typ: u(undefined, r("ZarfBuildData")) },
-        { json: "components", js: "components", typ: a(r("ZarfComponent")) },
-        { json: "constants", js: "constants", typ: u(undefined, a(r("ZarfPackageConstant"))) },
+    "JackalPackage": o([
+        { json: "build", js: "build", typ: u(undefined, r("JackalBuildData")) },
+        { json: "components", js: "components", typ: a(r("JackalComponent")) },
+        { json: "constants", js: "constants", typ: u(undefined, a(r("JackalPackageConstant"))) },
         { json: "kind", js: "kind", typ: r("Kind") },
-        { json: "metadata", js: "metadata", typ: u(undefined, r("ZarfMetadata")) },
-        { json: "variables", js: "variables", typ: u(undefined, a(r("ZarfPackageVariable"))) },
+        { json: "metadata", js: "metadata", typ: u(undefined, r("JackalMetadata")) },
+        { json: "variables", js: "variables", typ: u(undefined, a(r("JackalPackageVariable"))) },
     ], false),
-    "ZarfBuildData": o([
+    "JackalBuildData": o([
         { json: "architecture", js: "architecture", typ: "" },
         { json: "differential", js: "differential", typ: u(undefined, true) },
         { json: "differentialMissing", js: "differentialMissing", typ: u(undefined, a("")) },
@@ -1203,38 +1203,38 @@ const typeMap: any = {
         { json: "user", js: "user", typ: "" },
         { json: "version", js: "version", typ: "" },
     ], false),
-    "ZarfComponent": o([
-        { json: "actions", js: "actions", typ: u(undefined, r("ZarfComponentActions")) },
-        { json: "charts", js: "charts", typ: u(undefined, a(r("ZarfChart"))) },
+    "JackalComponent": o([
+        { json: "actions", js: "actions", typ: u(undefined, r("JackalComponentActions")) },
+        { json: "charts", js: "charts", typ: u(undefined, a(r("JackalChart"))) },
         { json: "cosignKeyPath", js: "cosignKeyPath", typ: u(undefined, "") },
-        { json: "dataInjections", js: "dataInjections", typ: u(undefined, a(r("ZarfDataInjection"))) },
+        { json: "dataInjections", js: "dataInjections", typ: u(undefined, a(r("JackalDataInjection"))) },
         { json: "default", js: "default", typ: u(undefined, true) },
         { json: "description", js: "description", typ: u(undefined, "") },
-        { json: "extensions", js: "extensions", typ: u(undefined, r("ZarfComponentExtensions")) },
-        { json: "files", js: "files", typ: u(undefined, a(r("ZarfFile"))) },
+        { json: "extensions", js: "extensions", typ: u(undefined, r("JackalComponentExtensions")) },
+        { json: "files", js: "files", typ: u(undefined, a(r("JackalFile"))) },
         { json: "group", js: "group", typ: u(undefined, "") },
         { json: "images", js: "images", typ: u(undefined, a("")) },
-        { json: "import", js: "import", typ: u(undefined, r("ZarfComponentImport")) },
-        { json: "manifests", js: "manifests", typ: u(undefined, a(r("ZarfManifest"))) },
+        { json: "import", js: "import", typ: u(undefined, r("JackalComponentImport")) },
+        { json: "manifests", js: "manifests", typ: u(undefined, a(r("JackalManifest"))) },
         { json: "name", js: "name", typ: "" },
-        { json: "only", js: "only", typ: u(undefined, r("ZarfComponentOnlyTarget")) },
+        { json: "only", js: "only", typ: u(undefined, r("JackalComponentOnlyTarget")) },
         { json: "repos", js: "repos", typ: u(undefined, a("")) },
         { json: "required", js: "required", typ: u(undefined, true) },
-        { json: "scripts", js: "scripts", typ: u(undefined, r("DeprecatedZarfComponentScripts")) },
+        { json: "scripts", js: "scripts", typ: u(undefined, r("DeprecatedJackalComponentScripts")) },
     ], false),
-    "ZarfComponentActions": o([
-        { json: "onCreate", js: "onCreate", typ: u(undefined, r("ZarfComponentActionSet")) },
-        { json: "onDeploy", js: "onDeploy", typ: u(undefined, r("ZarfComponentActionSet")) },
-        { json: "onRemove", js: "onRemove", typ: u(undefined, r("ZarfComponentActionSet")) },
+    "JackalComponentActions": o([
+        { json: "onCreate", js: "onCreate", typ: u(undefined, r("JackalComponentActionSet")) },
+        { json: "onDeploy", js: "onDeploy", typ: u(undefined, r("JackalComponentActionSet")) },
+        { json: "onRemove", js: "onRemove", typ: u(undefined, r("JackalComponentActionSet")) },
     ], false),
-    "ZarfComponentActionSet": o([
-        { json: "after", js: "after", typ: u(undefined, a(r("ZarfComponentAction"))) },
-        { json: "before", js: "before", typ: u(undefined, a(r("ZarfComponentAction"))) },
-        { json: "defaults", js: "defaults", typ: u(undefined, r("ZarfComponentActionDefaults")) },
-        { json: "onFailure", js: "onFailure", typ: u(undefined, a(r("ZarfComponentAction"))) },
-        { json: "onSuccess", js: "onSuccess", typ: u(undefined, a(r("ZarfComponentAction"))) },
+    "JackalComponentActionSet": o([
+        { json: "after", js: "after", typ: u(undefined, a(r("JackalComponentAction"))) },
+        { json: "before", js: "before", typ: u(undefined, a(r("JackalComponentAction"))) },
+        { json: "defaults", js: "defaults", typ: u(undefined, r("JackalComponentActionDefaults")) },
+        { json: "onFailure", js: "onFailure", typ: u(undefined, a(r("JackalComponentAction"))) },
+        { json: "onSuccess", js: "onSuccess", typ: u(undefined, a(r("JackalComponentAction"))) },
     ], false),
-    "ZarfComponentAction": o([
+    "JackalComponentAction": o([
         { json: "cmd", js: "cmd", typ: u(undefined, "") },
         { json: "description", js: "description", typ: u(undefined, "") },
         { json: "dir", js: "dir", typ: u(undefined, "") },
@@ -1243,46 +1243,46 @@ const typeMap: any = {
         { json: "maxTotalSeconds", js: "maxTotalSeconds", typ: u(undefined, 0) },
         { json: "mute", js: "mute", typ: u(undefined, true) },
         { json: "setVariable", js: "setVariable", typ: u(undefined, "") },
-        { json: "setVariables", js: "setVariables", typ: u(undefined, a(r("ZarfComponentActionSetVariable"))) },
-        { json: "shell", js: "shell", typ: u(undefined, r("ZarfComponentActionShell")) },
-        { json: "wait", js: "wait", typ: u(undefined, r("ZarfComponentActionWait")) },
+        { json: "setVariables", js: "setVariables", typ: u(undefined, a(r("JackalComponentActionSetVariable"))) },
+        { json: "shell", js: "shell", typ: u(undefined, r("JackalComponentActionShell")) },
+        { json: "wait", js: "wait", typ: u(undefined, r("JackalComponentActionWait")) },
     ], false),
-    "ZarfComponentActionSetVariable": o([
+    "JackalComponentActionSetVariable": o([
         { json: "autoIndent", js: "autoIndent", typ: u(undefined, true) },
         { json: "name", js: "name", typ: "" },
         { json: "pattern", js: "pattern", typ: u(undefined, "") },
         { json: "sensitive", js: "sensitive", typ: u(undefined, true) },
         { json: "type", js: "type", typ: u(undefined, r("Type")) },
     ], false),
-    "ZarfComponentActionShell": o([
+    "JackalComponentActionShell": o([
         { json: "darwin", js: "darwin", typ: u(undefined, "") },
         { json: "linux", js: "linux", typ: u(undefined, "") },
         { json: "windows", js: "windows", typ: u(undefined, "") },
     ], false),
-    "ZarfComponentActionWait": o([
-        { json: "cluster", js: "cluster", typ: u(undefined, r("ZarfComponentActionWaitCluster")) },
-        { json: "network", js: "network", typ: u(undefined, r("ZarfComponentActionWaitNetwork")) },
+    "JackalComponentActionWait": o([
+        { json: "cluster", js: "cluster", typ: u(undefined, r("JackalComponentActionWaitCluster")) },
+        { json: "network", js: "network", typ: u(undefined, r("JackalComponentActionWaitNetwork")) },
     ], false),
-    "ZarfComponentActionWaitCluster": o([
+    "JackalComponentActionWaitCluster": o([
         { json: "condition", js: "condition", typ: u(undefined, "") },
         { json: "kind", js: "kind", typ: "" },
         { json: "name", js: "name", typ: "" },
         { json: "namespace", js: "namespace", typ: u(undefined, "") },
     ], false),
-    "ZarfComponentActionWaitNetwork": o([
+    "JackalComponentActionWaitNetwork": o([
         { json: "address", js: "address", typ: "" },
         { json: "code", js: "code", typ: u(undefined, 0) },
         { json: "protocol", js: "protocol", typ: r("Protocol") },
     ], false),
-    "ZarfComponentActionDefaults": o([
+    "JackalComponentActionDefaults": o([
         { json: "dir", js: "dir", typ: u(undefined, "") },
         { json: "env", js: "env", typ: u(undefined, a("")) },
         { json: "maxRetries", js: "maxRetries", typ: u(undefined, 0) },
         { json: "maxTotalSeconds", js: "maxTotalSeconds", typ: u(undefined, 0) },
         { json: "mute", js: "mute", typ: u(undefined, true) },
-        { json: "shell", js: "shell", typ: u(undefined, r("ZarfComponentActionShell")) },
+        { json: "shell", js: "shell", typ: u(undefined, r("JackalComponentActionShell")) },
     ], false),
-    "ZarfChart": o([
+    "JackalChart": o([
         { json: "gitPath", js: "gitPath", typ: u(undefined, "") },
         { json: "localPath", js: "localPath", typ: u(undefined, "") },
         { json: "name", js: "name", typ: "" },
@@ -1293,18 +1293,18 @@ const typeMap: any = {
         { json: "valuesFiles", js: "valuesFiles", typ: u(undefined, a("")) },
         { json: "version", js: "version", typ: u(undefined, "") },
     ], false),
-    "ZarfDataInjection": o([
+    "JackalDataInjection": o([
         { json: "compress", js: "compress", typ: u(undefined, true) },
         { json: "source", js: "source", typ: "" },
-        { json: "target", js: "target", typ: r("ZarfContainerTarget") },
+        { json: "target", js: "target", typ: r("JackalContainerTarget") },
     ], false),
-    "ZarfContainerTarget": o([
+    "JackalContainerTarget": o([
         { json: "container", js: "container", typ: "" },
         { json: "namespace", js: "namespace", typ: "" },
         { json: "path", js: "path", typ: "" },
         { json: "selector", js: "selector", typ: "" },
     ], false),
-    "ZarfComponentExtensions": o([
+    "JackalComponentExtensions": o([
         { json: "bigbang", js: "bigbang", typ: u(undefined, r("BigBang")) },
     ], false),
     "BigBang": o([
@@ -1314,7 +1314,7 @@ const typeMap: any = {
         { json: "valuesFiles", js: "valuesFiles", typ: u(undefined, a("")) },
         { json: "version", js: "version", typ: "" },
     ], false),
-    "ZarfFile": o([
+    "JackalFile": o([
         { json: "executable", js: "executable", typ: u(undefined, true) },
         { json: "extractPath", js: "extractPath", typ: u(undefined, "") },
         { json: "shasum", js: "shasum", typ: u(undefined, "") },
@@ -1322,12 +1322,12 @@ const typeMap: any = {
         { json: "symlinks", js: "symlinks", typ: u(undefined, a("")) },
         { json: "target", js: "target", typ: "" },
     ], false),
-    "ZarfComponentImport": o([
+    "JackalComponentImport": o([
         { json: "name", js: "name", typ: u(undefined, "") },
         { json: "path", js: "path", typ: u(undefined, "") },
         { json: "url", js: "url", typ: u(undefined, "") },
     ], false),
-    "ZarfManifest": o([
+    "JackalManifest": o([
         { json: "files", js: "files", typ: u(undefined, a("")) },
         { json: "kustomizations", js: "kustomizations", typ: u(undefined, a("")) },
         { json: "kustomizeAllowAnyDirectory", js: "kustomizeAllowAnyDirectory", typ: u(undefined, true) },
@@ -1335,16 +1335,16 @@ const typeMap: any = {
         { json: "namespace", js: "namespace", typ: u(undefined, "") },
         { json: "noWait", js: "noWait", typ: u(undefined, true) },
     ], false),
-    "ZarfComponentOnlyTarget": o([
-        { json: "cluster", js: "cluster", typ: u(undefined, r("ZarfComponentOnlyCluster")) },
+    "JackalComponentOnlyTarget": o([
+        { json: "cluster", js: "cluster", typ: u(undefined, r("JackalComponentOnlyCluster")) },
         { json: "flavor", js: "flavor", typ: u(undefined, "") },
         { json: "localOS", js: "localOS", typ: u(undefined, r("LocalOS")) },
     ], false),
-    "ZarfComponentOnlyCluster": o([
+    "JackalComponentOnlyCluster": o([
         { json: "architecture", js: "architecture", typ: u(undefined, r("Architecture")) },
         { json: "distros", js: "distros", typ: u(undefined, a("")) },
     ], false),
-    "DeprecatedZarfComponentScripts": o([
+    "DeprecatedJackalComponentScripts": o([
         { json: "after", js: "after", typ: u(undefined, a("")) },
         { json: "before", js: "before", typ: u(undefined, a("")) },
         { json: "prepare", js: "prepare", typ: u(undefined, a("")) },
@@ -1352,14 +1352,14 @@ const typeMap: any = {
         { json: "showOutput", js: "showOutput", typ: u(undefined, true) },
         { json: "timeoutSeconds", js: "timeoutSeconds", typ: u(undefined, 0) },
     ], false),
-    "ZarfPackageConstant": o([
+    "JackalPackageConstant": o([
         { json: "autoIndent", js: "autoIndent", typ: u(undefined, true) },
         { json: "description", js: "description", typ: u(undefined, "") },
         { json: "name", js: "name", typ: "" },
         { json: "pattern", js: "pattern", typ: u(undefined, "") },
         { json: "value", js: "value", typ: "" },
     ], false),
-    "ZarfMetadata": o([
+    "JackalMetadata": o([
         { json: "aggregateChecksum", js: "aggregateChecksum", typ: u(undefined, "") },
         { json: "architecture", js: "architecture", typ: u(undefined, "") },
         { json: "authors", js: "authors", typ: u(undefined, "") },
@@ -1374,7 +1374,7 @@ const typeMap: any = {
         { json: "version", js: "version", typ: u(undefined, "") },
         { json: "yolo", js: "yolo", typ: u(undefined, true) },
     ], false),
-    "ZarfPackageVariable": o([
+    "JackalPackageVariable": o([
         { json: "autoIndent", js: "autoIndent", typ: u(undefined, true) },
         { json: "default", js: "default", typ: u(undefined, "") },
         { json: "description", js: "description", typ: u(undefined, "") },
@@ -1394,7 +1394,7 @@ const typeMap: any = {
         { json: "chartName", js: "chartName", typ: "" },
         { json: "namespace", js: "namespace", typ: "" },
     ], false),
-    "ZarfState": o([
+    "JackalState": o([
         { json: "agentTLS", js: "agentTLS", typ: r("GeneratedPKI") },
         { json: "architecture", js: "architecture", typ: "" },
         { json: "artifactServer", js: "artifactServer", typ: r("ArtifactServerInfo") },
@@ -1403,7 +1403,7 @@ const typeMap: any = {
         { json: "loggingSecret", js: "loggingSecret", typ: "" },
         { json: "registryInfo", js: "registryInfo", typ: r("RegistryInfo") },
         { json: "storageClass", js: "storageClass", typ: "" },
-        { json: "zarfAppliance", js: "zarfAppliance", typ: true },
+        { json: "jackalAppliance", js: "jackalAppliance", typ: true },
     ], false),
     "GeneratedPKI": o([
         { json: "ca", js: "ca", typ: "" },
@@ -1453,7 +1453,7 @@ const typeMap: any = {
         "windows",
     ],
     "Kind": [
-        "ZarfInitConfig",
-        "ZarfPackageConfig",
+        "JackalInitConfig",
+        "JackalPackageConfig",
     ],
 };

@@ -47,13 +47,13 @@ b.BWHI {background-color: #aaaaaa}
 </head>
 <body>
 <pre>
-<b class=WHI>$ zarf package deploy ./zarf-package-dos-games-arm64.tar.zst</b>
+<b class=WHI>$ jackal package deploy ./jackal-package-dos-games-arm64.tar.zst</b>
 <b class=YEL>Saving log file to</b>
-<b class=YEL>/var/folders/bk/rz1xx2sd5zn134c0_j1s2n5r0000gp/T/zarf-2023-03-23-10-20-59-1265818177.log</b>
-<b class=YEL></b>  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading Zarf Package ../examples/dos-games/zarf-package-dos-games-arm64.tar.zst</b>
-<b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading Zarf Package ../examples/dos-games/zarf-package-dos-games-arm64.tar.zst</b>
+<b class=YEL>/var/folders/bk/rz1xx2sd5zn134c0_j1s2n5r0000gp/T/jackal-2023-03-23-10-20-59-1265818177.log</b>
+<b class=YEL></b>  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading Jackal Package ../examples/dos-games/jackal-package-dos-games-arm64.tar.zst</b>
+<b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading Jackal Package ../examples/dos-games/jackal-package-dos-games-arm64.tar.zst</b>
 
-<b style="color:#55ffff;">kind</b>:<b style="color:#ff55ff;"> ZarfPackageConfig</b>
+<b style="color:#55ffff;">kind</b>:<b style="color:#ff55ff;"> JackalPackageConfig</b>
 <b style="color:#ff55ff;"></b><b style="color:#55ffff;">metadata</b>:<b style="color:#55ffff;"></b>
 <b style="color:#55ffff;">  name</b>:<b style="color:#ff55ff;"> dos-games</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">description</b>:<b style="color:#ff55ff;"> Simple example to load classic DOS games into K8s in the airgap</b>
@@ -71,41 +71,41 @@ b.BWHI {background-color: #aaaaaa}
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">required</b>:<b style="color:#ffffff;"> true</b>
 <b style="color:#ffffff;">  </b><b style="color:#55ffff;">manifests</b>:
   -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> multi-games</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> zarf</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> jackal</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">files</b>:
     -<b style="color:#ff55ff;"> manifests/deployment.yaml</b>
 <b style="color:#ff55ff;">    </b>-<b style="color:#ff55ff;"> manifests/service.yaml</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">images</b>:
-  -<b style="color:#ff55ff;"> defenseunicorns/zarf-game:multi-tile-dark</b>
+  -<b style="color:#ff55ff;"> defenseunicorns/jackal-game:multi-tile-dark</b>
 <b class=YEL>This package has 1 artifacts with software bill-of-materials (SBOM) included. You can view them now</b>
-<b class=YEL>in the zarf-sbom folder in this directory or to go directly to one, open this in your browser:</b>
-<b class=YEL>/Users/jason/src/github.com/jasonvanbrackel/zarf/docs-website/zarf-sbom/sbom-viewer-defenseunicorns_zarf-game_multi-tile-dark.html</b>
+<b class=YEL>in the jackal-sbom folder in this directory or to go directly to one, open this in your browser:</b>
+<b class=YEL>/Users/jason/src/github.com/jasonvanbrackel/jackal/docs-website/jackal-sbom/sbom-viewer-defenseunicorns_jackal-game_multi-tile-dark.html</b>
 <b class=YEL></b>
 <b class=YEL>* This directory will be removed after package deployment.</b>
 <b class=YEL></b>
-<b style="color:#55ff55;">?</b><b class="HIW">Deploy this Zarf package?</b> (y/N) <span style="color:#00aaaa">Yes</span>
+<b style="color:#55ff55;">?</b><b class="HIW">Deploy this Jackal package?</b> (y/N) <span style="color:#00aaaa">Yes</span>
 
 <b style="background-color:#555555"></b><b style="background-color:#555555">                                                                                </b>
 <b style="background-color:#555555"></b><b style="background-color:#555555"></b><b style="color:#ffffff;background-color:#555555"></b><b style="color:#ffffff;background-color:#555555">  📦 BASELINE COMPONENT                                                         </b><b style="background-color:#555555"></b><b style="background-color:#555555"></b>
 <b style="background-color:#555555"></b><b style="background-color:#555555"></b><b style="color:#ffffff;background-color:#555555"></b><b style="color:#ffffff;background-color:#555555">                                                                                </b><b style="background-color:#555555"></b><b style="background-color:#555555"></b>
 <b style="background-color:#555555"></b><b style="background-color:#555555">                                                                                </b>
 
-<b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading the Zarf State from the Kubernetes cluster</b>
-<b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading the Zarf State from the Kubernetes cluster</b>
-<b style="color:#55ffff;"></b><b style="color:#55ffff;">Opening tunnel 50141 -&gt; 5000 for svc/zarf-docker-registry in namespace zarf</b>
+<b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading the Jackal State from the Kubernetes cluster</b>
+<b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading the Jackal State from the Kubernetes cluster</b>
+<b style="color:#55ffff;"></b><b style="color:#55ffff;">Opening tunnel 50141 -&gt; 5000 for svc/jackal-docker-registry in namespace jackal</b>
 <b style="color:#55ffff;"></b><b style="color:#55ffff;">Creating port forwarding tunnel at http://127.0.0.1:50141/v2/_catalog</b>
-<b style="color:#55ffff;"></b><b style="color:#55ffff;">Storing images in the zarf registry</b>
-<b style="color:#55ffff;"></b><b style="color:#55ffff;">Storing images in the zarf registry</b>
+<b style="color:#55ffff;"></b><b style="color:#55ffff;">Storing images in the jackal registry</b>
+<b style="color:#55ffff;"></b><b style="color:#55ffff;">Storing images in the jackal registry</b>
 <b style="color:#55ffff;"></b><b style="color:#55ffff;">Starting helm chart generation multi-games</b>
 <b style="color:#55ffff;"></b><b style="color:#55ffff;">Starting helm chart generation multi-games</b>
-<b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart raw-dos-games-baseline-multi-games:0.1.1679581259 from Zarf-generated helm</b>  <b style="color:#55ffff;"></b><b style="color:#55ffff;">chart</b>
-<b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart raw-dos-games-baseline-multi-games:0.1.1679581259 from Zarf-generated helm</b>
+<b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart raw-dos-games-baseline-multi-games:0.1.1679581259 from Jackal-generated helm</b>  <b style="color:#55ffff;"></b><b style="color:#55ffff;">chart</b>
+<b style="color:#55ffff;"></b><b style="color:#55ffff;">Processing helm chart raw-dos-games-baseline-multi-games:0.1.1679581259 from Jackal-generated helm</b>
 <b style="color:#55ffff;"></b><b style="color:#55ffff;">chart</b>
-<b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">Zarf deployment complete</b>
+<b style="color:#55ff55;"></b><b style="color:#55ff55;">  ✔ </b> <b style="color:#55ff55;"></b><b style="color:#55ff55;">Jackal deployment complete</b>
 
 <b style="color:#55ffff;"></b><b style="color:#55ffff;">     Connect Command   </b><b style="color:#555555;"></b><b style="color:#555555;"> | </b><b style="color:#55ffff;"></b><b style="color:#55ffff;">Description               </b>
-     zarf connect doom <b style="color:#555555;"></b><b style="color:#555555;"> | </b>Play doom!!!
-     zarf connect games<b style="color:#555555;"></b><b style="color:#555555;"> | </b>Play some old dos games 🦄
+     jackal connect doom <b style="color:#555555;"></b><b style="color:#555555;"> | </b>Play doom!!!
+     jackal connect games<b style="color:#555555;"></b><b style="color:#555555;"> | </b>Play some old dos games 🦄
 </pre>
 </body>
 </html>

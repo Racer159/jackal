@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package filters contains core implementations of the ComponentFilterStrategy interface.
 package filters
@@ -7,12 +7,12 @@ package filters
 import (
 	"fmt"
 
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/types"
 )
 
 // ComponentFilterStrategy is a strategy interface for filtering components.
 type ComponentFilterStrategy interface {
-	Apply(types.ZarfPackage) ([]types.ZarfComponent, error)
+	Apply(types.JackalPackage) ([]types.JackalComponent, error)
 }
 
 // comboFilter is a filter that applies a sequence of filters.
@@ -21,7 +21,7 @@ type comboFilter struct {
 }
 
 // Apply applies the filter.
-func (f *comboFilter) Apply(pkg types.ZarfPackage) ([]types.ZarfComponent, error) {
+func (f *comboFilter) Apply(pkg types.JackalPackage) ([]types.JackalComponent, error) {
 	result := pkg
 
 	for _, filter := range f.filters {

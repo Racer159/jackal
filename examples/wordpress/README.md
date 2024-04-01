@@ -2,9 +2,9 @@ import ExampleYAML from "@site/src/components/ExampleYAML";
 
 # WordPress
 
-This example demonstrates how to use Zarf to deploy a WordPress blog into a cluster.  It is used as a part of the [Creating a Zarf Package](../../docs/5-zarf-tutorials/0-creating-a-zarf-package.md) and [Deploying a Zarf Package](../../docs/5-zarf-tutorials/2-deploying-zarf-packages.md) tutorials.
+This example demonstrates how to use Jackal to deploy a WordPress blog into a cluster.  It is used as a part of the [Creating a Jackal Package](../../docs/5-jackal-tutorials/0-creating-a-jackal-package.md) and [Deploying a Jackal Package](../../docs/5-jackal-tutorials/2-deploying-jackal-packages.md) tutorials.
 
-## `zarf.yaml` {#zarf.yaml}
+## `jackal.yaml` {#jackal.yaml}
 
 :::info
 
@@ -12,4 +12,4 @@ To view the example in its entirety, select the `Edit this page` link below the 
 
 :::
 
-<ExampleYAML src={require('./zarf.yaml')} showLink={false} />
+<ExampleYAML src={require('./jackal.yaml')} showLink={false} />

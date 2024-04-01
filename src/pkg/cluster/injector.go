@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package cluster contains Zarf-specific cluster management functions.
+// Package cluster contains Jackal-specific cluster management functions.
 package cluster
 
 import (
@@ -12,13 +12,13 @@ import (
 	"regexp"
 	"time"
 
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/k8s"
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/transform"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/k8s"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/transform"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
 	"github.com/google/go-containerregistry/pkg/crane"
 	"github.com/mholt/archiver/v3"
 	corev1 "k8s.io/api/core/v1"
@@ -39,7 +39,7 @@ var (
 // imageNodeMap is a map of image/node pairs.
 type imageNodeMap map[string][]string
 
-// StartInjectionMadness initializes a Zarf injection into the cluster.
+// StartInjectionMadness initializes a Jackal injection into the cluster.
 func (c *Cluster) StartInjectionMadness(tmpDir string, imagesDir string, injectorSeedSrcs []string) {
 	spinner := message.NewProgressSpinner("Attempting to bootstrap the seed image into the cluster")
 	defer spinner.Stop()
@@ -47,7 +47,7 @@ func (c *Cluster) StartInjectionMadness(tmpDir string, imagesDir string, injecto
 	tmp := layout.InjectionMadnessPaths{
 		SeedImagesDir: filepath.Join(tmpDir, "seed-images"),
 		// should already exist
-		InjectionBinary: filepath.Join(tmpDir, "zarf-injector"),
+		InjectionBinary: filepath.Join(tmpDir, "jackal-injector"),
 		// gets created here
 		InjectorPayloadTarGz: filepath.Join(tmpDir, "payload.tar.gz"),
 	}
@@ -78,7 +78,7 @@ func (c *Cluster) StartInjectionMadness(tmpDir string, imagesDir string, injecto
 	if service, err := c.createService(); err != nil {
 		spinner.Fatalf(err, "Unable to create the injector service")
 	} else {
-		config.ZarfSeedPort = fmt.Sprintf("%d", service.Spec.Ports[0].NodePort)
+		config.JackalSeedPort = fmt.Sprintf("%d", service.Spec.Ports[0].NodePort)
 	}
 
 	spinner.Updatef("Loading the seed image from the package")
@@ -92,19 +92,19 @@ func (c *Cluster) StartInjectionMadness(tmpDir string, imagesDir string, injecto
 	}
 
 	// https://regex101.com/r/eLS3at/1
-	zarfImageRegex := regexp.MustCompile(`(?m)^127\.0\.0\.1:`)
+	jackalImageRegex := regexp.MustCompile(`(?m)^127\.0\.0\.1:`)
 
 	// Try to create an injector pod using an existing image in the cluster
 	for image, node := range images {
-		// Don't try to run against the seed image if this is a secondary zarf init run
-		if zarfImageRegex.MatchString(image) {
+		// Don't try to run against the seed image if this is a secondary jackal init run
+		if jackalImageRegex.MatchString(image) {
 			continue
 		}
 
 		spinner.Updatef("Attempting to bootstrap with the %s/%s", node, image)
 
 		// Make sure the pod is not there first
-		_ = c.DeletePod(ZarfNamespaceName, "injector")
+		_ = c.DeletePod(JackalNamespaceName, "injector")
 
 		// Update the podspec image path and use the first node found
 		pod, err := c.buildInjectionPod(node[0], image, payloadConfigmaps, sha256sum)
@@ -138,18 +138,18 @@ func (c *Cluster) StartInjectionMadness(tmpDir string, imagesDir string, injecto
 // StopInjectionMadness handles cleanup once the seed registry is up.
 func (c *Cluster) StopInjectionMadness() error {
 	// Try to kill the injector pod now
-	if err := c.DeletePod(ZarfNamespaceName, "injector"); err != nil {
+	if err := c.DeletePod(JackalNamespaceName, "injector"); err != nil {
 		return err
 	}
 
 	// Remove the configmaps
-	labelMatch := map[string]string{"zarf-injector": "payload"}
-	if err := c.DeleteConfigMapsByLabel(ZarfNamespaceName, labelMatch); err != nil {
+	labelMatch := map[string]string{"jackal-injector": "payload"}
+	if err := c.DeleteConfigMapsByLabel(JackalNamespaceName, labelMatch); err != nil {
 		return err
 	}
 
 	// Remove the injector service
-	return c.DeleteService(ZarfNamespaceName, "zarf-injector")
+	return c.DeleteService(JackalNamespaceName, "jackal-injector")
 }
 
 func (c *Cluster) loadSeedImages(imagesDir, seedImagesDir string, injectorSeedSrcs []string, spinner *message.Spinner) ([]transform.Image, error) {
@@ -215,7 +215,7 @@ func (c *Cluster) createPayloadConfigmaps(seedImagesDir, tarPath string, spinner
 	// Loop over all chunks and generate configmaps
 	for idx, data := range chunks {
 		// Create a cat-friendly filename
-		fileName := fmt.Sprintf("zarf-payload-%03d", idx)
+		fileName := fmt.Sprintf("jackal-payload-%03d", idx)
 
 		// Store the binary data
 		configData := map[string][]byte{
@@ -225,7 +225,7 @@ func (c *Cluster) createPayloadConfigmaps(seedImagesDir, tarPath string, spinner
 		spinner.Updatef("Adding archive binary configmap %d of %d to the cluster", idx+1, chunkCount)
 
 		// Attempt to create the configmap in the cluster
-		if _, err = c.ReplaceConfigmap(ZarfNamespaceName, fileName, configData); err != nil {
+		if _, err = c.ReplaceConfigmap(JackalNamespaceName, fileName, configData); err != nil {
 			return configMaps, "", err
 		}
 
@@ -241,7 +241,7 @@ func (c *Cluster) createPayloadConfigmaps(seedImagesDir, tarPath string, spinner
 
 // Test for pod readiness and seed image presence.
 func (c *Cluster) injectorIsReady(seedImages []transform.Image, spinner *message.Spinner) bool {
-	tunnel, err := c.NewTunnel(ZarfNamespaceName, k8s.SvcResource, ZarfInjectorName, "", 0, ZarfInjectorPort)
+	tunnel, err := c.NewTunnel(JackalNamespaceName, k8s.SvcResource, JackalInjectorName, "", 0, JackalInjectorPort)
 	if err != nil {
 		return false
 	}
@@ -280,15 +280,15 @@ func (c *Cluster) createInjectorConfigmap(binaryPath string) error {
 	configData := make(map[string][]byte)
 
 	// Add the injector binary data to the configmap
-	if configData["zarf-injector"], err = os.ReadFile(binaryPath); err != nil {
+	if configData["jackal-injector"], err = os.ReadFile(binaryPath); err != nil {
 		return err
 	}
 
 	// Try to delete configmap silently
-	_ = c.DeleteConfigmap(ZarfNamespaceName, "rust-binary")
+	_ = c.DeleteConfigmap(JackalNamespaceName, "rust-binary")
 
 	// Attempt to create the configmap in the cluster
-	if _, err = c.CreateConfigmap(ZarfNamespaceName, "rust-binary", configData); err != nil {
+	if _, err = c.CreateConfigmap(JackalNamespaceName, "rust-binary", configData); err != nil {
 		return err
 	}
 
@@ -296,30 +296,30 @@ func (c *Cluster) createInjectorConfigmap(binaryPath string) error {
 }
 
 func (c *Cluster) createService() (*corev1.Service, error) {
-	service := c.GenerateService(ZarfNamespaceName, "zarf-injector")
+	service := c.GenerateService(JackalNamespaceName, "jackal-injector")
 
 	service.Spec.Type = corev1.ServiceTypeNodePort
 	service.Spec.Ports = append(service.Spec.Ports, corev1.ServicePort{
 		Port: int32(5000),
 	})
 	service.Spec.Selector = map[string]string{
-		"app": "zarf-injector",
+		"app": "jackal-injector",
 	}
 
 	// Attempt to purse the service silently
-	_ = c.DeleteService(ZarfNamespaceName, "zarf-injector")
+	_ = c.DeleteService(JackalNamespaceName, "jackal-injector")
 
 	return c.CreateService(service)
 }
 
 // buildInjectionPod return a pod for injection with the appropriate containers to perform the injection.
 func (c *Cluster) buildInjectionPod(node, image string, payloadConfigmaps []string, payloadShasum string) (*corev1.Pod, error) {
-	pod := c.GeneratePod("injector", ZarfNamespaceName)
+	pod := c.GeneratePod("injector", JackalNamespaceName)
 	executeMode := int32(0777)
 
-	pod.Labels["app"] = "zarf-injector"
+	pod.Labels["app"] = "jackal-injector"
 
-	// Ensure zarf agent doesn't break the injector on future runs
+	// Ensure jackal agent doesn't break the injector on future runs
 	pod.Labels[agentLabel] = "ignore"
 
 	// Bind the pod to the node the image was found on
@@ -339,21 +339,21 @@ func (c *Cluster) buildInjectionPod(node, image string, payloadConfigmaps []stri
 			ImagePullPolicy: corev1.PullIfNotPresent,
 
 			// This directory's contents come from the init container output
-			WorkingDir: "/zarf-init",
+			WorkingDir: "/jackal-init",
 
 			// Call the injector with shasum of the tarball
-			Command: []string{"/zarf-init/zarf-injector", payloadShasum},
+			Command: []string{"/jackal-init/jackal-injector", payloadShasum},
 
 			// Shared mount between the init and regular containers
 			VolumeMounts: []corev1.VolumeMount{
 				{
 					Name:      "init",
-					MountPath: "/zarf-init/zarf-injector",
-					SubPath:   "zarf-injector",
+					MountPath: "/jackal-init/jackal-injector",
+					SubPath:   "jackal-injector",
 				},
 				{
 					Name:      "seed",
-					MountPath: "/zarf-seed",
+					MountPath: "/jackal-seed",
 				},
 			},
 
@@ -423,7 +423,7 @@ func (c *Cluster) buildInjectionPod(node, image string, payloadConfigmaps []stri
 		// Create the volume mount to place the new volume in the working directory
 		pod.Spec.Containers[0].VolumeMounts = append(pod.Spec.Containers[0].VolumeMounts, corev1.VolumeMount{
 			Name:      filename,
-			MountPath: fmt.Sprintf("/zarf-init/%s", filename),
+			MountPath: fmt.Sprintf("/jackal-init/%s", filename),
 			SubPath:   filename,
 		})
 	}

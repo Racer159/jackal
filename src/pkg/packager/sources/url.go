@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package sources contains core implementations of the PackageSource interface.
 package sources
@@ -10,12 +10,12 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/filters"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/filters"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/types"
 )
 
 var (
@@ -25,7 +25,7 @@ var (
 
 // URLSource is a package source for http, https and sget URLs.
 type URLSource struct {
-	*types.ZarfPackageOptions
+	*types.JackalPackageOptions
 }
 
 // Collect downloads a package from the source URL.
@@ -40,7 +40,7 @@ func (s *URLSource) Collect(dir string) (string, error) {
 		packageURL = s.PackageSource
 	}
 
-	dstTarball := filepath.Join(dir, "zarf-package-url-unknown")
+	dstTarball := filepath.Join(dir, "jackal-package-url-unknown")
 
 	if err := utils.DownloadToFile(packageURL, dstTarball, s.SGetKeyPath); err != nil {
 		return "", err
@@ -50,7 +50,7 @@ func (s *URLSource) Collect(dir string) (string, error) {
 }
 
 // LoadPackage loads a package from an http, https or sget URL.
-func (s *URLSource) LoadPackage(dst *layout.PackagePaths, filter filters.ComponentFilterStrategy, unarchiveAll bool) (pkg types.ZarfPackage, warnings []string, err error) {
+func (s *URLSource) LoadPackage(dst *layout.PackagePaths, filter filters.ComponentFilterStrategy, unarchiveAll bool) (pkg types.JackalPackage, warnings []string, err error) {
 	tmp, err := utils.MakeTempDir(config.CommonOptions.TempDirectory)
 	if err != nil {
 		return pkg, nil, err
@@ -67,14 +67,14 @@ func (s *URLSource) LoadPackage(dst *layout.PackagePaths, filter filters.Compone
 	s.Shasum = ""
 
 	ts := &TarballSource{
-		s.ZarfPackageOptions,
+		s.JackalPackageOptions,
 	}
 
 	return ts.LoadPackage(dst, filter, unarchiveAll)
 }
 
 // LoadPackageMetadata loads a package's metadata from an http, https or sget URL.
-func (s *URLSource) LoadPackageMetadata(dst *layout.PackagePaths, wantSBOM bool, skipValidation bool) (pkg types.ZarfPackage, warnings []string, err error) {
+func (s *URLSource) LoadPackageMetadata(dst *layout.PackagePaths, wantSBOM bool, skipValidation bool) (pkg types.JackalPackage, warnings []string, err error) {
 	tmp, err := utils.MakeTempDir(config.CommonOptions.TempDirectory)
 	if err != nil {
 		return pkg, nil, err
@@ -89,7 +89,7 @@ func (s *URLSource) LoadPackageMetadata(dst *layout.PackagePaths, wantSBOM bool,
 	s.PackageSource = dstTarball
 
 	ts := &TarballSource{
-		s.ZarfPackageOptions,
+		s.JackalPackageOptions,
 	}
 
 	return ts.LoadPackageMetadata(dst, wantSBOM, skipValidation)

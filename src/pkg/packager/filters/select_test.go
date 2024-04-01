@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package filters contains core implementations of the ComponentFilterStrategy interface.
 package filters
@@ -7,7 +7,7 @@ package filters
 import (
 	"testing"
 
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -15,19 +15,19 @@ func Test_selectStateFilter_Apply(t *testing.T) {
 	tests := []struct {
 		name                string
 		requestedComponents string
-		components          []types.ZarfComponent
-		expectedResult      []types.ZarfComponent
+		components          []types.JackalComponent
+		expectedResult      []types.JackalComponent
 		expectedError       error
 	}{
 		{
 			name:                "Test when requestedComponents is empty",
 			requestedComponents: "",
-			components: []types.ZarfComponent{
+			components: []types.JackalComponent{
 				{Name: "component1"},
 				{Name: "component2"},
 				{Name: "component3"},
 			},
-			expectedResult: []types.ZarfComponent{
+			expectedResult: []types.JackalComponent{
 				{Name: "component1"},
 				{Name: "component2"},
 				{Name: "component3"},
@@ -37,12 +37,12 @@ func Test_selectStateFilter_Apply(t *testing.T) {
 		{
 			name:                "Test when requestedComponents contains a valid component name",
 			requestedComponents: "component2",
-			components: []types.ZarfComponent{
+			components: []types.JackalComponent{
 				{Name: "component1"},
 				{Name: "component2"},
 				{Name: "component3"},
 			},
-			expectedResult: []types.ZarfComponent{
+			expectedResult: []types.JackalComponent{
 				{Name: "component2"},
 			},
 			expectedError: nil,
@@ -50,12 +50,12 @@ func Test_selectStateFilter_Apply(t *testing.T) {
 		{
 			name:                "Test when requestedComponents contains an excluded component name",
 			requestedComponents: "comp*, -component2",
-			components: []types.ZarfComponent{
+			components: []types.JackalComponent{
 				{Name: "component1"},
 				{Name: "component2"},
 				{Name: "component3"},
 			},
-			expectedResult: []types.ZarfComponent{
+			expectedResult: []types.JackalComponent{
 				{Name: "component1"},
 				{Name: "component3"},
 			},
@@ -64,12 +64,12 @@ func Test_selectStateFilter_Apply(t *testing.T) {
 		{
 			name:                "Test when requestedComponents contains a glob pattern",
 			requestedComponents: "comp*",
-			components: []types.ZarfComponent{
+			components: []types.JackalComponent{
 				{Name: "component1"},
 				{Name: "component2"},
 				{Name: "other"},
 			},
-			expectedResult: []types.ZarfComponent{
+			expectedResult: []types.JackalComponent{
 				{Name: "component1"},
 				{Name: "component2"},
 			},
@@ -81,7 +81,7 @@ func Test_selectStateFilter_Apply(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			filter := BySelectState(tc.requestedComponents)
 
-			result, err := filter.Apply(types.ZarfPackage{
+			result, err := filter.Apply(types.JackalPackage{
 				Components: tc.components,
 			})
 

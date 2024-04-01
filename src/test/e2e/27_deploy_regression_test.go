@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package test provides e2e tests for Zarf.
+// Package test provides e2e tests for Jackal.
 package test
 
 import (
@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/defenseunicorns/zarf/src/pkg/utils/exec"
+	"github.com/defenseunicorns/jackal/src/pkg/utils/exec"
 	"github.com/stretchr/testify/require"
 )
 
@@ -26,11 +26,11 @@ func TestGHCRDeploy(t *testing.T) {
 		sha = "aca4d4cf24532d69a8941a446067fc3d8474581507236b37bb7188836d93bf89"
 	}
 
-	// Test with command from https://zarf.dev/install/
-	stdOut, stdErr, err := e2e.Zarf("package", "deploy", fmt.Sprintf("oci://🦄/dos-games:1.0.0-%s@sha256:%s", e2e.Arch, sha), "--key=https://zarf.dev/cosign.pub", "--confirm")
+	// Test with command from https://jackal.dev/install/
+	stdOut, stdErr, err := e2e.Jackal("package", "deploy", fmt.Sprintf("oci://🦄/dos-games:1.0.0-%s@sha256:%s", e2e.Arch, sha), "--key=https://jackal.dev/cosign.pub", "--confirm")
 	require.NoError(t, err, stdOut, stdErr)
 
-	stdOut, stdErr, err = e2e.Zarf("package", "remove", "dos-games", "--confirm")
+	stdOut, stdErr, err = e2e.Jackal("package", "remove", "dos-games", "--confirm")
 	require.NoError(t, err, stdOut, stdErr)
 }
 
@@ -38,12 +38,12 @@ func TestCosignDeploy(t *testing.T) {
 	t.Log("E2E: Cosign deploy")
 	e2e.SetupWithCluster(t)
 
-	// Test with command from https://zarf.dev/install/
-	command := fmt.Sprintf("%s package deploy sget://defenseunicorns/zarf-hello-world:$(uname -m) --confirm", e2e.ZarfBinPath)
+	// Test with command from https://jackal.dev/install/
+	command := fmt.Sprintf("%s package deploy sget://defenseunicorns/jackal-hello-world:$(uname -m) --confirm", e2e.JackalBinPath)
 
 	stdOut, stdErr, err := exec.CmdWithContext(context.TODO(), exec.PrintCfg(), "sh", "-c", command)
 	require.NoError(t, err, stdOut, stdErr)
 
-	stdOut, stdErr, err = e2e.Zarf("package", "remove", "dos-games", "--confirm")
+	stdOut, stdErr, err = e2e.Jackal("package", "remove", "dos-games", "--confirm")
 	require.NoError(t, err, stdOut, stdErr)
 }

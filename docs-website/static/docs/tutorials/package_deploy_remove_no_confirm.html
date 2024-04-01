@@ -47,12 +47,12 @@ b.BWHI {background-color: #aaaaaa}
 </head>
 <body>
 <pre>
-<b class=WHI>$ zarf package remove dos-games</b>
+<b class=WHI>$ jackal package remove dos-games</b>
 <b class=YEL>Saving log file to</b>
-<b class=YEL>/var/folders/bk/rz1xx2sd5zn134c0_j1s2n5r0000gp/T/zarf-2023-03-23-10-07-47-1612529511.log</b>
+<b class=YEL>/var/folders/bk/rz1xx2sd5zn134c0_j1s2n5r0000gp/T/jackal-2023-03-23-10-07-47-1612529511.log</b>
 <b class=YEL></b>Error: required flag(s) "confirm" not set
 Usage:
-  zarf package remove {PACKAGE_NAME|PACKAGE_FILE} [flags]
+  jackal package remove {PACKAGE_NAME|PACKAGE_FILE} [flags]
 
 Aliases:
   remove, u
@@ -65,11 +65,11 @@ Flags:
 Global Flags:
   -a, --architecture string   Architecture for OCI images
       --insecure              Allow access to insecure registries and disable other recommended security enforcements. This flag should only be used if you have a specific reason and accept the reduced security posture.
-  -l, --log-level string      Log level when running Zarf. Valid options are: warn, info, debug, trace (default "info")
+  -l, --log-level string      Log level when running Jackal. Valid options are: warn, info, debug, trace (default "info")
       --no-log-file           Disable log file creation
       --no-progress           Disable fancy UI progress bars, spinners, logos, etc
       --tmpdir string         Specify the temporary directory to use for intermediate files
-      --zarf-cache string     Specify the location of the Zarf cache directory (default "~/.zarf-cache")
+      --jackal-cache string     Specify the location of the Jackal cache directory (default "~/.jackal-cache")
 
 Error: required flag(s) "confirm" not set
 </pre>

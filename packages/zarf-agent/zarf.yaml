@@ -1,27 +1,27 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
-  name: init-package-zarf-agent
-  description: Install the zarf agent mutating webhook on a new cluster
+  name: init-package-jackal-agent
+  description: Install the jackal agent mutating webhook on a new cluster
 
 constants:
   - name: AGENT_IMAGE
-    value: "###ZARF_PKG_TMPL_AGENT_IMAGE###"
+    value: "###JACKAL_PKG_TMPL_AGENT_IMAGE###"
   - name: AGENT_IMAGE_TAG
-    value: "###ZARF_PKG_TMPL_AGENT_IMAGE_TAG###"
+    value: "###JACKAL_PKG_TMPL_AGENT_IMAGE_TAG###"
 
 components:
-  - name: zarf-agent
+  - name: jackal-agent
     description: |
       A Kubernetes mutating webhook to enable automated URL rewriting for container
       images and git repository references in Kubernetes manifests. This prevents
-      the need to manually update URLs from their original sources to the Zarf-managed
+      the need to manually update URLs from their original sources to the Jackal-managed
       docker registry and git server.
     required: true
     images:
-      - "###ZARF_PKG_TMPL_AGENT_IMAGE_DOMAIN######ZARF_PKG_TMPL_AGENT_IMAGE###:###ZARF_PKG_TMPL_AGENT_IMAGE_TAG###"
+      - "###JACKAL_PKG_TMPL_AGENT_IMAGE_DOMAIN######JACKAL_PKG_TMPL_AGENT_IMAGE###:###JACKAL_PKG_TMPL_AGENT_IMAGE_TAG###"
     manifests:
-      - name: zarf-agent
-        namespace: zarf
+      - name: jackal-agent
+        namespace: jackal
         files:
           - manifests/service.yaml
           - manifests/secret.yaml
@@ -30,7 +30,7 @@ components:
     actions:
       onCreate:
         before:
-          - cmd: "test \"###ZARF_PKG_TMPL_AGENT_IMAGE_TAG###\" != \"local\" || make build-local-agent-image AGENT_IMAGE_TAG=\"###ZARF_PKG_TMPL_AGENT_IMAGE_TAG###\" ARCH=\"###ZARF_PKG_ARCH###\""
+          - cmd: "test \"###JACKAL_PKG_TMPL_AGENT_IMAGE_TAG###\" != \"local\" || make build-local-agent-image AGENT_IMAGE_TAG=\"###JACKAL_PKG_TMPL_AGENT_IMAGE_TAG###\" ARCH=\"###JACKAL_PKG_ARCH###\""
             shell:
               windows: pwsh
             dir: ../..
@@ -40,6 +40,6 @@ components:
           - wait:
               cluster:
                 kind: pod
-                namespace: zarf
+                namespace: jackal
                 name: app=agent-hook
                 condition: Ready

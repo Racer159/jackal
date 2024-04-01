@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package git contains functions for interacting with git repositories.
 package git
@@ -9,9 +9,9 @@ import (
 	"path"
 	"strings"
 
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/transform"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/transform"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
 	"github.com/go-git/go-git/v5/plumbing"
 )
 
@@ -37,7 +37,7 @@ func (g *Git) DownloadRepoToTemp(gitURL string) error {
 func (g *Git) Pull(gitURL, targetFolder string, shallow bool) error {
 	g.Spinner.Updatef("Processing git repo %s", gitURL)
 
-	// Split the remote url and the zarf reference
+	// Split the remote url and the jackal reference
 	gitURLNoRef, refPlain, err := transform.GitURLSplitRef(gitURL)
 	if err != nil {
 		return err
@@ -69,7 +69,7 @@ func (g *Git) Pull(gitURL, targetFolder string, shallow bool) error {
 		stripped := strings.TrimPrefix(refPlain, "refs/tags/")
 
 		// Use the plain ref as part of the branch name so it is unique and doesn't conflict with other refs.
-		alias := fmt.Sprintf("zarf-ref-%s", stripped)
+		alias := fmt.Sprintf("jackal-ref-%s", stripped)
 		trunkBranchName := plumbing.NewBranchReferenceName(alias)
 
 		// Checkout the ref as a branch.

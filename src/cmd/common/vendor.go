@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package common handles command configuration across all commands
 package common
@@ -10,7 +10,7 @@ import (
 
 	"slices"
 
-	"github.com/defenseunicorns/zarf/src/config"
+	"github.com/defenseunicorns/jackal/src/config"
 	"github.com/spf13/cobra"
 )
 
@@ -36,20 +36,20 @@ var vendorCmds = []string{
 
 // CheckVendorOnlyFromArgs checks if the command being run is a vendor-only command
 func CheckVendorOnlyFromArgs() bool {
-	// Check for "zarf tools|t <cmd>" where <cmd> is in the vendorCmd list
+	// Check for "jackal tools|t <cmd>" where <cmd> is in the vendorCmd list
 	return IsVendorCmd(os.Args, vendorCmds)
 }
 
 // CheckVendorOnlyFromPath checks if the cobra command is a vendor-only command
 func CheckVendorOnlyFromPath(cmd *cobra.Command) bool {
 	args := strings.Split(cmd.CommandPath(), " ")
-	// Check for "zarf tools|t <cmd>" where <cmd> is in the vendorCmd list
+	// Check for "jackal tools|t <cmd>" where <cmd> is in the vendorCmd list
 	return IsVendorCmd(args, vendorCmds)
 }
 
 // IsVendorCmd checks if the command is a vendor command.
 func IsVendorCmd(args []string, vendoredCmds []string) bool {
-	if config.ActionsCommandZarfPrefix != "" {
+	if config.ActionsCommandJackalPrefix != "" {
 		args = args[1:]
 	}
 

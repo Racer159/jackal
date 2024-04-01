@@ -37,7 +37,7 @@ const FetchFileCodeBlock = ({ src, component, raw, showLink = true, fileFormat, 
       {showLink && (
         <p>
           This example's full <code>{fileName}</code> can be viewed at{" "}
-          {fileFormat === "json" ? <a download={fileName} href={"data:application/json;charset=utf-8,"+encodeURIComponent(JSON.stringify(src, null, 2))} style={{cursor: "pointer"}}>{fileName}</a> : <a href={`/${linkBaseUrl}/#zarf.yaml`}>{linkBaseUrl}</a>}
+          {fileFormat === "json" ? <a download={fileName} href={"data:application/json;charset=utf-8,"+encodeURIComponent(JSON.stringify(src, null, 2))} style={{cursor: "pointer"}}>{fileName}</a> : <a href={`/${linkBaseUrl}/#jackal.yaml`}>{linkBaseUrl}</a>}
         </p>
       )}
       <CodeBlock copy={false} fileFormat={fileFormat}>

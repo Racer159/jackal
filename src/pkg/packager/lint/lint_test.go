@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package lint contains functions for verifying zarf yaml files are valid
+// Package lint contains functions for verifying jackal yaml files are valid
 package lint
 
 import (
@@ -11,15 +11,15 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/composer"
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/composer"
+	"github.com/defenseunicorns/jackal/src/types"
 	goyaml "github.com/goccy/go-yaml"
 	"github.com/stretchr/testify/require"
 )
 
-const badZarfPackage = `
-kind: ZarfInitConfig
+const badJackalPackage = `
+kind: JackalInitConfig
 metadata:
   name: init
   description: Testing bad yaml
@@ -33,10 +33,10 @@ components:
     path: 123123
 `
 
-const goodZarfPackage = `
-x-name: &name good-zarf-package
+const goodJackalPackage = `
+x-name: &name good-jackal-package
 
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: *name
   x-description: Testing good yaml with yaml extension
@@ -59,9 +59,9 @@ func readAndUnmarshalYaml[T interface{}](t *testing.T, yamlString string) T {
 }
 
 func TestValidateSchema(t *testing.T) {
-	getZarfSchema := func(t *testing.T) []byte {
+	getJackalSchema := func(t *testing.T) []byte {
 		t.Helper()
-		file, err := os.ReadFile("../../../../zarf.schema.json")
+		file, err := os.ReadFile("../../../../jackal.schema.json")
 		if err != nil {
 			t.Errorf("error reading file: %v", err)
 		}
@@ -69,16 +69,16 @@ func TestValidateSchema(t *testing.T) {
 	}
 
 	t.Run("validate schema success", func(t *testing.T) {
-		unmarshalledYaml := readAndUnmarshalYaml[interface{}](t, goodZarfPackage)
-		validator := Validator{untypedZarfPackage: unmarshalledYaml, jsonSchema: getZarfSchema(t)}
+		unmarshalledYaml := readAndUnmarshalYaml[interface{}](t, goodJackalPackage)
+		validator := Validator{untypedJackalPackage: unmarshalledYaml, jsonSchema: getJackalSchema(t)}
 		err := validateSchema(&validator)
 		require.NoError(t, err)
 		require.Empty(t, validator.findings)
 	})
 
 	t.Run("validate schema fail", func(t *testing.T) {
-		unmarshalledYaml := readAndUnmarshalYaml[interface{}](t, badZarfPackage)
-		validator := Validator{untypedZarfPackage: unmarshalledYaml, jsonSchema: getZarfSchema(t)}
+		unmarshalledYaml := readAndUnmarshalYaml[interface{}](t, badJackalPackage)
+		validator := Validator{untypedJackalPackage: unmarshalledYaml, jsonSchema: getJackalSchema(t)}
 		err := validateSchema(&validator)
 		require.NoError(t, err)
 		config.NoColor = true
@@ -87,37 +87,37 @@ func TestValidateSchema(t *testing.T) {
 	})
 
 	t.Run("Template in component import success", func(t *testing.T) {
-		unmarshalledYaml := readAndUnmarshalYaml[types.ZarfPackage](t, goodZarfPackage)
-		validator := Validator{typedZarfPackage: unmarshalledYaml}
-		for _, component := range validator.typedZarfPackage.Components {
-			lintComponent(&validator, &composer.Node{ZarfComponent: component})
+		unmarshalledYaml := readAndUnmarshalYaml[types.JackalPackage](t, goodJackalPackage)
+		validator := Validator{typedJackalPackage: unmarshalledYaml}
+		for _, component := range validator.typedJackalPackage.Components {
+			lintComponent(&validator, &composer.Node{JackalComponent: component})
 		}
 		require.Empty(t, validator.findings)
 	})
 
 	t.Run("Path template in component import failure", func(t *testing.T) {
-		pathVar := "###ZARF_PKG_TMPL_PATH###"
-		pathComponent := types.ZarfComponent{Import: types.ZarfComponentImport{Path: pathVar}}
-		validator := Validator{typedZarfPackage: types.ZarfPackage{Components: []types.ZarfComponent{pathComponent}}}
-		checkForVarInComponentImport(&validator, &composer.Node{ZarfComponent: pathComponent})
+		pathVar := "###JACKAL_PKG_TMPL_PATH###"
+		pathComponent := types.JackalComponent{Import: types.JackalComponentImport{Path: pathVar}}
+		validator := Validator{typedJackalPackage: types.JackalPackage{Components: []types.JackalComponent{pathComponent}}}
+		checkForVarInComponentImport(&validator, &composer.Node{JackalComponent: pathComponent})
 		require.Equal(t, pathVar, validator.findings[0].item)
 	})
 
 	t.Run("OCI template in component import failure", func(t *testing.T) {
-		ociPathVar := "oci://###ZARF_PKG_TMPL_PATH###"
-		URLComponent := types.ZarfComponent{Import: types.ZarfComponentImport{URL: ociPathVar}}
-		validator := Validator{typedZarfPackage: types.ZarfPackage{Components: []types.ZarfComponent{URLComponent}}}
-		checkForVarInComponentImport(&validator, &composer.Node{ZarfComponent: URLComponent})
+		ociPathVar := "oci://###JACKAL_PKG_TMPL_PATH###"
+		URLComponent := types.JackalComponent{Import: types.JackalComponentImport{URL: ociPathVar}}
+		validator := Validator{typedJackalPackage: types.JackalPackage{Components: []types.JackalComponent{URLComponent}}}
+		checkForVarInComponentImport(&validator, &composer.Node{JackalComponent: URLComponent})
 		require.Equal(t, ociPathVar, validator.findings[0].item)
 	})
 
 	t.Run("Unpinnned repo warning", func(t *testing.T) {
 		validator := Validator{}
-		unpinnedRepo := "https://github.com/defenseunicorns/zarf-public-test.git"
-		component := types.ZarfComponent{Repos: []string{
+		unpinnedRepo := "https://github.com/defenseunicorns/jackal-public-test.git"
+		component := types.JackalComponent{Repos: []string{
 			unpinnedRepo,
-			"https://dev.azure.com/defenseunicorns/zarf-public-test/_git/zarf-public-test@v0.0.1"}}
-		checkForUnpinnedRepos(&validator, &composer.Node{ZarfComponent: component})
+			"https://dev.azure.com/defenseunicorns/jackal-public-test/_git/jackal-public-test@v0.0.1"}}
+		checkForUnpinnedRepos(&validator, &composer.Node{JackalComponent: component})
 		require.Equal(t, unpinnedRepo, validator.findings[0].item)
 		require.Equal(t, len(validator.findings), 1)
 	})
@@ -126,11 +126,11 @@ func TestValidateSchema(t *testing.T) {
 		validator := Validator{}
 		unpinnedImage := "registry.com:9001/whatever/image:1.0.0"
 		badImage := "badimage:badimage@@sha256:3fbc632167424a6d997e74f5"
-		component := types.ZarfComponent{Images: []string{
+		component := types.JackalComponent{Images: []string{
 			unpinnedImage,
 			"busybox:latest@sha256:3fbc632167424a6d997e74f52b878d7cc478225cffac6bc977eedfe51c7f4e79",
 			badImage}}
-		checkForUnpinnedImages(&validator, &composer.Node{ZarfComponent: component})
+		checkForUnpinnedImages(&validator, &composer.Node{JackalComponent: component})
 		require.Equal(t, unpinnedImage, validator.findings[0].item)
 		require.Equal(t, badImage, validator.findings[1].item)
 		require.Equal(t, 2, len(validator.findings))
@@ -141,7 +141,7 @@ func TestValidateSchema(t *testing.T) {
 		validator := Validator{}
 		fileURL := "http://example.com/file.zip"
 		localFile := "local.txt"
-		zarfFiles := []types.ZarfFile{
+		jackalFiles := []types.JackalFile{
 			{
 				Source: fileURL,
 			},
@@ -153,8 +153,8 @@ func TestValidateSchema(t *testing.T) {
 				Shasum: "fake-shasum",
 			},
 		}
-		component := types.ZarfComponent{Files: zarfFiles}
-		checkForUnpinnedFiles(&validator, &composer.Node{ZarfComponent: component})
+		component := types.JackalComponent{Files: jackalFiles}
+		checkForUnpinnedFiles(&validator, &composer.Node{JackalComponent: component})
 		require.Equal(t, fileURL, validator.findings[0].item)
 		require.Equal(t, 1, len(validator.findings))
 	})
@@ -175,17 +175,17 @@ func TestValidateSchema(t *testing.T) {
 	t.Run("Test composable components", func(t *testing.T) {
 		pathVar := "fake-path"
 		unpinnedImage := "unpinned:latest"
-		pathComponent := types.ZarfComponent{
-			Import: types.ZarfComponentImport{Path: pathVar},
+		pathComponent := types.JackalComponent{
+			Import: types.JackalComponentImport{Path: pathVar},
 			Images: []string{unpinnedImage}}
 		validator := Validator{
-			typedZarfPackage: types.ZarfPackage{Components: []types.ZarfComponent{pathComponent},
-				Metadata: types.ZarfMetadata{Name: "test-zarf-package"}}}
+			typedJackalPackage: types.JackalPackage{Components: []types.JackalComponent{pathComponent},
+				Metadata: types.JackalMetadata{Name: "test-jackal-package"}}}
 
-		createOpts := types.ZarfCreateOptions{Flavor: "", BaseDir: "."}
+		createOpts := types.JackalCreateOptions{Flavor: "", BaseDir: "."}
 		lintComponents(&validator, &createOpts)
 		// Require.contains rather than equals since the error message changes from linux to windows
-		require.Contains(t, validator.findings[0].description, fmt.Sprintf("open %s", filepath.Join("fake-path", "zarf.yaml")))
+		require.Contains(t, validator.findings[0].description, fmt.Sprintf("open %s", filepath.Join("fake-path", "jackal.yaml")))
 		require.Equal(t, ".components.[0].import.path", validator.findings[0].yqPath)
 		require.Equal(t, ".", validator.findings[0].packageRelPath)
 		require.Equal(t, unpinnedImage, validator.findings[1].item)
@@ -220,7 +220,7 @@ func TestValidateSchema(t *testing.T) {
 				err:      errors.New("invalid reference format"),
 			},
 			{
-				input:    "busybox:###ZARF_PKG_TMPL_BUSYBOX_IMAGE###",
+				input:    "busybox:###JACKAL_PKG_TMPL_BUSYBOX_IMAGE###",
 				expected: true,
 				err:      nil,
 			},

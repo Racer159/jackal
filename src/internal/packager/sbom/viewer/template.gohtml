@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zarf SBOM Viewer</title>
+    <title>Jackal SBOM Viewer</title>
     <style>
         {{.ThemeCSS}}
         {{.ViewerCSS}}
     </style>
     <script type="text/javascript">
-        ZARF_SBOM_LIST = {{.List}};
-		ZARF_SBOM_DATA = {{.Data}};
+        JACKAL_SBOM_LIST = {{.List}};
+		JACKAL_SBOM_DATA = {{.Data}};
         {{.LibraryJS}}
     </script>
 </head>
@@ -239,7 +239,7 @@
                     </linearGradient>
                 </defs>
             </svg>
-            <span class="title">Zarf SBOM Viewer</span>
+            <span class="title">Jackal SBOM Viewer</span>
         </div>
         <div class="element sbom-tools">
             <button id="sbom-compare" onclick="compare()" class="sbom-button">

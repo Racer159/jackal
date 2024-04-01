@@ -4,9 +4,9 @@ metadata:
   name: nginx-connect
   namespace: nginx
   annotations:
-    zarf.dev/connect-description: "Launch the nginx static site."
+    jackal.dev/connect-description: "Launch the nginx static site."
   labels:
-    zarf.dev/connect-name: nginx
+    jackal.dev/connect-name: nginx
 spec:
   ports:
   - port: 8080

@@ -47,13 +47,13 @@ b.BWHI {background-color: #aaaaaa}
 </head>
 <body>
 <pre>
-<b class=WHI>$ zarf package deploy sget://defenseunicorns/zarf-hello-world:$(uname -m)</b>
+<b class=WHI>$ jackal package deploy sget://defenseunicorns/jackal-hello-world:$(uname -m)</b>
 <b class=YEL>Saving log file to</b>
-<b class=YEL>/var/folders/bk/rz1xx2sd5zn134c0_j1s2n5r0000gp/T/zarf-2023-03-23-10-20-59-1265818177.log</b>
-<b class=YEL></b>  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading Zarf Package sget://defenseunicorns/zarf-hello-world:$(uname -m)</b>
-<b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading Zarf Package sget://defenseunicorns/zarf-hello-world:$(uname -m)</b>
+<b class=YEL>/var/folders/bk/rz1xx2sd5zn134c0_j1s2n5r0000gp/T/jackal-2023-03-23-10-20-59-1265818177.log</b>
+<b class=YEL></b>  •  <b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading Jackal Package sget://defenseunicorns/jackal-hello-world:$(uname -m)</b>
+<b style="color:#55ffff;"></b><b style="color:#55ffff;">Loading Jackal Package sget://defenseunicorns/jackal-hello-world:$(uname -m)</b>
 
-<b style="color:#55ffff;">kind</b>:<b style="color:#ff55ff;"> ZarfPackageConfig</b>
+<b style="color:#55ffff;">kind</b>:<b style="color:#ff55ff;"> JackalPackageConfig</b>
 <b style="color:#ff55ff;"></b><b style="color:#55ffff;">metadata</b>:<b style="color:#55ffff;"></b>
 <b style="color:#55ffff;">  name</b>:<b style="color:#ff55ff;"> dos-games</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">description</b>:<b style="color:#ff55ff;"> Simple example to load classic DOS games into K8s in the airgap</b>
@@ -71,19 +71,19 @@ b.BWHI {background-color: #aaaaaa}
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">required</b>:<b style="color:#ffffff;"> true</b>
 <b style="color:#ffffff;">  </b><b style="color:#55ffff;">manifests</b>:
   -<b style="color:#55ffff;"> name</b>:<b style="color:#ff55ff;"> multi-games</b>
-<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> zarf</b>
+<b style="color:#ff55ff;">    </b><b style="color:#55ffff;">namespace</b>:<b style="color:#ff55ff;"> jackal</b>
 <b style="color:#ff55ff;">    </b><b style="color:#55ffff;">files</b>:
     -<b style="color:#ff55ff;"> manifests/deployment.yaml</b>
 <b style="color:#ff55ff;">    </b>-<b style="color:#ff55ff;"> manifests/service.yaml</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">images</b>:
-  -<b style="color:#ff55ff;"> defenseunicorns/zarf-game:multi-tile-dark</b>
+  -<b style="color:#ff55ff;"> defenseunicorns/jackal-game:multi-tile-dark</b>
 <b class=YEL>This package has 1 artifacts with software bill-of-materials (SBOM) included. You can view them now</b>
-<b class=YEL>in the zarf-sbom folder in this directory or to go directly to one, open this in your browser:</b>
-<b class=YEL>/Users/jason/src/github.com/jasonvanbrackel/zarf/docs-website/zarf-sbom/sbom-viewer-defenseunicorns_zarf-game_multi-tile-dark.html</b>
+<b class=YEL>in the jackal-sbom folder in this directory or to go directly to one, open this in your browser:</b>
+<b class=YEL>/Users/jason/src/github.com/jasonvanbrackel/jackal/docs-website/jackal-sbom/sbom-viewer-defenseunicorns_jackal-game_multi-tile-dark.html</b>
 <b class=YEL></b>
 <b class=YEL>* This directory will be removed after package deployment.</b>
 <b class=YEL></b>
-<b style="color:#55ff55;">? </b><b class="HIW">Deploy this Zarf package?</b> (y/N) <span style="color:#00aaaa">Yes</span>
+<b style="color:#55ff55;">? </b><b class="HIW">Deploy this Jackal package?</b> (y/N) <span style="color:#00aaaa">Yes</span>
 </pre>
 </body>
 </html>

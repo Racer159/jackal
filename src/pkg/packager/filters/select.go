@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package filters contains core implementations of the ComponentFilterStrategy interface.
 package filters
 
 import (
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/types"
 )
 
 // BySelectState creates a new simple included filter.
@@ -24,10 +24,10 @@ type selectStateFilter struct {
 }
 
 // Apply applies the filter.
-func (f *selectStateFilter) Apply(pkg types.ZarfPackage) ([]types.ZarfComponent, error) {
+func (f *selectStateFilter) Apply(pkg types.JackalPackage) ([]types.JackalComponent, error) {
 	isPartial := len(f.requestedComponents) > 0 && f.requestedComponents[0] != ""
 
-	result := []types.ZarfComponent{}
+	result := []types.JackalComponent{}
 
 	for _, component := range pkg.Components {
 		selectState := unknown

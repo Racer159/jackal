@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package packager contains functions for interacting with, managing and deploying Zarf packages.
+// Package packager contains functions for interacting with, managing and deploying Jackal packages.
 package packager
 
 import (
@@ -14,22 +14,22 @@ import (
 	"sync"
 	"time"
 
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/internal/packager/git"
+	"github.com/defenseunicorns/jackal/src/internal/packager/helm"
+	"github.com/defenseunicorns/jackal/src/internal/packager/images"
+	"github.com/defenseunicorns/jackal/src/internal/packager/template"
+	"github.com/defenseunicorns/jackal/src/pkg/cluster"
+	"github.com/defenseunicorns/jackal/src/pkg/k8s"
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/actions"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/filters"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/variables"
+	"github.com/defenseunicorns/jackal/src/pkg/transform"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/internal/packager/git"
-	"github.com/defenseunicorns/zarf/src/internal/packager/helm"
-	"github.com/defenseunicorns/zarf/src/internal/packager/images"
-	"github.com/defenseunicorns/zarf/src/internal/packager/template"
-	"github.com/defenseunicorns/zarf/src/pkg/cluster"
-	"github.com/defenseunicorns/zarf/src/pkg/k8s"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/actions"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/filters"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/variables"
-	"github.com/defenseunicorns/zarf/src/pkg/transform"
-	"github.com/defenseunicorns/zarf/src/types"
 	corev1 "k8s.io/api/core/v1"
 )
 
@@ -82,7 +82,7 @@ func (p *Packager) Deploy() (err error) {
 	p.warnings = append(p.warnings, sbomWarnings...)
 
 	// Confirm the overall package deployment
-	if !p.confirmAction(config.ZarfDeployStage) {
+	if !p.confirmAction(config.JackalDeployStage) {
 		return fmt.Errorf("deployment cancelled")
 	}
 
@@ -113,14 +113,14 @@ func (p *Packager) Deploy() (err error) {
 	}
 
 	// Notify all the things about the successful deployment
-	message.Successf("Zarf deployment complete")
+	message.Successf("Jackal deployment complete")
 
 	p.printTablesForDeployment(deployedComponents)
 
 	return nil
 }
 
-// deployComponents loops through a list of ZarfComponents and deploys them.
+// deployComponents loops through a list of JackalComponents and deploys them.
 func (p *Packager) deployComponents() (deployedComponents []types.DeployedComponent, err error) {
 	// Generate a value template
 	if p.valueTemplate, err = template.Generate(p.cfg); err != nil {
@@ -167,7 +167,7 @@ func (p *Packager) deployComponents() (deployedComponents []types.DeployedCompon
 		// Update the package secret to indicate that we are attempting to deploy this component
 		if p.isConnectedToCluster() {
 			if _, err := p.cluster.RecordPackageDeploymentAndWait(p.cfg.Pkg, deployedComponents, p.connectStrings, p.generation, component, p.cfg.DeployOpts.SkipWebhooks); err != nil {
-				message.Debugf("Unable to record package deployment for component %s: this will affect features like `zarf package remove`: %s", component.Name, err.Error())
+				message.Debugf("Unable to record package deployment for component %s: this will affect features like `jackal package remove`: %s", component.Name, err.Error())
 			}
 		}
 
@@ -195,7 +195,7 @@ func (p *Packager) deployComponents() (deployedComponents []types.DeployedCompon
 			deployedComponents[idx].Status = types.ComponentStatusFailed
 			if p.isConnectedToCluster() {
 				if _, err := p.cluster.RecordPackageDeploymentAndWait(p.cfg.Pkg, deployedComponents, p.connectStrings, p.generation, component, p.cfg.DeployOpts.SkipWebhooks); err != nil {
-					message.Debugf("Unable to record package deployment for component %q: this will affect features like `zarf package remove`: %s", component.Name, err.Error())
+					message.Debugf("Unable to record package deployment for component %q: this will affect features like `jackal package remove`: %s", component.Name, err.Error())
 				}
 			}
 
@@ -207,7 +207,7 @@ func (p *Packager) deployComponents() (deployedComponents []types.DeployedCompon
 		deployedComponents[idx].Status = types.ComponentStatusSucceeded
 		if p.isConnectedToCluster() {
 			if _, err := p.cluster.RecordPackageDeploymentAndWait(p.cfg.Pkg, deployedComponents, p.connectStrings, p.generation, component, p.cfg.DeployOpts.SkipWebhooks); err != nil {
-				message.Debugf("Unable to record package deployment for component %q: this will affect features like `zarf package remove`: %s", component.Name, err.Error())
+				message.Debugf("Unable to record package deployment for component %q: this will affect features like `jackal package remove`: %s", component.Name, err.Error())
 			}
 		}
 
@@ -220,28 +220,28 @@ func (p *Packager) deployComponents() (deployedComponents []types.DeployedCompon
 	return deployedComponents, nil
 }
 
-func (p *Packager) deployInitComponent(component types.ZarfComponent) (charts []types.InstalledChart, err error) {
+func (p *Packager) deployInitComponent(component types.JackalComponent) (charts []types.InstalledChart, err error) {
 	hasExternalRegistry := p.cfg.InitOpts.RegistryInfo.Address != ""
-	isSeedRegistry := component.Name == "zarf-seed-registry"
-	isRegistry := component.Name == "zarf-registry"
-	isInjector := component.Name == "zarf-injector"
-	isAgent := component.Name == "zarf-agent"
+	isSeedRegistry := component.Name == "jackal-seed-registry"
+	isRegistry := component.Name == "jackal-registry"
+	isInjector := component.Name == "jackal-injector"
+	isAgent := component.Name == "jackal-agent"
 	isK3s := component.Name == "k3s"
 
 	if isK3s {
 		p.cfg.InitOpts.ApplianceMode = true
 	}
 
-	// Always init the state before the first component that requires the cluster (on most deployments, the zarf-seed-registry)
+	// Always init the state before the first component that requires the cluster (on most deployments, the jackal-seed-registry)
 	if component.RequiresCluster() && p.cfg.State == nil {
-		err = p.cluster.InitZarfState(p.cfg.InitOpts)
+		err = p.cluster.InitJackalState(p.cfg.InitOpts)
 		if err != nil {
-			return charts, fmt.Errorf("unable to initialize Zarf state: %w", err)
+			return charts, fmt.Errorf("unable to initialize Jackal state: %w", err)
 		}
 	}
 
 	if hasExternalRegistry && (isSeedRegistry || isInjector || isRegistry) {
-		message.Notef("Not deploying the component (%s) since external registry information was provided during `zarf init`", component.Name)
+		message.Notef("Not deploying the component (%s) since external registry information was provided during `jackal init`", component.Name)
 		return charts, nil
 	}
 
@@ -263,15 +263,15 @@ func (p *Packager) deployInitComponent(component types.ZarfComponent) (charts []
 	// Do cleanup for when we inject the seed registry during initialization
 	if isSeedRegistry {
 		if err := p.cluster.StopInjectionMadness(); err != nil {
-			return charts, fmt.Errorf("unable to seed the Zarf Registry: %w", err)
+			return charts, fmt.Errorf("unable to seed the Jackal Registry: %w", err)
 		}
 	}
 
 	return charts, nil
 }
 
-// Deploy a Zarf Component.
-func (p *Packager) deployComponent(component types.ZarfComponent, noImgChecksum bool, noImgPush bool) (charts []types.InstalledChart, err error) {
+// Deploy a Jackal Component.
+func (p *Packager) deployComponent(component types.JackalComponent, noImgChecksum bool, noImgPush bool) (charts []types.InstalledChart, err error) {
 	// Toggles for general deploy operations
 	componentPath := p.layout.Components.Dirs[component.Name]
 
@@ -350,7 +350,7 @@ func (p *Packager) deployComponent(component types.ZarfComponent, noImgChecksum 
 }
 
 // Move files onto the host of the machine performing the deployment.
-func (p *Packager) processComponentFiles(component types.ZarfComponent, pkgLocation string) error {
+func (p *Packager) processComponentFiles(component types.JackalComponent, pkgLocation string) error {
 	spinner := message.NewProgressSpinner("Copying %d files", len(component.Files))
 	defer spinner.Stop()
 
@@ -371,7 +371,7 @@ func (p *Packager) processComponentFiles(component types.ZarfComponent, pkgLocat
 		}
 
 		// Replace temp target directory and home directory
-		file.Target = strings.Replace(file.Target, "###ZARF_TEMP###", p.layout.Base, 1)
+		file.Target = strings.Replace(file.Target, "###JACKAL_TEMP###", p.layout.Base, 1)
 		file.Target = config.GetAbsHomePath(file.Target)
 
 		fileList := []string{}
@@ -428,33 +428,33 @@ func (p *Packager) processComponentFiles(component types.ZarfComponent, pkgLocat
 	return nil
 }
 
-// setupStateValuesTemplate fetched the current ZarfState from the k8s cluster and generate a p.valueTemplate from the state values.
+// setupStateValuesTemplate fetched the current JackalState from the k8s cluster and generate a p.valueTemplate from the state values.
 func (p *Packager) setupStateValuesTemplate() (values *template.Values, err error) {
 	// If we are touching K8s, make sure we can talk to it once per deployment
-	spinner := message.NewProgressSpinner("Loading the Zarf State from the Kubernetes cluster")
+	spinner := message.NewProgressSpinner("Loading the Jackal State from the Kubernetes cluster")
 	defer spinner.Stop()
 
-	state, err := p.cluster.LoadZarfState()
+	state, err := p.cluster.LoadJackalState()
 	// Return on error if we are not in YOLO mode
 	if err != nil && !p.cfg.Pkg.Metadata.YOLO {
 		return nil, fmt.Errorf("%s %w", lang.ErrLoadState, err)
 	} else if state == nil && p.cfg.Pkg.Metadata.YOLO {
-		state = &types.ZarfState{}
+		state = &types.JackalState{}
 		// YOLO mode, so minimal state needed
 		state.Distro = "YOLO"
 
-		// Try to create the zarf namespace
-		spinner.Updatef("Creating the Zarf namespace")
-		zarfNamespace := p.cluster.NewZarfManagedNamespace(cluster.ZarfNamespaceName)
-		if _, err := p.cluster.CreateNamespace(zarfNamespace); err != nil {
-			spinner.Fatalf(err, "Unable to create the zarf namespace")
+		// Try to create the jackal namespace
+		spinner.Updatef("Creating the Jackal namespace")
+		jackalNamespace := p.cluster.NewJackalManagedNamespace(cluster.JackalNamespaceName)
+		if _, err := p.cluster.CreateNamespace(jackalNamespace); err != nil {
+			spinner.Fatalf(err, "Unable to create the jackal namespace")
 		}
 	}
 
 	if p.cfg.Pkg.Metadata.YOLO && state.Distro != "YOLO" {
-		message.Warn("This package is in YOLO mode, but the cluster was already initialized with 'zarf init'. " +
-			"This may cause issues if the package does not exclude any charts or manifests from the Zarf Agent using " +
-			"the pod or namespace label `zarf.dev/agent: ignore'.")
+		message.Warn("This package is in YOLO mode, but the cluster was already initialized with 'jackal init'. " +
+			"This may cause issues if the package does not exclude any charts or manifests from the Jackal Agent using " +
+			"the pod or namespace label `jackal.dev/agent: ignore'.")
 	}
 
 	p.cfg.State = state
@@ -496,14 +496,14 @@ func (p *Packager) pushImagesToRegistry(componentImages []string, noImgChecksum 
 	}
 
 	return helpers.Retry(func() error {
-		return imgConfig.PushToZarfRegistry()
+		return imgConfig.PushToJackalRegistry()
 	}, p.cfg.PkgOpts.Retries, 5*time.Second, message.Warnf)
 }
 
 // Push all of the components git repos to the configured git server.
 func (p *Packager) pushReposToRepository(reposPath string, repos []string) error {
 	for _, repoURL := range repos {
-		// Create an anonymous function to push the repo to the Zarf git server
+		// Create an anonymous function to push the repo to the Jackal git server
 		tryPush := func() error {
 			gitClient := git.New(p.cfg.State.GitServer)
 			svcInfo, _ := k8s.ServiceInfoFromServiceURL(gitClient.Server.Address)
@@ -548,10 +548,10 @@ func (p *Packager) pushReposToRepository(reposPath string, repos []string) error
 }
 
 // Install all Helm charts and raw k8s manifests into the k8s cluster.
-func (p *Packager) installChartAndManifests(componentPaths *layout.ComponentPaths, component types.ZarfComponent) (installedCharts []types.InstalledChart, err error) {
+func (p *Packager) installChartAndManifests(componentPaths *layout.ComponentPaths, component types.JackalComponent) (installedCharts []types.InstalledChart, err error) {
 	for _, chart := range component.Charts {
 
-		// zarf magic for the value file
+		// jackal magic for the value file
 		for idx := range chart.ValuesFiles {
 			chartValueName := helm.StandardValuesName(componentPaths.Values, chart, idx)
 			if err := p.valueTemplate.Apply(component, chartValueName, false); err != nil {
@@ -559,7 +559,7 @@ func (p *Packager) installChartAndManifests(componentPaths *layout.ComponentPath
 			}
 		}
 
-		// TODO (@WSTARR): Currently this logic is library-only and is untested while it is in an experimental state - it may eventually get added as shorthand in Zarf Variables though
+		// TODO (@WSTARR): Currently this logic is library-only and is untested while it is in an experimental state - it may eventually get added as shorthand in Jackal Variables though
 		var valuesOverrides map[string]any
 		if componentChartValuesOverrides, ok := p.cfg.DeployOpts.ValuesOverridesMap[component.Name]; ok {
 			if chartValuesOverrides, ok := componentChartValuesOverrides[chart.Name]; ok {
@@ -613,8 +613,8 @@ func (p *Packager) installChartAndManifests(componentPaths *layout.ComponentPath
 			manifest.Namespace = corev1.NamespaceDefault
 		}
 
-		// Create a chart and helm cfg from a given Zarf Manifest.
-		helmCfg, err := helm.NewFromZarfManifest(
+		// Create a chart and helm cfg from a given Jackal Manifest.
+		helmCfg, err := helm.NewFromJackalManifest(
 			manifest,
 			componentPaths.Manifests,
 			p.cfg.Pkg.Metadata.Name,
@@ -656,7 +656,7 @@ func (p *Packager) printTablesForDeployment(componentsToDeploy []types.DeployedC
 	} else {
 		if p.cluster != nil {
 			// Grab a fresh copy of the state (if we are able) to print the most up-to-date version of the creds
-			freshState, err := p.cluster.LoadZarfState()
+			freshState, err := p.cluster.LoadJackalState()
 			if err != nil {
 				freshState = p.cfg.State
 			}

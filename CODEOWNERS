@@ -1,4 +1,4 @@
-* @defenseunicorns/zarf
+* @defenseunicorns/jackal
 
 # Docs & examples
 /adr/ @jeff-mccoy @Racer159 @Noxsios @lucasrod16 @AustinAbro321
@@ -13,7 +13,7 @@ main.go @jeff-mccoy @Racer159 @Noxsios @lucasrod16 @AustinAbro321
 
 # Init package
 /packages/ @jeff-mccoy @Racer159 @Noxsios @lucasrod16 @AustinAbro321
-/zarf.yaml @jeff-mccoy @Racer159 @Noxsios @lucasrod16 @AustinAbro321
+/jackal.yaml @jeff-mccoy @Racer159 @Noxsios @lucasrod16 @AustinAbro321
 
 # Docs Website
 /docs-website/ @Racer159 @Noxsios @jeff-mccoy @lucasrod16 @AustinAbro321

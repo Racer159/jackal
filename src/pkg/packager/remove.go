@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package packager contains functions for interacting with, managing and deploying Zarf packages.
+// Package packager contains functions for interacting with, managing and deploying Jackal packages.
 package packager
 
 import (
@@ -12,15 +12,15 @@ import (
 
 	"slices"
 
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/internal/packager/helm"
+	"github.com/defenseunicorns/jackal/src/pkg/cluster"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/actions"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/filters"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/sources"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/internal/packager/helm"
-	"github.com/defenseunicorns/zarf/src/pkg/cluster"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/actions"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/filters"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/sources"
-	"github.com/defenseunicorns/zarf/src/types"
 	"helm.sh/helm/v3/pkg/storage/driver"
 	corev1 "k8s.io/api/core/v1"
 )
@@ -31,7 +31,7 @@ func (p *Packager) Remove() (err error) {
 	if isClusterSource {
 		p.cluster = p.source.(*sources.ClusterSource).Cluster
 	}
-	spinner := message.NewProgressSpinner("Removing Zarf package %s", p.cfg.PkgOpts.PackageSource)
+	spinner := message.NewProgressSpinner("Removing Jackal package %s", p.cfg.PkgOpts.PackageSource)
 	defer spinner.Stop()
 
 	var packageName string
@@ -104,11 +104,11 @@ func (p *Packager) Remove() (err error) {
 func (p *Packager) updatePackageSecret(deployedPackage types.DeployedPackage) {
 	// Only attempt to update the package secret if we are actually connected to a cluster
 	if p.cluster != nil {
-		secretName := config.ZarfPackagePrefix + deployedPackage.Name
+		secretName := config.JackalPackagePrefix + deployedPackage.Name
 
 		// Save the new secret with the removed components removed from the secret
-		newPackageSecret := p.cluster.GenerateSecret(cluster.ZarfNamespaceName, secretName, corev1.SecretTypeOpaque)
-		newPackageSecret.Labels[cluster.ZarfPackageInfoLabel] = deployedPackage.Name
+		newPackageSecret := p.cluster.GenerateSecret(cluster.JackalNamespaceName, secretName, corev1.SecretTypeOpaque)
+		newPackageSecret.Labels[cluster.JackalPackageInfoLabel] = deployedPackage.Name
 
 		newPackageSecretData, _ := json.Marshal(deployedPackage)
 		newPackageSecret.Data["data"] = newPackageSecretData
@@ -125,7 +125,7 @@ func (p *Packager) updatePackageSecret(deployedPackage types.DeployedPackage) {
 func (p *Packager) removeComponent(deployedPackage *types.DeployedPackage, deployedComponent types.DeployedComponent, spinner *message.Spinner) (*types.DeployedPackage, error) {
 	components := deployedPackage.Data.Components
 
-	c := helpers.Find(components, func(t types.ZarfComponent) bool {
+	c := helpers.Find(components, func(t types.JackalComponent) bool {
 		return t.Name == deployedComponent.Name
 	})
 
@@ -181,10 +181,10 @@ func (p *Packager) removeComponent(deployedPackage *types.DeployedPackage, deplo
 	})
 
 	if len(deployedPackage.DeployedComponents) == 0 && p.cluster != nil {
-		secretName := config.ZarfPackagePrefix + deployedPackage.Name
+		secretName := config.JackalPackagePrefix + deployedPackage.Name
 
 		// All the installed components were deleted, therefore this package is no longer actually deployed
-		packageSecret, err := p.cluster.GetSecret(cluster.ZarfNamespaceName, secretName)
+		packageSecret, err := p.cluster.GetSecret(cluster.JackalNamespaceName, secretName)
 
 		// We warn and ignore errors because we may have removed the cluster that this package was inside of
 		if err != nil {

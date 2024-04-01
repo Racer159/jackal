@@ -1,6 +1,6 @@
-# Creating a K8s Cluster with Zarf
+# Creating a K8s Cluster with Jackal
 
-In this tutorial, we will demonstrate how to use Zarf on a fresh Linux machine to deploy a [k3s](https://k3s.io/) cluster through Zarf's `k3s` component.
+In this tutorial, we will demonstrate how to use Jackal on a fresh Linux machine to deploy a [k3s](https://k3s.io/) cluster through Jackal's `k3s` component.
 
 ## System Requirements
 
@@ -14,16 +14,16 @@ The 'k3s' component requires root access (not just `sudo`!) when deploying as it
 
 Before beginning this tutorial you will need the following:
 
-- The [Zarf](https://github.com/defenseunicorns/zarf) repository cloned: ([`git clone` Instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository))
-- Zarf binary installed on your $PATH: ([Installing Zarf](../1-getting-started/index.md#installing-zarf))
-- An init-package built/downloaded: ([init-package Build Instructions](./0-creating-a-zarf-package.md)) or ([Download Location](https://github.com/defenseunicorns/zarf/releases))
+- The [Jackal](https://github.com/defenseunicorns/jackal) repository cloned: ([`git clone` Instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository))
+- Jackal binary installed on your $PATH: ([Installing Jackal](../1-getting-started/index.md#installing-jackal))
+- An init-package built/downloaded: ([init-package Build Instructions](./0-creating-a-jackal-package.md)) or ([Download Location](https://github.com/defenseunicorns/jackal/releases))
 
 ## Creating the Cluster
 
-1. Run the `zarf init` command as `root`.
+1. Run the `jackal init` command as `root`.
 
 ```sh
-# zarf init
+# jackal init
 ```
 
 2. Confirm Package Deployment: <br/>
@@ -38,15 +38,15 @@ Before beginning this tutorial you will need the following:
 You can automatically accept the k3s component and confirm the package using the `--components` and `--confirm` flags.
 
 ```sh
-$ zarf init --components="k3s" --confirm
+$ jackal init --components="k3s" --confirm
 ```
 :::
 
 ### Validating the Deployment
-After the `zarf init` command is done running, you should see a k3s cluster running and a few `zarf` pods in the Kubernetes cluster.
+After the `jackal init` command is done running, you should see a k3s cluster running and a few `jackal` pods in the Kubernetes cluster.
 
 ```sh
-# zarf tools monitor
+# jackal tools monitor
 ```
 :::note
 You can press `0` if you want to see all namespaces and CTRL-C to exit
@@ -63,8 +63,8 @@ By default, the k3s component will only automatically provide cluster access to 
 
 ## Cleaning Up
 
-The [`zarf destroy`](../2-the-zarf-cli/100-cli-commands/zarf_destroy.md) command will remove all of the resources, including the k3s cluster, that was created by the initialization command.
+The [`jackal destroy`](../2-the-jackal-cli/100-cli-commands/jackal_destroy.md) command will remove all of the resources, including the k3s cluster, that was created by the initialization command.
 
 ```sh
-zarf destroy --confirm
+jackal destroy --confirm
 ```

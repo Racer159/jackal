@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package types contains all the types used by Zarf.
+// Package types contains all the types used by Jackal.
 package types
 
 import (
@@ -12,48 +12,48 @@ import (
 // PackagerConfig is the main struct that the packager uses to hold high-level options.
 type PackagerConfig struct {
 	// CreateOpts tracks the user-defined options used to create the package
-	CreateOpts ZarfCreateOptions
+	CreateOpts JackalCreateOptions
 
 	// PkgOpts tracks user-defined options
-	PkgOpts ZarfPackageOptions
+	PkgOpts JackalPackageOptions
 
 	// DeployOpts tracks user-defined values for the active deployment
-	DeployOpts ZarfDeployOptions
+	DeployOpts JackalDeployOptions
 
 	// MirrorOpts tracks user-defined values for the active mirror
-	MirrorOpts ZarfMirrorOptions
+	MirrorOpts JackalMirrorOptions
 
-	// InitOpts tracks user-defined values for the active Zarf initialization.
-	InitOpts ZarfInitOptions
+	// InitOpts tracks user-defined values for the active Jackal initialization.
+	InitOpts JackalInitOptions
 
 	// InspectOpts tracks user-defined options used to inspect the package
-	InspectOpts ZarfInspectOptions
+	InspectOpts JackalInspectOptions
 
 	// PublishOpts tracks user-defined options used to publish the package
-	PublishOpts ZarfPublishOptions
+	PublishOpts JackalPublishOptions
 
 	// PullOpts tracks user-defined options used to pull packages
-	PullOpts ZarfPullOptions
+	PullOpts JackalPullOptions
 
 	// FindImagesOpts tracks user-defined options used to find images
-	FindImagesOpts ZarfFindImagesOptions
+	FindImagesOpts JackalFindImagesOptions
 
 	// GenerateOpts tracks user-defined values for package generation.
-	GenerateOpts ZarfGenerateOptions
+	GenerateOpts JackalGenerateOptions
 
 	// The package data
-	Pkg ZarfPackage
+	Pkg JackalPackage
 
-	// The active zarf state
-	State *ZarfState
+	// The active jackal state
+	State *JackalState
 
 	// Variables set by the user
-	SetVariableMap map[string]*ZarfSetVariable
+	SetVariableMap map[string]*JackalSetVariable
 }
 
 // SetVariable sets a value for a variable in PackagerConfig.SetVariableMap.
 func (cfg *PackagerConfig) SetVariable(name, value string, sensitive bool, autoIndent bool, varType VariableType) {
-	cfg.SetVariableMap[name] = &ZarfSetVariable{
+	cfg.SetVariableMap[name] = &JackalSetVariable{
 		Name:       name,
 		Value:      value,
 		Sensitive:  sensitive,

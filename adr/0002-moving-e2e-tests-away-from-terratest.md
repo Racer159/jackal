@@ -8,9 +8,9 @@ Accepted
 
 ## Context
 
-In previous releases of Zarf, the creation of the initialization package at the core of many of our E2E tests required repository secrets to login to registry1. Since this is an open-source project, anyone could submit a change to one of our GitHub workflows that could steal our secrets. In order to protect our secrets from any bad-actors we used [peter-evans/slash-command-dispatch@v2](https://github.com/peter-evans/slash-command-dispatch) so that only a maintainer would have the ability to run the E2E tests when a PR is submitted for review.
+In previous releases of Jackal, the creation of the initialization package at the core of many of our E2E tests required repository secrets to login to registry1. Since this is an open-source project, anyone could submit a change to one of our GitHub workflows that could steal our secrets. In order to protect our secrets from any bad-actors we used [peter-evans/slash-command-dispatch@v2](https://github.com/peter-evans/slash-command-dispatch) so that only a maintainer would have the ability to run the E2E tests when a PR is submitted for review.
 
-In the current version of Zarf (v0.15) images from registry1 are no longer needed to create the zarf-init-{{arch}}.tar.zst. This means, given our current span of E2E tests, we no longer need to use repository secrets when running tests. This gives us the ability to reassess the way we do our E2E testing.
+In the current version of Jackal (v0.15) images from registry1 are no longer needed to create the jackal-init-{{arch}}.tar.zst. This means, given our current span of E2E tests, we no longer need to use repository secrets when running tests. This gives us the ability to reassess the way we do our E2E testing.
 
 When considering how to handle the tests, some of the important additions we were considering were:
   1. Ability to test against different kubernetes distributions
@@ -19,9 +19,9 @@ When considering how to handle the tests, some of the important additions we wer
 
 ## Decision
 
-The previous E2E test code was not extensible enough to be reused to test Zarf against different kubernetes distributions. The test suite was refactored so that we could write a setup and teardown function for each kubernetes distribution we wanted to verify against and the test suite was then responsible for cycling through the different distributions. This gives us the ability to test multiple kubernetes distributions against the same exact test cases.
+The previous E2E test code was not extensible enough to be reused to test Jackal against different kubernetes distributions. The test suite was refactored so that we could write a setup and teardown function for each kubernetes distribution we wanted to verify against and the test suite was then responsible for cycling through the different distributions. This gives us the ability to test multiple kubernetes distributions against the same exact test cases.
 
-The individual test cases were also rewritten to not rely on terratest running a bash command over ssh. Instead, the test uses the locally built Zarf binary and example packages to validate expected behavior. This approach works both on local dev machines (linux/mac) and on the Ubuntu GitHub Runner that gets triggered when a pull request is created. This also has the positive side effect of not needing to wait several minutes for an ec2 instance to spin up for testing.
+The individual test cases were also rewritten to not rely on terratest running a bash command over ssh. Instead, the test uses the locally built Jackal binary and example packages to validate expected behavior. This approach works both on local dev machines (linux/mac) and on the Ubuntu GitHub Runner that gets triggered when a pull request is created. This also has the positive side effect of not needing to wait several minutes for an ec2 instance to spin up for testing.
 
 Since we no longer need repository secrets to run the E2E tests, we removed the requirement for a maintainer to use a `/test all` chatops command to dispatch the tests. Instead, there is a new test workflow defined for each kubernetes distribution we are verifying against and the tests get run automatically whenever a PR is created or updated.
 
@@ -29,7 +29,7 @@ When looking back at the list of 'important additions' we were considering above
 
 ## Consequences
 
-While it was not something we were doing before, testing directly on the GitHub Runner instead of using Terratest to test on an ec2 instance means that when we get around to adding automated testing of Zarf against different linux distributions we will want to have more discussions on if we want to use self-hosted runners of different OS's or if we want to go back to Terratest to stand up ec2 instances with different AMIs.
+While it was not something we were doing before, testing directly on the GitHub Runner instead of using Terratest to test on an ec2 instance means that when we get around to adding automated testing of Jackal against different linux distributions we will want to have more discussions on if we want to use self-hosted runners of different OS's or if we want to go back to Terratest to stand up ec2 instances with different AMIs.
 
 In the future, we will likely want to write E2E tests that use images that require repository secrets to access. When that happens we will want to bring back some form of 'maintainer action' to initiate the test workflow. Going back to [peter-evans/slash-command-dispatch@v2](https://github.com/peter-evans/slash-command-dispatch) might be the right answer for that but there will need to be more discussion to make sure the team agrees that's the best solution first.
 

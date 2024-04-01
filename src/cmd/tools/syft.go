@@ -1,16 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package tools contains the CLI commands for Zarf.
+// Package tools contains the CLI commands for Jackal.
 package tools
 
 import (
 	"github.com/anchore/clio"
 	syftCLI "github.com/anchore/syft/cmd/syft/cli"
-	"github.com/defenseunicorns/zarf/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/config/lang"
 )
 
-// ldflags github.com/defenseunicorns/zarf/src/cmd/tools.syftVersion=x.x.x
+// ldflags github.com/defenseunicorns/jackal/src/cmd/tools.syftVersion=x.x.x
 var syftVersion string
 
 func init() {

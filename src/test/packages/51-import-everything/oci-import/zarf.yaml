@@ -1,4 +1,4 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: import-oci
   description: Test OCI import of helm charts
@@ -6,7 +6,7 @@ metadata:
 
 components:
   - name: import-component-oci
-    description: "import-component-oci == ###ZARF_COMPONENT_NAME###"
+    description: "import-component-oci == ###JACKAL_COMPONENT_NAME###"
     required: false
     import:
       name: demo-helm-charts

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package test provides e2e tests for Zarf.
+// Package test provides e2e tests for Jackal.
 package test
 
 import (
@@ -22,15 +22,15 @@ func TestComponentChoice(t *testing.T) {
 		e2e.CleanFiles(firstFile, secondFile)
 	})
 
-	path := fmt.Sprintf("build/zarf-package-component-choice-%s.tar.zst", e2e.Arch)
+	path := fmt.Sprintf("build/jackal-package-component-choice-%s.tar.zst", e2e.Arch)
 
 	// Try to deploy both and expect failure due to only one component allowed at a time
 	// We currently don't have a pattern to actually test the interactive prompt, so just testing automation for now
-	stdOut, stdErr, err := e2e.Zarf("package", "deploy", path, "--components=first-choice,second-choice", "--confirm")
+	stdOut, stdErr, err := e2e.Jackal("package", "deploy", path, "--components=first-choice,second-choice", "--confirm")
 	require.Error(t, err, stdOut, stdErr)
 
 	// Deploy a single choice and expect success
-	stdOut, stdErr, err = e2e.Zarf("package", "deploy", path, "--components=first-choice", "--confirm")
+	stdOut, stdErr, err = e2e.Jackal("package", "deploy", path, "--components=first-choice", "--confirm")
 	require.NoError(t, err, stdOut, stdErr)
 	require.Contains(t, stdErr, "Component first-choice is using group which has been deprecated", "output should show a warning for group being deprecated.")
 
@@ -40,7 +40,7 @@ func TestComponentChoice(t *testing.T) {
 	require.NoFileExists(t, secondFile)
 
 	// Deploy using default choice
-	stdOut, stdErr, err = e2e.Zarf("package", "deploy", path, "--confirm")
+	stdOut, stdErr, err = e2e.Jackal("package", "deploy", path, "--confirm")
 	require.NoError(t, err, stdOut, stdErr)
 
 	// Verify the file was created

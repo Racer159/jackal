@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: podinfo
   annotations:
-    zarf.dev/connect-description: Access Podinfo
+    jackal.dev/connect-description: Access Podinfo
   labels:
-    # Enables "zarf connect podinfo"
-    zarf.dev/connect-name: podinfo
+    # Enables "jackal connect podinfo"
+    jackal.dev/connect-name: podinfo
 spec:
   selector:
     app.kubernetes.io/name: podinfo-compose

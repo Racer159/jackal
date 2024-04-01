@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package test provides e2e tests for Zarf.
+// Package test provides e2e tests for Jackal.
 package test
 
 import (
@@ -10,18 +10,18 @@ import (
 
 	"testing"
 
-	"github.com/defenseunicorns/zarf/src/test"
+	"github.com/defenseunicorns/jackal/src/test"
 	"github.com/stretchr/testify/require"
 )
 
-type zarfCommandResult struct {
+type jackalCommandResult struct {
 	stdOut string
 	stdErr string
 	err    error
 }
 
-func zarfCommandWStruct(e2e test.ZarfE2ETest, path string) (result zarfCommandResult) {
-	result.stdOut, result.stdErr, result.err = e2e.Zarf("package", "deploy", path, "--confirm")
+func jackalCommandWStruct(e2e test.JackalE2ETest, path string) (result jackalCommandResult) {
+	result.stdOut, result.stdErr, result.err = e2e.Jackal("package", "deploy", path, "--confirm")
 	return result
 }
 
@@ -29,14 +29,14 @@ func TestNoWait(t *testing.T) {
 	t.Log("E2E: Helm Wait")
 	e2e.SetupWithCluster(t)
 
-	stdOut, stdErr, err := e2e.Zarf("package", "create", "src/test/packages/28-helm-no-wait", "-o=build", "--confirm")
+	stdOut, stdErr, err := e2e.Jackal("package", "create", "src/test/packages/28-helm-no-wait", "-o=build", "--confirm")
 	require.NoError(t, err, stdOut, stdErr)
 
-	path := fmt.Sprintf("build/zarf-package-helm-no-wait-%s.tar.zst", e2e.Arch)
+	path := fmt.Sprintf("build/jackal-package-helm-no-wait-%s.tar.zst", e2e.Arch)
 
-	zarfChannel := make(chan zarfCommandResult, 1)
+	jackalChannel := make(chan jackalCommandResult, 1)
 	go func() {
-		zarfChannel <- zarfCommandWStruct(e2e, path)
+		jackalChannel <- jackalCommandWStruct(e2e, path)
 	}()
 
 	stdOut = ""
@@ -44,17 +44,17 @@ func TestNoWait(t *testing.T) {
 	err = nil
 
 	select {
-	case res := <-zarfChannel:
+	case res := <-jackalChannel:
 		stdOut = res.stdOut
 		stdErr = res.stdErr
 		err = res.err
 	case <-time.After(30 * time.Second):
-		t.Error("Timeout waiting for zarf deploy (it tried to wait)")
+		t.Error("Timeout waiting for jackal deploy (it tried to wait)")
 		t.Log("Removing hanging namespace...")
 		_, _, _ = e2e.Kubectl("delete", "namespace", "no-wait", "--force=true", "--wait=false", "--grace-period=0")
 	}
 	require.NoError(t, err, stdOut, stdErr)
 
-	stdOut, stdErr, err = e2e.Zarf("package", "remove", "helm-no-wait", "--confirm")
+	stdOut, stdErr, err = e2e.Jackal("package", "remove", "helm-no-wait", "--confirm")
 	require.NoError(t, err, stdOut, stdErr)
 }

@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package filters contains core implementations of the ComponentFilterStrategy interface.
 package filters
 
-import "github.com/defenseunicorns/zarf/src/types"
+import "github.com/defenseunicorns/jackal/src/types"
 
 // Empty returns a filter that does nothing.
 func Empty() ComponentFilterStrategy {
@@ -15,6 +15,6 @@ func Empty() ComponentFilterStrategy {
 type emptyFilter struct{}
 
 // Apply returns the components unchanged.
-func (f *emptyFilter) Apply(pkg types.ZarfPackage) ([]types.ZarfComponent, error) {
+func (f *emptyFilter) Apply(pkg types.JackalPackage) ([]types.JackalComponent, error) {
 	return pkg.Components, nil
 }

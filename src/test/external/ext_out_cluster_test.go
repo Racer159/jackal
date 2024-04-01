@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package external provides a test for interacting with external resources
 package external
@@ -15,9 +15,9 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/pkg/utils/exec"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/pkg/utils/exec"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 	"helm.sh/helm/v3/pkg/repo"
@@ -31,7 +31,7 @@ const (
 	giteaIP        = "172.31.0.99"
 	giteaHost      = "gitea.localhost"
 	registryHost   = "registry.localhost"
-	clusterName    = "zarf-external-test"
+	clusterName    = "jackal-external-test"
 	giteaUser      = "git-user"
 	registryUser   = "push-user"
 	commonPassword = "superSecurePassword"
@@ -102,11 +102,11 @@ func (suite *ExtOutClusterTestSuite) TearDownSuite() {
 }
 
 func (suite *ExtOutClusterTestSuite) Test_0_Mirror() {
-	// Use Zarf to mirror a package to the services (do this as test 0 so that the registry is unpolluted)
-	mirrorArgs := []string{"package", "mirror-resources", "../../../build/zarf-package-argocd-amd64.tar.zst", "--confirm"}
+	// Use Jackal to mirror a package to the services (do this as test 0 so that the registry is unpolluted)
+	mirrorArgs := []string{"package", "mirror-resources", "../../../build/jackal-package-argocd-amd64.tar.zst", "--confirm"}
 	mirrorArgs = append(mirrorArgs, outClusterCredentialArgs...)
-	err := exec.CmdWithPrint(zarfBinPath, mirrorArgs...)
-	suite.NoError(err, "unable to mirror the package with zarf")
+	err := exec.CmdWithPrint(jackalBinPath, mirrorArgs...)
+	suite.NoError(err, "unable to mirror the package with jackal")
 
 	// Check that the registry contains the images we want
 	regCatalogURL := fmt.Sprintf("http://%s:%s@k3d-%s:5000/v2/_catalog", registryUser, commonPassword, registryHost)
@@ -130,15 +130,15 @@ func (suite *ExtOutClusterTestSuite) Test_0_Mirror() {
 }
 
 func (suite *ExtOutClusterTestSuite) Test_1_Deploy() {
-	// Use Zarf to initialize the cluster
+	// Use Jackal to initialize the cluster
 	initArgs := []string{"init", "--confirm"}
 	initArgs = append(initArgs, outClusterCredentialArgs...)
-	err := exec.CmdWithPrint(zarfBinPath, initArgs...)
-	suite.NoError(err, "unable to initialize the k8s server with zarf")
+	err := exec.CmdWithPrint(jackalBinPath, initArgs...)
+	suite.NoError(err, "unable to initialize the k8s server with jackal")
 
 	// Deploy the flux example package
-	deployArgs := []string{"package", "deploy", "../../../build/zarf-package-podinfo-flux-amd64.tar.zst", "--confirm"}
-	err = exec.CmdWithPrint(zarfBinPath, deployArgs...)
+	deployArgs := []string{"package", "deploy", "../../../build/jackal-package-podinfo-flux-amd64.tar.zst", "--confirm"}
+	err = exec.CmdWithPrint(jackalBinPath, deployArgs...)
 	suite.NoError(err, "unable to deploy flux example package")
 
 	// Verify flux was able to pull from the 'external' repository
@@ -161,7 +161,7 @@ func (suite *ExtOutClusterTestSuite) Test_2_AuthToPrivateHelmChart() {
 
 	packagePath := filepath.Join("..", "packages", "external-helm-auth")
 	findImageArgs := []string{"dev", "find-images", packagePath}
-	err := exec.CmdWithPrint(zarfBinPath, findImageArgs...)
+	err := exec.CmdWithPrint(jackalBinPath, findImageArgs...)
 	suite.Error(err, "Since auth has not been setup, this should fail")
 
 	repoFile := repo.NewFile()
@@ -176,11 +176,11 @@ func (suite *ExtOutClusterTestSuite) Test_2_AuthToPrivateHelmChart() {
 	repoFile.Add(entry)
 	utils.WriteYaml(repoPath, repoFile, helpers.ReadWriteUser)
 
-	err = exec.CmdWithPrint(zarfBinPath, findImageArgs...)
+	err = exec.CmdWithPrint(jackalBinPath, findImageArgs...)
 	suite.NoError(err, "Unable to find images, helm auth likely failed")
 
 	packageCreateArgs := []string{"package", "create", packagePath, fmt.Sprintf("--output=%s", tempDir), "--confirm"}
-	err = exec.CmdWithPrint(zarfBinPath, packageCreateArgs...)
+	err = exec.CmdWithPrint(jackalBinPath, packageCreateArgs...)
 	suite.NoError(err, "Unable to create package, helm auth likely failed")
 }
 

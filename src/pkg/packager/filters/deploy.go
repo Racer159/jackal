@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package filters contains core implementations of the ComponentFilterStrategy interface.
 package filters
@@ -10,9 +10,9 @@ import (
 	"strings"
 
 	"github.com/agnivade/levenshtein"
+	"github.com/defenseunicorns/jackal/src/pkg/interactive"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/pkg/interactive"
-	"github.com/defenseunicorns/zarf/src/types"
 )
 
 // ForDeploy creates a new deployment filter.
@@ -40,9 +40,9 @@ var (
 )
 
 // Apply applies the filter.
-func (f *deploymentFilter) Apply(pkg types.ZarfPackage) ([]types.ZarfComponent, error) {
-	var selectedComponents []types.ZarfComponent
-	groupedComponents := map[string][]types.ZarfComponent{}
+func (f *deploymentFilter) Apply(pkg types.JackalPackage) ([]types.JackalComponent, error) {
+	var selectedComponents []types.JackalComponent
+	groupedComponents := map[string][]types.JackalComponent{}
 	orderedComponentGroups := []string{}
 
 	// Group the components by Name and Group while maintaining order
@@ -66,8 +66,8 @@ func (f *deploymentFilter) Apply(pkg types.ZarfPackage) ([]types.ZarfComponent, 
 
 		// NOTE: This does not use forIncludedComponents as it takes group, default and required status into account.
 		for _, groupKey := range orderedComponentGroups {
-			var groupDefault *types.ZarfComponent
-			var groupSelected *types.ZarfComponent
+			var groupDefault *types.JackalComponent
+			var groupSelected *types.JackalComponent
 
 			for _, component := range groupedComponents[groupKey] {
 				// Ensure we have a local version of the component to point to (otherwise the pointer might change on us)

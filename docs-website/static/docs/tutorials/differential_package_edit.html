@@ -48,11 +48,11 @@ b.BWHI {background-color: #aaaaaa}
 <body>
 <pre>
 <b class="WHI">
-$ mv zarf.yaml zarf_old.yaml
-$ sed 's/1.4.0/1.4.2/' zarf_old.yaml > zarf.yaml
-$ cat zarf.yaml
+$ mv jackal.yaml jackal_old.yaml
+$ sed 's/1.4.0/1.4.2/' jackal_old.yaml > jackal.yaml
+$ cat jackal.yaml
 </b>
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: longhorn
   description: "Example package for Longhorn cloud native distributed block storage for Kubernetes"
@@ -73,7 +73,7 @@ components:
         after:
           - cmd: |
               export PATH=$PATH:./
-              awk '{gsub(/kubectl /, "./zarf tools kubectl ")} 1' ./environment_check.sh &gt; tmp &amp;&amp; mv tmp ./environment_check.sh
+              awk '{gsub(/kubectl /, "./jackal tools kubectl ")} 1' ./environment_check.sh &gt; tmp &amp;&amp; mv tmp ./environment_check.sh
               awk '{gsub(/"kubectl" /, "")} 1' ./environment_check.sh &gt; tmp &amp;&amp; mv tmp ./environment_check.sh
               chmod +x ./environment_check.sh
               ./environment_check.sh
@@ -84,7 +84,7 @@ components:
       # Set the delete confirmation flag for Longhorn
       onRemove:
         before:
-          - cmd: "./zarf tools kubectl -n longhorn-system patch -p '{\"value\": \"true\"}' --type=merge lhs deleting-confirmation-flag"
+          - cmd: "./jackal tools kubectl -n longhorn-system patch -p '{\"value\": \"true\"}' --type=merge lhs deleting-confirmation-flag"
     manifests:
       - name: longhorn-connect
         namespace: longhorn-system

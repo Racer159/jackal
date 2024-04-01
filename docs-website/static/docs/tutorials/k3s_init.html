@@ -47,7 +47,7 @@ b.BWHI {background-color: #aaaaaa}
 </head>
 <body>
 <pre>
-<b class="GRN">? </b><b class="WHI">Deploy this Zarf package?</b> (y/N) <span style="color:#55ffff;">Yes</span>
+<b class="GRN">? </b><b class="WHI">Deploy this Jackal package?</b> (y/N) <span style="color:#55ffff;">Yes</span>
 <b class=YEL></b>
 <b style="color:#555555;"></b>───────────────────────────────────────────────────────────────────────────────────────
 <b style="color:#55ffff;">name</b>:<b style="color:#ff55ff;"> k3s</b>
@@ -61,15 +61,15 @@ b.BWHI {background-color: #aaaaaa}
 <b style="color:#ff55ff;">       </b><b style="color:#55ffff;">maxRetries</b>:<b style="color:#ff55ff;"> 5</b>
 <b style="color:#ff55ff;">     </b><b style="color:#55ffff;">before</b>:
 <b style="color:#ff55ff;">     </b>- <b style="color:#55ffff;">maxRetries</b>:<b style="color:#ff55ff;"> 0</b>
-<b style="color:#ff55ff;">       </b><b style="color:#55ffff;">cmd</b>:<b style="color:#ff55ff;"> ./zarf internal is-valid-hostname</b>
+<b style="color:#ff55ff;">       </b><b style="color:#55ffff;">cmd</b>:<b style="color:#ff55ff;"> ./jackal internal is-valid-hostname</b>
 <b style="color:#ff55ff;">     </b>- <b style="color:#55ffff;">cmd</b>:<b style="color:#ff55ff;"> "[ -e /etc/redhat-release ] && systemctl disable firewalld --now || echo ''"</b>
 <b style="color:#ff55ff;">     </b><b style="color:#55ffff;">after</b>:
 <b style="color:#ff55ff;">     </b>- <b style="color:#55ffff;">cmd</b>:<b style="color:#ff55ff;"> systemctl daemon-reload</b>
 <b style="color:#ff55ff;">     </b>- <b style="color:#55ffff;">cmd</b>:<b style="color:#ff55ff;"> systemctl enable k3s</b>
 <b style="color:#ff55ff;">     </b>- <b style="color:#55ffff;">cmd</b>:<b style="color:#ff55ff;"> systemctl start k3s</b>
 <b style="color:#ff55ff;"></b><b style="color:#55ffff;">files</b>:
-<b style="color:#ff55ff;"></b>- <b style="color:#55ffff;">source</b>:<b style="color:#ff55ff;"> packages/distros/k3s/common/zarf-clean-k3s.sh</b>
-<b style="color:#ff55ff;">  </b><b style="color:#55ffff;">target</b>:<b style="color:#ff55ff;"> /opt/zarf/zarf-clean-k3s.sh</b>
+<b style="color:#ff55ff;"></b>- <b style="color:#55ffff;">source</b>:<b style="color:#ff55ff;"> packages/distros/k3s/common/jackal-clean-k3s.sh</b>
+<b style="color:#ff55ff;">  </b><b style="color:#55ffff;">target</b>:<b style="color:#ff55ff;"> /opt/jackal/jackal-clean-k3s.sh</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">executable</b>: true
 <b style="color:#ff55ff;"></b>- <b style="color:#55ffff;">source</b>:<b style="color:#ff55ff;"> packages/distros/k3s/common/k3s.service</b>
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">target</b>:<b style="color:#ff55ff;"> /etc/systemd/system/k3s.service</b>
@@ -88,7 +88,7 @@ b.BWHI {background-color: #aaaaaa}
 <b style="color:#ff55ff;">  </b><b style="color:#55ffff;">target</b>:<b style="color:#ff55ff;"> /var/lib/rancher/k3s/agent/images/k3s.tar.zst</b>
 
 <b class=MAG>*** REQUIRES ROOT *** Install K3s, certified Kubernetes distribution built for IoT &amp; Edge computing</b>
-<b class=MAG>K3s provides the cluster need for Zarf running in Appliance Mode as well as can host a low-resource</b>
+<b class=MAG>K3s provides the cluster need for Jackal running in Appliance Mode as well as can host a low-resource</b>
 <b class=MAG>Gitops Service if not using an existing Kubernetes platform.</b>
 
 <b class="GRN">? </b><b class="WHI">Deploy the k3s component?</b> (y/N) <span style="color:#55ffff;">Yes</span>

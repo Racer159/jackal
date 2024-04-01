@@ -1,4 +1,4 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: component-webhooks
   description: Example Pepr Module for Component Webhooks

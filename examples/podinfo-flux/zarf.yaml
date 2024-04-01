@@ -1,4 +1,4 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: podinfo-flux
   description: Deploy flux and then podinfo via flux

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package creator contains functions for creating Zarf packages.
+// Package creator contains functions for creating Jackal packages.
 package creator
 
 import (
@@ -11,17 +11,17 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/extensions/bigbang"
+	"github.com/defenseunicorns/jackal/src/internal/packager/helm"
+	"github.com/defenseunicorns/jackal/src/internal/packager/kustomize"
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/pkg/zoci"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/extensions/bigbang"
-	"github.com/defenseunicorns/zarf/src/internal/packager/helm"
-	"github.com/defenseunicorns/zarf/src/internal/packager/kustomize"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/pkg/zoci"
-	"github.com/defenseunicorns/zarf/src/types"
 	"github.com/mholt/archiver/v3"
 )
 
@@ -30,30 +30,30 @@ var (
 	_ Creator = (*SkeletonCreator)(nil)
 )
 
-// SkeletonCreator provides methods for creating skeleton Zarf packages.
+// SkeletonCreator provides methods for creating skeleton Jackal packages.
 type SkeletonCreator struct {
-	createOpts  types.ZarfCreateOptions
-	publishOpts types.ZarfPublishOptions
+	createOpts  types.JackalCreateOptions
+	publishOpts types.JackalPublishOptions
 }
 
 // NewSkeletonCreator returns a new SkeletonCreator.
-func NewSkeletonCreator(createOpts types.ZarfCreateOptions, publishOpts types.ZarfPublishOptions) *SkeletonCreator {
+func NewSkeletonCreator(createOpts types.JackalCreateOptions, publishOpts types.JackalPublishOptions) *SkeletonCreator {
 	return &SkeletonCreator{createOpts, publishOpts}
 }
 
-// LoadPackageDefinition loads and configure a zarf.yaml file when creating and publishing a skeleton package.
-func (sc *SkeletonCreator) LoadPackageDefinition(dst *layout.PackagePaths) (pkg types.ZarfPackage, warnings []string, err error) {
-	pkg, warnings, err = dst.ReadZarfYAML()
+// LoadPackageDefinition loads and configure a jackal.yaml file when creating and publishing a skeleton package.
+func (sc *SkeletonCreator) LoadPackageDefinition(dst *layout.PackagePaths) (pkg types.JackalPackage, warnings []string, err error) {
+	pkg, warnings, err = dst.ReadJackalYAML()
 	if err != nil {
-		return types.ZarfPackage{}, nil, err
+		return types.JackalPackage{}, nil, err
 	}
 
 	pkg.Metadata.Architecture = config.GetArch()
 
-	// Compose components into a single zarf.yaml file
+	// Compose components into a single jackal.yaml file
 	pkg, composeWarnings, err := ComposeComponents(pkg, sc.createOpts.Flavor)
 	if err != nil {
-		return types.ZarfPackage{}, nil, err
+		return types.JackalPackage{}, nil, err
 	}
 
 	pkg.Metadata.Architecture = zoci.SkeletonArch
@@ -62,7 +62,7 @@ func (sc *SkeletonCreator) LoadPackageDefinition(dst *layout.PackagePaths) (pkg 
 
 	pkg.Components, err = sc.processExtensions(pkg.Components, dst)
 	if err != nil {
-		return types.ZarfPackage{}, nil, err
+		return types.JackalPackage{}, nil, err
 	}
 
 	for _, warning := range warnings {
@@ -72,10 +72,10 @@ func (sc *SkeletonCreator) LoadPackageDefinition(dst *layout.PackagePaths) (pkg 
 	return pkg, warnings, nil
 }
 
-// Assemble updates all components of the loaded Zarf package with necessary modifications for package assembly.
+// Assemble updates all components of the loaded Jackal package with necessary modifications for package assembly.
 //
 // It processes each component to ensure correct structure and resource locations.
-func (sc *SkeletonCreator) Assemble(dst *layout.PackagePaths, components []types.ZarfComponent, _ string) error {
+func (sc *SkeletonCreator) Assemble(dst *layout.PackagePaths, components []types.JackalComponent, _ string) error {
 	for _, component := range components {
 		c, err := sc.addComponent(component, dst)
 		if err != nil {
@@ -93,10 +93,10 @@ func (sc *SkeletonCreator) Assemble(dst *layout.PackagePaths, components []types
 //
 // - generates checksums for all package files
 //
-// - writes the loaded zarf.yaml to disk
+// - writes the loaded jackal.yaml to disk
 //
 // - signs the package
-func (sc *SkeletonCreator) Output(dst *layout.PackagePaths, pkg *types.ZarfPackage) (err error) {
+func (sc *SkeletonCreator) Output(dst *layout.PackagePaths, pkg *types.JackalPackage) (err error) {
 	for _, component := range pkg.Components {
 		if err := dst.Components.Archive(component, false); err != nil {
 			return err
@@ -113,14 +113,14 @@ func (sc *SkeletonCreator) Output(dst *layout.PackagePaths, pkg *types.ZarfPacka
 		return err
 	}
 
-	if err := utils.WriteYaml(dst.ZarfYAML, pkg, helpers.ReadUser); err != nil {
-		return fmt.Errorf("unable to write zarf.yaml: %w", err)
+	if err := utils.WriteYaml(dst.JackalYAML, pkg, helpers.ReadUser); err != nil {
+		return fmt.Errorf("unable to write jackal.yaml: %w", err)
 	}
 
 	return dst.SignPackage(sc.publishOpts.SigningKeyPath, sc.publishOpts.SigningKeyPassword, !config.CommonOptions.Confirm)
 }
 
-func (sc *SkeletonCreator) processExtensions(components []types.ZarfComponent, layout *layout.PackagePaths) (processedComponents []types.ZarfComponent, err error) {
+func (sc *SkeletonCreator) processExtensions(components []types.JackalComponent, layout *layout.PackagePaths) (processedComponents []types.JackalComponent, err error) {
 	// Create component paths and process extensions for each component.
 	for _, c := range components {
 		componentPaths, err := layout.Components.Create(c)
@@ -141,7 +141,7 @@ func (sc *SkeletonCreator) processExtensions(components []types.ZarfComponent, l
 	return processedComponents, nil
 }
 
-func (sc *SkeletonCreator) addComponent(component types.ZarfComponent, dst *layout.PackagePaths) (updatedComponent *types.ZarfComponent, err error) {
+func (sc *SkeletonCreator) addComponent(component types.JackalComponent, dst *layout.PackagePaths) (updatedComponent *types.JackalComponent, err error) {
 	message.HeaderInfof("📦 %s COMPONENT", strings.ToUpper(component.Name))
 
 	updatedComponent = &component
@@ -163,7 +163,7 @@ func (sc *SkeletonCreator) addComponent(component types.ZarfComponent, dst *layo
 	// TODO: (@WSTARR) Shim the skeleton component's create action dirs to be empty. This prevents actions from failing by cd'ing into directories that will be flattened.
 	updatedComponent.Actions.OnCreate.Defaults.Dir = ""
 
-	resetActions := func(actions []types.ZarfComponentAction) []types.ZarfComponentAction {
+	resetActions := func(actions []types.JackalComponentAction) []types.JackalComponentAction {
 		for idx := range actions {
 			actions[idx].Dir = nil
 		}

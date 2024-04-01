@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package sources contains core implementations of the PackageSource interface.
 package sources
@@ -12,13 +12,13 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/filters"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/pkg/zoci"
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/filters"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/pkg/zoci"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/mholt/archiver/v3"
 )
 
@@ -29,17 +29,17 @@ var (
 
 // OCISource is a package source for OCI registries.
 type OCISource struct {
-	*types.ZarfPackageOptions
+	*types.JackalPackageOptions
 	*zoci.Remote
 }
 
 // LoadPackage loads a package from an OCI registry.
-func (s *OCISource) LoadPackage(dst *layout.PackagePaths, filter filters.ComponentFilterStrategy, unarchiveAll bool) (pkg types.ZarfPackage, warnings []string, err error) {
+func (s *OCISource) LoadPackage(dst *layout.PackagePaths, filter filters.ComponentFilterStrategy, unarchiveAll bool) (pkg types.JackalPackage, warnings []string, err error) {
 	ctx := context.TODO()
 
 	message.Debugf("Loading package from %q", s.PackageSource)
 
-	pkg, err = s.FetchZarfYAML(ctx)
+	pkg, err = s.FetchJackalYAML(ctx)
 	if err != nil {
 		return pkg, nil, err
 	}
@@ -112,7 +112,7 @@ func (s *OCISource) LoadPackage(dst *layout.PackagePaths, filter filters.Compone
 }
 
 // LoadPackageMetadata loads a package's metadata from an OCI registry.
-func (s *OCISource) LoadPackageMetadata(dst *layout.PackagePaths, wantSBOM bool, skipValidation bool) (pkg types.ZarfPackage, warnings []string, err error) {
+func (s *OCISource) LoadPackageMetadata(dst *layout.PackagePaths, wantSBOM bool, skipValidation bool) (pkg types.JackalPackage, warnings []string, err error) {
 	toPull := zoci.PackageAlwaysPull
 	if wantSBOM {
 		toPull = append(toPull, layout.SBOMTar)
@@ -124,7 +124,7 @@ func (s *OCISource) LoadPackageMetadata(dst *layout.PackagePaths, wantSBOM bool,
 	}
 	dst.SetFromLayers(layersFetched)
 
-	pkg, warnings, err = dst.ReadZarfYAML()
+	pkg, warnings, err = dst.ReadJackalYAML()
 	if err != nil {
 		return pkg, nil, err
 	}
@@ -180,9 +180,9 @@ func (s *OCISource) Collect(dir string) (string, error) {
 	loaded := layout.New(tmp)
 	loaded.SetFromLayers(fetched)
 
-	var pkg types.ZarfPackage
+	var pkg types.JackalPackage
 
-	if err := utils.ReadYaml(loaded.ZarfYAML, &pkg); err != nil {
+	if err := utils.ReadYaml(loaded.JackalYAML, &pkg); err != nil {
 		return "", err
 	}
 

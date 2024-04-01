@@ -33,7 +33,7 @@ services:
       - GITEA_TEMP=/tmp/gitea
       - GITEA_ADMIN_USERNAME=git-user
       - GITEA_ADMIN_PASSWORD=superSecurePassword
-      - GITEA_ADMIN_EMAIL=zarf@localhost
+      - GITEA_ADMIN_EMAIL=jackal@localhost
     user: 1000:1000
     command: /usr/sbin/configure-gitea.sh
     volumes:

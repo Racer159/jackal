@@ -14,10 +14,10 @@ limitations under the License.
 */
 
 /*
-NOTICE: This file's 'package' and some functionality has been modified / removed to fit within Zarf's package structure.
+NOTICE: This file's 'package' and some functionality has been modified / removed to fit within Jackal's package structure.
 */
 
-// Package helm is a copy of the main package from helm to include a subset of the helm CLI in Zarf
+// Package helm is a copy of the main package from helm to include a subset of the helm CLI in Jackal
 package helm
 
 import (
@@ -39,11 +39,11 @@ const dependencyBuildDesc = `
 Build out the charts/ directory from the Chart.lock file.
 
 Build is used to reconstruct a chart's dependencies to the state specified in
-the lock file. This will not re-negotiate dependencies, as 'zarf tools helm dependency update'
+the lock file. This will not re-negotiate dependencies, as 'jackal tools helm dependency update'
 does.
 
-If no lock file is found, 'zarf tools helm dependency build' will mirror the behavior
-of 'zarf tools helm dependency update'.
+If no lock file is found, 'jackal tools helm dependency build' will mirror the behavior
+of 'jackal tools helm dependency update'.
 `
 
 func newDependencyBuildCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
@@ -75,7 +75,7 @@ func newDependencyBuildCmd(cfg *action.Configuration, out io.Writer) *cobra.Comm
 			}
 			err := man.Build()
 			if e, ok := err.(downloader.ErrRepoNotFound); ok {
-				return fmt.Errorf("%s. Please add the missing repos via 'zarf tools helm repo add'", e.Error())
+				return fmt.Errorf("%s. Please add the missing repos via 'jackal tools helm repo add'", e.Error())
 			}
 			return err
 		},

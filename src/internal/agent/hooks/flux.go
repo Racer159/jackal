@@ -1,21 +1,21 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package hooks contains the mutation hooks for the Zarf agent.
+// Package hooks contains the mutation hooks for the Jackal agent.
 package hooks
 
 import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/internal/agent/operations"
+	"github.com/defenseunicorns/jackal/src/internal/agent/state"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/transform"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/internal/agent/operations"
-	"github.com/defenseunicorns/zarf/src/internal/agent/state"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/transform"
-	"github.com/defenseunicorns/zarf/src/types"
 	v1 "k8s.io/api/admission/v1"
 )
 
@@ -41,24 +41,24 @@ func NewGitRepositoryMutationHook() operations.Hook {
 	}
 }
 
-// mutateGitRepoCreate mutates the git repository url to point to the repository URL defined in the ZarfState.
+// mutateGitRepoCreate mutates the git repository url to point to the repository URL defined in the JackalState.
 func mutateGitRepo(r *v1.AdmissionRequest) (result *operations.Result, err error) {
 
 	var (
-		zarfState *types.ZarfState
-		patches   []operations.PatchOperation
-		isPatched bool
+		jackalState *types.JackalState
+		patches     []operations.PatchOperation
+		isPatched   bool
 
 		isCreate = r.Operation == v1.Create
 		isUpdate = r.Operation == v1.Update
 	)
 
-	// Form the zarfState.GitServer.Address from the zarfState
-	if zarfState, err = state.GetZarfStateFromAgentPod(); err != nil {
+	// Form the jackalState.GitServer.Address from the jackalState
+	if jackalState, err = state.GetJackalStateFromAgentPod(); err != nil {
 		return nil, fmt.Errorf(lang.AgentErrGetState, err)
 	}
 
-	message.Debugf("Using the url of (%s) to mutate the flux repository", zarfState.GitServer.Address)
+	message.Debugf("Using the url of (%s) to mutate the flux repository", jackalState.GitServer.Address)
 
 	// parse to simple struct to read the git url
 	src := &GenericGitRepo{}
@@ -67,11 +67,11 @@ func mutateGitRepo(r *v1.AdmissionRequest) (result *operations.Result, err error
 	}
 	patchedURL := src.Spec.URL
 
-	// Check if this is an update operation and the hostname is different from what we have in the zarfState
-	// NOTE: We mutate on updates IF AND ONLY IF the hostname in the request is different than the hostname in the zarfState
+	// Check if this is an update operation and the hostname is different from what we have in the jackalState
+	// NOTE: We mutate on updates IF AND ONLY IF the hostname in the request is different than the hostname in the jackalState
 	// NOTE: We are checking if the hostname is different before because we do not want to potentially mutate a URL that has already been mutated.
 	if isUpdate {
-		isPatched, err = helpers.DoHostnamesMatch(zarfState.GitServer.Address, src.Spec.URL)
+		isPatched, err = helpers.DoHostnamesMatch(jackalState.GitServer.Address, src.Spec.URL)
 		if err != nil {
 			return nil, fmt.Errorf(lang.AgentErrHostnameMatch, err)
 		}
@@ -79,8 +79,8 @@ func mutateGitRepo(r *v1.AdmissionRequest) (result *operations.Result, err error
 
 	// Mutate the git URL if necessary
 	if isCreate || (isUpdate && !isPatched) {
-		// Mutate the git URL so that the hostname matches the hostname in the Zarf state
-		transformedURL, err := transform.GitURL(zarfState.GitServer.Address, patchedURL, zarfState.GitServer.PushUsername)
+		// Mutate the git URL so that the hostname matches the hostname in the Jackal state
+		transformedURL, err := transform.GitURL(jackalState.GitServer.Address, patchedURL, jackalState.GitServer.PushUsername)
 		if err != nil {
 			message.Warnf("Unable to transform the git url, using the original url we have: %s", patchedURL)
 		}
@@ -104,10 +104,10 @@ func populatePatchOperations(repoURL string, secretName string) []operations.Pat
 
 	// If a prior secret exists, replace it
 	if secretName != "" {
-		patches = append(patches, operations.ReplacePatchOperation("/spec/secretRef/name", config.ZarfGitServerSecretName))
+		patches = append(patches, operations.ReplacePatchOperation("/spec/secretRef/name", config.JackalGitServerSecretName))
 	} else {
 		// Otherwise, add the new secret
-		patches = append(patches, operations.AddPatchOperation("/spec/secretRef", SecretRef{Name: config.ZarfGitServerSecretName}))
+		patches = append(patches, operations.AddPatchOperation("/spec/secretRef", SecretRef{Name: config.JackalGitServerSecretName}))
 	}
 
 	return patches

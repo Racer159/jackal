@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package test provides e2e tests for Zarf.
+// Package test provides e2e tests for Jackal.
 package test
 
 import (
@@ -12,8 +12,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/defenseunicorns/zarf/src/pkg/cluster"
-	"github.com/defenseunicorns/zarf/src/pkg/utils/exec"
+	"github.com/defenseunicorns/jackal/src/pkg/cluster"
+	"github.com/defenseunicorns/jackal/src/pkg/utils/exec"
 	"github.com/stretchr/testify/require"
 )
 
@@ -21,7 +21,7 @@ func TestDataInjection(t *testing.T) {
 	t.Log("E2E: Data injection")
 	e2e.SetupWithCluster(t)
 
-	path := fmt.Sprintf("build/zarf-package-kiwix-%s-3.5.0.tar", e2e.Arch)
+	path := fmt.Sprintf("build/jackal-package-kiwix-%s-3.5.0.tar", e2e.Arch)
 
 	tmpdir := t.TempDir()
 	sbomPath := filepath.Join(tmpdir, ".sbom-location")
@@ -37,9 +37,9 @@ func TestDataInjection(t *testing.T) {
 	stdOut, stdErr, err := e2e.Kubectl("--namespace=kiwix", "logs", runningKiwixPod, "--tail=5", "-c=kiwix-serve")
 	require.NoError(t, err, stdOut, stdErr)
 	require.Contains(t, stdOut, "devops.stackexchange.com_en_all_2023-05.zim")
-	require.Contains(t, stdOut, ".zarf-injection-")
+	require.Contains(t, stdOut, ".jackal-injection-")
 
-	// need target to equal svc that we are trying to connect to call checkForZarfConnectLabel
+	// need target to equal svc that we are trying to connect to call checkForJackalConnectLabel
 	c, err := cluster.NewCluster()
 	require.NoError(t, err)
 	tunnel, err := c.Connect("kiwix")
@@ -52,16 +52,16 @@ func TestDataInjection(t *testing.T) {
 	require.Equal(t, 200, resp.StatusCode)
 
 	// Remove the data injection example
-	stdOut, stdErr, err = e2e.Zarf("package", "remove", path, "--confirm")
+	stdOut, stdErr, err = e2e.Jackal("package", "remove", path, "--confirm")
 	require.NoError(t, err, stdOut, stdErr)
 
 	// Ensure that the `requirements.txt` file is discovered correctly
-	stdOut, stdErr, err = e2e.Zarf("package", "inspect", path, "--sbom-out", sbomPath)
+	stdOut, stdErr, err = e2e.Jackal("package", "inspect", path, "--sbom-out", sbomPath)
 	require.NoError(t, err, stdOut, stdErr)
 	require.FileExists(t, filepath.Join(sbomPath, "kiwix", "compare.html"), "A compare.html file should have been made")
 
-	require.FileExists(t, filepath.Join(sbomPath, "kiwix", "sbom-viewer-zarf-component-kiwix-serve.html"), "The data-injection component should have an SBOM viewer")
-	require.FileExists(t, filepath.Join(sbomPath, "kiwix", "zarf-component-kiwix-serve.json"), "The data-injection component should have an SBOM json")
+	require.FileExists(t, filepath.Join(sbomPath, "kiwix", "sbom-viewer-jackal-component-kiwix-serve.html"), "The data-injection component should have an SBOM viewer")
+	require.FileExists(t, filepath.Join(sbomPath, "kiwix", "jackal-component-kiwix-serve.json"), "The data-injection component should have an SBOM json")
 }
 
 func runDataInjection(t *testing.T, path string) {
@@ -70,6 +70,6 @@ func runDataInjection(t *testing.T, path string) {
 	defer cancel()
 
 	// Deploy the data injection example
-	stdOut, stdErr, err := exec.CmdWithContext(ctx, exec.PrintCfg(), e2e.ZarfBinPath, "package", "deploy", path, "-l", "trace", "--confirm")
+	stdOut, stdErr, err := exec.CmdWithContext(ctx, exec.PrintCfg(), e2e.JackalBinPath, "package", "deploy", path, "-l", "trace", "--confirm")
 	require.NoError(t, err, stdOut, stdErr)
 }

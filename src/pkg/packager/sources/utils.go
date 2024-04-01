@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package sources contains core implementations of the PackageSource interface.
 package sources
@@ -11,11 +11,11 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/zoci"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/zoci"
-	"github.com/defenseunicorns/zarf/src/types"
 	goyaml "github.com/goccy/go-yaml"
 	"github.com/mholt/archiver/v3"
 )
@@ -79,7 +79,7 @@ func identifyUnknownTarball(path string) (string, error) {
 
 // RenameFromMetadata renames a tarball based on its metadata.
 func RenameFromMetadata(path string) (string, error) {
-	var pkg types.ZarfPackage
+	var pkg types.JackalPackage
 
 	ext := filepath.Ext(path)
 	if ext == "" {
@@ -95,7 +95,7 @@ func RenameFromMetadata(path string) (string, error) {
 	}
 
 	if err := archiver.Walk(path, func(f archiver.File) error {
-		if f.Name() == layout.ZarfYAML {
+		if f.Name() == layout.JackalYAML {
 			b, err := io.ReadAll(f)
 			if err != nil {
 				return err
@@ -110,7 +110,7 @@ func RenameFromMetadata(path string) (string, error) {
 	}
 
 	if pkg.Metadata.Name == "" {
-		return "", fmt.Errorf("%q does not contain a zarf.yaml", path)
+		return "", fmt.Errorf("%q does not contain a jackal.yaml", path)
 	}
 
 	name := NameFromMetadata(&pkg, false)
@@ -123,7 +123,7 @@ func RenameFromMetadata(path string) (string, error) {
 }
 
 // NameFromMetadata generates a name from a package's metadata.
-func NameFromMetadata(pkg *types.ZarfPackage, isSkeleton bool) string {
+func NameFromMetadata(pkg *types.JackalPackage, isSkeleton bool) string {
 	var name string
 
 	arch := config.GetArch(pkg.Metadata.Architecture, pkg.Build.Architecture)
@@ -133,12 +133,12 @@ func NameFromMetadata(pkg *types.ZarfPackage, isSkeleton bool) string {
 	}
 
 	switch pkg.Kind {
-	case types.ZarfInitConfig:
-		name = fmt.Sprintf("zarf-init-%s", arch)
-	case types.ZarfPackageConfig:
-		name = fmt.Sprintf("zarf-package-%s-%s", pkg.Metadata.Name, arch)
+	case types.JackalInitConfig:
+		name = fmt.Sprintf("jackal-init-%s", arch)
+	case types.JackalPackageConfig:
+		name = fmt.Sprintf("jackal-package-%s-%s", pkg.Metadata.Name, arch)
 	default:
-		name = fmt.Sprintf("zarf-%s-%s", strings.ToLower(string(pkg.Kind)), arch)
+		name = fmt.Sprintf("jackal-%s-%s", strings.ToLower(string(pkg.Kind)), arch)
 	}
 
 	if pkg.Build.Differential {
@@ -154,7 +154,7 @@ func NameFromMetadata(pkg *types.ZarfPackage, isSkeleton bool) string {
 func GetInitPackageName() string {
 	// No package has been loaded yet so lookup GetArch() with no package info
 	arch := config.GetArch()
-	return fmt.Sprintf("zarf-init-%s-%s.tar.zst", arch, config.CLIVersion)
+	return fmt.Sprintf("jackal-init-%s-%s.tar.zst", arch, config.CLIVersion)
 }
 
 // PkgSuffix returns a package suffix based on whether it is uncompressed or not.

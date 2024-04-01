@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package layout contains functions for interacting with Zarf's package layout on disk.
+// Package layout contains functions for interacting with Jackal's package layout on disk.
 package layout
 
 import (
@@ -12,12 +12,12 @@ import (
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
+	"github.com/defenseunicorns/jackal/src/pkg/interactive"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/deprecated"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/pkg/interactive"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/deprecated"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/types"
 	"github.com/google/go-containerregistry/pkg/crane"
 	"github.com/mholt/archiver/v3"
 	ocispec "github.com/opencontainers/image-spec/specs-go/v1"
@@ -25,9 +25,9 @@ import (
 
 // PackagePaths is the default package layout.
 type PackagePaths struct {
-	Base      string
-	ZarfYAML  string
-	Checksums string
+	Base       string
+	JackalYAML string
+	Checksums  string
 
 	Signature string
 
@@ -48,20 +48,20 @@ type InjectionMadnessPaths struct {
 // New returns a new PackagePaths struct.
 func New(baseDir string) *PackagePaths {
 	return &PackagePaths{
-		Base:      baseDir,
-		ZarfYAML:  filepath.Join(baseDir, ZarfYAML),
-		Checksums: filepath.Join(baseDir, Checksums),
+		Base:       baseDir,
+		JackalYAML: filepath.Join(baseDir, JackalYAML),
+		Checksums:  filepath.Join(baseDir, Checksums),
 		Components: Components{
 			Base: filepath.Join(baseDir, ComponentsDir),
 		},
 	}
 }
 
-// ReadZarfYAML reads a zarf.yaml file into memory,
+// ReadJackalYAML reads a jackal.yaml file into memory,
 // checks if it's using the legacy layout, and migrates deprecated component configs.
-func (pp *PackagePaths) ReadZarfYAML() (pkg types.ZarfPackage, warnings []string, err error) {
-	if err := utils.ReadYaml(pp.ZarfYAML, &pkg); err != nil {
-		return types.ZarfPackage{}, nil, fmt.Errorf("unable to read zarf.yaml: %w", err)
+func (pp *PackagePaths) ReadJackalYAML() (pkg types.JackalPackage, warnings []string, err error) {
+	if err := utils.ReadYaml(pp.JackalYAML, &pkg); err != nil {
+		return types.JackalPackage{}, nil, fmt.Errorf("unable to read jackal.yaml: %w", err)
 	}
 
 	if pp.IsLegacyLayout() {
@@ -82,12 +82,12 @@ func (pp *PackagePaths) ReadZarfYAML() (pkg types.ZarfPackage, warnings []string
 
 // MigrateLegacy migrates a legacy package layout to the new layout.
 func (pp *PackagePaths) MigrateLegacy() (err error) {
-	var pkg types.ZarfPackage
+	var pkg types.JackalPackage
 	base := pp.Base
 
 	// legacy layout does not contain a checksums file, nor a signature
 	if helpers.InvalidPath(pp.Checksums) && pp.Signature == "" {
-		if err := utils.ReadYaml(pp.ZarfYAML, &pkg); err != nil {
+		if err := utils.ReadYaml(pp.JackalYAML, &pkg); err != nil {
 			return err
 		}
 		buildVer, err := semver.NewVersion(pkg.Build.Version)
@@ -168,7 +168,7 @@ func (pp *PackagePaths) IsLegacyLayout() bool {
 	return pp.isLegacyLayout
 }
 
-// SignPackage signs the zarf.yaml in a Zarf package.
+// SignPackage signs the jackal.yaml in a Jackal package.
 func (pp *PackagePaths) SignPackage(signingKeyPath, signingKeyPassword string, isInteractive bool) error {
 	if signingKeyPath == "" {
 		return nil
@@ -185,7 +185,7 @@ func (pp *PackagePaths) SignPackage(signingKeyPath, signingKeyPassword string, i
 		}
 		return interactive.PromptSigPassword()
 	}
-	_, err := utils.CosignSignBlob(pp.ZarfYAML, pp.Signature, signingKeyPath, passwordFunc)
+	_, err := utils.CosignSignBlob(pp.JackalYAML, pp.Signature, signingKeyPath, passwordFunc)
 	if err != nil {
 		return fmt.Errorf("unable to sign the package: %w", err)
 	}
@@ -195,14 +195,14 @@ func (pp *PackagePaths) SignPackage(signingKeyPath, signingKeyPassword string, i
 
 // GenerateChecksums walks through all of the files starting at the base path and generates a checksum file.
 //
-// Each file within the basePath represents a layer within the Zarf package.
+// Each file within the basePath represents a layer within the Jackal package.
 //
 // Returns a SHA256 checksum of the checksums.txt file.
 func (pp *PackagePaths) GenerateChecksums() (string, error) {
 	var checksumsData = []string{}
 
 	for rel, abs := range pp.Files() {
-		if rel == ZarfYAML || rel == Checksums {
+		if rel == JackalYAML || rel == Checksums {
 			continue
 		}
 
@@ -223,7 +223,7 @@ func (pp *PackagePaths) GenerateChecksums() (string, error) {
 	return helpers.GetSHA256OfFile(pp.Checksums)
 }
 
-// ArchivePackage creates an archive for a Zarf package.
+// ArchivePackage creates an archive for a Jackal package.
 func (pp *PackagePaths) ArchivePackage(destinationTarball string, maxPackageSizeMB int) error {
 	spinner := message.NewProgressSpinner("Writing %s to %s", pp.Base, destinationTarball)
 	defer spinner.Stop()
@@ -290,8 +290,8 @@ func (pp *PackagePaths) SetFromPaths(paths []string) {
 	for _, rel := range paths {
 		// Convert from the standard '/' to the OS path separator for Windows support
 		switch path := filepath.FromSlash(rel); {
-		case path == ZarfYAML:
-			pp.ZarfYAML = filepath.Join(pp.Base, path)
+		case path == JackalYAML:
+			pp.JackalYAML = filepath.Join(pp.Base, path)
 		case path == Signature:
 			pp.Signature = filepath.Join(pp.Base, path)
 		case path == Checksums:
@@ -339,7 +339,7 @@ func (pp *PackagePaths) Files() map[string]string {
 		pathMap[stripBase(path)] = path
 	}
 
-	add(pp.ZarfYAML)
+	add(pp.JackalYAML)
 	add(pp.Signature)
 	add(pp.Checksums)
 

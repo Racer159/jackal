@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package cmd contains the CLI commands for Zarf.
+// Package cmd contains the CLI commands for Jackal.
 package cmd
 
 import (
@@ -10,19 +10,19 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/defenseunicorns/zarf/src/cmd/common"
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/sources"
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/cmd/common"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/sources"
+	"github.com/defenseunicorns/jackal/src/types"
 
 	"oras.land/oras-go/v2/registry"
 
 	"github.com/AlecAivazis/survey/v2"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/cluster"
+	"github.com/defenseunicorns/jackal/src/pkg/packager"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/cluster"
-	"github.com/defenseunicorns/zarf/src/pkg/packager"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -44,8 +44,8 @@ var packageCreateCmd = &cobra.Command{
 
 		var isCleanPathRegex = regexp.MustCompile(`^[a-zA-Z0-9\_\-\/\.\~\\:]+$`)
 		if !isCleanPathRegex.MatchString(config.CommonOptions.CachePath) {
-			message.Warnf(lang.CmdPackageCreateCleanPathErr, config.ZarfDefaultCachePath)
-			config.CommonOptions.CachePath = config.ZarfDefaultCachePath
+			message.Warnf(lang.CmdPackageCreateCleanPathErr, config.JackalDefaultCachePath)
+			config.CommonOptions.CachePath = config.JackalDefaultCachePath
 		}
 
 		// Ensure uppercase keys from viper
@@ -141,15 +141,15 @@ var packageListCmd = &cobra.Command{
 	Short:   lang.CmdPackageListShort,
 	Run: func(_ *cobra.Command, _ []string) {
 		// Get all the deployed packages
-		deployedZarfPackages, errs := cluster.NewClusterOrDie().GetDeployedZarfPackages()
-		if len(errs) > 0 && len(deployedZarfPackages) == 0 {
+		deployedJackalPackages, errs := cluster.NewClusterOrDie().GetDeployedJackalPackages()
+		if len(errs) > 0 && len(deployedJackalPackages) == 0 {
 			message.Fatalf(errs, lang.CmdPackageListNoPackageWarn)
 		}
 
 		// Populate a matrix of all the deployed packages
 		packageData := [][]string{}
 
-		for _, pkg := range deployedZarfPackages {
+		for _, pkg := range deployedJackalPackages {
 			var components []string
 
 			for _, component := range pkg.DeployedComponents {
@@ -258,9 +258,9 @@ func choosePackage(args []string) string {
 	prompt := &survey.Input{
 		Message: lang.CmdPackageChoose,
 		Suggest: func(toComplete string) []string {
-			files, _ := filepath.Glob(config.ZarfPackagePrefix + toComplete + "*.tar")
-			zstFiles, _ := filepath.Glob(config.ZarfPackagePrefix + toComplete + "*.tar.zst")
-			splitFiles, _ := filepath.Glob(config.ZarfPackagePrefix + toComplete + "*.part000")
+			files, _ := filepath.Glob(config.JackalPackagePrefix + toComplete + "*.tar")
+			zstFiles, _ := filepath.Glob(config.JackalPackagePrefix + toComplete + "*.tar.zst")
+			splitFiles, _ := filepath.Glob(config.JackalPackagePrefix + toComplete + "*.part000")
 
 			files = append(files, zstFiles...)
 			files = append(files, splitFiles...)
@@ -297,9 +297,9 @@ func getPackageCompletionArgs(_ *cobra.Command, _ []string, _ string) ([]string,
 	}
 
 	// Get all the deployed packages
-	deployedZarfPackages, _ := c.GetDeployedZarfPackages()
+	deployedJackalPackages, _ := c.GetDeployedJackalPackages()
 	// Populate list of package names
-	for _, pkg := range deployedZarfPackages {
+	for _, pkg := range deployedJackalPackages {
 		pkgCandidates = append(pkgCandidates, pkg.Name)
 	}
 
@@ -395,9 +395,9 @@ func bindMirrorFlags(v *viper.Viper) {
 	mirrorFlags := packageMirrorCmd.Flags()
 
 	// Init package variable defaults that are non-zero values
-	// NOTE: these are not in common.setDefaults so that zarf tools update-creds does not erroneously update values back to the default
-	v.SetDefault(common.VInitGitPushUser, types.ZarfGitPushUser)
-	v.SetDefault(common.VInitRegistryPushUser, types.ZarfRegistryPushUser)
+	// NOTE: these are not in common.setDefaults so that jackal tools update-creds does not erroneously update values back to the default
+	v.SetDefault(common.VInitGitPushUser, types.JackalGitPushUser)
+	v.SetDefault(common.VInitRegistryPushUser, types.JackalRegistryPushUser)
 
 	// Always require confirm flag (no viper)
 	mirrorFlags.BoolVar(&config.CommonOptions.Confirm, "confirm", false, lang.CmdPackageDeployFlagConfirm)

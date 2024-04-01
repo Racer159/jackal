@@ -12,19 +12,19 @@ data:
     <!DOCTYPE html>
     <html>
       <head>
-        <title>Welcome to ###ZARF_VAR_SITE_NAME###!</title>
+        <title>Welcome to ###JACKAL_VAR_SITE_NAME###!</title>
         <style>
-          ###ZARF_VAR_STYLE###
+          ###JACKAL_VAR_STYLE###
         </style>
       </head>
       <body>
         <!-- Test two separate variables on the same line -->
-        <h1>Welcome to the ###ZARF_VAR_SITE_NAME###!</h1><h2>Brought to you by ###ZARF_VAR_ORGANIZATION###.</h2>
-        <p>Below is a Terraform File templated by Zarf</p>
+        <h1>Welcome to the ###JACKAL_VAR_SITE_NAME###!</h1><h2>Brought to you by ###JACKAL_VAR_ORGANIZATION###.</h2>
+        <p>Below is a Terraform File templated by Jackal</p>
         <pre>
-          ###ZARF_VAR_MODIFIED_TERRAFORM###
+          ###JACKAL_VAR_MODIFIED_TERRAFORM###
         </pre>
-        <pre>File SHASUM: ###ZARF_VAR_MODIFIED_TERRAFORM_SHASUM###</pre>
-        ###ZARF_VAR_OPTIONAL_FOOTER###
+        <pre>File SHASUM: ###JACKAL_VAR_MODIFIED_TERRAFORM_SHASUM###</pre>
+        ###JACKAL_VAR_OPTIONAL_FOOTER###
       </body>
     </html>

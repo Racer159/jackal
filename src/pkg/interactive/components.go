@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package interactive contains functions for interacting with the user via STDIN.
 package interactive
@@ -8,14 +8,14 @@ import (
 	"fmt"
 
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/pterm/pterm"
 )
 
 // SelectOptionalComponent prompts to confirm optional components
-func SelectOptionalComponent(component types.ZarfComponent) (confirm bool, err error) {
+func SelectOptionalComponent(component types.JackalComponent) (confirm bool, err error) {
 	message.HorizontalRule()
 
 	displayComponent := component
@@ -34,7 +34,7 @@ func SelectOptionalComponent(component types.ZarfComponent) (confirm bool, err e
 }
 
 // SelectChoiceGroup prompts to select component groups
-func SelectChoiceGroup(componentGroup []types.ZarfComponent) (types.ZarfComponent, error) {
+func SelectChoiceGroup(componentGroup []types.JackalComponent) (types.JackalComponent, error) {
 	message.HorizontalRule()
 
 	var chosen int

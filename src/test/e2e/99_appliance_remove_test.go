@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package test provides e2e tests for Zarf.
+// Package test provides e2e tests for Jackal.
 package test
 
 import (
@@ -21,12 +21,12 @@ func TestApplianceRemove(t *testing.T) {
 
 	e2e.SetupWithCluster(t)
 
-	initPackageVersion := e2e.GetZarfVersion(t)
+	initPackageVersion := e2e.GetJackalVersion(t)
 
-	path := fmt.Sprintf("build/zarf-init-%s-%s.tar.zst", e2e.Arch, initPackageVersion)
+	path := fmt.Sprintf("build/jackal-init-%s-%s.tar.zst", e2e.Arch, initPackageVersion)
 
-	// Package remove the cluster to test Zarf cleaning up after itself
-	stdOut, stdErr, err := e2e.Zarf("package", "remove", path, "--confirm")
+	// Package remove the cluster to test Jackal cleaning up after itself
+	stdOut, stdErr, err := e2e.Jackal("package", "remove", path, "--confirm")
 	require.NoError(t, err, stdOut, stdErr)
 
 	// Check that the cluster is now gone
@@ -35,11 +35,11 @@ func TestApplianceRemove(t *testing.T) {
 
 	// TODO (@WSTARR) - This needs to be refactored to use the remove logic instead of reaching into a magic directory
 	// Re-init the cluster so that we can test if the destroy scripts run
-	stdOut, stdErr, err = e2e.Zarf("init", "--components=k3s", "--confirm")
+	stdOut, stdErr, err = e2e.Jackal("init", "--components=k3s", "--confirm")
 	require.NoError(t, err, stdOut, stdErr)
 
-	// Destroy the cluster to test Zarf cleaning up after itself
-	stdOut, stdErr, err = e2e.Zarf("destroy", "--confirm")
+	// Destroy the cluster to test Jackal cleaning up after itself
+	stdOut, stdErr, err = e2e.Jackal("destroy", "--confirm")
 	require.NoError(t, err, stdOut, stdErr)
 
 	// Check that the cluster gone again

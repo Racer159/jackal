@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package cluster contains Zarf-specific cluster management functions.
+// Package cluster contains Jackal-specific cluster management functions.
 package cluster
 
 import (
@@ -12,20 +12,20 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/k8s"
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/pkg/utils/exec"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/k8s"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/pkg/utils/exec"
-	"github.com/defenseunicorns/zarf/src/types"
 	corev1 "k8s.io/api/core/v1"
 )
 
 // HandleDataInjection waits for the target pod(s) to come up and inject the data into them
 // todo:  this currently requires kubectl but we should have enough k8s work to make this native now.
-func (c *Cluster) HandleDataInjection(wg *sync.WaitGroup, data types.ZarfDataInjection, componentPath *layout.ComponentPaths, dataIdx int) {
+func (c *Cluster) HandleDataInjection(wg *sync.WaitGroup, data types.JackalDataInjection, componentPath *layout.ComponentPaths, dataIdx int) {
 	defer wg.Done()
 
 	injectionCompletionMarker := filepath.Join(componentPath.DataInjections, config.GetDataInjectionMarker())
@@ -82,12 +82,12 @@ iterator:
 		// Inject into all the pods
 		for _, pod := range pods {
 			// Try to use the embedded kubectl if we can
-			zarfCommand, err := utils.GetFinalExecutableCommand()
+			jackalCommand, err := utils.GetFinalExecutableCommand()
 			kubectlBinPath := "kubectl"
 			if err != nil {
-				message.Warnf("Unable to get the zarf executable path, falling back to host kubectl: %s", err)
+				message.Warnf("Unable to get the jackal executable path, falling back to host kubectl: %s", err)
 			} else {
-				kubectlBinPath = fmt.Sprintf("%s tools kubectl", zarfCommand)
+				kubectlBinPath = fmt.Sprintf("%s tools kubectl", jackalCommand)
 			}
 			kubectlCmd := fmt.Sprintf("%s exec -i -n %s %s -c %s ", kubectlBinPath, data.Target.Namespace, pod.Name, data.Target.Container)
 
@@ -125,7 +125,7 @@ iterator:
 			)
 
 			if err := exec.CmdWithPrint(shell, append(shellArgs, cpPodCmd)...); err != nil {
-				message.Warnf("Error saving the zarf sync completion file after injection into pod %#v\n", pod.Name)
+				message.Warnf("Error saving the jackal sync completion file after injection into pod %#v\n", pod.Name)
 				continue iterator
 			}
 		}

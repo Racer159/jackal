@@ -1,20 +1,20 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package creator contains functions for creating Zarf packages.
+// Package creator contains functions for creating Jackal packages.
 package creator
 
 import (
 	"fmt"
 	"os"
 
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/internal/packager/git"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/sources"
-	"github.com/defenseunicorns/zarf/src/pkg/transform"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/internal/packager/git"
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/sources"
+	"github.com/defenseunicorns/jackal/src/pkg/transform"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/go-git/go-git/v5/plumbing"
 )
 
@@ -28,7 +28,7 @@ func loadDifferentialData(diffPkgPath string) (diffData *types.DifferentialData,
 	diffLayout := layout.New(tmpdir)
 	defer os.RemoveAll(diffLayout.Base)
 
-	src, err := sources.New(&types.ZarfPackageOptions{
+	src, err := sources.New(&types.JackalPackageOptions{
 		PackageSource: diffPkgPath,
 	})
 	if err != nil {
@@ -60,7 +60,7 @@ func loadDifferentialData(diffPkgPath string) (diffData *types.DifferentialData,
 }
 
 // removeCopiesFromComponents removes any images and repos already present in the reference package components.
-func removeCopiesFromComponents(components []types.ZarfComponent, loadedDiffData *types.DifferentialData) (diffComponents []types.ZarfComponent, err error) {
+func removeCopiesFromComponents(components []types.JackalComponent, loadedDiffData *types.DifferentialData) (diffComponents []types.JackalComponent, err error) {
 	for _, component := range components {
 		newImageList := []string{}
 		newRepoList := []string{}

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package helm contains operations for working with helm charts.
 package helm
@@ -12,12 +12,12 @@ import (
 	"github.com/defenseunicorns/pkg/helpers"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/types"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/yaml"
 
-	"github.com/defenseunicorns/zarf/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
 	"helm.sh/helm/v3/pkg/action"
 	"helm.sh/helm/v3/pkg/chartutil"
 	"helm.sh/helm/v3/pkg/releaseutil"
@@ -31,7 +31,7 @@ import (
 func (h *Helm) InstallOrUpgradeChart() (types.ConnectStrings, string, error) {
 	fromMessage := h.chart.URL
 	if fromMessage == "" {
-		fromMessage = "Zarf-generated helm chart"
+		fromMessage = "Jackal-generated helm chart"
 	}
 	spinner := message.NewProgressSpinner("Processing helm chart %s:%s from %s",
 		h.chart.Name,
@@ -130,7 +130,7 @@ func (h *Helm) InstallOrUpgradeChart() (types.ConnectStrings, string, error) {
 		return nil, "", fmt.Errorf("unable to install chart after %d attempts", h.retries)
 	}
 
-	// return any collected connect strings for zarf connect.
+	// return any collected connect strings for jackal connect.
 	return postRender.connectStrings, h.chart.ReleaseName, nil
 }
 
@@ -244,7 +244,7 @@ func (h *Helm) UpdateReleaseValues(updatedValues map[string]interface{}) error {
 		// Namespace must be specified.
 		client.Namespace = h.chart.Namespace
 
-		// Post-processing our manifests to apply vars and run zarf helm logic in cluster
+		// Post-processing our manifests to apply vars and run jackal helm logic in cluster
 		client.PostRenderer = postRender
 
 		// Set reuse values to only override the values we are explicitly given
@@ -274,7 +274,7 @@ func (h *Helm) installChart(postRender *renderer) (*release.Release, error) {
 	// Let each chart run for the default timeout.
 	client.Timeout = h.timeout
 
-	// Default helm behavior for Zarf is to wait for the resources to deploy, NoWait overrides that for special cases (such as data-injection).
+	// Default helm behavior for Jackal is to wait for the resources to deploy, NoWait overrides that for special cases (such as data-injection).
 	client.Wait = !h.chart.NoWait
 
 	// We need to include CRDs or operator installations will fail spectacularly.
@@ -286,7 +286,7 @@ func (h *Helm) installChart(postRender *renderer) (*release.Release, error) {
 	// Namespace must be specified.
 	client.Namespace = h.chart.Namespace
 
-	// Post-processing our manifests to apply vars and run zarf helm logic in cluster
+	// Post-processing our manifests to apply vars and run jackal helm logic in cluster
 	client.PostRenderer = postRender
 
 	loadedChart, chartValues, err := h.loadChartData()
@@ -311,7 +311,7 @@ func (h *Helm) upgradeChart(lastRelease *release.Release, postRender *renderer) 
 	// Let each chart run for the default timeout.
 	client.Timeout = h.timeout
 
-	// Default helm behavior for Zarf is to wait for the resources to deploy, NoWait overrides that for special cases (such as data-injection).
+	// Default helm behavior for Jackal is to wait for the resources to deploy, NoWait overrides that for special cases (such as data-injection).
 	client.Wait = !h.chart.NoWait
 
 	client.SkipCRDs = true
@@ -319,7 +319,7 @@ func (h *Helm) upgradeChart(lastRelease *release.Release, postRender *renderer) 
 	// Namespace must be specified.
 	client.Namespace = h.chart.Namespace
 
-	// Post-processing our manifests to apply vars and run zarf helm logic in cluster
+	// Post-processing our manifests to apply vars and run jackal helm logic in cluster
 	client.PostRenderer = postRender
 
 	loadedChart, chartValues, err := h.loadChartData()
@@ -425,7 +425,7 @@ func (h *Helm) migrateDeprecatedAPIs(latestRelease *release.Release) error {
 
 	// If the release was modified in the above loop, save it back to the cluster
 	if modified {
-		message.Warnf("Zarf detected deprecated APIs for the '%s' helm release.  Attempting automatic upgrade.", latestRelease.Name)
+		message.Warnf("Jackal detected deprecated APIs for the '%s' helm release.  Attempting automatic upgrade.", latestRelease.Name)
 
 		// Update current release version to be superseded (same as the helm mapkubeapis plugin)
 		latestRelease.Info.Status = release.StatusSuperseded

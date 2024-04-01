@@ -2,17 +2,17 @@
 
 
 
-Currently, we primarily test Zarf through a series of end-to-end tests located in the [e2e directory](https://github.com/defenseunicorns/zarf/tree/main/src/test/e2e) of the project. This directory houses all of the e2e tests that we use to verify Zarf's functionality in an environment that replicates a live setting. The tests in this directory undergo automatic execution against several K8s distros whenever a pull request is created or updated. Through this testing, we ensure that Zarf performs consistently across a range of K8s environments, ensuring its reliability for users.
+Currently, we primarily test Jackal through a series of end-to-end tests located in the [e2e directory](https://github.com/defenseunicorns/jackal/tree/main/src/test/e2e) of the project. This directory houses all of the e2e tests that we use to verify Jackal's functionality in an environment that replicates a live setting. The tests in this directory undergo automatic execution against several K8s distros whenever a pull request is created or updated. Through this testing, we ensure that Jackal performs consistently across a range of K8s environments, ensuring its reliability for users.
 
-In addition, Zarf undergoes a series of unit tests for specific functions where edge cases prove difficult to cover through end-to-end testing alone. You can locate these tests in the [src/pkg directory](https://github.com/defenseunicorns/zarf/tree/main/src/pkg), where they are identified by `*_test.go` files.
+In addition, Jackal undergoes a series of unit tests for specific functions where edge cases prove difficult to cover through end-to-end testing alone. You can locate these tests in the [src/pkg directory](https://github.com/defenseunicorns/jackal/tree/main/src/pkg), where they are identified by `*_test.go` files.
 
 ## Dependencies
 
-To run the end-to-end tests locally, you must meet the same prerequisites as those required for building and running Zarf, which include:
+To run the end-to-end tests locally, you must meet the same prerequisites as those required for building and running Jackal, which include:
 
 1. GoLang >= `1.19.x`.
 2. Make.
-3. Any clean K8s cluster (local or remote) or Linux with sudo if you want to use the Zarf-installed K3s cluster.
+3. Any clean K8s cluster (local or remote) or Linux with sudo if you want to use the Jackal-installed K3s cluster.
 4. NodeJS >= `18.x.x`.
 
 ### CLI End-to-End Tests
@@ -25,7 +25,7 @@ There are several ways to run tests depending on your specific situation, such a
 # The default way, from the root directory of the repo. Will run all of the tests against your chosen k8s distro. Will automatically build any binary dependencies that don't already exist.
 make test-e2e ARCH="[amd64|arm64]"
 
-# To test against a Zarf-created cluster (on Linux with sudo)
+# To test against a Jackal-created cluster (on Linux with sudo)
 APPLIANCE_MODE=true make test-e2e ARCH="[amd64|arm64]"
 
 # If you already have everything build, you can run this inside this folder. This lets you customize the test run.
@@ -41,7 +41,7 @@ test caching explicitly.
 :::
 
 :::note
-The Zarf binary and built packages are required to be stored in the ./build directory. However, if you intend to run tests locally using 'go test ./...', the zarf-init package must also be present in this directory.
+The Jackal binary and built packages are required to be stored in the ./build directory. However, if you intend to run tests locally using 'go test ./...', the jackal-init package must also be present in this directory.
 :::
 
 ### Adding New CLI End-to-End Tests
@@ -65,7 +65,7 @@ func TestFooBarBaz(t *testing.T) {
 
 The end-to-end tests are run sequentially and the naming convention is set intentionally:
 
-- 00-19 tests run prior to `zarf init` (cluster not initialized).
+- 00-19 tests run prior to `jackal init` (cluster not initialized).
 
 :::note
 Tests 20+ should call `e2e.setupWithCluster(t)` instead of `e2e.setup(t)`.
@@ -73,11 +73,11 @@ Tests 20+ should call `e2e.setupWithCluster(t)` instead of `e2e.setup(t)`.
 Due to resource constraints in public GitHub runners, K8s tests are only performed on Linux.
 :::
 
-- 20 is reserved for `zarf init`.
+- 20 is reserved for `jackal init`.
 - 21 is reserved for logging tests so they can be removed first (they take the most resources in the cluster).
 - 22 is reserved for tests required the git-server, which is removed at the end of the test.
-- 23-98 are for the remaining tests that only require a basic Zarf cluster without logging or the git-server.
-- 99 is reserved for the `zarf destroy` and [YOLO Mode](../../examples/yolo/README.md) test.
+- 23-98 are for the remaining tests that only require a basic Jackal cluster without logging or the git-server.
+- 99 is reserved for the `jackal destroy` and [YOLO Mode](../../examples/yolo/README.md) test.
 
 ## CLI Unit Tests
 

@@ -2,10 +2,10 @@ import ExampleYAML from "@site/src/components/ExampleYAML";
 
 # Data Injections (Kiwix)
 
-This example shows Zarf's ability to inject data into a container running in a pod, in this case to initialize a [Kiwix server](https://www.kiwix.org/en/) to allow offline viewing of documentation and wiki pages.
+This example shows Jackal's ability to inject data into a container running in a pod, in this case to initialize a [Kiwix server](https://www.kiwix.org/en/) to allow offline viewing of documentation and wiki pages.
 
 
-Data injections allow for data that is not included in the container image to be injected at deploy time and are declared using the `dataInjections` key within a component.  Once the specified container is started, Zarf will copy the files and folders from the specified source into the specified container and path.
+Data injections allow for data that is not included in the container image to be injected at deploy time and are declared using the `dataInjections` key within a component.  Once the specified container is started, Jackal will copy the files and folders from the specified source into the specified container and path.
 
 :::caution
 
@@ -15,7 +15,7 @@ To resolve this you can either disable compression or use the GNU core-utils ver
 
 :::
 
-## `zarf.yaml` {#zarf.yaml}
+## `jackal.yaml` {#jackal.yaml}
 
 :::info
 
@@ -23,4 +23,4 @@ To view the example in its entirety, select the `Edit this page` link below the 
 
 :::
 
-<ExampleYAML src={require('./zarf.yaml')} showLink={false} />
+<ExampleYAML src={require('./jackal.yaml')} showLink={false} />

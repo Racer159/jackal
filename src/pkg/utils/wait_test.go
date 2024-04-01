@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package utils provides generic helper functions.
 package utils
@@ -7,7 +7,7 @@ package utils
 import (
 	"testing"
 
-	"github.com/defenseunicorns/zarf/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )

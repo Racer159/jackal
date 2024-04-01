@@ -1,13 +1,13 @@
 # Package Create Lifecycle
 
-The following diagram shows the order of operations for the `zarf package create` command and the hook locations for [actions](../../examples/component-actions/README.md).
+The following diagram shows the order of operations for the `jackal package create` command and the hook locations for [actions](../../examples/component-actions/README.md).
 
-## `zarf package create`
+## `jackal package create`
 
 ```mermaid
 graph TD
-    A1(cd to directory with zarf.yaml)-->A2
-    A2(load zarf.yaml into memory)-->A3
+    A1(cd to directory with jackal.yaml)-->A2
+    A2(load jackal.yaml into memory)-->A3
     A3(set package architecture if not provided)-->A4
     A4(filter components by architecture and flavor)-->A5
     A5(migrate deprecated component configs)-->A6
@@ -36,7 +36,7 @@ graph TD
     A23-->A24(archive components into tarballs)
     A24-->A25(generate checksums for all package files)
     A25-->A26(record package build metadata)
-    A26-->A27(write the zarf.yaml to disk)
+    A26-->A27(write the jackal.yaml to disk)
     A27-->A28(sign the package if a key was provided)
     A28-->A29{Output to OCI?}
     A29-->|Yes|A30(publish package to OCI registry)
@@ -45,7 +45,7 @@ graph TD
     A31-->A32
     A32(write SBOM files to disk if --sbom or --sbom-out flags used)-->A33
     A33(view SBOMs if --sbom flag used)-->A34
-    A34[Zarf Package Create Successful]:::success
+    A34[Jackal Package Create Successful]:::success
 
     A999[Abort]:::fail
 

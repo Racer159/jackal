@@ -1,28 +1,28 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package types contains all the types used by Zarf.
+// Package types contains all the types used by Jackal.
 package types
 
 import (
 	"fmt"
 	"time"
 
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/pkg/k8s"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/pkg/k8s"
 )
 
-// WebhookStatus defines the status of a Component Webhook operating on a Zarf package secret.
+// WebhookStatus defines the status of a Component Webhook operating on a Jackal package secret.
 type WebhookStatus string
 
-// ComponentStatus defines the deployment status of a Zarf component within a package.
+// ComponentStatus defines the deployment status of a Jackal component within a package.
 type ComponentStatus string
 
-// DefaultWebhookWaitDuration is the default amount of time Zarf will wait for a webhook to complete.
+// DefaultWebhookWaitDuration is the default amount of time Jackal will wait for a webhook to complete.
 const DefaultWebhookWaitDuration = time.Minute * 5
 
-// All the different status options for a Zarf Component or a webhook that is running for a Zarf Component deployment.
+// All the different status options for a Jackal Component or a webhook that is running for a Jackal Component deployment.
 const (
 	WebhookStatusSucceeded WebhookStatus = "Succeeded"
 	WebhookStatusFailed    WebhookStatus = "Failed"
@@ -35,40 +35,40 @@ const (
 	ComponentStatusRemoving  ComponentStatus = "Removing"
 )
 
-// Values during setup of the initial zarf state
+// Values during setup of the initial jackal state
 const (
-	ZarfGeneratedPasswordLen               = 24
-	ZarfGeneratedSecretLen                 = 48
-	ZarfInClusterContainerRegistryNodePort = 31999
-	ZarfRegistryPushUser                   = "zarf-push"
-	ZarfRegistryPullUser                   = "zarf-pull"
+	JackalGeneratedPasswordLen               = 24
+	JackalGeneratedSecretLen                 = 48
+	JackalInClusterContainerRegistryNodePort = 31999
+	JackalRegistryPushUser                   = "jackal-push"
+	JackalRegistryPullUser                   = "jackal-pull"
 
-	ZarfGitPushUser = "zarf-git-user"
-	ZarfGitReadUser = "zarf-git-read-user"
+	JackalGitPushUser = "jackal-git-user"
+	JackalGitReadUser = "jackal-git-read-user"
 
-	ZarfInClusterGitServiceURL      = "http://zarf-gitea-http.zarf.svc.cluster.local:3000"
-	ZarfInClusterArtifactServiceURL = ZarfInClusterGitServiceURL + "/api/packages/" + ZarfGitPushUser
+	JackalInClusterGitServiceURL      = "http://jackal-gitea-http.jackal.svc.cluster.local:3000"
+	JackalInClusterArtifactServiceURL = JackalInClusterGitServiceURL + "/api/packages/" + JackalGitPushUser
 )
 
-// ZarfState is maintained as a secret in the Zarf namespace to track Zarf init data.
-type ZarfState struct {
-	ZarfAppliance bool             `json:"zarfAppliance" jsonschema:"description=Indicates if Zarf was initialized while deploying its own k8s cluster"`
-	Distro        string           `json:"distro" jsonschema:"description=K8s distribution of the cluster Zarf was deployed to"`
-	Architecture  string           `json:"architecture" jsonschema:"description=Machine architecture of the k8s node(s)"`
-	StorageClass  string           `json:"storageClass" jsonschema:"Default StorageClass value Zarf uses for variable templating"`
-	AgentTLS      k8s.GeneratedPKI `json:"agentTLS" jsonschema:"PKI certificate information for the agent pods Zarf manages"`
+// JackalState is maintained as a secret in the Jackal namespace to track Jackal init data.
+type JackalState struct {
+	JackalAppliance bool             `json:"jackalAppliance" jsonschema:"description=Indicates if Jackal was initialized while deploying its own k8s cluster"`
+	Distro          string           `json:"distro" jsonschema:"description=K8s distribution of the cluster Jackal was deployed to"`
+	Architecture    string           `json:"architecture" jsonschema:"description=Machine architecture of the k8s node(s)"`
+	StorageClass    string           `json:"storageClass" jsonschema:"Default StorageClass value Jackal uses for variable templating"`
+	AgentTLS        k8s.GeneratedPKI `json:"agentTLS" jsonschema:"PKI certificate information for the agent pods Jackal manages"`
 
-	GitServer      GitServerInfo      `json:"gitServer" jsonschema:"description=Information about the repository Zarf is configured to use"`
-	RegistryInfo   RegistryInfo       `json:"registryInfo" jsonschema:"description=Information about the container registry Zarf is configured to use"`
-	ArtifactServer ArtifactServerInfo `json:"artifactServer" jsonschema:"description=Information about the artifact registry Zarf is configured to use"`
+	GitServer      GitServerInfo      `json:"gitServer" jsonschema:"description=Information about the repository Jackal is configured to use"`
+	RegistryInfo   RegistryInfo       `json:"registryInfo" jsonschema:"description=Information about the container registry Jackal is configured to use"`
+	ArtifactServer ArtifactServerInfo `json:"artifactServer" jsonschema:"description=Information about the artifact registry Jackal is configured to use"`
 	LoggingSecret  string             `json:"loggingSecret" jsonschema:"description=Secret value that the internal Grafana server was seeded with"`
 }
 
-// DeployedPackage contains information about a Zarf Package that has been deployed to a cluster
-// This object is saved as the data of a k8s secret within the 'Zarf' namespace (not as part of the ZarfState secret).
+// DeployedPackage contains information about a Jackal Package that has been deployed to a cluster
+// This object is saved as the data of a k8s secret within the 'Jackal' namespace (not as part of the JackalState secret).
 type DeployedPackage struct {
 	Name               string                        `json:"name"`
-	Data               ZarfPackage                   `json:"data"`
+	Data               JackalPackage                 `json:"data"`
 	CLIVersion         string                        `json:"cliVersion"`
 	Generation         int                           `json:"generation"`
 	DeployedComponents []DeployedComponent           `json:"deployedComponents"`
@@ -76,7 +76,7 @@ type DeployedPackage struct {
 	ConnectStrings     ConnectStrings                `json:"connectStrings,omitempty"`
 }
 
-// DeployedComponent contains information about a Zarf Package Component that has been deployed to a cluster.
+// DeployedComponent contains information about a Jackal Package Component that has been deployed to a cluster.
 type DeployedComponent struct {
 	Name               string           `json:"name"`
 	InstalledCharts    []InstalledChart `json:"installedCharts"`
@@ -84,7 +84,7 @@ type DeployedComponent struct {
 	ObservedGeneration int              `json:"observedGeneration"`
 }
 
-// Webhook contains information about a Component Webhook operating on a Zarf package secret.
+// Webhook contains information about a Component Webhook operating on a Jackal package secret.
 type Webhook struct {
 	Name                string        `json:"name"`
 	WaitDurationSeconds int           `json:"waitDurationSeconds,omitempty"`
@@ -98,7 +98,7 @@ type InstalledChart struct {
 	ChartName string `json:"chartName"`
 }
 
-// GitServerInfo contains information Zarf uses to communicate with a git repository to push/pull repositories to.
+// GitServerInfo contains information Jackal uses to communicate with a git repository to push/pull repositories to.
 type GitServerInfo struct {
 	PushUsername string `json:"pushUsername" jsonschema:"description=Username of a user with push access to the git repository"`
 	PushPassword string `json:"pushPassword" jsonschema:"description=Password of a user with push access to the git repository"`
@@ -106,7 +106,7 @@ type GitServerInfo struct {
 	PullPassword string `json:"pullPassword" jsonschema:"description=Password of a user with pull-only access to the git repository. If not provided for an external repository then the push-user is used"`
 
 	Address        string `json:"address" jsonschema:"description=URL address of the git server"`
-	InternalServer bool   `json:"internalServer" jsonschema:"description=Indicates if we are using a git server that Zarf is directly managing"`
+	InternalServer bool   `json:"internalServer" jsonschema:"description=Indicates if we are using a git server that Jackal is directly managing"`
 }
 
 // FillInEmptyValues sets every necessary value that's currently empty to a reasonable default
@@ -114,13 +114,13 @@ func (gs *GitServerInfo) FillInEmptyValues() error {
 	var err error
 	// Set default svc url if an external repository was not provided
 	if gs.Address == "" {
-		gs.Address = ZarfInClusterGitServiceURL
+		gs.Address = JackalInClusterGitServiceURL
 		gs.InternalServer = true
 	}
 
 	// Generate a push-user password if not provided by init flag
 	if gs.PushPassword == "" {
-		if gs.PushPassword, err = helpers.RandomString(ZarfGeneratedPasswordLen); err != nil {
+		if gs.PushPassword, err = helpers.RandomString(JackalGeneratedPasswordLen); err != nil {
 			return fmt.Errorf("%s: %w", lang.ErrUnableToGenerateRandomSecret, err)
 		}
 	}
@@ -128,14 +128,14 @@ func (gs *GitServerInfo) FillInEmptyValues() error {
 	// Set read-user information if using an internal repository, otherwise copy from the push-user
 	if gs.PullUsername == "" {
 		if gs.InternalServer {
-			gs.PullUsername = ZarfGitReadUser
+			gs.PullUsername = JackalGitReadUser
 		} else {
 			gs.PullUsername = gs.PushUsername
 		}
 	}
 	if gs.PullPassword == "" {
 		if gs.InternalServer {
-			if gs.PullPassword, err = helpers.RandomString(ZarfGeneratedPasswordLen); err != nil {
+			if gs.PullPassword, err = helpers.RandomString(JackalGeneratedPasswordLen); err != nil {
 				return fmt.Errorf("%s: %w", lang.ErrUnableToGenerateRandomSecret, err)
 			}
 		} else {
@@ -146,30 +146,30 @@ func (gs *GitServerInfo) FillInEmptyValues() error {
 	return nil
 }
 
-// ArtifactServerInfo contains information Zarf uses to communicate with a artifact registry to push/pull repositories to.
+// ArtifactServerInfo contains information Jackal uses to communicate with a artifact registry to push/pull repositories to.
 type ArtifactServerInfo struct {
 	PushUsername string `json:"pushUsername" jsonschema:"description=Username of a user with push access to the artifact registry"`
 	PushToken    string `json:"pushPassword" jsonschema:"description=Password of a user with push access to the artifact registry"`
 
 	Address        string `json:"address" jsonschema:"description=URL address of the artifact registry"`
-	InternalServer bool   `json:"internalServer" jsonschema:"description=Indicates if we are using a artifact registry that Zarf is directly managing"`
+	InternalServer bool   `json:"internalServer" jsonschema:"description=Indicates if we are using a artifact registry that Jackal is directly managing"`
 }
 
 // FillInEmptyValues sets every necessary value that's currently empty to a reasonable default
 func (as *ArtifactServerInfo) FillInEmptyValues() {
 	// Set default svc url if an external registry was not provided
 	if as.Address == "" {
-		as.Address = ZarfInClusterArtifactServiceURL
+		as.Address = JackalInClusterArtifactServiceURL
 		as.InternalServer = true
 	}
 
 	// Set the push username to the git push user if not specified
 	if as.PushUsername == "" {
-		as.PushUsername = ZarfGitPushUser
+		as.PushUsername = JackalGitPushUser
 	}
 }
 
-// RegistryInfo contains information Zarf uses to communicate with a container registry to push/pull images.
+// RegistryInfo contains information Jackal uses to communicate with a container registry to push/pull images.
 type RegistryInfo struct {
 	PushUsername string `json:"pushUsername" jsonschema:"description=Username of a user with push access to the registry"`
 	PushPassword string `json:"pushPassword" jsonschema:"description=Password of a user with push access to the registry"`
@@ -178,7 +178,7 @@ type RegistryInfo struct {
 
 	Address          string `json:"address" jsonschema:"description=URL address of the registry"`
 	NodePort         int    `json:"nodePort" jsonschema:"description=Nodeport of the registry. Only needed if the registry is running inside the kubernetes cluster"`
-	InternalRegistry bool   `json:"internalRegistry" jsonschema:"description=Indicates if we are using a registry that Zarf is directly managing"`
+	InternalRegistry bool   `json:"internalRegistry" jsonschema:"description=Indicates if we are using a registry that Jackal is directly managing"`
 
 	Secret string `json:"secret" jsonschema:"description=Secret value that the registry was seeded with"`
 }
@@ -188,7 +188,7 @@ func (ri *RegistryInfo) FillInEmptyValues() error {
 	var err error
 	// Set default NodePort if none was provided
 	if ri.NodePort == 0 {
-		ri.NodePort = ZarfInClusterContainerRegistryNodePort
+		ri.NodePort = JackalInClusterContainerRegistryNodePort
 	}
 
 	// Set default url if an external registry was not provided
@@ -199,7 +199,7 @@ func (ri *RegistryInfo) FillInEmptyValues() error {
 
 	// Generate a push-user password if not provided by init flag
 	if ri.PushPassword == "" {
-		if ri.PushPassword, err = helpers.RandomString(ZarfGeneratedPasswordLen); err != nil {
+		if ri.PushPassword, err = helpers.RandomString(JackalGeneratedPasswordLen); err != nil {
 			return fmt.Errorf("%s: %w", lang.ErrUnableToGenerateRandomSecret, err)
 		}
 	}
@@ -207,7 +207,7 @@ func (ri *RegistryInfo) FillInEmptyValues() error {
 	// Set pull-username if not provided by init flag
 	if ri.PullUsername == "" {
 		if ri.InternalRegistry {
-			ri.PullUsername = ZarfRegistryPullUser
+			ri.PullUsername = JackalRegistryPullUser
 		} else {
 			// If this is an external registry and a pull-user wasn't provided, use the same credentials as the push user
 			ri.PullUsername = ri.PushUsername
@@ -215,7 +215,7 @@ func (ri *RegistryInfo) FillInEmptyValues() error {
 	}
 	if ri.PullPassword == "" {
 		if ri.InternalRegistry {
-			if ri.PullPassword, err = helpers.RandomString(ZarfGeneratedPasswordLen); err != nil {
+			if ri.PullPassword, err = helpers.RandomString(JackalGeneratedPasswordLen); err != nil {
 				return fmt.Errorf("%s: %w", lang.ErrUnableToGenerateRandomSecret, err)
 			}
 		} else {
@@ -225,7 +225,7 @@ func (ri *RegistryInfo) FillInEmptyValues() error {
 	}
 
 	if ri.Secret == "" {
-		if ri.Secret, err = helpers.RandomString(ZarfGeneratedSecretLen); err != nil {
+		if ri.Secret, err = helpers.RandomString(JackalGeneratedSecretLen); err != nil {
 			return fmt.Errorf("%s: %w", lang.ErrUnableToGenerateRandomSecret, err)
 		}
 	}

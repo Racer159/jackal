@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package cluster contains Zarf-specific cluster management functions.
+// Package cluster contains Jackal-specific cluster management functions.
 package cluster
 
 import (
@@ -12,29 +12,29 @@ import (
 	"strings"
 	"time"
 
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/types"
 	autoscalingV2 "k8s.io/api/autoscaling/v2"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// GetDeployedZarfPackages gets metadata information about packages that have been deployed to the cluster.
-// We determine what packages have been deployed to the cluster by looking for specific secrets in the Zarf namespace.
+// GetDeployedJackalPackages gets metadata information about packages that have been deployed to the cluster.
+// We determine what packages have been deployed to the cluster by looking for specific secrets in the Jackal namespace.
 // Returns a list of DeployedPackage structs and a list of errors.
-func (c *Cluster) GetDeployedZarfPackages() ([]types.DeployedPackage, []error) {
+func (c *Cluster) GetDeployedJackalPackages() ([]types.DeployedPackage, []error) {
 	var deployedPackages = []types.DeployedPackage{}
 	var errorList []error
 	// Get the secrets that describe the deployed packages
-	secrets, err := c.GetSecretsWithLabel(ZarfNamespaceName, ZarfPackageInfoLabel)
+	secrets, err := c.GetSecretsWithLabel(JackalNamespaceName, JackalPackageInfoLabel)
 	if err != nil {
 		return deployedPackages, append(errorList, err)
 	}
 
 	// Process the k8s secret into our internal structs
 	for _, secret := range secrets.Items {
-		if strings.HasPrefix(secret.Name, config.ZarfPackagePrefix) {
+		if strings.HasPrefix(secret.Name, config.JackalPackagePrefix) {
 			var deployedPackage types.DeployedPackage
 			err := json.Unmarshal(secret.Data["data"], &deployedPackage)
 			// add the error to the error list
@@ -51,10 +51,10 @@ func (c *Cluster) GetDeployedZarfPackages() ([]types.DeployedPackage, []error) {
 }
 
 // GetDeployedPackage gets the metadata information about the package name provided (if it exists in the cluster).
-// We determine what packages have been deployed to the cluster by looking for specific secrets in the Zarf namespace.
+// We determine what packages have been deployed to the cluster by looking for specific secrets in the Jackal namespace.
 func (c *Cluster) GetDeployedPackage(packageName string) (deployedPackage *types.DeployedPackage, err error) {
 	// Get the secret that describes the deployed package
-	secret, err := c.GetSecret(ZarfNamespaceName, config.ZarfPackagePrefix+packageName)
+	secret, err := c.GetSecret(JackalNamespaceName, config.JackalPackagePrefix+packageName)
 	if err != nil {
 		return deployedPackage, err
 	}
@@ -62,14 +62,14 @@ func (c *Cluster) GetDeployedPackage(packageName string) (deployedPackage *types
 	return deployedPackage, json.Unmarshal(secret.Data["data"], &deployedPackage)
 }
 
-// StripZarfLabelsAndSecretsFromNamespaces removes metadata and secrets from existing namespaces no longer manged by Zarf.
-func (c *Cluster) StripZarfLabelsAndSecretsFromNamespaces() {
-	spinner := message.NewProgressSpinner("Removing zarf metadata & secrets from existing namespaces not managed by Zarf")
+// StripJackalLabelsAndSecretsFromNamespaces removes metadata and secrets from existing namespaces no longer manged by Jackal.
+func (c *Cluster) StripJackalLabelsAndSecretsFromNamespaces() {
+	spinner := message.NewProgressSpinner("Removing jackal metadata & secrets from existing namespaces not managed by Jackal")
 	defer spinner.Stop()
 
 	deleteOptions := metav1.DeleteOptions{}
 	listOptions := metav1.ListOptions{
-		LabelSelector: config.ZarfManagedByLabel + "=zarf",
+		LabelSelector: config.JackalManagedByLabel + "=jackal",
 	}
 
 	if namespaces, err := c.GetNamespaces(); err != nil {
@@ -77,7 +77,7 @@ func (c *Cluster) StripZarfLabelsAndSecretsFromNamespaces() {
 	} else {
 		for _, namespace := range namespaces.Items {
 			if _, ok := namespace.Labels[agentLabel]; ok {
-				spinner.Updatef("Removing Zarf Agent label for namespace %s", namespace.Name)
+				spinner.Updatef("Removing Jackal Agent label for namespace %s", namespace.Name)
 				delete(namespace.Labels, agentLabel)
 				namespaceCopy := namespace
 				if _, err = c.UpdateNamespace(&namespaceCopy); err != nil {
@@ -86,7 +86,7 @@ func (c *Cluster) StripZarfLabelsAndSecretsFromNamespaces() {
 				}
 			}
 
-			spinner.Updatef("Removing Zarf secrets for namespace %s", namespace.Name)
+			spinner.Updatef("Removing Jackal secrets for namespace %s", namespace.Name)
 			err := c.Clientset.CoreV1().
 				Secrets(namespace.Name).
 				DeleteCollection(context.TODO(), deleteOptions, listOptions)
@@ -100,7 +100,7 @@ func (c *Cluster) StripZarfLabelsAndSecretsFromNamespaces() {
 }
 
 // PackageSecretNeedsWait checks if a package component has a running webhook that needs to be waited on.
-func (c *Cluster) PackageSecretNeedsWait(deployedPackage *types.DeployedPackage, component types.ZarfComponent, skipWebhooks bool) (needsWait bool, waitSeconds int, hookName string) {
+func (c *Cluster) PackageSecretNeedsWait(deployedPackage *types.DeployedPackage, component types.JackalComponent, skipWebhooks bool) (needsWait bool, waitSeconds int, hookName string) {
 
 	// Skip checking webhook status when '--skip-webhooks' flag is provided and for YOLO packages
 	if skipWebhooks || deployedPackage == nil || deployedPackage.Data.Metadata.YOLO {
@@ -125,7 +125,7 @@ func (c *Cluster) PackageSecretNeedsWait(deployedPackage *types.DeployedPackage,
 }
 
 // RecordPackageDeploymentAndWait records the deployment of a package to the cluster and waits for any webhooks to complete.
-func (c *Cluster) RecordPackageDeploymentAndWait(pkg types.ZarfPackage, components []types.DeployedComponent, connectStrings types.ConnectStrings, generation int, component types.ZarfComponent, skipWebhooks bool) (deployedPackage *types.DeployedPackage, err error) {
+func (c *Cluster) RecordPackageDeploymentAndWait(pkg types.JackalPackage, components []types.DeployedComponent, connectStrings types.ConnectStrings, generation int, component types.JackalComponent, skipWebhooks bool) (deployedPackage *types.DeployedPackage, err error) {
 
 	deployedPackage, err = c.RecordPackageDeployment(pkg, components, connectStrings, generation)
 	if err != nil {
@@ -169,13 +169,13 @@ func (c *Cluster) RecordPackageDeploymentAndWait(pkg types.ZarfPackage, componen
 }
 
 // RecordPackageDeployment saves metadata about a package that has been deployed to the cluster.
-func (c *Cluster) RecordPackageDeployment(pkg types.ZarfPackage, components []types.DeployedComponent, connectStrings types.ConnectStrings, generation int) (deployedPackage *types.DeployedPackage, err error) {
+func (c *Cluster) RecordPackageDeployment(pkg types.JackalPackage, components []types.DeployedComponent, connectStrings types.ConnectStrings, generation int) (deployedPackage *types.DeployedPackage, err error) {
 	packageName := pkg.Metadata.Name
 
 	// Generate a secret that describes the package that is being deployed
-	secretName := config.ZarfPackagePrefix + packageName
-	deployedPackageSecret := c.GenerateSecret(ZarfNamespaceName, secretName, corev1.SecretTypeOpaque)
-	deployedPackageSecret.Labels[ZarfPackageInfoLabel] = packageName
+	secretName := config.JackalPackagePrefix + packageName
+	deployedPackageSecret := c.GenerateSecret(JackalNamespaceName, secretName, corev1.SecretTypeOpaque)
+	deployedPackageSecret.Labels[JackalPackageInfoLabel] = packageName
 
 	// Attempt to load information about webhooks for the package
 	var componentWebhooks map[string]map[string]types.Webhook
@@ -216,9 +216,9 @@ func (c *Cluster) RecordPackageDeployment(pkg types.ZarfPackage, components []ty
 	return deployedPackage, nil
 }
 
-// EnableRegHPAScaleDown enables the HPA scale down for the Zarf Registry.
+// EnableRegHPAScaleDown enables the HPA scale down for the Jackal Registry.
 func (c *Cluster) EnableRegHPAScaleDown() error {
-	hpa, err := c.GetHPA(ZarfNamespaceName, "zarf-docker-registry")
+	hpa, err := c.GetHPA(JackalNamespaceName, "jackal-docker-registry")
 	if err != nil {
 		return err
 	}
@@ -235,9 +235,9 @@ func (c *Cluster) EnableRegHPAScaleDown() error {
 	return nil
 }
 
-// DisableRegHPAScaleDown disables the HPA scale down for the Zarf Registry.
+// DisableRegHPAScaleDown disables the HPA scale down for the Jackal Registry.
 func (c *Cluster) DisableRegHPAScaleDown() error {
-	hpa, err := c.GetHPA(ZarfNamespaceName, "zarf-docker-registry")
+	hpa, err := c.GetHPA(JackalNamespaceName, "jackal-docker-registry")
 	if err != nil {
 		return err
 	}
@@ -255,7 +255,7 @@ func (c *Cluster) DisableRegHPAScaleDown() error {
 }
 
 // GetInstalledChartsForComponent returns any installed Helm Charts for the provided package component.
-func (c *Cluster) GetInstalledChartsForComponent(packageName string, component types.ZarfComponent) (installedCharts []types.InstalledChart, err error) {
+func (c *Cluster) GetInstalledChartsForComponent(packageName string, component types.JackalComponent) (installedCharts []types.InstalledChart, err error) {
 	deployedPackage, err := c.GetDeployedPackage(packageName)
 	if err != nil {
 		return installedCharts, err

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package filters contains core implementations of the ComponentFilterStrategy interface.
 package filters
@@ -7,17 +7,17 @@ package filters
 import (
 	"testing"
 
-	"github.com/defenseunicorns/zarf/src/internal/packager/validate"
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/internal/packager/validate"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/stretchr/testify/require"
 )
 
 func TestLocalOSFilter(t *testing.T) {
 
-	pkg := types.ZarfPackage{}
+	pkg := types.JackalPackage{}
 	for _, os := range validate.SupportedOS() {
-		pkg.Components = append(pkg.Components, types.ZarfComponent{
-			Only: types.ZarfComponentOnlyTarget{
+		pkg.Components = append(pkg.Components, types.JackalComponent{
+			Only: types.JackalComponentOnlyTarget{
 				LocalOS: os,
 			},
 		})

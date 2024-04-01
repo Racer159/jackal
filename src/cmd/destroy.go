@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package cmd contains the CLI commands for Zarf.
+// Package cmd contains the CLI commands for Jackal.
 package cmd
 
 import (
@@ -9,13 +9,13 @@ import (
 	"os"
 	"regexp"
 
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/internal/packager/helm"
+	"github.com/defenseunicorns/jackal/src/pkg/cluster"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/utils/exec"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/internal/packager/helm"
-	"github.com/defenseunicorns/zarf/src/pkg/cluster"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/utils/exec"
 
 	"github.com/spf13/cobra"
 )
@@ -34,26 +34,26 @@ var destroyCmd = &cobra.Command{
 			message.Fatalf(err, lang.ErrNoClusterConnection)
 		}
 
-		// NOTE: If 'zarf init' failed to deploy the k3s component (or if we're looking at the wrong kubeconfig)
-		//       there will be no zarf-state to load and the struct will be empty. In these cases, if we can find
+		// NOTE: If 'jackal init' failed to deploy the k3s component (or if we're looking at the wrong kubeconfig)
+		//       there will be no jackal-state to load and the struct will be empty. In these cases, if we can find
 		//       the scripts to remove k3s, we will still try to remove a locally installed k3s cluster
-		state, err := c.LoadZarfState()
+		state, err := c.LoadJackalState()
 		if err != nil {
 			message.WarnErr(err, lang.ErrLoadState)
 		}
 
-		// If Zarf deployed the cluster, burn it all down
-		if state.ZarfAppliance || (state.Distro == "") {
+		// If Jackal deployed the cluster, burn it all down
+		if state.JackalAppliance || (state.Distro == "") {
 			// Check if we have the scripts to destroy everything
-			fileInfo, err := os.Stat(config.ZarfCleanupScriptsPath)
+			fileInfo, err := os.Stat(config.JackalCleanupScriptsPath)
 			if errors.Is(err, os.ErrNotExist) || !fileInfo.IsDir() {
-				message.Fatalf(lang.CmdDestroyErrNoScriptPath, config.ZarfCleanupScriptsPath)
+				message.Fatalf(lang.CmdDestroyErrNoScriptPath, config.JackalCleanupScriptsPath)
 			}
 
 			// Run all the scripts!
-			pattern := regexp.MustCompile(`(?mi)zarf-clean-.+\.sh$`)
-			scripts, _ := helpers.RecursiveFileList(config.ZarfCleanupScriptsPath, pattern, true)
-			// Iterate over all matching zarf-clean scripts and exec them
+			pattern := regexp.MustCompile(`(?mi)jackal-clean-.+\.sh$`)
+			scripts, _ := helpers.RecursiveFileList(config.JackalCleanupScriptsPath, pattern, true)
+			// Iterate over all matching jackal-clean scripts and exec them
 			for _, script := range scripts {
 				// Run the matched script
 				err := exec.CmdWithPrint(script)
@@ -73,11 +73,11 @@ var destroyCmd = &cobra.Command{
 			// Perform chart uninstallation
 			helm.Destroy(removeComponents)
 
-			// If Zarf didn't deploy the cluster, only delete the ZarfNamespace
-			c.DeleteZarfNamespace()
+			// If Jackal didn't deploy the cluster, only delete the JackalNamespace
+			c.DeleteJackalNamespace()
 
-			// Remove zarf agent labels and secrets from namespaces Zarf doesn't manage
-			c.StripZarfLabelsAndSecretsFromNamespaces()
+			// Remove jackal agent labels and secrets from namespaces Jackal doesn't manage
+			c.StripJackalLabelsAndSecretsFromNamespaces()
 		}
 	},
 }

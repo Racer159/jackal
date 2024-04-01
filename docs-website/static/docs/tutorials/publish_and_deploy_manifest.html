@@ -48,12 +48,12 @@ b.BWHI {background-color: #aaaaaa}
 <body>
 <pre>
 <b class="GRN"># Make a new directory to work in</b>
-$ mkdir -p zarf-publish-tutorial &amp;&amp; cd zarf-publish-tutorial
+$ mkdir -p jackal-publish-tutorial &amp;&amp; cd jackal-publish-tutorial
 
 <b class="GRN"># For this tutorial we will use the  example package
-# located here: https://github.com/defenseunicorns/zarf/blob/main/examples/helm-oci-chart/zarf.yaml</b>
-$ cat &lt;&lt;EOF &gt; zarf.yaml
-kind: ZarfPackageConfig
+# located here: https://github.com/defenseunicorns/jackal/blob/main/examples/helm-oci-chart/jackal.yaml</b>
+$ cat &lt;&lt;EOF &gt; jackal.yaml
+kind: JackalPackageConfig
 metadata:
   name: helm-oci-chart
   description: Deploy podinfo using a Helm OCI chart

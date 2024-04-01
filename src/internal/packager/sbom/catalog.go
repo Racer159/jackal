@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package sbom contains tools for generating SBOMs.
 package sbom
@@ -23,12 +23,12 @@ import (
 	"github.com/anchore/syft/syft/pkg/cataloger"
 	"github.com/anchore/syft/syft/sbom"
 	"github.com/anchore/syft/syft/source"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/transform"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/transform"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
 	v1 "github.com/google/go-containerregistry/pkg/v1"
 )
 
@@ -45,7 +45,7 @@ type Builder struct {
 var viewerAssets embed.FS
 var transformRegex = regexp.MustCompile(`(?m)[^a-zA-Z0-9\.\-]`)
 
-var componentPrefix = "zarf-component-"
+var componentPrefix = "jackal-component-"
 
 // Catalog catalogs the given components and images to create an SBOM.
 func Catalog(componentSBOMs map[string]*layout.ComponentSBOM, imageList []transform.Image, paths *layout.PackagePaths) error {
@@ -156,7 +156,7 @@ func (b *Builder) createImageSBOM(img v1.Image, src string) ([]byte, error) {
 		return nil, err
 	}
 
-	syftImage := image.NewImage(img, file.NewTempDirGenerator("zarf"), imageCachePath, image.WithTags(refInfo.Reference))
+	syftImage := image.NewImage(img, file.NewTempDirGenerator("jackal"), imageCachePath, image.WithTags(refInfo.Reference))
 	if err := syftImage.Read(); err != nil {
 		return nil, err
 	}
@@ -173,7 +173,7 @@ func (b *Builder) createImageSBOM(img v1.Image, src string) ([]byte, error) {
 
 	artifact := sbom.SBOM{
 		Descriptor: sbom.Descriptor{
-			Name: "zarf",
+			Name: "jackal",
 		},
 		Source: syftSource.Describe(),
 		Artifacts: sbom.Artifacts{
@@ -229,7 +229,7 @@ func (b *Builder) createFileSBOM(componentSBOM layout.ComponentSBOM, component s
 		for pkg := range cat.Enumerate() {
 			containsSource := false
 
-			// See if the source locations for this package contain the file Zarf indexed
+			// See if the source locations for this package contain the file Jackal indexed
 			for _, location := range pkg.Locations.ToSlice() {
 				if location.RealPath == fileSource.Describe().Metadata.(source.FileSourceMetadata).Path {
 					containsSource = true
@@ -257,7 +257,7 @@ func (b *Builder) createFileSBOM(componentSBOM layout.ComponentSBOM, component s
 
 	artifact := sbom.SBOM{
 		Descriptor: sbom.Descriptor{
-			Name: "zarf",
+			Name: "jackal",
 		},
 		Source: parentSource.Describe(),
 		Artifacts: sbom.Artifacts{

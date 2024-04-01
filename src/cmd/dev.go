@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package cmd contains the CLI commands for Zarf.
+// Package cmd contains the CLI commands for Jackal.
 package cmd
 
 import (
@@ -12,16 +12,16 @@ import (
 	"strings"
 
 	"github.com/AlecAivazis/survey/v2"
+	"github.com/defenseunicorns/jackal/src/cmd/common"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/packager"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/lint"
+	"github.com/defenseunicorns/jackal/src/pkg/transform"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/cmd/common"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/packager"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/lint"
-	"github.com/defenseunicorns/zarf/src/pkg/transform"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/types"
 	"github.com/mholt/archiver/v3"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -235,7 +235,7 @@ var devGenConfigFileCmd = &cobra.Command{
 	Short:   lang.CmdDevGenerateConfigShort,
 	Long:    lang.CmdDevGenerateConfigLong,
 	Run: func(_ *cobra.Command, args []string) {
-		fileName := "zarf-config.toml"
+		fileName := "jackal-config.toml"
 
 		// If a filename was provided, use that
 		if len(args) > 0 {
@@ -302,12 +302,12 @@ func init() {
 	// check which manifests are using this particular image
 	devFindImagesCmd.Flags().StringVar(&pkgConfig.FindImagesOpts.Why, "why", "", lang.CmdDevFlagFindImagesWhy)
 
-	defaultRegistry := fmt.Sprintf("%s:%d", helpers.IPV4Localhost, types.ZarfInClusterContainerRegistryNodePort)
+	defaultRegistry := fmt.Sprintf("%s:%d", helpers.IPV4Localhost, types.JackalInClusterContainerRegistryNodePort)
 	devFindImagesCmd.Flags().StringVar(&pkgConfig.FindImagesOpts.RegistryURL, "registry-url", defaultRegistry, lang.CmdDevFlagFindImagesRegistry)
 
 	devLintCmd.Flags().StringToStringVar(&pkgConfig.CreateOpts.SetVariables, "set", v.GetStringMapString(common.VPkgCreateSet), lang.CmdPackageCreateFlagSet)
 	devLintCmd.Flags().StringVarP(&pkgConfig.CreateOpts.Flavor, "flavor", "f", v.GetString(common.VPkgCreateFlavor), lang.CmdPackageCreateFlagFlavor)
-	devTransformGitLinksCmd.Flags().StringVar(&pkgConfig.InitOpts.GitServer.PushUsername, "git-account", types.ZarfGitPushUser, lang.CmdDevFlagGitAccount)
+	devTransformGitLinksCmd.Flags().StringVar(&pkgConfig.InitOpts.GitServer.PushUsername, "git-account", types.JackalGitPushUser, lang.CmdDevFlagGitAccount)
 }
 
 func bindDevDeployFlags(v *viper.Viper) {
@@ -336,7 +336,7 @@ func bindDevGenerateFlags(_ *viper.Viper) {
 	generateFlags.StringVar(&pkgConfig.GenerateOpts.URL, "url", "", "URL to the source git repository")
 	generateFlags.StringVar(&pkgConfig.GenerateOpts.Version, "version", "", "The Version of the chart to use")
 	generateFlags.StringVar(&pkgConfig.GenerateOpts.GitPath, "gitPath", "", "Relative path to the chart in the git repository")
-	generateFlags.StringVar(&pkgConfig.GenerateOpts.Output, "output-directory", "", "Output directory for the generated zarf.yaml")
+	generateFlags.StringVar(&pkgConfig.GenerateOpts.Output, "output-directory", "", "Output directory for the generated jackal.yaml")
 	generateFlags.StringVar(&pkgConfig.FindImagesOpts.KubeVersionOverride, "kube-version", "", lang.CmdDevFlagKubeVersion)
 
 	devGenerateCmd.MarkFlagRequired("url")

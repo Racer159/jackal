@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package config stores the global configuration and constants.
 package config
@@ -15,66 +15,66 @@ import (
 	"strings"
 	"time"
 
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/google/go-containerregistry/pkg/authn"
 	"github.com/google/go-containerregistry/pkg/crane"
 	v1 "github.com/google/go-containerregistry/pkg/v1"
 )
 
-// Zarf Global Configuration Constants.
+// Jackal Global Configuration Constants.
 const (
-	GithubProject = "defenseunicorns/zarf"
+	GithubProject = "defenseunicorns/jackal"
 
-	// ZarfMaxChartNameLength limits helm chart name size to account for K8s/helm limits and zarf prefix
-	ZarfMaxChartNameLength = 40
+	// JackalMaxChartNameLength limits helm chart name size to account for K8s/helm limits and jackal prefix
+	JackalMaxChartNameLength = 40
 
-	ZarfAgentHost = "agent-hook.zarf.svc"
+	JackalAgentHost = "agent-hook.jackal.svc"
 
-	ZarfConnectLabelName             = "zarf.dev/connect-name"
-	ZarfConnectAnnotationDescription = "zarf.dev/connect-description"
-	ZarfConnectAnnotationURL         = "zarf.dev/connect-url"
+	JackalConnectLabelName             = "jackal.dev/connect-name"
+	JackalConnectAnnotationDescription = "jackal.dev/connect-description"
+	JackalConnectAnnotationURL         = "jackal.dev/connect-url"
 
-	ZarfManagedByLabel     = "app.kubernetes.io/managed-by"
-	ZarfCleanupScriptsPath = "/opt/zarf"
+	JackalManagedByLabel     = "app.kubernetes.io/managed-by"
+	JackalCleanupScriptsPath = "/opt/jackal"
 
-	ZarfPackagePrefix = "zarf-package-"
+	JackalPackagePrefix = "jackal-package-"
 
-	ZarfDeployStage = "Deploy"
-	ZarfCreateStage = "Create"
-	ZarfMirrorStage = "Mirror"
+	JackalDeployStage = "Deploy"
+	JackalCreateStage = "Create"
+	JackalMirrorStage = "Mirror"
 )
 
-// Zarf Constants for In-Cluster Services.
+// Jackal Constants for In-Cluster Services.
 const (
-	ZarfArtifactTokenName = "zarf-artifact-registry-token"
+	JackalArtifactTokenName = "jackal-artifact-registry-token"
 
-	ZarfImagePullSecretName = "private-registry"
-	ZarfGitServerSecretName = "private-git-server"
+	JackalImagePullSecretName = "private-registry"
+	JackalGitServerSecretName = "private-git-server"
 
-	ZarfLoggingUser = "zarf-admin"
+	JackalLoggingUser = "jackal-admin"
 
 	UnsetCLIVersion = "unset-development-only"
 )
 
-// Zarf Global Configuration Variables.
+// Jackal Global Configuration Variables.
 var (
 	// CLIVersion track the version of the CLI
 	CLIVersion = UnsetCLIVersion
 
-	// ActionsUseSystemZarf sets whether to use Zarf from the system path if Zarf is being used as a library
-	ActionsUseSystemZarf = false
+	// ActionsUseSystemJackal sets whether to use Jackal from the system path if Jackal is being used as a library
+	ActionsUseSystemJackal = false
 
-	// ActionsCommandZarfPrefix sets a sub command prefix that Zarf commands are under in the current binary if Zarf is being used as a library (and use system Zarf is not specified)
-	ActionsCommandZarfPrefix = ""
+	// ActionsCommandJackalPrefix sets a sub command prefix that Jackal commands are under in the current binary if Jackal is being used as a library (and use system Jackal is not specified)
+	ActionsCommandJackalPrefix = ""
 
 	// CommonOptions tracks user-defined values that apply across commands
-	CommonOptions types.ZarfCommonOptions
+	CommonOptions types.JackalCommonOptions
 
 	// CLIArch is the computer architecture of the device executing the CLI commands
 	CLIArch string
 
-	// ZarfSeedPort is the NodePort Zarf uses for the 'seed registry'
-	ZarfSeedPort string
+	// JackalSeedPort is the NodePort Jackal uses for the 'seed registry'
+	JackalSeedPort string
 
 	// SkipLogFile is a flag to skip logging to a file
 	SkipLogFile bool
@@ -83,17 +83,17 @@ var (
 	NoColor bool
 
 	CosignPublicKey string
-	ZarfSchema      embed.FS
+	JackalSchema    embed.FS
 
 	// Timestamp of when the CLI was started
 	operationStartTime  = time.Now().Unix()
-	dataInjectionMarker = ".zarf-injection-%d"
+	dataInjectionMarker = ".jackal-injection-%d"
 
-	ZarfDefaultCachePath = filepath.Join("~", ".zarf-cache")
+	JackalDefaultCachePath = filepath.Join("~", ".jackal-cache")
 
 	// Default Time Vars
-	ZarfDefaultTimeout = 15 * time.Minute
-	ZarfDefaultRetries = 3
+	JackalDefaultTimeout = 15 * time.Minute
+	JackalDefaultRetries = 3
 )
 
 // GetArch returns the arch based on a priority list with options for overriding.
@@ -140,10 +140,10 @@ func GetCraneOptions(insecure bool, archs ...string) []crane.Option {
 			OS:           "linux",
 			Architecture: GetArch(archs...),
 		}),
-		crane.WithUserAgent("zarf"),
+		crane.WithUserAgent("jackal"),
 		crane.WithNoClobber(true),
 		// TODO: (@WSTARR) this is set to limit pushes to registry pods and reduce the likelihood that crane will get stuck.
-		// We should investigate this further in the future to dig into more of what is happening (see https://github.com/defenseunicorns/zarf/issues/1568)
+		// We should investigate this further in the future to dig into more of what is happening (see https://github.com/defenseunicorns/jackal/issues/1568)
 		crane.WithJobs(1),
 	)
 

@@ -1,11 +1,11 @@
-# Zarf - Docs Site
+# Jackal - Docs Site
 
-[![Zarf Slack Channel](https://img.shields.io/badge/k8s%20slack-zarf-40a3dd)](https://kubernetes.slack.com/archives/C03B6BJAUJ3)
-[![Zarf Website](https://img.shields.io/badge/web-zarf.dev-6d87c3)](https://zarf.dev/)
-[![Zarf Documentation](https://img.shields.io/badge/docs-docs.zarf.dev-775ba1)](https://docs.zarf.dev/)
-Zarf Documentation|[![Zarf Documentation Status](https://api.netlify.com/api/v1/badges/fe846ae4-25fb-4274-9968-90782640ee9f/deploy-status)](https://app.netlify.com/sites/zarf-docs/deploys)
+[![Jackal Slack Channel](https://img.shields.io/badge/k8s%20slack-jackal-40a3dd)](https://kubernetes.slack.com/archives/C03B6BJAUJ3)
+[![Jackal Website](https://img.shields.io/badge/web-jackal.dev-6d87c3)](https://jackal.dev/)
+[![Jackal Documentation](https://img.shields.io/badge/docs-docs.jackal.dev-775ba1)](https://docs.jackal.dev/)
+Jackal Documentation|[![Jackal Documentation Status](https://api.netlify.com/api/v1/badges/fe846ae4-25fb-4274-9968-90782640ee9f/deploy-status)](https://app.netlify.com/sites/jackal-docs/deploys)
 
-This is the docs site for [Zarf](https://github.com/defenseunicorns/zarf), a declarative air gap solution for Kubernetes.  This site is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator created by Facebook.
+This is the docs site for [Jackal](https://github.com/defenseunicorns/jackal), a declarative air gap solution for Kubernetes.  This site is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator created by Facebook.
 
 ## Prerequisites
 

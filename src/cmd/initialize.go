@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package cmd contains the CLI commands for Zarf.
+// Package cmd contains the CLI commands for Jackal.
 package cmd
 
 import (
@@ -13,17 +13,17 @@ import (
 	"strings"
 
 	"github.com/AlecAivazis/survey/v2"
+	"github.com/defenseunicorns/jackal/src/cmd/common"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/packager"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/sources"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/pkg/zoci"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
 	"github.com/defenseunicorns/pkg/oci"
-	"github.com/defenseunicorns/zarf/src/cmd/common"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/packager"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/sources"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/pkg/zoci"
-	"github.com/defenseunicorns/zarf/src/types"
 
 	"github.com/spf13/cobra"
 )
@@ -36,8 +36,8 @@ var initCmd = &cobra.Command{
 	Long:    lang.CmdInitLong,
 	Example: lang.CmdInitExample,
 	Run: func(_ *cobra.Command, _ []string) {
-		zarfLogo := message.GetLogo()
-		_, _ = fmt.Fprintln(os.Stderr, zarfLogo)
+		jackalLogo := message.GetLogo()
+		_, _ = fmt.Fprintln(os.Stderr, jackalLogo)
 
 		if err := validateInitFlags(); err != nil {
 			message.Fatal(err, lang.CmdInitErrFlags)
@@ -181,9 +181,9 @@ func init() {
 	rootCmd.AddCommand(initCmd)
 
 	// Init package variable defaults that are non-zero values
-	// NOTE: these are not in common.setDefaults so that zarf tools update-creds does not erroneously update values back to the default
-	v.SetDefault(common.VInitGitPushUser, types.ZarfGitPushUser)
-	v.SetDefault(common.VInitRegistryPushUser, types.ZarfRegistryPushUser)
+	// NOTE: these are not in common.setDefaults so that jackal tools update-creds does not erroneously update values back to the default
+	v.SetDefault(common.VInitGitPushUser, types.JackalGitPushUser)
+	v.SetDefault(common.VInitRegistryPushUser, types.JackalRegistryPushUser)
 
 	// Init package set variable flags
 	initCmd.Flags().StringToStringVar(&pkgConfig.PkgOpts.SetVariables, "set", v.GetStringMapString(common.VPkgDeploySet), lang.CmdInitFlagSet)

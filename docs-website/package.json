@@ -1,12 +1,12 @@
 {
-  "name": "zarf-docs",
+  "name": "jackal-docs",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "prestart": "cp ../zarf.schema.json ./static/zarf.schema.json",
+    "prestart": "cp ../jackal.schema.json ./static/jackal.schema.json",
     "start": "docusaurus start",
-    "prebuild": "cp ../zarf.schema.json ./static/zarf.schema.json",
+    "prebuild": "cp ../jackal.schema.json ./static/jackal.schema.json",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",

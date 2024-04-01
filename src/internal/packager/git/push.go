@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package git contains functions for interacting with git repositories.
 package git
@@ -10,8 +10,8 @@ import (
 	"os"
 	"path"
 
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/transform"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/transform"
 	"github.com/go-git/go-git/v5"
 	goConfig "github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing"
@@ -145,7 +145,7 @@ func (g *Git) push(repo *git.Repository, spinner *message.Spinner) error {
 		RemoteName: offlineRemoteName,
 		Auth:       &gitCred,
 		Progress:   spinner,
-		// TODO: (@JEFFMCCOY) add the parsing for the `+` force prefix (see https://github.com/defenseunicorns/zarf/issues/1410)
+		// TODO: (@JEFFMCCOY) add the parsing for the `+` force prefix (see https://github.com/defenseunicorns/jackal/issues/1410)
 		//Force: isForce,
 		// If a provided refspec doesn't push anything, it is just ignored
 		RefSpecs: []goConfig.RefSpec{

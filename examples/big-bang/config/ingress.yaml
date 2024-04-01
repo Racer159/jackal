@@ -1,5 +1,5 @@
 # Configure Istio
-domain: "###ZARF_VAR_DOMAIN###"
+domain: "###JACKAL_VAR_DOMAIN###"
 
 istio:
   gateways:

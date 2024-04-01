@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package utils provides generic helper functions.
 package utils
@@ -13,10 +13,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/defenseunicorns/zarf/src/pkg/utils/exec"
+	"github.com/defenseunicorns/jackal/src/pkg/utils/exec"
 
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
 )
 
 // isJSONPathWaitType checks if the condition is a JSONPath or condition.
@@ -47,10 +47,10 @@ func ExecuteWait(waitTimeout, waitNamespace, condition, kind, identifier string,
 		waitType = "condition="
 	}
 
-	// Get the Zarf command configuration.
-	zarfCommand, err := GetFinalExecutableCommand()
+	// Get the Jackal command configuration.
+	jackalCommand, err := GetFinalExecutableCommand()
 	if err != nil {
-		message.Fatal(err, lang.CmdToolsWaitForErrZarfPath)
+		message.Fatal(err, lang.CmdToolsWaitForErrJackalPath)
 	}
 
 	identifierMsg := identifier
@@ -93,8 +93,8 @@ func ExecuteWait(waitTimeout, waitNamespace, condition, kind, identifier string,
 		default:
 			spinner.Updatef(existMsg)
 			// Check if the resource exists.
-			zarfKubectlGet := fmt.Sprintf("%s tools kubectl get %s %s %s", zarfCommand, namespaceFlag, kind, identifier)
-			stdout, stderr, err := exec.Cmd(shell, append(shellArgs, zarfKubectlGet)...)
+			jackalKubectlGet := fmt.Sprintf("%s tools kubectl get %s %s %s", jackalCommand, namespaceFlag, kind, identifier)
+			stdout, stderr, err := exec.Cmd(shell, append(shellArgs, jackalKubectlGet)...)
 			if err != nil {
 				message.Debug(stdout, stderr, err)
 				continue
@@ -115,11 +115,11 @@ func ExecuteWait(waitTimeout, waitNamespace, condition, kind, identifier string,
 
 			spinner.Updatef(conditionMsg)
 			// Wait for the resource to meet the given condition.
-			zarfKubectlWait := fmt.Sprintf("%s tools kubectl wait %s %s %s --for %s%s --timeout=%s",
-				zarfCommand, namespaceFlag, kind, identifier, waitType, condition, waitTimeout)
+			jackalKubectlWait := fmt.Sprintf("%s tools kubectl wait %s %s %s --for %s%s --timeout=%s",
+				jackalCommand, namespaceFlag, kind, identifier, waitType, condition, waitTimeout)
 
 			// If there is an error, log it and try again.
-			if stdout, stderr, err := exec.Cmd(shell, append(shellArgs, zarfKubectlWait)...); err != nil {
+			if stdout, stderr, err := exec.Cmd(shell, append(shellArgs, jackalKubectlWait)...); err != nil {
 				message.Debug(stdout, stderr, err)
 				continue
 			}

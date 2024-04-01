@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package bigbang contains the logic for installing Big Bang and Flux
 package bigbang
@@ -13,13 +13,13 @@ import (
 	"time"
 
 	"github.com/Masterminds/semver/v3"
+	"github.com/defenseunicorns/jackal/src/internal/packager/helm"
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/types"
+	"github.com/defenseunicorns/jackal/src/types/extensions"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/internal/packager/helm"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/types"
-	"github.com/defenseunicorns/zarf/src/types/extensions"
 	fluxHelmCtrl "github.com/fluxcd/helm-controller/api/v2beta1"
 	fluxSrcCtrl "github.com/fluxcd/source-controller/api/v1beta2"
 	"helm.sh/helm/v3/pkg/chartutil"
@@ -41,9 +41,9 @@ var tenMins = metav1.Duration{
 
 // Run mutates a component that should deploy Big Bang to a set of manifests
 // that contain the flux deployment of Big Bang
-func Run(YOLO bool, tmpPaths *layout.ComponentPaths, c types.ZarfComponent) (types.ZarfComponent, error) {
+func Run(YOLO bool, tmpPaths *layout.ComponentPaths, c types.JackalComponent) (types.JackalComponent, error) {
 	cfg := c.Extensions.BigBang
-	manifests := []types.ZarfManifest{}
+	manifests := []types.JackalManifest{}
 
 	validVersionResponse, err := isValidVersion(cfg.Version)
 
@@ -71,11 +71,11 @@ func Run(YOLO bool, tmpPaths *layout.ComponentPaths, c types.ZarfComponent) (typ
 			return c, err
 		}
 
-		// Add the flux manifests to the list of manifests to be pulled down by Zarf.
+		// Add the flux manifests to the list of manifests to be pulled down by Jackal.
 		manifests = append(manifests, fluxManifest)
 
 		if !YOLO {
-			// Add the images to the list of images to be pulled down by Zarf.
+			// Add the images to the list of images to be pulled down by Jackal.
 			c.Images = append(c.Images, images...)
 		}
 	}
@@ -84,7 +84,7 @@ func Run(YOLO bool, tmpPaths *layout.ComponentPaths, c types.ZarfComponent) (typ
 
 	// Configure helm to pull down the Big Bang chart.
 	helmCfg := helm.New(
-		types.ZarfChart{
+		types.JackalChart{
 			Name:        bb,
 			Namespace:   bb,
 			URL:         bbRepo,
@@ -110,12 +110,12 @@ func Run(YOLO bool, tmpPaths *layout.ComponentPaths, c types.ZarfComponent) (typ
 		return c, fmt.Errorf("unable to template Big Bang Chart: %w", err)
 	}
 
-	// Add the Big Bang repo to the list of repos to be pulled down by Zarf.
+	// Add the Big Bang repo to the list of repos to be pulled down by Jackal.
 	if !YOLO {
 		bbRepo := fmt.Sprintf("%s@%s", cfg.Repo, cfg.Version)
 		c.Repos = append(c.Repos, bbRepo)
 	}
-	// Parse the template for GitRepository objects and add them to the list of repos to be pulled down by Zarf.
+	// Parse the template for GitRepository objects and add them to the list of repos to be pulled down by Jackal.
 	gitRepos, hrDependencies, hrValues, err := findBBResources(template)
 	if err != nil {
 		return c, fmt.Errorf("unable to find Big Bang resources: %w", err)
@@ -147,11 +147,11 @@ func Run(YOLO bool, tmpPaths *layout.ComponentPaths, c types.ZarfComponent) (typ
 	// Add wait actions for each of the helm releases in generally the order they should be deployed.
 	for _, hrNamespacedName := range namespacedHelmReleaseNames {
 		hr := hrDependencies[hrNamespacedName]
-		action := types.ZarfComponentAction{
+		action := types.JackalComponentAction{
 			Description:     fmt.Sprintf("Big Bang Helm Release `%s` to be ready", hrNamespacedName),
 			MaxTotalSeconds: &maxTotalSeconds,
-			Wait: &types.ZarfComponentActionWait{
-				Cluster: &types.ZarfComponentActionWaitCluster{
+			Wait: &types.JackalComponentActionWait{
+				Cluster: &types.JackalComponentActionWaitCluster{
 					Kind:       "HelmRelease",
 					Identifier: hr.Metadata.Name,
 					Namespace:  hr.Metadata.Namespace,
@@ -166,7 +166,7 @@ func Run(YOLO bool, tmpPaths *layout.ComponentPaths, c types.ZarfComponent) (typ
 		// https://repo1.dso.mil/big-bang/bigbang/-/blob/1.54.0/chart/templates/metrics-server/helmrelease.yaml
 		if hr.Metadata.Name == "metrics-server" {
 			action.Description = "K8s metric server to exist or be deployed by Big Bang"
-			action.Wait.Cluster = &types.ZarfComponentActionWaitCluster{
+			action.Wait.Cluster = &types.JackalComponentActionWaitCluster{
 				Kind: "APIService",
 				// https://github.com/kubernetes-sigs/metrics-server#compatibility-matrix
 				Identifier: "v1beta1.metrics.k8s.io",
@@ -193,23 +193,23 @@ func Run(YOLO bool, tmpPaths *layout.ComponentPaths, c types.ZarfComponent) (typ
 
 	// Add onFailure actions with additional troubleshooting information.
 	for _, cmd := range failureGeneral {
-		c.Actions.OnDeploy.OnFailure = append(c.Actions.OnDeploy.OnFailure, types.ZarfComponentAction{
-			Cmd: fmt.Sprintf("./zarf tools kubectl %s", cmd),
+		c.Actions.OnDeploy.OnFailure = append(c.Actions.OnDeploy.OnFailure, types.JackalComponentAction{
+			Cmd: fmt.Sprintf("./jackal tools kubectl %s", cmd),
 		})
 	}
 
 	for _, cmd := range failureDebug {
-		c.Actions.OnDeploy.OnFailure = append(c.Actions.OnDeploy.OnFailure, types.ZarfComponentAction{
+		c.Actions.OnDeploy.OnFailure = append(c.Actions.OnDeploy.OnFailure, types.JackalComponentAction{
 			Mute:        &t,
 			Description: "Storing debug information to the log for troubleshooting.",
-			Cmd:         fmt.Sprintf("./zarf tools kubectl %s", cmd),
+			Cmd:         fmt.Sprintf("./jackal tools kubectl %s", cmd),
 		})
 	}
 
 	// Add a pre-remove action to suspend the Big Bang HelmReleases to prevent reconciliation during removal.
-	c.Actions.OnRemove.Before = append(c.Actions.OnRemove.Before, types.ZarfComponentAction{
+	c.Actions.OnRemove.Before = append(c.Actions.OnRemove.Before, types.JackalComponentAction{
 		Description: "Suspend Big Bang HelmReleases to prevent reconciliation during removal.",
-		Cmd:         `./zarf tools kubectl patch helmrelease -n bigbang bigbang --type=merge -p '{"spec":{"suspend":true}}'`,
+		Cmd:         `./jackal tools kubectl patch helmrelease -n bigbang bigbang --type=merge -p '{"spec":{"suspend":true}}'`,
 	})
 
 	// Select the images needed to support the repos for this configuration of Big Bang.
@@ -237,10 +237,10 @@ func Run(YOLO bool, tmpPaths *layout.ComponentPaths, c types.ZarfComponent) (typ
 		return c, err
 	}
 
-	// Add the Big Bang manifests to the list of manifests to be pulled down by Zarf.
+	// Add the Big Bang manifests to the list of manifests to be pulled down by Jackal.
 	manifests = append(manifests, manifest)
 
-	// Prepend the Big Bang manifests to the list of manifests to be pulled down by Zarf.
+	// Prepend the Big Bang manifests to the list of manifests to be pulled down by Jackal.
 	// This is done so that the Big Bang manifests are deployed first.
 	c.Manifests = append(manifests, c.Manifests...)
 
@@ -248,7 +248,7 @@ func Run(YOLO bool, tmpPaths *layout.ComponentPaths, c types.ZarfComponent) (typ
 }
 
 // Skeletonize mutates a component so that the valuesFiles can be contained inside a skeleton package
-func Skeletonize(tmpPaths *layout.ComponentPaths, c types.ZarfComponent) (types.ZarfComponent, error) {
+func Skeletonize(tmpPaths *layout.ComponentPaths, c types.JackalComponent) (types.JackalComponent, error) {
 	for valuesIdx, valuesFile := range c.Extensions.BigBang.ValuesFiles {
 		// Get the base file name for this file.
 		baseName := filepath.Base(valuesFile)
@@ -295,7 +295,7 @@ func Skeletonize(tmpPaths *layout.ComponentPaths, c types.ZarfComponent) (types.
 // Compose mutates a component so that its local paths are relative to the provided path
 //
 // additionally, it will merge any overrides
-func Compose(c *types.ZarfComponent, override types.ZarfComponent, relativeTo string) {
+func Compose(c *types.JackalComponent, override types.JackalComponent, relativeTo string) {
 	// perform any overrides
 	if override.Extensions.BigBang != nil {
 		for valuesIdx, valuesFile := range override.Extensions.BigBang.ValuesFiles {
@@ -451,9 +451,9 @@ func findBBResources(t string) (gitRepos map[string]string, helmReleaseDeps map[
 }
 
 // addBigBangManifests creates the manifests component for deploying Big Bang.
-func addBigBangManifests(YOLO bool, manifestDir string, cfg *extensions.BigBang) (types.ZarfManifest, error) {
-	// Create a manifest component that we add to the zarf package for bigbang.
-	manifest := types.ZarfManifest{
+func addBigBangManifests(YOLO bool, manifestDir string, cfg *extensions.BigBang) (types.JackalManifest, error) {
+	// Create a manifest component that we add to the jackal package for bigbang.
+	manifest := types.JackalManifest{
 		Name:      bb,
 		Namespace: bb,
 	}
@@ -481,17 +481,17 @@ func addBigBangManifests(YOLO bool, manifestDir string, cfg *extensions.BigBang)
 
 	var hrValues []fluxHelmCtrl.ValuesReference
 
-	// If YOLO mode is enabled, do not include the zarf-credentials secret
+	// If YOLO mode is enabled, do not include the jackal-credentials secret
 	if !YOLO {
-		// Create the zarf-credentials secret manifest.
-		if err := addManifest("bb-ext-zarf-credentials.yaml", manifestZarfCredentials(cfg.Version)); err != nil {
+		// Create the jackal-credentials secret manifest.
+		if err := addManifest("bb-ext-jackal-credentials.yaml", manifestJackalCredentials(cfg.Version)); err != nil {
 			return manifest, err
 		}
 
-		// Create the list of values manifests starting with zarf-credentials.
+		// Create the list of values manifests starting with jackal-credentials.
 		hrValues = []fluxHelmCtrl.ValuesReference{{
 			Kind: "Secret",
-			Name: "zarf-credentials",
+			Name: "jackal-credentials",
 		}}
 	}
 

@@ -1,28 +1,28 @@
 # Getting Started - Github Action
 
-The [setup-zarf](https://github.com/defenseunicorns/setup-zarf) Github action is an officially supported action to install any version of Zarf and it's `init` package with zero added dependencies.
+The [setup-jackal](https://github.com/defenseunicorns/setup-jackal) Github action is an officially supported action to install any version of Jackal and it's `init` package with zero added dependencies.
 
 ## Example Usage - Creating a Package
 
 ```yaml
-# .github/workflows/zarf-package-create.yml
+# .github/workflows/jackal-package-create.yml
 jobs:
   create_package:
     runs-on: ubuntu-latest
 
-    name: Create my cool Zarf Package
+    name: Create my cool Jackal Package
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 1
 
-      - name: Install Zarf
-        uses: defenseunicorns/setup-zarf@main # use action's main branch
+      - name: Install Jackal
+        uses: defenseunicorns/setup-jackal@main # use action's main branch
         with:
-          version: v0.22.2 # any valid zarf version, leave blank to use latest
+          version: v0.22.2 # any valid jackal version, leave blank to use latest
 
       - name: Create the package
-        run: zarf package create --confirm
+        run: jackal package create --confirm
 ```
 
-More examples are located in the action's [README.md](https://github.com/defenseunicorns/setup-zarf#readme)
+More examples are located in the action's [README.md](https://github.com/defenseunicorns/setup-jackal#readme)

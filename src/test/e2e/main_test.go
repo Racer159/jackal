@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package test provides e2e tests for Zarf.
+// Package test provides e2e tests for Jackal.
 package test
 
 import (
@@ -10,13 +10,13 @@ import (
 	"path"
 	"testing"
 
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/test"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/test"
 )
 
 var (
-	e2e test.ZarfE2ETest //nolint:gochecknoglobals
+	e2e test.JackalE2ETest //nolint:gochecknoglobals
 )
 
 const (
@@ -36,7 +36,7 @@ func TestMain(m *testing.M) {
 	// K3d use the intern package, which requires this to be set in go 1.19
 	os.Setenv("ASSUME_NO_MOVING_GC_UNSAFE_RISK_IT_WITH", "go1.19")
 
-	// Set the log level to trace for when we call Zarf functions internally
+	// Set the log level to trace for when we call Jackal functions internally
 	message.SetLogLevel(message.TraceLevel)
 
 	retCode, err := doAllTheThings(m)
@@ -58,16 +58,16 @@ func doAllTheThings(m *testing.M) (int, error) {
 
 	// Set up constants in the global variable that all the tests are able to access
 	e2e.Arch = config.GetArch()
-	e2e.ZarfBinPath = path.Join("build", test.GetCLIName())
+	e2e.JackalBinPath = path.Join("build", test.GetCLIName())
 	e2e.ApplianceMode = os.Getenv(applianceModeEnvVar) == "true"
 	e2e.ApplianceModeKeep = os.Getenv(applianceModeKeepEnvVar) == "true"
 	e2e.RunClusterTests = os.Getenv(skipK8sEnvVar) != "true"
 
-	// Validate that the Zarf binary exists. If it doesn't that means the dev hasn't built it, usually by running
+	// Validate that the Jackal binary exists. If it doesn't that means the dev hasn't built it, usually by running
 	// `make build-cli`
-	_, err = os.Stat(e2e.ZarfBinPath)
+	_, err = os.Stat(e2e.JackalBinPath)
 	if err != nil {
-		return 1, fmt.Errorf("zarf binary %s not found", e2e.ZarfBinPath)
+		return 1, fmt.Errorf("jackal binary %s not found", e2e.JackalBinPath)
 	}
 
 	// Run the tests, with the cluster cleanup being deferred to the end of the function call

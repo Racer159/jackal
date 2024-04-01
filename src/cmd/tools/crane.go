@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package tools contains the CLI commands for Zarf.
+// Package tools contains the CLI commands for Jackal.
 package tools
 
 import (
@@ -10,13 +10,13 @@ import (
 	"strings"
 
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/defenseunicorns/zarf/src/cmd/common"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/pkg/cluster"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/transform"
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/cmd/common"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/pkg/cluster"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/transform"
+	"github.com/defenseunicorns/jackal/src/types"
 	craneCmd "github.com/google/go-containerregistry/cmd/crane/cmd"
 	"github.com/google/go-containerregistry/pkg/crane"
 	"github.com/google/go-containerregistry/pkg/logs"
@@ -85,12 +85,12 @@ func init() {
 	craneCopy := craneCmd.NewCmdCopy(&craneOptions)
 
 	registryCmd.AddCommand(craneCopy)
-	registryCmd.AddCommand(zarfCraneCatalog(&craneOptions))
-	registryCmd.AddCommand(zarfCraneInternalWrapper(craneCmd.NewCmdList, &craneOptions, lang.CmdToolsRegistryListExample, 0))
-	registryCmd.AddCommand(zarfCraneInternalWrapper(craneCmd.NewCmdPush, &craneOptions, lang.CmdToolsRegistryPushExample, 1))
-	registryCmd.AddCommand(zarfCraneInternalWrapper(craneCmd.NewCmdPull, &craneOptions, lang.CmdToolsRegistryPullExample, 0))
-	registryCmd.AddCommand(zarfCraneInternalWrapper(craneCmd.NewCmdDelete, &craneOptions, lang.CmdToolsRegistryDeleteExample, 0))
-	registryCmd.AddCommand(zarfCraneInternalWrapper(craneCmd.NewCmdDigest, &craneOptions, lang.CmdToolsRegistryDigestExample, 0))
+	registryCmd.AddCommand(jackalCraneCatalog(&craneOptions))
+	registryCmd.AddCommand(jackalCraneInternalWrapper(craneCmd.NewCmdList, &craneOptions, lang.CmdToolsRegistryListExample, 0))
+	registryCmd.AddCommand(jackalCraneInternalWrapper(craneCmd.NewCmdPush, &craneOptions, lang.CmdToolsRegistryPushExample, 1))
+	registryCmd.AddCommand(jackalCraneInternalWrapper(craneCmd.NewCmdPull, &craneOptions, lang.CmdToolsRegistryPullExample, 0))
+	registryCmd.AddCommand(jackalCraneInternalWrapper(craneCmd.NewCmdDelete, &craneOptions, lang.CmdToolsRegistryDeleteExample, 0))
+	registryCmd.AddCommand(jackalCraneInternalWrapper(craneCmd.NewCmdDigest, &craneOptions, lang.CmdToolsRegistryDigestExample, 0))
 	registryCmd.AddCommand(pruneCmd)
 	registryCmd.AddCommand(craneCmd.NewCmdVersion())
 
@@ -102,8 +102,8 @@ func init() {
 	toolsCmd.AddCommand(registryCmd)
 }
 
-// Wrap the original crane catalog with a zarf specific version
-func zarfCraneCatalog(cranePlatformOptions *[]crane.Option) *cobra.Command {
+// Wrap the original crane catalog with a jackal specific version
+func jackalCraneCatalog(cranePlatformOptions *[]crane.Option) *cobra.Command {
 	craneCatalog := craneCmd.NewCmdCatalog(cranePlatformOptions)
 
 	craneCatalog.Example = lang.CmdToolsRegistryCatalogExample
@@ -116,30 +116,30 @@ func zarfCraneCatalog(cranePlatformOptions *[]crane.Option) *cobra.Command {
 			return originalCatalogFn(cmd, args)
 		}
 
-		message.Note(lang.CmdToolsRegistryZarfState)
+		message.Note(lang.CmdToolsRegistryJackalState)
 
 		c, err := cluster.NewCluster()
 		if err != nil {
 			return err
 		}
 
-		// Load Zarf state
-		zarfState, err := c.LoadZarfState()
+		// Load Jackal state
+		jackalState, err := c.LoadJackalState()
 		if err != nil {
 			return err
 		}
 
-		registryEndpoint, tunnel, err := c.ConnectToZarfRegistryEndpoint(zarfState.RegistryInfo)
+		registryEndpoint, tunnel, err := c.ConnectToJackalRegistryEndpoint(jackalState.RegistryInfo)
 		if err != nil {
 			return err
 		}
 
 		// Add the correct authentication to the crane command options
-		authOption := config.GetCraneAuthOption(zarfState.RegistryInfo.PullUsername, zarfState.RegistryInfo.PullPassword)
+		authOption := config.GetCraneAuthOption(jackalState.RegistryInfo.PullUsername, jackalState.RegistryInfo.PullPassword)
 		*cranePlatformOptions = append(*cranePlatformOptions, authOption)
 
 		if tunnel != nil {
-			message.Notef(lang.CmdToolsRegistryTunnel, registryEndpoint, zarfState.RegistryInfo.Address)
+			message.Notef(lang.CmdToolsRegistryTunnel, registryEndpoint, jackalState.RegistryInfo.Address)
 			defer tunnel.Close()
 			return tunnel.Wrap(func() error { return originalCatalogFn(cmd, []string{registryEndpoint}) })
 		}
@@ -150,8 +150,8 @@ func zarfCraneCatalog(cranePlatformOptions *[]crane.Option) *cobra.Command {
 	return craneCatalog
 }
 
-// Wrap the original crane list with a zarf specific version
-func zarfCraneInternalWrapper(commandToWrap func(*[]crane.Option) *cobra.Command, cranePlatformOptions *[]crane.Option, exampleText string, imageNameArgumentIndex int) *cobra.Command {
+// Wrap the original crane list with a jackal specific version
+func jackalCraneInternalWrapper(commandToWrap func(*[]crane.Option) *cobra.Command, cranePlatformOptions *[]crane.Option, exampleText string, imageNameArgumentIndex int) *cobra.Command {
 	wrappedCommand := commandToWrap(cranePlatformOptions)
 
 	wrappedCommand.Example = exampleText
@@ -164,41 +164,41 @@ func zarfCraneInternalWrapper(commandToWrap func(*[]crane.Option) *cobra.Command
 			message.Fatal(nil, lang.CmdToolsCraneNotEnoughArgumentsErr)
 		}
 
-		// Try to connect to a Zarf initialized cluster otherwise then pass it down to crane.
+		// Try to connect to a Jackal initialized cluster otherwise then pass it down to crane.
 		c, err := cluster.NewCluster()
 		if err != nil {
 			return originalListFn(cmd, args)
 		}
 
-		message.Note(lang.CmdToolsRegistryZarfState)
+		message.Note(lang.CmdToolsRegistryJackalState)
 
 		// Load the state (if able)
-		zarfState, err := c.LoadZarfState()
+		jackalState, err := c.LoadJackalState()
 		if err != nil {
 			message.Warnf(lang.CmdToolsCraneConnectedButBadStateErr, err.Error())
 			return originalListFn(cmd, args)
 		}
 
 		// Check to see if it matches the existing internal address.
-		if !strings.HasPrefix(args[imageNameArgumentIndex], zarfState.RegistryInfo.Address) {
+		if !strings.HasPrefix(args[imageNameArgumentIndex], jackalState.RegistryInfo.Address) {
 			return originalListFn(cmd, args)
 		}
 
-		_, tunnel, err := c.ConnectToZarfRegistryEndpoint(zarfState.RegistryInfo)
+		_, tunnel, err := c.ConnectToJackalRegistryEndpoint(jackalState.RegistryInfo)
 		if err != nil {
 			return err
 		}
 
 		// Add the correct authentication to the crane command options
-		authOption := config.GetCraneAuthOption(zarfState.RegistryInfo.PushUsername, zarfState.RegistryInfo.PushPassword)
+		authOption := config.GetCraneAuthOption(jackalState.RegistryInfo.PushUsername, jackalState.RegistryInfo.PushPassword)
 		*cranePlatformOptions = append(*cranePlatformOptions, authOption)
 
 		if tunnel != nil {
-			message.Notef(lang.CmdToolsRegistryTunnel, tunnel.Endpoint(), zarfState.RegistryInfo.Address)
+			message.Notef(lang.CmdToolsRegistryTunnel, tunnel.Endpoint(), jackalState.RegistryInfo.Address)
 
 			defer tunnel.Close()
 
-			givenAddress := fmt.Sprintf("%s/", zarfState.RegistryInfo.Address)
+			givenAddress := fmt.Sprintf("%s/", jackalState.RegistryInfo.Address)
 			tunnelAddress := fmt.Sprintf("%s/", tunnel.Endpoint())
 			args[imageNameArgumentIndex] = strings.Replace(args[imageNameArgumentIndex], givenAddress, tunnelAddress, 1)
 			return tunnel.Wrap(func() error { return originalListFn(cmd, args) })
@@ -211,48 +211,48 @@ func zarfCraneInternalWrapper(commandToWrap func(*[]crane.Option) *cobra.Command
 }
 
 func pruneImages(_ *cobra.Command, _ []string) error {
-	// Try to connect to a Zarf initialized cluster
+	// Try to connect to a Jackal initialized cluster
 	c, err := cluster.NewCluster()
 	if err != nil {
 		return err
 	}
 
 	// Load the state
-	zarfState, err := c.LoadZarfState()
+	jackalState, err := c.LoadJackalState()
 	if err != nil {
 		return err
 	}
 
 	// Load the currently deployed packages
-	zarfPackages, errs := c.GetDeployedZarfPackages()
+	jackalPackages, errs := c.GetDeployedJackalPackages()
 	if len(errs) > 0 {
 		return lang.ErrUnableToGetPackages
 	}
 
 	// Set up a tunnel to the registry if applicable
-	registryEndpoint, tunnel, err := c.ConnectToZarfRegistryEndpoint(zarfState.RegistryInfo)
+	registryEndpoint, tunnel, err := c.ConnectToJackalRegistryEndpoint(jackalState.RegistryInfo)
 	if err != nil {
 		return err
 	}
 
 	if tunnel != nil {
-		message.Notef(lang.CmdToolsRegistryTunnel, registryEndpoint, zarfState.RegistryInfo.Address)
+		message.Notef(lang.CmdToolsRegistryTunnel, registryEndpoint, jackalState.RegistryInfo.Address)
 		defer tunnel.Close()
-		return tunnel.Wrap(func() error { return doPruneImagesForPackages(zarfState, zarfPackages, registryEndpoint) })
+		return tunnel.Wrap(func() error { return doPruneImagesForPackages(jackalState, jackalPackages, registryEndpoint) })
 	}
 
-	return doPruneImagesForPackages(zarfState, zarfPackages, registryEndpoint)
+	return doPruneImagesForPackages(jackalState, jackalPackages, registryEndpoint)
 }
 
-func doPruneImagesForPackages(zarfState *types.ZarfState, zarfPackages []types.DeployedPackage, registryEndpoint string) error {
-	authOption := config.GetCraneAuthOption(zarfState.RegistryInfo.PushUsername, zarfState.RegistryInfo.PushPassword)
+func doPruneImagesForPackages(jackalState *types.JackalState, jackalPackages []types.DeployedPackage, registryEndpoint string) error {
+	authOption := config.GetCraneAuthOption(jackalState.RegistryInfo.PushUsername, jackalState.RegistryInfo.PushPassword)
 
 	spinner := message.NewProgressSpinner(lang.CmdToolsRegistryPruneLookup)
 	defer spinner.Stop()
 
-	// Determine which image digests are currently used by Zarf packages
+	// Determine which image digests are currently used by Jackal packages
 	pkgImages := map[string]bool{}
-	for _, pkg := range zarfPackages {
+	for _, pkg := range jackalPackages {
 		deployedComponents := map[string]bool{}
 		for _, depComponent := range pkg.DeployedComponents {
 			deployedComponents[depComponent.Name] = true

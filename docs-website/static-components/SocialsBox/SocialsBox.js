@@ -4,8 +4,8 @@ const SocialsValues = {
   SlackIconString: fileToString("static/img/SlackIcon.svg"),
   GithubIconString: fileToString("static/img/GithubIcon.svg"),
   SearchIconString: fileToString("src/css/images/svg/search-icon-dark.svg"),
-  slackUrl: "https://zarf.dev/slack",
-  githubUrl: "https://github.com/defenseunicorns/zarf",
+  slackUrl: "https://jackal.dev/slack",
+  githubUrl: "https://github.com/defenseunicorns/jackal",
 };
 
 function SocialsBox({ containerId = "", linkClass = "" } = {}) {

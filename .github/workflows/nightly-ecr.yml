@@ -25,7 +25,7 @@ jobs:
       - name: Setup golang
         uses: ./.github/actions/golang
 
-      - name: Build the Zarf binary
+      - name: Build the Jackal binary
         run: make build-cli-linux-amd
 
       - name: Configure AWS Credentials
@@ -36,7 +36,7 @@ jobs:
 
       # NOTE: The aws cli will need to be explicitly installed on self-hosted runners
       - name: Login to the ECR Registry
-        run: aws ecr-public get-login-password --region us-east-1 | ./build/zarf tools registry login --username AWS --password-stdin public.ecr.aws
+        run: aws ecr-public get-login-password --region us-east-1 | ./build/jackal tools registry login --username AWS --password-stdin public.ecr.aws
 
       - name: Test publishing and pulling to ECR
         run: go test ./src/test/nightly/ecr_publish_test.go

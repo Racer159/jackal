@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package sources contains core implementations of the PackageSource interface.
 package sources
@@ -13,11 +13,11 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
 )
 
 var (
@@ -52,7 +52,7 @@ func ValidatePackageSignature(paths *layout.PackagePaths, publicKeyPath string) 
 	}
 
 	// Validate the signature with the key we were provided
-	if err := utils.CosignVerifyBlob(paths.ZarfYAML, paths.Signature, publicKeyPath); err != nil {
+	if err := utils.CosignVerifyBlob(paths.JackalYAML, paths.Signature, publicKeyPath); err != nil {
 		return fmt.Errorf("package signature did not match the provided key: %w", err)
 	}
 
@@ -61,12 +61,12 @@ func ValidatePackageSignature(paths *layout.PackagePaths, publicKeyPath string) 
 
 // ValidatePackageIntegrity validates the integrity of a package by comparing checksums
 func ValidatePackageIntegrity(loaded *layout.PackagePaths, aggregateChecksum string, isPartial bool) error {
-	// ensure checksums.txt and zarf.yaml were loaded
+	// ensure checksums.txt and jackal.yaml were loaded
 	if helpers.InvalidPath(loaded.Checksums) {
 		return fmt.Errorf("unable to validate checksums, %s was not loaded", layout.Checksums)
 	}
-	if helpers.InvalidPath(loaded.ZarfYAML) {
-		return fmt.Errorf("unable to validate checksums, %s was not loaded", layout.ZarfYAML)
+	if helpers.InvalidPath(loaded.JackalYAML) {
+		return fmt.Errorf("unable to validate checksums, %s was not loaded", layout.JackalYAML)
 	}
 
 	checksumPath := loaded.Checksums
@@ -79,7 +79,7 @@ func ValidatePackageIntegrity(loaded *layout.PackagePaths, aggregateChecksum str
 		return err
 	}
 
-	checkedMap[loaded.ZarfYAML] = true
+	checkedMap[loaded.JackalYAML] = true
 	checkedMap[loaded.Checksums] = true
 	checkedMap[loaded.Signature] = true
 

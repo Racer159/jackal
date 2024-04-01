@@ -1,4 +1,4 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: deprecated-set-variable
   description: Test to verify that setVariables and PKG_VARs are migrated to maintain past functionality (see src/pkg/packager/deprecated)
@@ -11,11 +11,11 @@ components:
         before:
           - cmd: echo "Hello Kitteh"
             setVariable: HELLO_KITTEH
-          - cmd: echo "Hello from ${ZARF_VAR_HELLO_KITTEH}"
+          - cmd: echo "Hello from ${JACKAL_VAR_HELLO_KITTEH}"
 
-  # Test that ###ZARF_PKG_VAR_*### is still templated
+  # Test that ###JACKAL_PKG_VAR_*### is still templated
   - name: 2-test-deprecated-pkg-var
     actions:
       onDeploy:
         before:
-          - cmd: echo "###ZARF_PKG_VAR_ECHO###"
+          - cmd: echo "###JACKAL_PKG_VAR_ECHO###"

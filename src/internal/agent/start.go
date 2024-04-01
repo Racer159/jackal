@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package agent holds the mutating webhook server.
 package agent
@@ -11,9 +11,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	agentHttp "github.com/defenseunicorns/zarf/src/internal/agent/http"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	agentHttp "github.com/defenseunicorns/jackal/src/internal/agent/http"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
 )
 
 // Heavily influenced by https://github.com/douglasmakey/admissioncontroller and
@@ -26,14 +26,14 @@ const (
 	tlsKey   = "/etc/certs/tls.key"
 )
 
-// StartWebhook launches the Zarf agent mutating webhook in the cluster.
+// StartWebhook launches the Jackal agent mutating webhook in the cluster.
 func StartWebhook() {
 	message.Debug("agent.StartWebhook()")
 
 	startServer(agentHttp.NewAdmissionServer(httpPort))
 }
 
-// StartHTTPProxy launches the zarf agent proxy in the cluster.
+// StartHTTPProxy launches the jackal agent proxy in the cluster.
 func StartHTTPProxy() {
 	message.Debug("agent.StartHttpProxy()")
 

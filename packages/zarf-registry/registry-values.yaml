@@ -1,47 +1,47 @@
 persistence:
-  enabled: ###ZARF_VAR_REGISTRY_PVC_ENABLED###
-  storageClass: "###ZARF_STORAGE_CLASS###"
-  size: "###ZARF_VAR_REGISTRY_PVC_SIZE###"
-  existingClaim: "###ZARF_VAR_REGISTRY_EXISTING_PVC###"
-  accessMode: "###ZARF_VAR_REGISTRY_PVC_ACCESS_MODE###"
+  enabled: ###JACKAL_VAR_REGISTRY_PVC_ENABLED###
+  storageClass: "###JACKAL_STORAGE_CLASS###"
+  size: "###JACKAL_VAR_REGISTRY_PVC_SIZE###"
+  existingClaim: "###JACKAL_VAR_REGISTRY_EXISTING_PVC###"
+  accessMode: "###JACKAL_VAR_REGISTRY_PVC_ACCESS_MODE###"
 
 image:
-  repository: "###ZARF_REGISTRY###/###ZARF_CONST_REGISTRY_IMAGE###"
-  tag: "###ZARF_CONST_REGISTRY_IMAGE_TAG###"
+  repository: "###JACKAL_REGISTRY###/###JACKAL_CONST_REGISTRY_IMAGE###"
+  tag: "###JACKAL_CONST_REGISTRY_IMAGE_TAG###"
 
 imagePullSecrets:
   - name: private-registry
 
 secrets:
-  htpasswd: "###ZARF_HTPASSWD###"
+  htpasswd: "###JACKAL_HTPASSWD###"
   configData:
     http:
-      secret: "###ZARF_REGISTRY_SECRET###"
+      secret: "###JACKAL_REGISTRY_SECRET###"
 
 service:
-  nodePort: "###ZARF_NODEPORT###"
+  nodePort: "###JACKAL_NODEPORT###"
 
 resources:
   requests:
-    cpu: "###ZARF_VAR_REGISTRY_CPU_REQ###"
-    memory: "###ZARF_VAR_REGISTRY_MEM_REQ###"
+    cpu: "###JACKAL_VAR_REGISTRY_CPU_REQ###"
+    memory: "###JACKAL_VAR_REGISTRY_MEM_REQ###"
   limits:
-    cpu: "###ZARF_VAR_REGISTRY_CPU_LIMIT###"
-    memory: "###ZARF_VAR_REGISTRY_MEM_LIMIT###"
+    cpu: "###JACKAL_VAR_REGISTRY_CPU_LIMIT###"
+    memory: "###JACKAL_VAR_REGISTRY_MEM_LIMIT###"
 
-fullnameOverride: "zarf-docker-registry"
+fullnameOverride: "jackal-docker-registry"
 
 podLabels:
-  zarf.dev/agent: "ignore"
+  jackal.dev/agent: "ignore"
 
 autoscaling:
-  enabled: ###ZARF_VAR_REGISTRY_HPA_ENABLE###
-  minReplicas: "###ZARF_VAR_REGISTRY_HPA_MIN###"
-  maxReplicas: "###ZARF_VAR_REGISTRY_HPA_MAX###"
+  enabled: ###JACKAL_VAR_REGISTRY_HPA_ENABLE###
+  minReplicas: "###JACKAL_VAR_REGISTRY_HPA_MIN###"
+  maxReplicas: "###JACKAL_VAR_REGISTRY_HPA_MAX###"
   targetCPUUtilizationPercentage: 80
 
 caBundle: |
-  ###ZARF_VAR_REGISTRY_CA_BUNDLE###
+  ###JACKAL_VAR_REGISTRY_CA_BUNDLE###
 
 extraEnvVars:
-  ###ZARF_VAR_REGISTRY_EXTRA_ENVS###
+  ###JACKAL_VAR_REGISTRY_EXTRA_ENVS###

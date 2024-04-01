@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package external provides a test for interacting with external resources
 package external
@@ -11,8 +11,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/defenseunicorns/zarf/src/pkg/cluster"
-	"github.com/defenseunicorns/zarf/src/pkg/utils/exec"
+	"github.com/defenseunicorns/jackal/src/pkg/cluster"
+	"github.com/defenseunicorns/jackal/src/pkg/utils/exec"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
@@ -72,11 +72,11 @@ func (suite *ExtInClusterTestSuite) TearDownSuite() {
 }
 
 func (suite *ExtInClusterTestSuite) Test_0_Mirror() {
-	// Use Zarf to mirror a package to the services (do this as test 0 so that the registry is unpolluted)
-	mirrorArgs := []string{"package", "mirror-resources", "../../../build/zarf-package-argocd-amd64.tar.zst", "--confirm"}
+	// Use Jackal to mirror a package to the services (do this as test 0 so that the registry is unpolluted)
+	mirrorArgs := []string{"package", "mirror-resources", "../../../build/jackal-package-argocd-amd64.tar.zst", "--confirm"}
 	mirrorArgs = append(mirrorArgs, inClusterCredentialArgs...)
-	err := exec.CmdWithPrint(zarfBinPath, mirrorArgs...)
-	suite.NoError(err, "unable to mirror the package with zarf")
+	err := exec.CmdWithPrint(jackalBinPath, mirrorArgs...)
+	suite.NoError(err, "unable to mirror the package with jackal")
 
 	c, err := cluster.NewCluster()
 	suite.NoError(err)
@@ -116,15 +116,15 @@ func (suite *ExtInClusterTestSuite) Test_0_Mirror() {
 }
 
 func (suite *ExtInClusterTestSuite) Test_1_Deploy() {
-	// Use Zarf to initialize the cluster
+	// Use Jackal to initialize the cluster
 	initArgs := []string{"init", "--confirm"}
 	initArgs = append(initArgs, inClusterCredentialArgs...)
-	err := exec.CmdWithPrint(zarfBinPath, initArgs...)
-	suite.NoError(err, "unable to initialize the k8s server with zarf")
+	err := exec.CmdWithPrint(jackalBinPath, initArgs...)
+	suite.NoError(err, "unable to initialize the k8s server with jackal")
 
 	// Deploy the flux example package
-	deployArgs := []string{"package", "deploy", "../../../build/zarf-package-podinfo-flux-amd64.tar.zst", "--confirm"}
-	err = exec.CmdWithPrint(zarfBinPath, deployArgs...)
+	deployArgs := []string{"package", "deploy", "../../../build/jackal-package-podinfo-flux-amd64.tar.zst", "--confirm"}
+	err = exec.CmdWithPrint(jackalBinPath, deployArgs...)
 	suite.NoError(err, "unable to deploy flux example package")
 
 	// Verify flux was able to pull from the 'external' repository
@@ -133,8 +133,8 @@ func (suite *ExtInClusterTestSuite) Test_1_Deploy() {
 	success := verifyKubectlWaitSuccess(suite.T(), 2, podinfoWaitCmd, errorStr)
 	suite.True(success, errorStr)
 
-	_, _, err = exec.CmdWithContext(context.TODO(), exec.PrintCfg(), zarfBinPath, "destroy", "--confirm")
-	suite.NoError(err, "unable to teardown zarf")
+	_, _, err = exec.CmdWithContext(context.TODO(), exec.PrintCfg(), jackalBinPath, "destroy", "--confirm")
+	suite.NoError(err, "unable to teardown jackal")
 }
 
 func TestExtInClusterTestSuite(t *testing.T) {

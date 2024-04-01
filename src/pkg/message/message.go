@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package message provides a rich set of functions for displaying messages to the user.
 package message
@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/defenseunicorns/zarf/src/config"
+	"github.com/defenseunicorns/jackal/src/config"
 	"github.com/fatih/color"
 	"github.com/pterm/pterm"
 	"github.com/sergi/go-diff/diffmatchpatch"
@@ -81,7 +81,7 @@ func UseLogFile(dir string) (io.Writer, error) {
 	// Prepend the log filename with a timestamp.
 	ts := time.Now().Format("2006-01-02-15-04-05")
 
-	f, err := os.CreateTemp(dir, fmt.Sprintf("zarf-%s-*.log", ts))
+	f, err := os.CreateTemp(dir, fmt.Sprintf("jackal-%s-*.log", ts))
 	if err != nil {
 		return nil, err
 	}
@@ -120,12 +120,12 @@ func DisableColor() {
 	pterm.DisableColor()
 }
 
-// ZarfCommand prints a zarf terminal command.
-func ZarfCommand(format string, a ...any) {
-	Command("zarf "+format, a...)
+// JackalCommand prints a jackal terminal command.
+func JackalCommand(format string, a ...any) {
+	Command("jackal "+format, a...)
 }
 
-// Command prints a zarf terminal command.
+// Command prints a jackal terminal command.
 func Command(format string, a ...any) {
 	style := pterm.NewStyle(pterm.FgWhite, pterm.BgBlack)
 	style.Printfln("$ "+format, a...)

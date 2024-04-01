@@ -3,5 +3,5 @@ import {Redirect} from '@docusaurus/router';
 
 
 export default function Home() {
-  return <Redirect to="/docs/zarf-overview" />;
+  return <Redirect to="/docs/jackal-overview" />;
 };

@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/pkg/cluster"
-	"github.com/defenseunicorns/zarf/src/pkg/k8s"
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/pkg/cluster"
+	"github.com/defenseunicorns/jackal/src/pkg/k8s"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/stretchr/testify/require"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -17,7 +17,7 @@ import (
 	k8sTesting "k8s.io/client-go/testing"
 )
 
-// TestValidatePackageArchitecture verifies that Zarf validates package architecture against cluster architecture correctly.
+// TestValidatePackageArchitecture verifies that Jackal validates package architecture against cluster architecture correctly.
 func TestValidatePackageArchitecture(t *testing.T) {
 	t.Parallel()
 
@@ -92,9 +92,9 @@ func TestValidatePackageArchitecture(t *testing.T) {
 					},
 				},
 				cfg: &types.PackagerConfig{
-					Pkg: types.ZarfPackage{
-						Metadata: types.ZarfMetadata{Architecture: testCase.pkgArch},
-						Components: []types.ZarfComponent{
+					Pkg: types.JackalPackage{
+						Metadata: types.JackalMetadata{Architecture: testCase.pkgArch},
+						Components: []types.JackalComponent{
 							{
 								Images: testCase.images,
 							},
@@ -136,7 +136,7 @@ func TestValidatePackageArchitecture(t *testing.T) {
 	}
 }
 
-// TestValidateLastNonBreakingVersion verifies that Zarf validates the lastNonBreakingVersion of packages against the CLI version correctly.
+// TestValidateLastNonBreakingVersion verifies that Jackal validates the lastNonBreakingVersion of packages against the CLI version correctly.
 func TestValidateLastNonBreakingVersion(t *testing.T) {
 	t.Parallel()
 
@@ -211,8 +211,8 @@ func TestValidateLastNonBreakingVersion(t *testing.T) {
 
 			p := &Packager{
 				cfg: &types.PackagerConfig{
-					Pkg: types.ZarfPackage{
-						Build: types.ZarfBuildData{
+					Pkg: types.JackalPackage{
+						Build: types.JackalBuildData{
 							LastNonBreakingVersion: testCase.lastNonBreakingVersion,
 						},
 					},

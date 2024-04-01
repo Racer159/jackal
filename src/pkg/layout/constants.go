@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package layout contains functions for interacting with Zarf's package layout on disk.
+// Package layout contains functions for interacting with Jackal's package layout on disk.
 package layout
 
 import "path/filepath"
@@ -16,21 +16,21 @@ const (
 	DataInjectionsDir = "data"
 	ValuesDir         = "values"
 
-	ZarfYAML  = "zarf.yaml"
-	Signature = "zarf.yaml.sig"
-	Checksums = "checksums.txt"
+	JackalYAML = "jackal.yaml"
+	Signature  = "jackal.yaml.sig"
+	Checksums  = "checksums.txt"
 
 	ImagesDir     = "images"
 	ComponentsDir = "components"
 
-	SBOMDir = "zarf-sbom"
+	SBOMDir = "jackal-sbom"
 	SBOMTar = "sboms.tar"
 
 	IndexJSON = "index.json"
 	OCILayout = "oci-layout"
 
 	SeedImagesDir        = "seed-images"
-	InjectorBinary       = "zarf-injector"
+	InjectorBinary       = "jackal-injector"
 	InjectorPayloadTarGz = "payload.tgz"
 )
 

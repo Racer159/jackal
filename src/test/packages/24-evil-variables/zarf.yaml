@@ -1,11 +1,11 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: evil-variables
-  description: Test package to demonstrate bad ways to use Zarf variables
+  description: Test package to demonstrate bad ways to use Jackal variables
 
 components:
   - name: bad-set-variables-pattern
-    description: "###ZARF_PKG_TMPL_NUMB3R5###"
+    description: "###JACKAL_PKG_TMPL_NUMB3R5###"
     required: true
     actions:
       onDeploy:

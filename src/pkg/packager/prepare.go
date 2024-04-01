@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package packager contains functions for interacting with, managing and deploying Zarf packages.
+// Package packager contains functions for interacting with, managing and deploying Jackal packages.
 package packager
 
 import (
@@ -14,18 +14,18 @@ import (
 
 	"github.com/goccy/go-yaml"
 
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/internal/packager/helm"
+	"github.com/defenseunicorns/jackal/src/internal/packager/kustomize"
+	"github.com/defenseunicorns/jackal/src/internal/packager/template"
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/creator"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/variables"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/internal/packager/helm"
-	"github.com/defenseunicorns/zarf/src/internal/packager/kustomize"
-	"github.com/defenseunicorns/zarf/src/internal/packager/template"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/creator"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/variables"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/types"
 	"github.com/google/go-containerregistry/pkg/crane"
 	v1 "k8s.io/api/apps/v1"
 	batchv1 "k8s.io/api/batch/v1"
@@ -38,7 +38,7 @@ import (
 // imageMap is a map of image/boolean pairs.
 type imageMap map[string]bool
 
-// FindImages iterates over a Zarf.yaml and attempts to parse any images.
+// FindImages iterates over a Jackal.yaml and attempts to parse any images.
 func (p *Packager) FindImages() (imgMap map[string][]string, err error) {
 	cwd, err := os.Getwd()
 	if err != nil {
@@ -57,7 +57,7 @@ func (p *Packager) FindImages() (imgMap map[string][]string, err error) {
 
 	c := creator.NewPackageCreator(p.cfg.CreateOpts, p.cfg, cwd)
 
-	if err := helpers.CreatePathAndCopy(layout.ZarfYAML, p.layout.ZarfYAML); err != nil {
+	if err := helpers.CreatePathAndCopy(layout.JackalYAML, p.layout.JackalYAML); err != nil {
 		return nil, err
 	}
 
@@ -85,7 +85,7 @@ func (p *Packager) findImages() (imgMap map[string][]string, err error) {
 
 	for _, component := range p.cfg.Pkg.Components {
 		if len(component.Repos) > 0 && repoHelmChartPath == "" {
-			message.Note("This Zarf package contains git repositories, " +
+			message.Note("This Jackal package contains git repositories, " +
 				"if any repos contain helm charts you want to template and " +
 				"search for images, make sure to specify the helm chart path " +
 				"via the --repo-chart-path flag")
@@ -117,7 +117,7 @@ func (p *Packager) findImages() (imgMap map[string][]string, err error) {
 				repoHelmChartPath = strings.TrimPrefix(repoHelmChartPath, "/")
 
 				// If a repo helm chart path is specified,
-				component.Charts = append(component.Charts, types.ZarfChart{
+				component.Charts = append(component.Charts, types.JackalChart{
 					Name:    repo,
 					URL:     matches[0],
 					Version: matches[1],
@@ -154,7 +154,7 @@ func (p *Packager) findImages() (imgMap map[string][]string, err error) {
 		}
 		artifactServer := types.ArtifactServerInfo{}
 		artifactServer.FillInEmptyValues()
-		values.SetState(&types.ZarfState{
+		values.SetState(&types.JackalState{
 			RegistryInfo:   registryInfo,
 			GitServer:      gitServer,
 			ArtifactServer: artifactServer})

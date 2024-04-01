@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package helm contains operations for working with helm charts.
 package helm
@@ -10,14 +10,14 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/internal/packager/git"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/transform"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/internal/packager/git"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/transform"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/types"
 	"helm.sh/helm/v3/pkg/action"
 	"helm.sh/helm/v3/pkg/chart"
 	"helm.sh/helm/v3/pkg/cli"
@@ -170,7 +170,7 @@ func (h *Helm) DownloadPublishedChart(cosignKeyPath string) error {
 
 		if repoFile != nil {
 			// TODO: @AustinAbro321 Currently this selects the last repo with the same url
-			// We should introduce a new field in zarf to allow users to specify the local repo they want
+			// We should introduce a new field in jackal to allow users to specify the local repo they want
 			for _, repo := range repoFile.Repositories {
 				if repo.URL == h.chart.URL {
 					username = repo.Username
@@ -308,14 +308,14 @@ func (h *Helm) buildChartDependencies(spinner *message.Spinner) error {
 	// Build the deps from the helm chart
 	err = man.Build()
 	if e, ok := err.(downloader.ErrRepoNotFound); ok {
-		// If we encounter a repo not found error point the user to `zarf tools helm repo add`
+		// If we encounter a repo not found error point the user to `jackal tools helm repo add`
 		message.Warnf("%s. Please add the missing repo(s) via the following:", e.Error())
 		for _, repository := range e.Repos {
-			message.ZarfCommand(fmt.Sprintf("tools helm repo add <your-repo-name> %s", repository))
+			message.JackalCommand(fmt.Sprintf("tools helm repo add <your-repo-name> %s", repository))
 		}
 	} else if err != nil {
 		// Warn the user of any issues but don't fail - any actual issues will cause a fail during packaging (e.g. the charts we are building may exist already, we just can't get updates)
-		message.ZarfCommand("tools helm dependency build --verify")
+		message.JackalCommand("tools helm dependency build --verify")
 		message.Warnf("Unable to perform a rebuild of Helm dependencies: %s", err.Error())
 	}
 

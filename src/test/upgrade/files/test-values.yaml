@@ -1,5 +1,5 @@
 podAnnotations:
-  zarf.dev/dataInjections: ###ZARF_DATA_INJECTION_MARKER###
+  jackal.dev/dataInjections: ###JACKAL_DATA_INJECTION_MARKER###
 
 resources:
   limits:

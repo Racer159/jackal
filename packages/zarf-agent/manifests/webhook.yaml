@@ -1,9 +1,9 @@
 apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
 metadata:
-  name: zarf
+  name: jackal
 webhooks:
-  - name: agent-pod.zarf.dev
+  - name: agent-pod.jackal.dev
     namespaceSelector:
       matchExpressions:
         - key: "kubernetes.io/metadata.name"
@@ -12,7 +12,7 @@ webhooks:
             # Ensure we don't mess with kube-system
             - "kube-system"
         # Allow ignoring whole namespaces
-        - key: zarf.dev/agent
+        - key: jackal.dev/agent
           operator: NotIn
           values:
             - "skip"
@@ -20,7 +20,7 @@ webhooks:
     objectSelector:
       matchExpressions:
         # Always ignore specific resources if requested by annotation/label
-        - key: zarf.dev/agent
+        - key: jackal.dev/agent
           operator: NotIn
           values:
             - "skip"
@@ -31,9 +31,9 @@ webhooks:
     clientConfig:
       service:
         name: agent-hook
-        namespace: zarf
+        namespace: jackal
         path: "/mutate/pod"
-      caBundle: "###ZARF_AGENT_CA###"
+      caBundle: "###JACKAL_AGENT_CA###"
     rules:
       - operations:
           - "CREATE"
@@ -48,7 +48,7 @@ webhooks:
       - "v1"
       - "v1beta1"
     sideEffects: None
-  - name: agent-flux-gitrepo.zarf.dev
+  - name: agent-flux-gitrepo.jackal.dev
     namespaceSelector:
       matchExpressions:
         # Ensure we don't mess with kube-system
@@ -57,7 +57,7 @@ webhooks:
           values:
             - "kube-system"
         # Allow ignoring whole namespaces
-        - key: zarf.dev/agent
+        - key: jackal.dev/agent
           operator: NotIn
           values:
             - "skip"
@@ -65,7 +65,7 @@ webhooks:
     objectSelector:
       matchExpressions:
         # Always ignore specific resources if requested by annotation/label
-        - key: zarf.dev/agent
+        - key: jackal.dev/agent
           operator: NotIn
           values:
             - "skip"
@@ -73,9 +73,9 @@ webhooks:
     clientConfig:
       service:
         name: agent-hook
-        namespace: zarf
+        namespace: jackal
         path: "/mutate/flux-gitrepository"
-      caBundle: "###ZARF_AGENT_CA###"
+      caBundle: "###JACKAL_AGENT_CA###"
     rules:
       - operations:
           - "CREATE"
@@ -92,7 +92,7 @@ webhooks:
       - "v1"
       - "v1beta1"
     sideEffects: None
-  - name: agent-argocd-application.zarf.dev
+  - name: agent-argocd-application.jackal.dev
     namespaceSelector:
       matchExpressions:
         # Ensure we don't mess with kube-system
@@ -101,7 +101,7 @@ webhooks:
           values:
             - "kube-system"
         # Allow ignoring whole namespaces
-        - key: zarf.dev/agent
+        - key: jackal.dev/agent
           operator: NotIn
           values:
             - "skip"
@@ -109,7 +109,7 @@ webhooks:
     objectSelector:
       matchExpressions:
         # Always ignore specific resources if requested by annotation/label
-        - key: zarf.dev/agent
+        - key: jackal.dev/agent
           operator: NotIn
           values:
             - "skip"
@@ -117,9 +117,9 @@ webhooks:
     clientConfig:
       service:
         name: agent-hook
-        namespace: zarf
+        namespace: jackal
         path: "/mutate/argocd-application"
-      caBundle: "###ZARF_AGENT_CA###"
+      caBundle: "###JACKAL_AGENT_CA###"
     rules:
       - operations:
           - "CREATE"
@@ -134,7 +134,7 @@ webhooks:
       - "v1"
       - "v1beta1"
     sideEffects: None
-  - name: agent-argocd-repository.zarf.dev
+  - name: agent-argocd-repository.jackal.dev
     namespaceSelector:
       matchExpressions:
         # Ensure we don't mess with kube-system
@@ -143,7 +143,7 @@ webhooks:
           values:
             - "kube-system"
         # Allow ignoring whole namespaces
-        - key: zarf.dev/agent
+        - key: jackal.dev/agent
           operator: NotIn
           values:
             - "skip"
@@ -151,7 +151,7 @@ webhooks:
     objectSelector:
       matchExpressions:
         # Always ignore specific resources if requested by annotation/label
-        - key: zarf.dev/agent
+        - key: jackal.dev/agent
           operator: NotIn
           values:
             - "skip"
@@ -163,9 +163,9 @@ webhooks:
     clientConfig:
       service:
         name: agent-hook
-        namespace: zarf
+        namespace: jackal
         path: "/mutate/argocd-repository"
-      caBundle: "###ZARF_AGENT_CA###"
+      caBundle: "###JACKAL_AGENT_CA###"
     rules:
       - operations:
           - "CREATE"

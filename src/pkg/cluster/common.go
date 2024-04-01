@@ -1,18 +1,18 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package cluster contains Zarf-specific cluster management functions.
+// Package cluster contains Jackal-specific cluster management functions.
 package cluster
 
 import (
 	"time"
 
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/k8s"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/k8s"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
 )
 
-// Cluster is a wrapper for the k8s package that provides Zarf-specific cluster management functions.
+// Cluster is a wrapper for the k8s package that provides Jackal-specific cluster management functions.
 type Cluster struct {
 	*k8s.K8s
 }
@@ -20,11 +20,11 @@ type Cluster struct {
 const (
 	// DefaultTimeout is the default time to wait for a cluster to be ready.
 	DefaultTimeout = 30 * time.Second
-	agentLabel     = "zarf.dev/agent"
+	agentLabel     = "jackal.dev/agent"
 )
 
 var labels = k8s.Labels{
-	config.ZarfManagedByLabel: "zarf",
+	config.JackalManagedByLabel: "jackal",
 }
 
 // NewClusterOrDie creates a new Cluster instance and waits up to 30 seconds for the cluster to be ready or throws a fatal error.

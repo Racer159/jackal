@@ -1,7 +1,7 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: composable-packages
-  description: Demo Zarf package composability
+  description: Demo Jackal package composability
 
 components:
   - name: local-games-path
@@ -15,10 +15,10 @@ components:
       path: ../dos-games
       # Example optional custom name to point to in the imported package (default is to use this component's name)
       name: baseline
-    # 'name'd Zarf primitives will merge the arrays together on import:
+    # 'name'd Jackal primitives will merge the arrays together on import:
     # - 'manifests' of the same name will merge namespace, files and kustomizations
     # - 'charts' of the same name will merge namespace, releaseName and valuesFiles
-    # Zarf primitives without matching 'name's will be appended to the end of the primitive's list for that component.
+    # Jackal primitives without matching 'name's will be appended to the end of the primitive's list for that component.
     manifests:
       - name: multi-games
         files:
@@ -34,8 +34,8 @@ components:
       url: oci://🦄/dos-games:1.0.0
       # Example optional custom name to point to in the imported package (default is to use this component's name)
       name: baseline
-    # Un'name'd Zarf primitives will be appended to the end of the primitive's list for that component.
+    # Un'name'd Jackal primitives will be appended to the end of the primitive's list for that component.
     actions:
       onDeploy:
         before:
-          - cmd: ./zarf tools kubectl get -n dos-games deployment -o jsonpath={.items[0].metadata.creationTimestamp}
+          - cmd: ./jackal tools kubectl get -n dos-games deployment -o jsonpath={.items[0].metadata.creationTimestamp}

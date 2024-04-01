@@ -1,4 +1,4 @@
-module github.com/defenseunicorns/zarf
+module github.com/defenseunicorns/jackal
 
 go 1.21.8
 
@@ -16,6 +16,7 @@ require (
 	github.com/anchore/syft v0.100.0
 	github.com/defenseunicorns/pkg/helpers v0.0.2
 	github.com/defenseunicorns/pkg/oci v0.0.1
+	github.com/Racer159/jackal v0.32.6
 	github.com/derailed/k9s v0.31.7
 	github.com/distribution/reference v0.5.0
 	github.com/fairwindsops/pluto/v5 v5.18.4
@@ -312,7 +313,6 @@ require (
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
 	github.com/kevinburke/ssh_config v1.2.0 // indirect
 	github.com/klauspost/compress v1.17.4 // indirect
-	github.com/klauspost/cpuid/v2 v2.2.5 // indirect
 	github.com/klauspost/pgzip v1.2.6 // indirect
 	github.com/knqyf263/go-apk-version v0.0.0-20200609155635-041fdbb8563f // indirect
 	github.com/knqyf263/go-deb-version v0.0.0-20190517075300-09fca494f03d // indirect
@@ -333,7 +333,6 @@ require (
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-localereader v0.0.2-0.20220822084749-2491eb6c1c75 // indirect
 	github.com/mattn/go-runewidth v0.0.15 // indirect
-	github.com/mattn/go-sqlite3 v2.0.3+incompatible // indirect
 	github.com/matttproud/golang_protobuf_extensions/v2 v2.0.0 // indirect
 	github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d // indirect
 	github.com/microsoft/go-rustaudit v0.0.0-20220730194248-4b17361d90a5 // indirect

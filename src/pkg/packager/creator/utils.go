@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package creator contains functions for creating Zarf packages.
+// Package creator contains functions for creating Jackal packages.
 package creator
 
 import (
@@ -9,13 +9,13 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/deprecated"
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/deprecated"
+	"github.com/defenseunicorns/jackal/src/types"
 )
 
 // recordPackageMetadata records various package metadata during package create.
-func recordPackageMetadata(pkg *types.ZarfPackage, createOpts types.ZarfCreateOptions) error {
+func recordPackageMetadata(pkg *types.JackalPackage, createOpts types.JackalCreateOptions) error {
 	now := time.Now()
 	// Just use $USER env variable to avoid CGO issue.
 	// https://groups.google.com/g/golang-dev/c/ZFDDX3ZiJ84.
@@ -37,7 +37,7 @@ func recordPackageMetadata(pkg *types.ZarfPackage, createOpts types.ZarfCreateOp
 
 	pkg.Build.Architecture = pkg.Metadata.Architecture
 
-	// Record the Zarf Version the CLI was built with.
+	// Record the Jackal Version the CLI was built with.
 	pkg.Build.Version = config.CLIVersion
 
 	// Record the time of package creation.
@@ -49,12 +49,12 @@ func recordPackageMetadata(pkg *types.ZarfPackage, createOpts types.ZarfCreateOp
 		deprecated.PluralizeSetVariable,
 	}
 
-	// Record the flavor of Zarf used to build this package (if any).
+	// Record the flavor of Jackal used to build this package (if any).
 	pkg.Build.Flavor = createOpts.Flavor
 
 	pkg.Build.RegistryOverrides = createOpts.RegistryOverrides
 
-	// Record the latest version of Zarf without breaking changes to the package structure.
+	// Record the latest version of Jackal without breaking changes to the package structure.
 	pkg.Build.LastNonBreakingVersion = deprecated.LastNonBreakingVersion
 
 	return nil

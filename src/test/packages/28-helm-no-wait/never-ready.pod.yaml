@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: never-ready-zarf-wait-test
+  name: never-ready-jackal-wait-test
 spec:
   containers:
   - name: alpine

@@ -597,6 +597,8 @@ github.com/defenseunicorns/pkg/helpers v0.0.2 h1:Axfk96vWkYQpya7E/JkghzwITu2F4Go
 github.com/defenseunicorns/pkg/helpers v0.0.2/go.mod h1:F4S5VZLDrlNWQKklzv4v9tFWjjZNhxJ1gT79j4XiLwk=
 github.com/defenseunicorns/pkg/oci v0.0.1 h1:EFRp3NeiwzhOWKpQ6mAxi0l9chnrAvDcIgjMr0o0fkM=
 github.com/defenseunicorns/pkg/oci v0.0.1/go.mod h1:zVBgRjckEAhfdvbnQrnfOP/3M/GYJkIgWtJtY7pjYdo=
+github.com/Racer159/jackal v0.32.6 h1:zWfKmAo898P7OHosKQaiV4E6YjDrqpsryz0BqrQqgg4=
+github.com/Racer159/jackal v0.32.6/go.mod h1:EISjg8T4jZUgc1QAMkX/RNQ0PS4WegKcJDZwztvQ2Bw=
 github.com/deitch/magic v0.0.0-20230404182410-1ff89d7342da h1:ZOjWpVsFZ06eIhnh4mkaceTiVoktdU67+M7KDHJ268M=
 github.com/deitch/magic v0.0.0-20230404182410-1ff89d7342da/go.mod h1:B3tI9iGHi4imdLi4Asdha1Sc6feLMTfPLXh9IUYmysk=
 github.com/depcheck-test/depcheck-test v0.0.0-20220607135614-199033aaa936 h1:foGzavPWwtoyBvjWyKJYDYsyzy+23iBV7NKTwdk+LRY=
@@ -1153,6 +1155,7 @@ github.com/klauspost/compress v1.13.6/go.mod h1:/3/Vjq9QcHkK5uEr5lBEmyoZ1iFhe47e
 github.com/klauspost/compress v1.15.11/go.mod h1:QPwzmACJjUTFsnSHH934V6woptycfrDDJnH7hvFVbGM=
 github.com/klauspost/compress v1.17.4 h1:Ej5ixsIri7BrIjBkRZLTo6ghwrEtHFk7ijlczPW4fZ4=
 github.com/klauspost/compress v1.17.4/go.mod h1:/dCuZOvVtNoHsyb+cuJD3itjs3NbnF6KH9zAO4BDxPM=
+github.com/klauspost/cpuid v1.2.0 h1:NMpwD2G9JSFOE1/TJjGSo5zG7Yb2bTe7eq1jH+irmeE=
 github.com/klauspost/cpuid v1.2.0/go.mod h1:Pj4uuM528wm8OyEC2QMXAi2YiTZ96dNQPGgoMS4s3ek=
 github.com/klauspost/cpuid/v2 v2.0.9/go.mod h1:FInQzS24/EEf25PyTYn52gqo7WaD8xa0213Md/qVLRg=
 github.com/klauspost/cpuid/v2 v2.0.10/go.mod h1:g2LTdtYhdyuGPqyWyv7qRAmj1WBqxuObKfj5c0PQa7c=

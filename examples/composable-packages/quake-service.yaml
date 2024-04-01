@@ -3,11 +3,11 @@ kind: Service
 metadata:
   name: quake
   annotations:
-    zarf.dev/connect-description: "Play quake!!!"
-    zarf.dev/connect-url: "?quake"
+    jackal.dev/connect-description: "Play quake!!!"
+    jackal.dev/connect-url: "?quake"
   labels:
-    # Enables "zarf connect quake"
-    zarf.dev/connect-name: quake
+    # Enables "jackal connect quake"
+    jackal.dev/connect-name: quake
 spec:
   selector:
     app: game

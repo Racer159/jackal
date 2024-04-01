@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package external provides a test for interacting with external resources
 package external
@@ -11,11 +11,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/defenseunicorns/zarf/src/pkg/utils/exec"
-	"github.com/defenseunicorns/zarf/src/test"
+	"github.com/defenseunicorns/jackal/src/pkg/utils/exec"
+	"github.com/defenseunicorns/jackal/src/test"
 )
 
-var zarfBinPath = path.Join("../../../build", test.GetCLIName())
+var jackalBinPath = path.Join("../../../build", test.GetCLIName())
 
 func verifyKubectlWaitSuccess(t *testing.T, timeoutMinutes time.Duration, args []string, onTimeout string) bool {
 	return verifyWaitSuccess(t, timeoutMinutes, "kubectl", args, "condition met", onTimeout)

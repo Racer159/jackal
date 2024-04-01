@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package sources contains core implementations of the PackageSource interface.
 package sources
@@ -7,13 +7,13 @@ package sources
 import (
 	"fmt"
 
+	"github.com/defenseunicorns/jackal/src/internal/packager/validate"
+	"github.com/defenseunicorns/jackal/src/pkg/cluster"
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/filters"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/internal/packager/validate"
-	"github.com/defenseunicorns/zarf/src/pkg/cluster"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/filters"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/types"
 )
 
 var (
@@ -22,7 +22,7 @@ var (
 )
 
 // NewClusterSource creates a new cluster source.
-func NewClusterSource(pkgOpts *types.ZarfPackageOptions) (PackageSource, error) {
+func NewClusterSource(pkgOpts *types.JackalPackageOptions) (PackageSource, error) {
 	if !validate.IsLowercaseNumberHyphenNoStartHyphen(pkgOpts.PackageSource) {
 		return nil, fmt.Errorf("invalid package name %q", pkgOpts.PackageSource)
 	}
@@ -35,15 +35,15 @@ func NewClusterSource(pkgOpts *types.ZarfPackageOptions) (PackageSource, error) 
 
 // ClusterSource is a package source for clusters.
 type ClusterSource struct {
-	*types.ZarfPackageOptions
+	*types.JackalPackageOptions
 	*cluster.Cluster
 }
 
 // LoadPackage loads a package from a cluster.
 //
 // This is not implemented.
-func (s *ClusterSource) LoadPackage(_ *layout.PackagePaths, _ filters.ComponentFilterStrategy, _ bool) (types.ZarfPackage, []string, error) {
-	return types.ZarfPackage{}, nil, fmt.Errorf("not implemented")
+func (s *ClusterSource) LoadPackage(_ *layout.PackagePaths, _ filters.ComponentFilterStrategy, _ bool) (types.JackalPackage, []string, error) {
+	return types.JackalPackage{}, nil, fmt.Errorf("not implemented")
 }
 
 // Collect collects a package from a cluster.
@@ -54,14 +54,14 @@ func (s *ClusterSource) Collect(_ string) (string, error) {
 }
 
 // LoadPackageMetadata loads package metadata from a cluster.
-func (s *ClusterSource) LoadPackageMetadata(dst *layout.PackagePaths, _ bool, _ bool) (types.ZarfPackage, []string, error) {
+func (s *ClusterSource) LoadPackageMetadata(dst *layout.PackagePaths, _ bool, _ bool) (types.JackalPackage, []string, error) {
 	dpkg, err := s.GetDeployedPackage(s.PackageSource)
 	if err != nil {
-		return types.ZarfPackage{}, nil, err
+		return types.JackalPackage{}, nil, err
 	}
 
-	if err := utils.WriteYaml(dst.ZarfYAML, dpkg.Data, helpers.ReadUser); err != nil {
-		return types.ZarfPackage{}, nil, err
+	if err := utils.WriteYaml(dst.JackalYAML, dpkg.Data, helpers.ReadUser); err != nil {
+		return types.JackalPackage{}, nil, err
 	}
 
 	return dpkg.Data, nil, nil

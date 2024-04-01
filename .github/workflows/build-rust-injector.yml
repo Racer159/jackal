@@ -1,4 +1,4 @@
-name: Zarf Injector Rust Binaries
+name: Jackal Injector Rust Binaries
 
 permissions:
   contents: read
@@ -30,11 +30,11 @@ jobs:
           make build-injector-linux
           cd src/injector/target
           mkdir -p ../dist
-          cp x86_64-unknown-linux-musl/release/zarf-injector ../dist/zarf-injector-amd64
-          cp aarch64-unknown-linux-musl/release/zarf-injector ../dist/zarf-injector-arm64
+          cp x86_64-unknown-linux-musl/release/jackal-injector ../dist/jackal-injector-amd64
+          cp aarch64-unknown-linux-musl/release/jackal-injector ../dist/jackal-injector-arm64
           cd ../dist
-          shasum zarf-injector-amd64 >> checksums.txt
-          shasum zarf-injector-arm64 >> checksums.txt
+          shasum jackal-injector-amd64 >> checksums.txt
+          shasum jackal-injector-arm64 >> checksums.txt
 
       - name: Set AWS Credentials
         uses: aws-actions/configure-aws-credentials@010d0da01d0b5a38af31e9c3470dbfdabdecca3a # v4.0.1
@@ -45,4 +45,4 @@ jobs:
 
       - name: Sync Artifacts to S3
         run: |
-          aws s3 sync src/injector/dist/ s3://zarf-public/injector/${{ github.event.inputs.versionTag }}/
+          aws s3 sync src/injector/dist/ s3://jackal-public/injector/${{ github.event.inputs.versionTag }}/

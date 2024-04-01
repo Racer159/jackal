@@ -8,7 +8,7 @@ Accepted
 
 ## Context
 
-Zarf currently supports git servers and container registries within the airgap to host dependencies for applications, and while this works well for most production deployments, it doesn't cater as well to airgap development where you may need artifacts and libraries for various coding languages to compile and develop software.  Zarf's support of `git` is also somewhat lacking in that it only supports flux `GitRepository` objects and does not support more generic use cases where clients try to reach out to upstream `git` hosts in a more native way.
+Jackal currently supports git servers and container registries within the airgap to host dependencies for applications, and while this works well for most production deployments, it doesn't cater as well to airgap development where you may need artifacts and libraries for various coding languages to compile and develop software.  Jackal's support of `git` is also somewhat lacking in that it only supports flux `GitRepository` objects and does not support more generic use cases where clients try to reach out to upstream `git` hosts in a more native way.
 
 ## Decision
 
@@ -17,7 +17,7 @@ Since we already had an artifact registry available to us in Gitea, it was decid
 1. Transform any artifact references statically (i.e. swap upstream URLs in build scripts before bringing them into the environment)
 2. Transform any artifact references dynamically (i.e. swap upstream URLs in an active proxy that any build scripts could pickup through DNS)
 
-It was decided to go with #2 since this would allow us to support a wider array of build technologies (including those that wrap existing commands like Buck/Bazel/Make) as well as support builds that may be coming from resources not brought in by Zarf.  This allows for more flexibility in how Zarf could transform URLs while allowing these commands to run as they would on the internet side without any modification.
+It was decided to go with #2 since this would allow us to support a wider array of build technologies (including those that wrap existing commands like Buck/Bazel/Make) as well as support builds that may be coming from resources not brought in by Jackal.  This allows for more flexibility in how Jackal could transform URLs while allowing these commands to run as they would on the internet side without any modification.
 
 ## Consequences
 

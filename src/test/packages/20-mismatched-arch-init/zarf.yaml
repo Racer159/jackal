@@ -1,7 +1,7 @@
-kind: ZarfInitConfig
+kind: JackalInitConfig
 metadata:
   name: init
-  description: Used to establish a new Zarf cluster
+  description: Used to establish a new Jackal cluster
 
 components:
   - name: k3s
@@ -9,4 +9,4 @@ components:
       path: ../../../../packages/distros/k3s
 
   # This test package skips everything else since we explicitly expect 'expectedErrorMessage'
-  # to come from the `k3s` package or from Zarf checking an already existing cluster
+  # to come from the `k3s` package or from Jackal checking an already existing cluster

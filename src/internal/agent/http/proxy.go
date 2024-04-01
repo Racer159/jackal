@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package http provides a http server for the webhook and proxy.
 package http
@@ -13,10 +13,10 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/internal/agent/state"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/transform"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/internal/agent/state"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/transform"
 )
 
 // ProxyHandler constructs a new httputil.ReverseProxy and returns an http handler.
@@ -45,7 +45,7 @@ func proxyRequestTransform(r *http.Request) error {
 	// We remove this so that go will encode and decode on our behalf (see https://pkg.go.dev/net/http#Transport DisableCompression)
 	r.Header.Del("Accept-Encoding")
 
-	zarfState, err := state.GetZarfStateFromAgentPod()
+	jackalState, err := state.GetJackalStateFromAgentPod()
 	if err != nil {
 		return err
 	}
@@ -55,31 +55,31 @@ func proxyRequestTransform(r *http.Request) error {
 	// Setup authentication for each type of service based on User Agent
 	switch {
 	case isGitUserAgent(r.UserAgent()):
-		r.SetBasicAuth(zarfState.GitServer.PushUsername, zarfState.GitServer.PushPassword)
+		r.SetBasicAuth(jackalState.GitServer.PushUsername, jackalState.GitServer.PushPassword)
 	case isNpmUserAgent(r.UserAgent()):
-		r.Header.Set("Authorization", "Bearer "+zarfState.ArtifactServer.PushToken)
+		r.Header.Set("Authorization", "Bearer "+jackalState.ArtifactServer.PushToken)
 	default:
-		r.SetBasicAuth(zarfState.ArtifactServer.PushUsername, zarfState.ArtifactServer.PushToken)
+		r.SetBasicAuth(jackalState.ArtifactServer.PushUsername, jackalState.ArtifactServer.PushToken)
 	}
 
 	// Transform the URL; if we see the NoTransform prefix, strip it; otherwise, transform the URL based on User Agent
 	if strings.HasPrefix(r.URL.Path, transform.NoTransform) {
 		switch {
 		case isGitUserAgent(r.UserAgent()):
-			targetURL, err = transform.NoTransformTarget(zarfState.GitServer.Address, r.URL.Path)
+			targetURL, err = transform.NoTransformTarget(jackalState.GitServer.Address, r.URL.Path)
 		default:
-			targetURL, err = transform.NoTransformTarget(zarfState.ArtifactServer.Address, r.URL.Path)
+			targetURL, err = transform.NoTransformTarget(jackalState.ArtifactServer.Address, r.URL.Path)
 		}
 	} else {
 		switch {
 		case isGitUserAgent(r.UserAgent()):
-			targetURL, err = transform.GitURL(zarfState.GitServer.Address, getTLSScheme(r.TLS)+r.Host+r.URL.String(), zarfState.GitServer.PushUsername)
+			targetURL, err = transform.GitURL(jackalState.GitServer.Address, getTLSScheme(r.TLS)+r.Host+r.URL.String(), jackalState.GitServer.PushUsername)
 		case isPipUserAgent(r.UserAgent()):
-			targetURL, err = transform.PipTransformURL(zarfState.ArtifactServer.Address, getTLSScheme(r.TLS)+r.Host+r.URL.String())
+			targetURL, err = transform.PipTransformURL(jackalState.ArtifactServer.Address, getTLSScheme(r.TLS)+r.Host+r.URL.String())
 		case isNpmUserAgent(r.UserAgent()):
-			targetURL, err = transform.NpmTransformURL(zarfState.ArtifactServer.Address, getTLSScheme(r.TLS)+r.Host+r.URL.String())
+			targetURL, err = transform.NpmTransformURL(jackalState.ArtifactServer.Address, getTLSScheme(r.TLS)+r.Host+r.URL.String())
 		default:
-			targetURL, err = transform.GenTransformURL(zarfState.ArtifactServer.Address, getTLSScheme(r.TLS)+r.Host+r.URL.String())
+			targetURL, err = transform.GenTransformURL(jackalState.ArtifactServer.Address, getTLSScheme(r.TLS)+r.Host+r.URL.String())
 		}
 	}
 
@@ -100,7 +100,7 @@ func proxyRequestTransform(r *http.Request) error {
 func proxyResponseTransform(resp *http.Response) error {
 	message.Debugf("Before Resp %#v", resp)
 
-	// Handle redirection codes (3xx) by adding a marker to let Zarf know this has been redirected
+	// Handle redirection codes (3xx) by adding a marker to let Jackal know this has been redirected
 	if resp.StatusCode/100 == 3 {
 		message.Debugf("Before Resp Location %#v", resp.Header.Get("Location"))
 

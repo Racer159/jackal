@@ -1,4 +1,4 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: big-bang-example
   description: Deploy Big Bang Core
@@ -20,26 +20,26 @@ components:
       onRemove:
         before:
           - cmd: |
-              ./zarf tools kubectl patch helmrelease -n bigbang bigbang --type=merge -p '{"spec":{"suspend":true}}'
-              ./zarf tools kubectl delete helmrelease -n bigbang istio --ignore-not-found
-              ./zarf tools kubectl delete helmrelease -n bigbang istio-operator --ignore-not-found
-              ./zarf tools kubectl delete helmrelease -n bigbang monitoring --ignore-not-found
-              ./zarf tools kubectl delete providers grafana -n monitoring --ignore-not-found
-              ./zarf tools kubectl delete alerts grafana -n monitoring --ignore-not-found
-              ./zarf tools kubectl delete helmrelease -n bigbang promtail --ignore-not-found
-              ./zarf tools kubectl delete helmrelease -n bigbang loki --ignore-not-found
-              ./zarf tools kubectl delete kiali -n kiali kiali --ignore-not-found
-              ./zarf tools kubectl delete helmrelease -n bigbang tempo --ignore-not-found
-              ./zarf tools kubectl delete helmrelease -n bigbang neuvector --ignore-not-found
-              ./zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io neuvector-validating-crd-webhook --ignore-not-found
-              ./zarf tools kubectl delete helmrelease -n bigbang kyverno-reporter --ignore-not-found
-              ./zarf tools kubectl delete helmrelease -n bigbang kyverno-policies --ignore-not-found
-              ./zarf tools kubectl delete helmrelease -n bigbang kyverno --ignore-not-found
-              ./zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io kyverno-policy-validating-webhook-cfg kyverno-resource-validating-webhook-cfg --ignore-not-found
-              ./zarf tools kubectl delete helmrelease -n bigbang kiali --ignore-not-found
-              ./zarf tools kubectl delete helmrelease -n bigbang metrics-server --ignore-not-found
-              ./zarf tools kubectl delete apiservices.apiregistration.k8s.io -l helm.toolkit.fluxcd.io/namespace=bigbang,helm.toolkit.fluxcd.io/name=metrics-server --ignore-not-found
-              ./zarf tools kubectl delete gitrepositories -n bigbang -l app.kubernetes.io/part-of=bigbang
+              ./jackal tools kubectl patch helmrelease -n bigbang bigbang --type=merge -p '{"spec":{"suspend":true}}'
+              ./jackal tools kubectl delete helmrelease -n bigbang istio --ignore-not-found
+              ./jackal tools kubectl delete helmrelease -n bigbang istio-operator --ignore-not-found
+              ./jackal tools kubectl delete helmrelease -n bigbang monitoring --ignore-not-found
+              ./jackal tools kubectl delete providers grafana -n monitoring --ignore-not-found
+              ./jackal tools kubectl delete alerts grafana -n monitoring --ignore-not-found
+              ./jackal tools kubectl delete helmrelease -n bigbang promtail --ignore-not-found
+              ./jackal tools kubectl delete helmrelease -n bigbang loki --ignore-not-found
+              ./jackal tools kubectl delete kiali -n kiali kiali --ignore-not-found
+              ./jackal tools kubectl delete helmrelease -n bigbang tempo --ignore-not-found
+              ./jackal tools kubectl delete helmrelease -n bigbang neuvector --ignore-not-found
+              ./jackal tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io neuvector-validating-crd-webhook --ignore-not-found
+              ./jackal tools kubectl delete helmrelease -n bigbang kyverno-reporter --ignore-not-found
+              ./jackal tools kubectl delete helmrelease -n bigbang kyverno-policies --ignore-not-found
+              ./jackal tools kubectl delete helmrelease -n bigbang kyverno --ignore-not-found
+              ./jackal tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io kyverno-policy-validating-webhook-cfg kyverno-resource-validating-webhook-cfg --ignore-not-found
+              ./jackal tools kubectl delete helmrelease -n bigbang kiali --ignore-not-found
+              ./jackal tools kubectl delete helmrelease -n bigbang metrics-server --ignore-not-found
+              ./jackal tools kubectl delete apiservices.apiregistration.k8s.io -l helm.toolkit.fluxcd.io/namespace=bigbang,helm.toolkit.fluxcd.io/name=metrics-server --ignore-not-found
+              ./jackal tools kubectl delete gitrepositories -n bigbang -l app.kubernetes.io/part-of=bigbang
             description: "Cleaning up Big Bang resources"
     extensions:
       bigbang:
@@ -58,10 +58,10 @@ components:
           # - config/disable-all.yaml
   - name: gitea-virtual-service
     description: >
-      Expose the internal Zarf Gitea server through the Big Bang Istio deployment via a virtual service.
-      (only applies if you are using the Zarf-provided Gitea deployment - not an externally configured git host)
+      Expose the internal Jackal Gitea server through the Big Bang Istio deployment via a virtual service.
+      (only applies if you are using the Jackal-provided Gitea deployment - not an externally configured git host)
     manifests:
       - name: gitea
-        namespace: zarf
+        namespace: jackal
         files:
           - virtualservices/gitea.yaml

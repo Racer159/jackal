@@ -37,7 +37,7 @@ jobs:
         run: make test-unit
         shell: pwsh
 
-      - name: Build Windows binary and zarf packages
+      - name: Build Windows binary and jackal packages
         uses: ./.github/actions/packages
         with:
           init-package: "false"

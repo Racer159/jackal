@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package common handles command configuration across all commands
 package common
@@ -8,9 +8,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
 	"github.com/spf13/viper"
 )
 
@@ -24,7 +24,7 @@ const (
 	VNoLogFile    = "no_log_file"
 	VNoProgress   = "no_progress"
 	VNoColor      = "no_color"
-	VZarfCache    = "zarf_cache"
+	VJackalCache  = "jackal_cache"
 	VTmpDir       = "tmp_dir"
 	VInsecure     = "insecure"
 
@@ -123,21 +123,21 @@ func InitViper() *viper.Viper {
 	}
 
 	// Specify an alternate config file
-	cfgFile := os.Getenv("ZARF_CONFIG")
+	cfgFile := os.Getenv("JACKAL_CONFIG")
 
 	// Don't forget to read config either from cfgFile or from home directory!
 	if cfgFile != "" {
 		// Use config file from the flag.
 		v.SetConfigFile(cfgFile)
 	} else {
-		// Search config paths in the current directory and $HOME/.zarf.
+		// Search config paths in the current directory and $HOME/.jackal.
 		v.AddConfigPath(".")
-		v.AddConfigPath("$HOME/.zarf")
-		v.SetConfigName("zarf-config")
+		v.AddConfigPath("$HOME/.jackal")
+		v.SetConfigName("jackal-config")
 	}
 
-	// E.g. ZARF_LOG_LEVEL=debug
-	v.SetEnvPrefix("zarf")
+	// E.g. JACKAL_LOG_LEVEL=debug
+	v.SetEnvPrefix("jackal")
 	v.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 	v.AutomaticEnv()
 
@@ -181,12 +181,12 @@ func printViperConfigUsed() {
 func setDefaults() {
 	// Root defaults that are non-zero values
 	v.SetDefault(VLogLevel, "info")
-	v.SetDefault(VZarfCache, config.ZarfDefaultCachePath)
+	v.SetDefault(VJackalCache, config.JackalDefaultCachePath)
 
 	// Package defaults that are non-zero values
 	v.SetDefault(VPkgOCIConcurrency, 3)
-	v.SetDefault(VPkgRetries, config.ZarfDefaultRetries)
+	v.SetDefault(VPkgRetries, config.JackalDefaultRetries)
 
 	// Deploy opts that are non-zero values
-	v.SetDefault(VPkgDeployTimeout, config.ZarfDefaultTimeout)
+	v.SetDefault(VPkgDeployTimeout, config.JackalDefaultTimeout)
 }

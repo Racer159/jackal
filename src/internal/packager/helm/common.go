@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package helm contains operations for working with helm charts.
 package helm
@@ -14,10 +14,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/cluster"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/cluster"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/types"
 	"helm.sh/helm/v3/pkg/action"
 	"helm.sh/helm/v3/pkg/chart"
 	"helm.sh/helm/v3/pkg/cli"
@@ -25,12 +25,12 @@ import (
 
 // Helm is a config object for working with helm charts.
 type Helm struct {
-	chart      types.ZarfChart
+	chart      types.JackalChart
 	chartPath  string
 	valuesPath string
 
 	cfg       *types.PackagerConfig
-	component types.ZarfComponent
+	component types.JackalComponent
 	cluster   *cluster.Cluster
 	timeout   time.Duration
 	retries   int
@@ -48,12 +48,12 @@ type Helm struct {
 type Modifier func(*Helm)
 
 // New returns a new Helm config struct.
-func New(chart types.ZarfChart, chartPath string, valuesPath string, mods ...Modifier) *Helm {
+func New(chart types.JackalChart, chartPath string, valuesPath string, mods ...Modifier) *Helm {
 	h := &Helm{
 		chart:      chart,
 		chartPath:  chartPath,
 		valuesPath: valuesPath,
-		timeout:    config.ZarfDefaultTimeout,
+		timeout:    config.JackalDefaultTimeout,
 	}
 
 	for _, mod := range mods {
@@ -68,13 +68,13 @@ func NewClusterOnly(cfg *types.PackagerConfig, cluster *cluster.Cluster) *Helm {
 	return &Helm{
 		cfg:     cfg,
 		cluster: cluster,
-		timeout: config.ZarfDefaultTimeout,
-		retries: config.ZarfDefaultRetries,
+		timeout: config.JackalDefaultTimeout,
+		retries: config.JackalDefaultRetries,
 	}
 }
 
-// NewFromZarfManifest generates a helm chart and config from a given Zarf manifest.
-func NewFromZarfManifest(manifest types.ZarfManifest, manifestPath, packageName, componentName string, mods ...Modifier) (h *Helm, err error) {
+// NewFromJackalManifest generates a helm chart and config from a given Jackal manifest.
+func NewFromJackalManifest(manifest types.JackalManifest, manifestPath, packageName, componentName string, mods ...Modifier) (h *Helm, err error) {
 	spinner := message.NewProgressSpinner("Starting helm chart generation %s", manifest.Name)
 	defer spinner.Stop()
 
@@ -111,16 +111,16 @@ func NewFromZarfManifest(manifest types.ZarfManifest, manifestPath, packageName,
 
 	// Generate the struct to pass to InstallOrUpgradeChart().
 	h = &Helm{
-		chart: types.ZarfChart{
+		chart: types.JackalChart{
 			Name: tmpChart.Metadata.Name,
-			// Preserve the zarf prefix for chart names to match v0.22.x and earlier behavior.
-			ReleaseName: fmt.Sprintf("zarf-%s", sha1ReleaseName),
+			// Preserve the jackal prefix for chart names to match v0.22.x and earlier behavior.
+			ReleaseName: fmt.Sprintf("jackal-%s", sha1ReleaseName),
 			Version:     tmpChart.Metadata.Version,
 			Namespace:   manifest.Namespace,
 			NoWait:      manifest.NoWait,
 		},
 		chartOverride: tmpChart,
-		timeout:       config.ZarfDefaultTimeout,
+		timeout:       config.JackalDefaultTimeout,
 	}
 
 	for _, mod := range mods {
@@ -133,7 +133,7 @@ func NewFromZarfManifest(manifest types.ZarfManifest, manifestPath, packageName,
 }
 
 // WithDeployInfo adds the necessary information to deploy a given chart
-func WithDeployInfo(component types.ZarfComponent, cfg *types.PackagerConfig, cluster *cluster.Cluster, valuesOverrides map[string]any, timeout time.Duration, retries int) Modifier {
+func WithDeployInfo(component types.JackalComponent, cfg *types.PackagerConfig, cluster *cluster.Cluster, valuesOverrides map[string]any, timeout time.Duration, retries int) Modifier {
 	return func(h *Helm) {
 		h.component = component
 		h.cfg = cfg
@@ -158,12 +158,12 @@ func WithPackageConfig(cfg *types.PackagerConfig) Modifier {
 	}
 }
 
-// StandardName generates a predictable full path for a helm chart for Zarf.
-func StandardName(destination string, chart types.ZarfChart) string {
+// StandardName generates a predictable full path for a helm chart for Jackal.
+func StandardName(destination string, chart types.JackalChart) string {
 	return filepath.Join(destination, chart.Name+"-"+chart.Version)
 }
 
-// StandardValuesName generates a predictable full path for the values file for a helm chart for zarf
-func StandardValuesName(destination string, chart types.ZarfChart, idx int) string {
+// StandardValuesName generates a predictable full path for the values file for a helm chart for jackal
+func StandardValuesName(destination string, chart types.JackalChart, idx int) string {
 	return fmt.Sprintf("%s-%d", StandardName(destination, chart), idx)
 }

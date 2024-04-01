@@ -1,29 +1,29 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package hooks contains the mutation hooks for the Zarf agent.
+// Package hooks contains the mutation hooks for the Jackal agent.
 package hooks
 
 import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/internal/agent/operations"
+	"github.com/defenseunicorns/jackal/src/internal/agent/state"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/transform"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/internal/agent/operations"
-	"github.com/defenseunicorns/zarf/src/internal/agent/state"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/transform"
-	"github.com/defenseunicorns/zarf/src/types"
 	v1 "k8s.io/api/admission/v1"
 )
 
-// Source represents a subset of the Argo Source object needed for Zarf Git URL mutations
+// Source represents a subset of the Argo Source object needed for Jackal Git URL mutations
 type Source struct {
 	RepoURL string `json:"repoURL"`
 }
 
-// ArgoApplication represents a subset of the Argo Application object needed for Zarf Git URL mutations
+// ArgoApplication represents a subset of the Argo Application object needed for Jackal Git URL mutations
 type ArgoApplication struct {
 	Spec struct {
 		Source  Source   `json:"source"`
@@ -32,11 +32,11 @@ type ArgoApplication struct {
 }
 
 var (
-	zarfState *types.ZarfState
-	patches   []operations.PatchOperation
-	isPatched bool
-	isCreate  bool
-	isUpdate  bool
+	jackalState *types.JackalState
+	patches     []operations.PatchOperation
+	isPatched   bool
+	isCreate    bool
+	isUpdate    bool
 )
 
 // NewApplicationMutationHook creates a new instance of the ArgoCD Application mutation hook.
@@ -48,7 +48,7 @@ func NewApplicationMutationHook() operations.Hook {
 	}
 }
 
-// mutateApplication mutates the git repository url to point to the repository URL defined in the ZarfState.
+// mutateApplication mutates the git repository url to point to the repository URL defined in the JackalState.
 func mutateApplication(r *v1.AdmissionRequest) (result *operations.Result, err error) {
 
 	isCreate = r.Operation == v1.Create
@@ -56,12 +56,12 @@ func mutateApplication(r *v1.AdmissionRequest) (result *operations.Result, err e
 
 	patches = []operations.PatchOperation{}
 
-	// Form the zarfState.GitServer.Address from the zarfState
-	if zarfState, err = state.GetZarfStateFromAgentPod(); err != nil {
+	// Form the jackalState.GitServer.Address from the jackalState
+	if jackalState, err = state.GetJackalStateFromAgentPod(); err != nil {
 		return nil, fmt.Errorf(lang.AgentErrGetState, err)
 	}
 
-	message.Debugf("Using the url of (%s) to mutate the ArgoCD Application", zarfState.GitServer.Address)
+	message.Debugf("Using the url of (%s) to mutate the ArgoCD Application", jackalState.GitServer.Address)
 
 	// parse to simple struct to read the git url
 	src := &ArgoApplication{}
@@ -94,11 +94,11 @@ func getPatchedRepoURL(repoURL string) (string, error) {
 	var err error
 	patchedURL := repoURL
 
-	// Check if this is an update operation and the hostname is different from what we have in the zarfState
-	// NOTE: We mutate on updates IF AND ONLY IF the hostname in the request is different from the hostname in the zarfState
+	// Check if this is an update operation and the hostname is different from what we have in the jackalState
+	// NOTE: We mutate on updates IF AND ONLY IF the hostname in the request is different from the hostname in the jackalState
 	// NOTE: We are checking if the hostname is different before because we do not want to potentially mutate a URL that has already been mutated.
 	if isUpdate {
-		isPatched, err = helpers.DoHostnamesMatch(zarfState.GitServer.Address, repoURL)
+		isPatched, err = helpers.DoHostnamesMatch(jackalState.GitServer.Address, repoURL)
 		if err != nil {
 			return "", fmt.Errorf(lang.AgentErrHostnameMatch, err)
 		}
@@ -106,8 +106,8 @@ func getPatchedRepoURL(repoURL string) (string, error) {
 
 	// Mutate the repoURL if necessary
 	if isCreate || (isUpdate && !isPatched) {
-		// Mutate the git URL so that the hostname matches the hostname in the Zarf state
-		transformedURL, err := transform.GitURL(zarfState.GitServer.Address, patchedURL, zarfState.GitServer.PushUsername)
+		// Mutate the git URL so that the hostname matches the hostname in the Jackal state
+		transformedURL, err := transform.GitURL(jackalState.GitServer.Address, patchedURL, jackalState.GitServer.PushUsername)
 		if err != nil {
 			message.Warnf("Unable to transform the repoURL, using the original url we have: %s", patchedURL)
 		}

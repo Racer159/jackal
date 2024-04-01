@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package test provides e2e tests for Zarf.
+// Package test provides e2e tests for Jackal.
 package test
 
 import (
@@ -31,8 +31,8 @@ func (suite *CompositionSuite) SetupSuite() {
 	suite.Assertions = require.New(suite.T())
 
 	// Setup the package paths after e2e has been initialized
-	composeExamplePath = filepath.Join("build", fmt.Sprintf("zarf-package-composable-packages-%s.tar.zst", e2e.Arch))
-	composeTestPath = filepath.Join("build", fmt.Sprintf("zarf-package-test-compose-package-%s.tar.zst", e2e.Arch))
+	composeExamplePath = filepath.Join("build", fmt.Sprintf("jackal-package-composable-packages-%s.tar.zst", e2e.Arch))
+	composeTestPath = filepath.Join("build", fmt.Sprintf("jackal-package-test-compose-package-%s.tar.zst", e2e.Arch))
 }
 
 func (suite *CompositionSuite) TearDownSuite() {
@@ -45,7 +45,7 @@ func (suite *CompositionSuite) TearDownSuite() {
 func (suite *CompositionSuite) Test_0_ComposabilityExample() {
 	suite.T().Log("E2E: Package Compose Example")
 
-	_, stdErr, err := e2e.Zarf("package", "create", composeExample, "-o", "build", "--no-color", "--confirm")
+	_, stdErr, err := e2e.Jackal("package", "create", composeExample, "-o", "build", "--no-color", "--confirm")
 	suite.NoError(err)
 
 	// Ensure that common names merge
@@ -61,17 +61,17 @@ func (suite *CompositionSuite) Test_0_ComposabilityExample() {
 
 	// Ensure that the action was appended
 	suite.Contains(stdErr, `
-  - defenseunicorns/zarf-game:multi-tile-dark
+  - defenseunicorns/jackal-game:multi-tile-dark
   actions:
     onDeploy:
       before:
-      - cmd: ./zarf tools kubectl get -n dos-games deployment -o jsonpath={.items[0].metadata.creationTimestamp}`)
+      - cmd: ./jackal tools kubectl get -n dos-games deployment -o jsonpath={.items[0].metadata.creationTimestamp}`)
 }
 
 func (suite *CompositionSuite) Test_1_FullComposability() {
 	suite.T().Log("E2E: Full Package Compose")
 
-	_, stdErr, err := e2e.Zarf("package", "create", composeTest, "-o", "build", "--no-color", "--confirm")
+	_, stdErr, err := e2e.Jackal("package", "create", composeTest, "-o", "build", "--no-color", "--confirm")
 	suite.NoError(err)
 
 	// Ensure that names merge and that composition is added appropriately
@@ -79,7 +79,7 @@ func (suite *CompositionSuite) Test_1_FullComposability() {
 	// Check metadata
 	suite.Contains(stdErr, `
 - name: test-compose-package
-  description: A contrived example for podinfo using many Zarf primitives for compose testing
+  description: A contrived example for podinfo using many Jackal primitives for compose testing
   required: true
   only:
     localOS: linux
@@ -139,8 +139,8 @@ func (suite *CompositionSuite) Test_1_FullComposability() {
   - ghcr.io/stefanprodan/podinfo:6.4.0
   - ghcr.io/stefanprodan/podinfo:6.4.1
   repos:
-  - https://github.com/defenseunicorns/zarf-public-test.git
-  - https://github.com/defenseunicorns/zarf-public-test.git@refs/heads/dragons
+  - https://github.com/defenseunicorns/jackal-public-test.git
+  - https://github.com/defenseunicorns/jackal-public-test.git@refs/heads/dragons
 `)
 
 	// Check dataInjections
@@ -183,7 +183,7 @@ func (suite *CompositionSuite) Test_1_FullComposability() {
 func (suite *CompositionSuite) Test_2_ComposabilityBadLocalOS() {
 	suite.T().Log("E2E: Package Compose Example")
 
-	_, stdErr, err := e2e.Zarf("package", "create", composeTestBadLocalOS, "-o", "build", "--no-color", "--confirm")
+	_, stdErr, err := e2e.Jackal("package", "create", composeTestBadLocalOS, "-o", "build", "--no-color", "--confirm")
 	suite.Error(err)
 	suite.Contains(stdErr, "\"only.localOS\" \"linux\" cannot be\n             redefined as \"windows\" during compose")
 }

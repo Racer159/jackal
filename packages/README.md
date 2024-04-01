@@ -1,23 +1,23 @@
-# Zarf Packages
+# Jackal Packages
 
-This folder contains packages maintained by the [Zarf team](https://github.com/defenseunicorns/zarf/graphs/contributors).  Some of these packages are used by `zarf init` for new cluster initialization.
+This folder contains packages maintained by the [Jackal team](https://github.com/defenseunicorns/jackal/graphs/contributors).  Some of these packages are used by `jackal init` for new cluster initialization.
 
 **Packages**
-- [Zarf Packages](#zarf-packages)
+- [Jackal Packages](#jackal-packages)
     - [Distros](#distros)
       - [Usage Examples](#usage-examples)
     - [Gitea](#gitea)
     - [Logging PGL](#logging-pgl)
-    - [Zarf Agent](#zarf-agent)
-    - [Zarf Registry](#zarf-registry)
+    - [Jackal Agent](#jackal-agent)
+    - [Jackal Registry](#jackal-registry)
 
 ### Distros
 
 The distros package adds optional capabilities for spinning up and tearing down clusters.  Currently, the following distros are supported:
 
-- [EKS](https://aws.amazon.com/eks/) - Zarf deploys and tears down using the `eksctl` binary under the hood. See how it's done in the EKS package's [`zarf.yaml`](./distros/eks/zarf.yaml) and checkout the [EKS package's config](./distros/eks/eks.yaml) for more information.
+- [EKS](https://aws.amazon.com/eks/) - Jackal deploys and tears down using the `eksctl` binary under the hood. See how it's done in the EKS package's [`jackal.yaml`](./distros/eks/jackal.yaml) and checkout the [EKS package's config](./distros/eks/eks.yaml) for more information.
 
-- [k3s](https://k3s.io/) - Zarf deploys and tears down using the `k3s` service under the hood. See how it's done in the k3s package's [`zarf.yaml`](./distros/k3s/common/zarf.yaml).
+- [k3s](https://k3s.io/) - Jackal deploys and tears down using the `k3s` service under the hood. See how it's done in the k3s package's [`jackal.yaml`](./distros/k3s/common/jackal.yaml).
 
 
 #### Usage Examples  
@@ -27,9 +27,9 @@ The distros package adds optional capabilities for spinning up and tearing down 
 > **Note** - requires `eksctl` credentials.
 
 ```bash
-zarf package create packages/distros/eks -o build --confirm
+jackal package create packages/distros/eks -o build --confirm
 
-zarf package deploy build/zarf-package-distro-eks-amd64-x.x.x.tar.zst --components=deploy-eks-cluster --set=CLUSTER_NAME='zarf-nightly-eks-e2e-test',INSTANCE_TYPE='t3.medium' --confirm
+jackal package deploy build/jackal-package-distro-eks-amd64-x.x.x.tar.zst --components=deploy-eks-cluster --set=CLUSTER_NAME='jackal-nightly-eks-e2e-test',INSTANCE_TYPE='t3.medium' --confirm
 ```
 
 See the [nightly-eks test](../.github/workflows/nightly-eks.yml) for another example.
@@ -39,17 +39,17 @@ See the [nightly-eks test](../.github/workflows/nightly-eks.yml) for another exa
 > **Note** - requires `systemd` and `root` access only (no `sudo`) on a linux machine.
 
 ```bash
-zarf init --components=k3s
+jackal init --components=k3s
 ```
 
 ### Gitea
 
-Users who rely heavily on GitOps find it useful to deploy an internal Git repository.  Zarf uses [Gitea](https://gitea.io/en-us/) to provide this functionality.  The Gitea package deploys a Gitea instance to the cluster and configures it to use the credentials in the `private-git-server` secret in the Zarf namespace.
+Users who rely heavily on GitOps find it useful to deploy an internal Git repository.  Jackal uses [Gitea](https://gitea.io/en-us/) to provide this functionality.  The Gitea package deploys a Gitea instance to the cluster and configures it to use the credentials in the `private-git-server` secret in the Jackal namespace.
 
 _usage_
 
 ```bash
-zarf init --components=git-server
+jackal init --components=git-server
 ```
 
 ### Logging PGL
@@ -59,20 +59,20 @@ The Logging PGL package deploys the Promtail, Grafana, and Loki stack which aggr
 _usage_
 
 ```bash
-zarf init --components=logging
+jackal init --components=logging
 ```
 
-### Zarf Agent
+### Jackal Agent
 
-The Zarf Agent is a mutating admission controller used to modify the image property within a PodSpec. The purpose is to redirect it to Zarf's configured registry instead of the the original registry (such as DockerHub, GHCR, or Quay). Additionally, the webhook attaches the appropriate `ImagePullSecret` for the seed registry to the pod. This configuration allows the pod to successfully retrieve the image from the seed registry, even when operating in an air-gapped environment.
+The Jackal Agent is a mutating admission controller used to modify the image property within a PodSpec. The purpose is to redirect it to Jackal's configured registry instead of the the original registry (such as DockerHub, GHCR, or Quay). Additionally, the webhook attaches the appropriate `ImagePullSecret` for the seed registry to the pod. This configuration allows the pod to successfully retrieve the image from the seed registry, even when operating in an air-gapped environment.
 
 ```bash
-$ zarf tools kubectl get deploy -n zarf agent-hook
+$ jackal tools kubectl get deploy -n jackal agent-hook
 
 NAME         READY   UP-TO-DATE   AVAILABLE   AGE
 agent-hook   2/2     2            2           17m
 ```
 
-### Zarf Registry
+### Jackal Registry
 
-The Zarf internal registry is utilized to store container images for use in air-gapped environments.  The registry is deployed as a `Deployment` with a single replica and  a `PersistentVolumeClaim` to store the images.  Credentials for basic authentication are autogenerated and stored within a secret in the `zarf` namespace. The internal registry is `HTTP` only.
+The Jackal internal registry is utilized to store container images for use in air-gapped environments.  The registry is deployed as a `Deployment` with a single replica and  a `PersistentVolumeClaim` to store the images.  Credentials for basic authentication are autogenerated and stored within a secret in the `jackal` namespace. The internal registry is `HTTP` only.

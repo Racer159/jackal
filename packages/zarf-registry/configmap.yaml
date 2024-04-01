@@ -6,5 +6,5 @@ metadata:
   namespace: kube-public
 data:
   localRegistryHosting.v1: |
-    host: "###ZARF_REGISTRY###"
-    help: "https://github.com/defenseunicorns/zarf"
+    host: "###JACKAL_REGISTRY###"
+    help: "https://github.com/defenseunicorns/jackal"

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package transform provides helper functions to transform URLs to airgap equivalents
 package transform
@@ -58,7 +58,7 @@ func TestNpmTransformURL(t *testing.T) {
 	}
 
 	protocolHosts := []string{
-		"https://git.privatemirror.com/api/packages/zarf-mirror-user/npm",
+		"https://git.privatemirror.com/api/packages/jackal-mirror-user/npm",
 		"https://registry.npmjs.org",
 	}
 
@@ -88,7 +88,7 @@ func TestPipTransformURL(t *testing.T) {
 	}
 
 	protocolHosts := []string{
-		"https://git.privatemirror.com/api/packages/zarf-mirror-user/pip",
+		"https://git.privatemirror.com/api/packages/jackal-mirror-user/pip",
 		"https://pypi.org",
 	}
 
@@ -108,10 +108,10 @@ func TestPipTransformURL(t *testing.T) {
 
 func TestGenTransformURL(t *testing.T) {
 	urls := []string{
-		"https://git.example.com/api/packages/zarf-git-user/generic",
-		"https://git.example.com/api/packages/zarf-git-user/generic/packageVersion/packageName",
-		"https://git.example.com/api/packages/zarf-git-user/generic/package+name/packageVersion/filename",
-		"https://git.example.com/api/packages/zarf-git-user/generic/some%20generic%20package/0.0.1/superGeneric.tar.gz",
+		"https://git.example.com/api/packages/jackal-git-user/generic",
+		"https://git.example.com/api/packages/jackal-git-user/generic/packageVersion/packageName",
+		"https://git.example.com/api/packages/jackal-git-user/generic/package+name/packageVersion/filename",
+		"https://git.example.com/api/packages/jackal-git-user/generic/some%20generic%20package/0.0.1/superGeneric.tar.gz",
 		"https://git.example.com/archive.zip",
 		"https://git.example.com:443/archive.zip",
 		"https://git.example.com/api/packages/username/generic/some-package-name/file.1.4.4.tar.gz",
@@ -127,7 +127,7 @@ func TestGenTransformURL(t *testing.T) {
 
 	expectedURLs := []string{
 		// We want most of these to exist in the form of /project/generic/packageName/version/filename
-		"https://gitlab.com/project/generic/apipackages-3151594639/zarf-git-user/generic",
+		"https://gitlab.com/project/generic/apipackages-3151594639/jackal-git-user/generic",
 		"https://gitlab.com/project/generic/apipackages-2561175711/packageVersion/packageName",
 		"https://gitlab.com/project/generic/apipackages-2265319408/packageVersion/filename",
 		"https://gitlab.com/project/generic/apipackages-4040139506/0.0.1/superGeneric.tar.gz",

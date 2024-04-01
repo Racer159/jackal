@@ -1,11 +1,11 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: init-package-git-server
 
 variables:
   - name: GIT_SERVER_EXISTING_PVC
     description: "Optional: Use an existing PVC for the git server instead of creating a new one. If this is set, the GIT_SERVER_PVC_SIZE variable will be ignored."
-    default: "data-zarf-gitea-0"
+    default: "data-jackal-gitea-0"
 
   - name: GIT_SERVER_PVC_SIZE
     description: The size of the persistent volume claim for the git server
@@ -41,7 +41,7 @@ variables:
 
 constants:
   - name: GITEA_IMAGE
-    value: "###ZARF_PKG_TMPL_GITEA_IMAGE###"
+    value: "###JACKAL_PKG_TMPL_GITEA_IMAGE###"
 
 components:
   - name: git-server
@@ -49,24 +49,24 @@ components:
       Deploys Gitea to provide git repositories for Kubernetes configurations.
       Required for GitOps deployments if no other git server is available.
     images:
-      - "###ZARF_PKG_TMPL_GITEA_IMAGE###"
+      - "###JACKAL_PKG_TMPL_GITEA_IMAGE###"
     manifests:
       - name: git-connect
-        namespace: zarf
+        namespace: jackal
         files:
           - connect.yaml
     charts:
       - name: gitea
-        releaseName: zarf-gitea
+        releaseName: jackal-gitea
         url: https://dl.gitea.io/charts
         version: 10.1.1
-        namespace: zarf
+        namespace: jackal
         valuesFiles:
           - gitea-values.yaml
     actions:
       onDeploy:
         before:
-          - cmd: ./zarf internal update-gitea-pvc --no-progress 
+          - cmd: ./jackal internal update-gitea-pvc --no-progress 
             setVariables:
               - name: GIT_SERVER_CREATE_PVC
             mute: true
@@ -74,17 +74,17 @@ components:
           - wait:
               cluster:
                 kind: pod
-                namespace: zarf
+                namespace: jackal
                 name: app=gitea
                 condition: Ready
-          - cmd: ./zarf internal create-read-only-gitea-user --no-progress
+          - cmd: ./jackal internal create-read-only-gitea-user --no-progress
             maxRetries: 3
             maxTotalSeconds: 60
             description: Create the read-only Gitea user
-          - cmd: ./zarf internal create-artifact-registry-token --no-progress
+          - cmd: ./jackal internal create-artifact-registry-token --no-progress
             maxRetries: 3
             maxTotalSeconds: 60
             description: Create an artifact registry token
           
         onFailure:
-          - cmd: ./zarf internal update-gitea-pvc --rollback --no-progress
+          - cmd: ./jackal internal update-gitea-pvc --rollback --no-progress

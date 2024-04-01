@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package bigbang contains the logic for installing Big Bang and Flux
 package bigbang
@@ -11,24 +11,24 @@ import (
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/defenseunicorns/zarf/src/types/extensions"
+	"github.com/defenseunicorns/jackal/src/types/extensions"
 	fluxHelmCtrl "github.com/fluxcd/helm-controller/api/v2beta1"
 	fluxSrcCtrl "github.com/fluxcd/source-controller/api/v1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-const bbV1ZarfCredentialsValues = `
+const bbV1JackalCredentialsValues = `
 registryCredentials:
-  registry: "###ZARF_REGISTRY###"
-  username: "zarf-pull"
-  password: "###ZARF_REGISTRY_AUTH_PULL###"
+  registry: "###JACKAL_REGISTRY###"
+  username: "jackal-pull"
+  password: "###JACKAL_REGISTRY_AUTH_PULL###"
 git:
   existingSecret: "private-git-server"	# -- Chart created secrets with user defined values
   credentials:
   # -- HTTP git credentials, both username and password must be provided
-    username: "###ZARF_GIT_PUSH###"
-    password: "###ZARF_GIT_AUTH_PUSH###"
+    username: "###JACKAL_GIT_PUSH###"
+    password: "###JACKAL_GIT_AUTH_PUSH###"
 # -- Big Bang v1 Kyverno Support
 kyvernopolicies:
   values:
@@ -36,20 +36,20 @@ kyvernopolicies:
       any:
       - resources:
           namespaces:
-          - zarf # don't have Kyverno prevent Zarf from doing zarf things
+          - jackal # don't have Kyverno prevent Jackal from doing jackal things
           `
 
-const bbV2ZarfCredentialsValues = `
+const bbV2JackalCredentialsValues = `
 registryCredentials:
-  registry: "###ZARF_REGISTRY###"
-  username: "zarf-pull"
-  password: "###ZARF_REGISTRY_AUTH_PULL###"
+  registry: "###JACKAL_REGISTRY###"
+  username: "jackal-pull"
+  password: "###JACKAL_REGISTRY_AUTH_PULL###"
 git:
   existingSecret: "private-git-server"	# -- Chart created secrets with user defined values
   credentials:
   # -- HTTP git credentials, both username and password must be provided
-    username: "###ZARF_GIT_PUSH###"
-    password: "###ZARF_GIT_AUTH_PUSH###"
+    username: "###JACKAL_GIT_PUSH###"
+    password: "###JACKAL_GIT_AUTH_PUSH###"
 # -- Big Bang v2 Kyverno Support
 kyvernoPolicies:
   values:
@@ -57,15 +57,15 @@ kyvernoPolicies:
       any:
       - resources:
           namespaces:
-          - zarf # don't have Kyverno prevent Zarf from doing zarf things
+          - jackal # don't have Kyverno prevent Jackal from doing jackal things
           `
 
-func manifestZarfCredentials(version string) corev1.Secret {
-	values := bbV1ZarfCredentialsValues
+func manifestJackalCredentials(version string) corev1.Secret {
+	values := bbV1JackalCredentialsValues
 
 	semverVersion, err := semver.NewVersion(version)
 	if err == nil && semverVersion.Major() == 2 {
-		values = bbV2ZarfCredentialsValues
+		values = bbV2JackalCredentialsValues
 	}
 
 	return corev1.Secret{
@@ -75,7 +75,7 @@ func manifestZarfCredentials(version string) corev1.Secret {
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Namespace: bb,
-			Name:      "zarf-credentials",
+			Name:      "jackal-credentials",
 		},
 		StringData: map[string]string{
 			"values.yaml": values,

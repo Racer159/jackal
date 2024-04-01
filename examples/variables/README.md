@@ -3,17 +3,17 @@ import ExampleYAML from "@site/src/components/ExampleYAML";
 
 # Variables
 
-This example demonstrates how to define `variables` and `constants` in your package that will be templated across the manifests and charts your package uses during `zarf package deploy` with `###ZARF_VAR_*###` and `###ZARF_CONST_*###`, and also shows how package configuration templates can be used in the `zarf.yaml` during `zarf package create` with `###ZARF_PKG_TMPL_*###`.
+This example demonstrates how to define `variables` and `constants` in your package that will be templated across the manifests and charts your package uses during `jackal package deploy` with `###JACKAL_VAR_*###` and `###JACKAL_CONST_*###`, and also shows how package configuration templates can be used in the `jackal.yaml` during `jackal package create` with `###JACKAL_PKG_TMPL_*###`.
 
-With these variables and templating features, you can define values in the `zarf.yaml` file without having to set them manually in every manifest and chart, and can prompt the deploy user for certain information you may want to make dynamic on `zarf package deploy`.
+With these variables and templating features, you can define values in the `jackal.yaml` file without having to set them manually in every manifest and chart, and can prompt the deploy user for certain information you may want to make dynamic on `jackal package deploy`.
 
-This becomes useful when you are working with an upstream chart that is often changing, or a lot of charts that have slightly different conventions for their values. Now you can standardize all of that from your `zarf.yaml` file.
+This becomes useful when you are working with an upstream chart that is often changing, or a lot of charts that have slightly different conventions for their values. Now you can standardize all of that from your `jackal.yaml` file.
 
-Text files are also templated during `zarf package deploy` so you can use these variables in any text file that you want to be templated.
+Text files are also templated during `jackal package deploy` so you can use these variables in any text file that you want to be templated.
 
 :::note
 
-Because files can be deployed without a Kubernetes cluster, some built-in variables such as `###ZARF_REGISTRY###` may not be available if no previous component has required access to the cluster. If you need one of these built-in variables, a prior component will need to have been called that requires access to the cluster, such as `images`, `repos`, `manifests`, `dataInjections`.
+Because files can be deployed without a Kubernetes cluster, some built-in variables such as `###JACKAL_REGISTRY###` may not be available if no previous component has required access to the cluster. If you need one of these built-in variables, a prior component will need to have been called that requires access to the cluster, such as `images`, `repos`, `manifests`, `dataInjections`.
 
 :::
 
@@ -22,9 +22,9 @@ Because files can be deployed without a Kubernetes cluster, some built-in variab
 To use variables and constants at deploy time you need to have two things:
 
 1. a manifest that you want to template a value in
-2. a defined variable in the `zarf.yaml` file from `variables` or `setVariable`
+2. a defined variable in the `jackal.yaml` file from `variables` or `setVariable`
 
-The manifest should have your desired variable name in ALL CAPS prefixed with `###ZARF_VAR` for `variables` or prefixed with `###ZARF_CONST` for `constants` and suffixed with `###`.  For example in a configmap that took a variable named `DATABASE_USERNAME` you would provide the following:
+The manifest should have your desired variable name in ALL CAPS prefixed with `###JACKAL_VAR` for `variables` or prefixed with `###JACKAL_CONST` for `constants` and suffixed with `###`.  For example in a configmap that took a variable named `DATABASE_USERNAME` you would provide the following:
 
 ```yaml
 apiVersion: v1
@@ -32,10 +32,10 @@ kind: ConfigMap
 metadata:
   name: db-configmap
 data:
-  username: ###ZARF_VAR_DATABASE_USERNAME###
+  username: ###JACKAL_VAR_DATABASE_USERNAME###
 ```
 
-In the `zarf.yaml`, you would need to define the variable in the `variables` section or as output from an action with `setVariable` with the same `name` as above. Or for a constant you would use the `constants` section.  For the same example as above, you would have the following for a variable defined by the deploy user:
+In the `jackal.yaml`, you would need to define the variable in the `variables` section or as output from an action with `setVariable` with the same `name` as above. Or for a constant you would use the `constants` section.  For the same example as above, you would have the following for a variable defined by the deploy user:
 
 ```yaml
 variables:
@@ -56,9 +56,9 @@ components:
               - name: DATABASE_USERNAME
 ```
 
-Zarf `variables` can also have additional fields that describe how Zarf will handle them which are described below:
+Jackal `variables` can also have additional fields that describe how Jackal will handle them which are described below:
 
-<Properties item="ZarfPackageVariable" />
+<Properties item="JackalPackageVariable" />
 
 :::info
 
@@ -72,9 +72,9 @@ The fields `default`, `description` and `prompt` are not available on `setVariab
 
 :::
 
-Zarf `constants` are similar but have fewer options as they are static by the time `zarf package deploy` is run:
+Jackal `constants` are similar but have fewer options as they are static by the time `jackal package deploy` is run:
 
-<Properties item="ZarfPackageConstant" />
+<Properties item="JackalPackageConstant" />
 
 :::note
 
@@ -84,7 +84,7 @@ All names must match the regex pattern `^[A-Z0-9_]+$` [Test](https://regex101.co
 
 :::tip
 
-When not specifying `default`, `prompt`, `sensitive`, `autoIndent`, or `type` Zarf will default to `default: ""`, `prompt: false`, `sensitive: false`, `autoIndent: false`, and `type: "raw"`
+When not specifying `default`, `prompt`, `sensitive`, `autoIndent`, or `type` Jackal will default to `default: ""`, `prompt: false`, `sensitive: false`, `autoIndent: false`, and `type: "raw"`
 
 :::
 
@@ -103,7 +103,7 @@ Variables that do not have a default, are not `--set` and are not prompted for d
 
 :::
 
-For constants, you must specify the value they will use at package create. These values cannot be overridden with `--set` during `zarf package deploy`, but you can use package template variables (described below) to variablize them during `zarf package create`.
+For constants, you must specify the value they will use at package create. These values cannot be overridden with `--set` during `jackal package deploy`, but you can use package template variables (described below) to variablize them during `jackal package create`.
 
 ```yaml
 constants:
@@ -113,29 +113,29 @@ constants:
 
 :::note
 
-`zarf package create` only templates the `zarf.yaml` file, and `zarf package deploy` only templates other manifests, charts and files
+`jackal package create` only templates the `jackal.yaml` file, and `jackal package deploy` only templates other manifests, charts and files
 
 :::
 
 ## Create-Time Package Configuration Templates
 
-You can also specify package configuration templates at package create time by including `###_ZARF_PKG_TMPL_*###` as the value for any string-type data in your package definition. These values are discovered during `zarf package create` and will always be prompted for if not using `--confirm` or `--set`. An example of this is below:
+You can also specify package configuration templates at package create time by including `###_JACKAL_PKG_TMPL_*###` as the value for any string-type data in your package definition. These values are discovered during `jackal package create` and will always be prompted for if not using `--confirm` or `--set`. An example of this is below:
 
 ```yaml
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: 'pkg-variables'
   description: 'Prompt for a variables during package create'
 
 constants:
   - name: PROMPT_IMAGE
-    value: '###ZARF_PKG_TMPL_PROMPT_ON_CREATE###'
+    value: '###JACKAL_PKG_TMPL_PROMPT_ON_CREATE###'
 
 components:
-  - name: zarf-prompt-image
+  - name: jackal-prompt-image
     required: true
     images:
-      - '###ZARF_PKG_TMPL_PROMPT_ON_CREATE###'
+      - '###JACKAL_PKG_TMPL_PROMPT_ON_CREATE###'
 ```
 
 :::caution
@@ -162,7 +162,7 @@ You cannot template the component import path using package configuration templa
 
 :::
 
-## `zarf.yaml` {#zarf.yaml}
+## `jackal.yaml` {#jackal.yaml}
 
 :::info
 
@@ -170,4 +170,4 @@ To view the example in its entirety, select the `Edit this page` link below the 
 
 :::
 
-<ExampleYAML src={require('./zarf.yaml')} showLink={false} />
+<ExampleYAML src={require('./jackal.yaml')} showLink={false} />

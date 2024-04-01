@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package transform provides helper functions to transform URLs to airgap equivalents
 package transform
@@ -43,7 +43,7 @@ func ImageTransformHost(targetHost, srcReference string) (string, error) {
 		return fmt.Sprintf("%s/%s@%s", targetHost, image.Path, image.Digest), nil
 	}
 
-	return fmt.Sprintf("%s/%s:%s-zarf-%d", targetHost, image.Path, image.Tag, checksum), nil
+	return fmt.Sprintf("%s/%s:%s-jackal-%d", targetHost, image.Path, image.Tag, checksum), nil
 }
 
 // ImageTransformHostWithoutChecksum replaces the base url for an image but avoids adding a checksum of the original url (note image refs are not full URLs).

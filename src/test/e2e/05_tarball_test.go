@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package test provides e2e tests for Zarf.
+// Package test provides e2e tests for Jackal.
 package test
 
 import (
@@ -11,11 +11,11 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -24,17 +24,17 @@ func TestMultiPartPackage(t *testing.T) {
 
 	var (
 		createPath = "src/test/packages/05-multi-part"
-		deployPath = fmt.Sprintf("zarf-package-multi-part-%s.tar.zst.part000", e2e.Arch)
+		deployPath = fmt.Sprintf("jackal-package-multi-part-%s.tar.zst.part000", e2e.Arch)
 		outputFile = "multi-part-demo.dat"
 	)
 
 	e2e.CleanFiles(deployPath, outputFile)
 
 	// Create the package with a max size of 20MB
-	stdOut, stdErr, err := e2e.Zarf("package", "create", createPath, "--max-package-size=20", "--confirm")
+	stdOut, stdErr, err := e2e.Jackal("package", "create", createPath, "--max-package-size=20", "--confirm")
 	require.NoError(t, err, stdOut, stdErr)
 
-	parts, err := filepath.Glob("zarf-package-multi-part-*")
+	parts, err := filepath.Glob("jackal-package-multi-part-*")
 	require.NoError(t, err)
 	// Length is 4 because there are 3 parts and 1 manifest
 	require.Len(t, parts, 4)
@@ -46,7 +46,7 @@ func TestMultiPartPackage(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, int64(20000000), part2FileInfo.Size())
 	// Check the package data is correct
-	pkgData := types.ZarfSplitPackageData{}
+	pkgData := types.JackalSplitPackageData{}
 	part0File, err := os.ReadFile(parts[0])
 	require.NoError(t, err)
 	err = json.Unmarshal(part0File, &pkgData)
@@ -54,16 +54,16 @@ func TestMultiPartPackage(t *testing.T) {
 	require.Equal(t, pkgData.Count, 3)
 	fmt.Printf("%#v", pkgData)
 
-	stdOut, stdErr, err = e2e.Zarf("package", "deploy", deployPath, "--confirm")
+	stdOut, stdErr, err = e2e.Jackal("package", "deploy", deployPath, "--confirm")
 	require.NoError(t, err, stdOut, stdErr)
 
 	// Verify the package was deployed
 	require.FileExists(t, outputFile)
 
 	// deploying package combines parts back into single archive, check dir again to find all files
-	parts, err = filepath.Glob("zarf-package-multi-part-*")
+	parts, err = filepath.Glob("jackal-package-multi-part-*")
 	require.NoError(t, err)
-	// Length is 1 because `zarf package deploy` will recombine the file
+	// Length is 1 because `jackal package deploy` will recombine the file
 	require.Len(t, parts, 1)
 	// Ensure that the number of pkgData bytes was correct
 	fullFileInfo, err := os.Stat(parts[0])
@@ -83,19 +83,19 @@ func TestReproducibleTarballs(t *testing.T) {
 	var (
 		createPath = filepath.Join("examples", "dos-games")
 		tmp        = t.TempDir()
-		tb         = filepath.Join(tmp, fmt.Sprintf("zarf-package-dos-games-%s-1.0.0.tar.zst", e2e.Arch))
+		tb         = filepath.Join(tmp, fmt.Sprintf("jackal-package-dos-games-%s-1.0.0.tar.zst", e2e.Arch))
 		unpack1    = filepath.Join(tmp, "unpack1")
 		unpack2    = filepath.Join(tmp, "unpack2")
 	)
 
-	stdOut, stdErr, err := e2e.Zarf("package", "create", createPath, "--confirm", "--output", tmp)
+	stdOut, stdErr, err := e2e.Jackal("package", "create", createPath, "--confirm", "--output", tmp)
 	require.NoError(t, err, stdOut, stdErr)
 
-	stdOut, stdErr, err = e2e.Zarf("tools", "archiver", "decompress", tb, unpack1)
+	stdOut, stdErr, err = e2e.Jackal("tools", "archiver", "decompress", tb, unpack1)
 	require.NoError(t, err, stdOut, stdErr)
 
-	var pkg1 types.ZarfPackage
-	err = utils.ReadYaml(filepath.Join(unpack1, layout.ZarfYAML), &pkg1)
+	var pkg1 types.JackalPackage
+	err = utils.ReadYaml(filepath.Join(unpack1, layout.JackalYAML), &pkg1)
 	require.NoError(t, err)
 
 	b, err := os.ReadFile(filepath.Join(unpack1, layout.Checksums))
@@ -104,14 +104,14 @@ func TestReproducibleTarballs(t *testing.T) {
 
 	e2e.CleanFiles(unpack1, tb)
 
-	stdOut, stdErr, err = e2e.Zarf("package", "create", createPath, "--confirm", "--output", tmp)
+	stdOut, stdErr, err = e2e.Jackal("package", "create", createPath, "--confirm", "--output", tmp)
 	require.NoError(t, err, stdOut, stdErr)
 
-	stdOut, stdErr, err = e2e.Zarf("tools", "archiver", "decompress", tb, unpack2)
+	stdOut, stdErr, err = e2e.Jackal("tools", "archiver", "decompress", tb, unpack2)
 	require.NoError(t, err, stdOut, stdErr)
 
-	var pkg2 types.ZarfPackage
-	err = utils.ReadYaml(filepath.Join(unpack2, layout.ZarfYAML), &pkg2)
+	var pkg2 types.JackalPackage
+	err = utils.ReadYaml(filepath.Join(unpack2, layout.JackalYAML), &pkg2)
 	require.NoError(t, err)
 
 	b, err = os.ReadFile(filepath.Join(unpack2, layout.Checksums))

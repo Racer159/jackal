@@ -8,17 +8,17 @@ Accepted
 
 ## Context
 
-There are sections of the code that are not easily able to be tested by our end-to-end testing and now that Zarf is moving into being a library for other products there will be more scrutiny around our defined interfaces.  This ADR explores ways that we could adjust our testing strategy to address these concerns.
+There are sections of the code that are not easily able to be tested by our end-to-end testing and now that Jackal is moving into being a library for other products there will be more scrutiny around our defined interfaces.  This ADR explores ways that we could adjust our testing strategy to address these concerns.
 
 Potential considerations:
 
-1. Introduce Unit-Testing Zarf-wide
+1. Introduce Unit-Testing Jackal-wide
     Pros:
         - More of the codebase is covered with tests and will force us to take more consideration when updating it
     Cons:
         - As the codebase evolves the efficacy of these tests is likely to go down, especially if they are written to the code rather than the interface
 
-2. Introduce Unit Testing in a defined and limited capacity within Zarf
+2. Introduce Unit Testing in a defined and limited capacity within Jackal
     Pros:
         - A decent amount of the codebase will be tested (specifically we can target those areas difficult to e2e test)
         - We can be picky about what/where we unit test so that the maintenance burden of the tests is not too high
@@ -27,13 +27,13 @@ Potential considerations:
 
 3. Introduce Integration Testing or partial End-to-End testing
     Pros:
-        - This is closer to how we already test within Zarf
+        - This is closer to how we already test within Jackal
     Cons:
         - These can be relatively complex to orchestrate and maintain over time requiring complex mocks or other mechanisms to make them work
 
 ## Decision
 
-It was decided to introduce a limited set of unit tests to the Zarf codebase (2) because this will enable us the most flexibility and control over how we test while also allowing us to specifically target specific units without a ton of overhead.  Specifically we will ask the following before implementing a Unit Test:
+It was decided to introduce a limited set of unit tests to the Jackal codebase (2) because this will enable us the most flexibility and control over how we test while also allowing us to specifically target specific units without a ton of overhead.  Specifically we will ask the following before implementing a Unit Test:
 
 1. Is what I want to test a true unit (i.e. a single function or file)?
 2. Does what I want to test have a clearly defined interface (i.e. a public specification)?

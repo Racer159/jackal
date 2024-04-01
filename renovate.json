@@ -41,7 +41,7 @@
   "regexManagers": [
     {
       "fileMatch": [
-        "(^|/)zarf.yaml$"
+        "(^|/)jackal.yaml$"
       ],
       "matchStringsStrategy": "recursive",
       "matchStrings": [
@@ -53,7 +53,7 @@
     },
     {
       "fileMatch": [
-        "(^|/)zarf.yaml$"
+        "(^|/)jackal.yaml$"
       ],
       "matchStringsStrategy": "recursive",
       "matchStrings": [
@@ -65,7 +65,7 @@
     },
     {
       "fileMatch": [
-        "(^|/)zarf.yaml$"
+        "(^|/)jackal.yaml$"
       ],
       "matchStringsStrategy": "recursive",
       "matchStrings": [
@@ -75,7 +75,7 @@
     },
     {
       "fileMatch": [
-        "(^|/)zarf.yaml$"
+        "(^|/)jackal.yaml$"
       ],
       "matchStringsStrategy": "recursive",
       "matchStrings": [

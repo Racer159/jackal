@@ -1,4 +1,4 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: chart-deps
   description: Simple example to load a chart with dependencies

@@ -1,4 +1,4 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: manifests
   version: 0.0.1
@@ -10,7 +10,7 @@ components:
       - name: simple-httpd-deployment
         namespace: httpd
         files:
-          # local manifests are specified relative to the `zarf.yaml` that uses them:
+          # local manifests are specified relative to the `jackal.yaml` that uses them:
           - httpd-deployment.yaml
     actions:
       onDeploy:
@@ -24,7 +24,7 @@ components:
                 namespace: httpd
                 condition: '{.status.readyReplicas}=2'
     # image discovery is supported in all manifests and charts using:
-    # zarf prepare find-images
+    # jackal prepare find-images
     images:
       - httpd:alpine3.18
   - name: nginx-remote
@@ -37,7 +37,7 @@ components:
           # by adding a sha256sum to the end of the URL, separated by an @:
           - https://k8s.io/examples/application/deployment.yaml@c57f73449b26eae02ca2a549c388807d49ef6d3f2dc040a9bbb1290128d97157
           # this sha256 can be discovered using:
-          # zarf prepare sha256sum https://k8s.io/examples/application/deployment.yaml
+          # jackal prepare sha256sum https://k8s.io/examples/application/deployment.yaml
     actions:
       onDeploy:
       # the following checks were computed by viewing the success state of the package deployment
@@ -50,7 +50,7 @@ components:
                 namespace: nginx
                 condition: available
     # image discovery is supported in all manifests and charts using:
-    # zarf prepare find-images
+    # jackal prepare find-images
     images:
       - nginx:1.14.2
   - name: podinfo-kustomize
@@ -59,7 +59,7 @@ components:
       - name: simple-podinfo-deployment
         namespace: podinfo
         kustomizations:
-          # kustomizations can be specified relative to the `zarf.yaml` or as remoteBuild resources with the
+          # kustomizations can be specified relative to the `jackal.yaml` or as remoteBuild resources with the
           # following syntax: https://github.com/kubernetes-sigs/kustomize/blob/master/examples/remoteBuild.md:
           - github.com/stefanprodan/podinfo//kustomize?ref=6.4.0
           # while ?ref= is not a requirement, it is recommended to use a specific commit hash / git tag to
@@ -76,6 +76,6 @@ components:
                 namespace: podinfo
                 condition: available
     # image discovery is supported in all manifests and charts using:
-    # zarf prepare find-images
+    # jackal prepare find-images
     images:
       - ghcr.io/stefanprodan/podinfo:6.4.0

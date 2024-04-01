@@ -1,6 +1,6 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
-  name: init-package-zarf-registry
+  name: init-package-jackal-registry
 
 variables:
   - name: REGISTRY_EXISTING_PVC
@@ -60,88 +60,88 @@ variables:
 
 constants:
   - name: REGISTRY_IMAGE
-    value: "###ZARF_PKG_TMPL_REGISTRY_IMAGE###"
+    value: "###JACKAL_PKG_TMPL_REGISTRY_IMAGE###"
 
   - name: REGISTRY_IMAGE_TAG
-    value: "###ZARF_PKG_TMPL_REGISTRY_IMAGE_TAG###"
+    value: "###JACKAL_PKG_TMPL_REGISTRY_IMAGE_TAG###"
 
 components:
-  - name: zarf-injector
+  - name: jackal-injector
     description: |
       Bootstraps a Kubernetes cluster by cloning a running pod in the cluster and hosting the registry image.
-      Removed and destroyed after the Zarf Registry is self-hosting the registry image.
+      Removed and destroyed after the Jackal Registry is self-hosting the registry image.
     required: true
     only:
       cluster:
         architecture: amd64
     files:
       # Rust Injector Binary
-      - source: https://zarf-public.s3-us-gov-west-1.amazonaws.com/injector/###ZARF_PKG_TMPL_INJECTOR_VERSION###/zarf-injector-amd64
-        target: "###ZARF_TEMP###/zarf-injector"
-        shasum: "###ZARF_PKG_TMPL_INJECTOR_AMD64_SHASUM###"
+      - source: https://jackal-public.s3-us-gov-west-1.amazonaws.com/injector/###JACKAL_PKG_TMPL_INJECTOR_VERSION###/jackal-injector-amd64
+        target: "###JACKAL_TEMP###/jackal-injector"
+        shasum: "###JACKAL_PKG_TMPL_INJECTOR_AMD64_SHASUM###"
         executable: true
 
-  - name: zarf-injector
+  - name: jackal-injector
     description: |
       Bootstraps a Kubernetes cluster by cloning a running pod in the cluster and hosting the registry image.
-      Removed and destroyed after the Zarf Registry is self-hosting the registry image.
+      Removed and destroyed after the Jackal Registry is self-hosting the registry image.
     required: true
     only:
       cluster:
         architecture: arm64
     files:
       # Rust Injector Binary
-      - source: https://zarf-public.s3-us-gov-west-1.amazonaws.com/injector/###ZARF_PKG_TMPL_INJECTOR_VERSION###/zarf-injector-arm64
-        target: "###ZARF_TEMP###/zarf-injector"
-        shasum: "###ZARF_PKG_TMPL_INJECTOR_ARM64_SHASUM###"
+      - source: https://jackal-public.s3-us-gov-west-1.amazonaws.com/injector/###JACKAL_PKG_TMPL_INJECTOR_VERSION###/jackal-injector-arm64
+        target: "###JACKAL_TEMP###/jackal-injector"
+        shasum: "###JACKAL_PKG_TMPL_INJECTOR_ARM64_SHASUM###"
         executable: true
 
-  - name: zarf-seed-registry
+  - name: jackal-seed-registry
     description: |
-      Deploys the Zarf Registry using the registry image provided by the Zarf Injector.
+      Deploys the Jackal Registry using the registry image provided by the Jackal Injector.
     charts:
       - name: docker-registry
-        releaseName: zarf-docker-registry
+        releaseName: jackal-docker-registry
         localPath: chart
         version: 1.0.0
-        namespace: zarf
+        namespace: jackal
         valuesFiles:
           - registry-values.yaml
           - registry-values-seed.yaml
     images:
-      # The seed image (or images) that will be injected (see zarf-config.toml)
-      - "###ZARF_PKG_TMPL_REGISTRY_IMAGE_DOMAIN######ZARF_PKG_TMPL_REGISTRY_IMAGE###:###ZARF_PKG_TMPL_REGISTRY_IMAGE_TAG###"
+      # The seed image (or images) that will be injected (see jackal-config.toml)
+      - "###JACKAL_PKG_TMPL_REGISTRY_IMAGE_DOMAIN######JACKAL_PKG_TMPL_REGISTRY_IMAGE###:###JACKAL_PKG_TMPL_REGISTRY_IMAGE_TAG###"
 
-  - name: zarf-registry
+  - name: jackal-registry
     description: |
-      Updates the Zarf Registry to use the self-hosted registry image.
+      Updates the Jackal Registry to use the self-hosted registry image.
       Serves as the primary docker registry for the cluster.
     manifests:
       - name: registry-connect
-        namespace: zarf
+        namespace: jackal
         files:
           - connect.yaml
       - name: kep-1755-registry-annotation
-        namespace: zarf
+        namespace: jackal
         files:
           - configmap.yaml
     charts:
       - name: docker-registry
-        releaseName: zarf-docker-registry
+        releaseName: jackal-docker-registry
         localPath: chart
         version: 1.0.0
-        namespace: zarf
+        namespace: jackal
         valuesFiles:
           - registry-values.yaml
     images:
-      # This image (or images) must match that used for injection (see zarf-config.toml)
-      - "###ZARF_PKG_TMPL_REGISTRY_IMAGE_DOMAIN######ZARF_PKG_TMPL_REGISTRY_IMAGE###:###ZARF_PKG_TMPL_REGISTRY_IMAGE_TAG###"
+      # This image (or images) must match that used for injection (see jackal-config.toml)
+      - "###JACKAL_PKG_TMPL_REGISTRY_IMAGE_DOMAIN######JACKAL_PKG_TMPL_REGISTRY_IMAGE###:###JACKAL_PKG_TMPL_REGISTRY_IMAGE_TAG###"
     actions:
       onDeploy:
         after:
           - wait:
               cluster:
                 kind: deployment
-                namespace: zarf
+                namespace: jackal
                 name: app=docker-registry
                 condition: Available

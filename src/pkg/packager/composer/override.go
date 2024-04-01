@@ -1,16 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package composer contains functions for composing components within Zarf packages.
+// Package composer contains functions for composing components within Jackal packages.
 package composer
 
 import (
 	"fmt"
 
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/types"
 )
 
-func overrideMetadata(c *types.ZarfComponent, override types.ZarfComponent) error {
+func overrideMetadata(c *types.JackalComponent, override types.JackalComponent) error {
 	c.Name = override.Name
 	c.Default = override.Default
 	c.Required = override.Required
@@ -31,7 +31,7 @@ func overrideMetadata(c *types.ZarfComponent, override types.ZarfComponent) erro
 	return nil
 }
 
-func overrideDeprecated(c *types.ZarfComponent, override types.ZarfComponent) {
+func overrideDeprecated(c *types.JackalComponent, override types.JackalComponent) {
 	// Override cosign key path if it was provided.
 	if override.DeprecatedCosignKeyPath != "" {
 		c.DeprecatedCosignKeyPath = override.DeprecatedCosignKeyPath
@@ -39,7 +39,7 @@ func overrideDeprecated(c *types.ZarfComponent, override types.ZarfComponent) {
 
 	c.DeprecatedGroup = override.DeprecatedGroup
 
-	// Merge deprecated scripts for backwards compatibility with older zarf binaries.
+	// Merge deprecated scripts for backwards compatibility with older jackal binaries.
 	c.DeprecatedScripts.Before = append(c.DeprecatedScripts.Before, override.DeprecatedScripts.Before...)
 	c.DeprecatedScripts.After = append(c.DeprecatedScripts.After, override.DeprecatedScripts.After...)
 
@@ -54,7 +54,7 @@ func overrideDeprecated(c *types.ZarfComponent, override types.ZarfComponent) {
 	}
 }
 
-func overrideActions(c *types.ZarfComponent, override types.ZarfComponent) {
+func overrideActions(c *types.JackalComponent, override types.JackalComponent) {
 	// Merge create actions.
 	c.Actions.OnCreate.Defaults = override.Actions.OnCreate.Defaults
 	c.Actions.OnCreate.Before = append(c.Actions.OnCreate.Before, override.Actions.OnCreate.Before...)
@@ -77,7 +77,7 @@ func overrideActions(c *types.ZarfComponent, override types.ZarfComponent) {
 	c.Actions.OnRemove.OnSuccess = append(c.Actions.OnRemove.OnSuccess, override.Actions.OnRemove.OnSuccess...)
 }
 
-func overrideResources(c *types.ZarfComponent, override types.ZarfComponent) {
+func overrideResources(c *types.JackalComponent, override types.JackalComponent) {
 	c.DataInjections = append(c.DataInjections, override.DataInjections...)
 	c.Files = append(c.Files, override.Files...)
 	c.Images = append(c.Images, override.Images...)

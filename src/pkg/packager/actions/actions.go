@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package actions contains functions for running component actions within Zarf packages.
+// Package actions contains functions for running component actions within Jackal packages.
 package actions
 
 import (
@@ -12,16 +12,16 @@ import (
 	"strings"
 	"time"
 
+	"github.com/defenseunicorns/jackal/src/internal/packager/template"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/pkg/utils/exec"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/internal/packager/template"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/pkg/utils/exec"
-	"github.com/defenseunicorns/zarf/src/types"
 )
 
 // Run runs all provided actions.
-func Run(cfg *types.PackagerConfig, defaultCfg types.ZarfComponentActionDefaults, actions []types.ZarfComponentAction, valueTemplate *template.Values) error {
+func Run(cfg *types.PackagerConfig, defaultCfg types.JackalComponentActionDefaults, actions []types.JackalComponentAction, valueTemplate *template.Values) error {
 	for _, a := range actions {
 		if err := runAction(cfg, defaultCfg, a, valueTemplate); err != nil {
 			return err
@@ -31,7 +31,7 @@ func Run(cfg *types.PackagerConfig, defaultCfg types.ZarfComponentActionDefaults
 }
 
 // Run commands that a component has provided.
-func runAction(cfg *types.PackagerConfig, defaultCfg types.ZarfComponentActionDefaults, action types.ZarfComponentAction, valueTemplate *template.Values) error {
+func runAction(cfg *types.PackagerConfig, defaultCfg types.JackalComponentActionDefaults, action types.JackalComponentAction, valueTemplate *template.Values) error {
 	var (
 		ctx        context.Context
 		cancel     context.CancelFunc
@@ -68,7 +68,7 @@ func runAction(cfg *types.PackagerConfig, defaultCfg types.ZarfComponentActionDe
 		d := ""
 		action.Dir = &d
 		action.Env = []string{}
-		action.SetVariables = []types.ZarfComponentActionSetVariable{}
+		action.SetVariables = []types.JackalComponentActionSetVariable{}
 	}
 
 	if action.Description != "" {
@@ -85,7 +85,7 @@ func runAction(cfg *types.PackagerConfig, defaultCfg types.ZarfComponentActionDe
 	// No special variables or deprecations will be used in the action.
 	// Reload the variables each time in case they have been changed by a previous action.
 	if valueTemplate != nil {
-		vars, _ = valueTemplate.GetVariables(types.ZarfComponent{})
+		vars, _ = valueTemplate.GetVariables(types.JackalComponent{})
 	}
 
 	actionDefaults := actionGetCfg(defaultCfg, action, vars)
@@ -174,7 +174,7 @@ retryCmd:
 }
 
 // convertWaitToCmd will return the wait command if it exists, otherwise it will return the original command.
-func convertWaitToCmd(wait types.ZarfComponentActionWait, timeout *int) (string, error) {
+func convertWaitToCmd(wait types.JackalComponentActionWait, timeout *int) (string, error) {
 	// Build the timeout string.
 	timeoutString := fmt.Sprintf("--timeout %ds", *timeout)
 
@@ -186,8 +186,8 @@ func convertWaitToCmd(wait types.ZarfComponentActionWait, timeout *int) (string,
 			ns = fmt.Sprintf("-n %s", ns)
 		}
 
-		// Build a call to the zarf tools wait-for command.
-		return fmt.Sprintf("./zarf tools wait-for %s %s %s %s %s",
+		// Build a call to the jackal tools wait-for command.
+		return fmt.Sprintf("./jackal tools wait-for %s %s %s %s %s",
 			cluster.Kind, cluster.Identifier, cluster.Condition, ns, timeoutString), nil
 	}
 
@@ -201,8 +201,8 @@ func convertWaitToCmd(wait types.ZarfComponentActionWait, timeout *int) (string,
 			network.Code = 200
 		}
 
-		// Build a call to the zarf tools wait-for command.
-		return fmt.Sprintf("./zarf tools wait-for %s %s %d %s",
+		// Build a call to the jackal tools wait-for command.
+		return fmt.Sprintf("./jackal tools wait-for %s %s %d %s",
 			network.Protocol, network.Address, network.Code, timeoutString), nil
 	}
 
@@ -211,13 +211,13 @@ func convertWaitToCmd(wait types.ZarfComponentActionWait, timeout *int) (string,
 
 // Perform some basic string mutations to make commands more useful.
 func actionCmdMutation(cmd string, shellPref exec.Shell) (string, error) {
-	zarfCommand, err := utils.GetFinalExecutableCommand()
+	jackalCommand, err := utils.GetFinalExecutableCommand()
 	if err != nil {
 		return cmd, err
 	}
 
-	// Try to patch the zarf binary path in case the name isn't exactly "./zarf".
-	cmd = strings.ReplaceAll(cmd, "./zarf ", zarfCommand+" ")
+	// Try to patch the jackal binary path in case the name isn't exactly "./jackal".
+	cmd = strings.ReplaceAll(cmd, "./jackal ", jackalCommand+" ")
 
 	// Make commands 'more' compatible with Windows OS PowerShell
 	if runtime.GOOS == "windows" && (exec.IsPowershell(shellPref.Windows) || shellPref.Windows == "") {
@@ -226,9 +226,9 @@ func actionCmdMutation(cmd string, shellPref exec.Shell) (string, error) {
 		// http://web.cs.ucla.edu/~miryung/teaching/EE461L-Spring2012/labs/posix.html for more details.
 		cmd = regexp.MustCompile(`^touch `).ReplaceAllString(cmd, `New-Item `)
 
-		// Convert any ${ZARF_VAR_*} or $ZARF_VAR_* to ${env:ZARF_VAR_*} or $env:ZARF_VAR_* respectively (also TF_VAR_*).
+		// Convert any ${JACKAL_VAR_*} or $JACKAL_VAR_* to ${env:JACKAL_VAR_*} or $env:JACKAL_VAR_* respectively (also TF_VAR_*).
 		// https://regex101.com/r/xk1rkw/1
-		envVarRegex := regexp.MustCompile(`(?P<envIndicator>\${?(?P<varName>(ZARF|TF)_VAR_([a-zA-Z0-9_-])+)}?)`)
+		envVarRegex := regexp.MustCompile(`(?P<envIndicator>\${?(?P<varName>(JACKAL|TF)_VAR_([a-zA-Z0-9_-])+)}?)`)
 		get, err := helpers.MatchRegex(envVarRegex, cmd)
 		if err == nil {
 			newCmd := strings.ReplaceAll(cmd, get("envIndicator"), fmt.Sprintf("$Env:%s", get("varName")))
@@ -241,7 +241,7 @@ func actionCmdMutation(cmd string, shellPref exec.Shell) (string, error) {
 }
 
 // Merge the ActionSet defaults with the action config.
-func actionGetCfg(cfg types.ZarfComponentActionDefaults, a types.ZarfComponentAction, vars map[string]*template.TextTemplate) types.ZarfComponentActionDefaults {
+func actionGetCfg(cfg types.JackalComponentActionDefaults, a types.JackalComponentAction, vars map[string]*template.TextTemplate) types.JackalComponentActionDefaults {
 	if a.Mute != nil {
 		cfg.Mute = *a.Mute
 	}
@@ -272,7 +272,7 @@ func actionGetCfg(cfg types.ZarfComponentActionDefaults, a types.ZarfComponentAc
 		// Remove # from env variable name.
 		k = strings.ReplaceAll(k, "#", "")
 		// Make terraform variables available to the action as TF_VAR_lowercase_name.
-		k1 := strings.ReplaceAll(strings.ToLower(k), "zarf_var", "TF_VAR")
+		k1 := strings.ReplaceAll(strings.ToLower(k), "jackal_var", "TF_VAR")
 		cfg.Env = append(cfg.Env, fmt.Sprintf("%s=%s", k, v.Value))
 		cfg.Env = append(cfg.Env, fmt.Sprintf("%s=%s", k1, v.Value))
 	}
@@ -280,7 +280,7 @@ func actionGetCfg(cfg types.ZarfComponentActionDefaults, a types.ZarfComponentAc
 	return cfg
 }
 
-func actionRun(ctx context.Context, cfg types.ZarfComponentActionDefaults, cmd string, shellPref exec.Shell, spinner *message.Spinner) (string, error) {
+func actionRun(ctx context.Context, cfg types.JackalComponentActionDefaults, cmd string, shellPref exec.Shell, spinner *message.Spinner) (string, error) {
 	shell, shellArgs := exec.GetOSShell(shellPref)
 
 	message.Debugf("Running command in %s: %s", shell, cmd)

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package composer contains functions for composing components within Zarf packages.
+// Package composer contains functions for composing components within Jackal packages.
 package composer
 
 import (
@@ -11,13 +11,13 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/pkg/zoci"
 	"github.com/defenseunicorns/pkg/helpers"
 	"github.com/defenseunicorns/pkg/oci"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/pkg/zoci"
 	"github.com/mholt/archiver/v3"
 	ocispec "github.com/opencontainers/image-spec/specs-go/v1"
 	ocistore "oras.land/oras-go/v2/content/oci"
@@ -81,7 +81,7 @@ func (ic *ImportChain) fetchOCISkeleton() error {
 
 		dir = filepath.Join(cache, "dirs", id)
 
-		message.Debug("creating empty directory for remote component:", filepath.Join("<zarf-cache>", "oci", "dirs", id))
+		message.Debug("creating empty directory for remote component:", filepath.Join("<jackal-cache>", "oci", "dirs", id))
 	} else {
 		tb = filepath.Join(cache, "blobs", "sha256", componentDesc.Digest.Encoded())
 		dir = filepath.Join(cache, "dirs", componentDesc.Digest.Encoded())

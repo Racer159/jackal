@@ -4,15 +4,15 @@ import TabItem from '@theme/TabItem';
 
 # Component Actions
 
-Component Actions offer several exec entrypoints that allow a component to perform additional logic at key stages of its lifecycle. These actions are executed within a shell with the same context as the Zarf binary. For a detailed overview of the execution sequence of component actions, please refer to the Zarf [package create lifecycle documentation](./5-package-create-lifecycle.md) and [package deploy lifecycle documentation](../4-deploy-a-zarf-package/1-package-deploy-lifecycle.md). Additionally, you can experiment with the component actions example located in the [Component Actions](../../examples/component-actions/README.md) example page.
+Component Actions offer several exec entrypoints that allow a component to perform additional logic at key stages of its lifecycle. These actions are executed within a shell with the same context as the Jackal binary. For a detailed overview of the execution sequence of component actions, please refer to the Jackal [package create lifecycle documentation](./5-package-create-lifecycle.md) and [package deploy lifecycle documentation](../4-deploy-a-jackal-package/1-package-deploy-lifecycle.md). Additionally, you can experiment with the component actions example located in the [Component Actions](../../examples/component-actions/README.md) example page.
 
 ## Action Sets
 
 The `component.actions` field includes the following optional keys, also known as `action sets`:
 
-- `onCreate` - Runs during `zarf package create`.
-- `onDeploy` - Runs during `zarf package deploy`.
-- `onRemove` - Runs during `zarf package remove`.
+- `onCreate` - Runs during `jackal package create`.
+- `onDeploy` - Runs during `jackal package deploy`.
+- `onRemove` - Runs during `jackal package remove`.
 
 ### Action Set Lists
 
@@ -29,7 +29,7 @@ In addition to `action lists`, `action sets` can also specify a `defaults` secti
 
 ## Action Configurations
 
-An `action list` contains an ordered set of `action configurations` that specify what a particular action will do.  In Zarf there are two action types (`cmd` and `wait`), the configuration of which is described below.
+An `action list` contains an ordered set of `action configurations` that specify what a particular action will do.  In Jackal there are two action types (`cmd` and `wait`), the configuration of which is described below.
 
 ### Common Action Configuration Keys
 
@@ -60,13 +60,13 @@ By default, multi-line `cmd` blocks will fail if one of the lines errors out; th
 
 :::note
 
-Any binaries you execute in your `cmd` actions must exist on the machine they are executed on.  You can bring binaries with a Zarf Package as `files` with the `executable` key set, or take advantage of the `./zarf `&nbsp;transformation as described in [action transformations](#action-transformations).
+Any binaries you execute in your `cmd` actions must exist on the machine they are executed on.  You can bring binaries with a Jackal Package as `files` with the `executable` key set, or take advantage of the `./jackal `&nbsp;transformation as described in [action transformations](#action-transformations).
 
 :::
 
 ### `wait` Action Configuration
 
-The `wait` action temporarily halts the component stage it's initiated in, either until the specified condition is satisfied or until the maxTotalSeconds time limit is exceeded (which, by default, is set to 5 minutes). To define `wait` parameters, execute the `wait` key; it's essential to note that _you cannot use `cmd` and `wait` in the same action_. Essentially, a `wait` action is _yaml sugar_ for a call to `./zarf tools wait-for`.
+The `wait` action temporarily halts the component stage it's initiated in, either until the specified condition is satisfied or until the maxTotalSeconds time limit is exceeded (which, by default, is set to 5 minutes). To define `wait` parameters, execute the `wait` key; it's essential to note that _you cannot use `cmd` and `wait` in the same action_. Essentially, a `wait` action is _yaml sugar_ for a call to `./jackal tools wait-for`.
 
 Within each of the `action` lists (`before`, `after`, `onSuccess`, and `onFailure`), the following action configurations are available:
 
@@ -83,63 +83,63 @@ Within each of the `action` lists (`before`, `after`, `onSuccess`, and `onFailur
 
 ## Action Examples
 
-Below are some examples of putting together simple actions at various points in the Zarf lifecycle:
+Below are some examples of putting together simple actions at various points in the Jackal lifecycle:
 
 <Tabs queryString="action-examples">
 <TabItem value="Simple onCreate">
 
 Below is a simple example of an `onCreate` action set that declares `defaults` as well as `before` and `after` action lists:
 
-<ExampleYAML src={require('../../examples/component-actions/zarf.yaml')} component="on-create" />
+<ExampleYAML src={require('../../examples/component-actions/jackal.yaml')} component="on-create" />
 </TabItem>
 <TabItem value="Failure Handling onDeploy">
 
 Below is an example of an `onDeploy` action set that demonstrates how you can use `onFailure` actions to perform cleanup tasks or user messaging when an action of component lifecycle step fails:
 
-<ExampleYAML src={require('../../examples/component-actions/zarf.yaml')} component="on-deploy-with-timeout" />
+<ExampleYAML src={require('../../examples/component-actions/jackal.yaml')} component="on-deploy-with-timeout" />
 </TabItem>
 <TabItem value="Wait for a Resource">
 
 Below are examples of waiting for resources to exist or be available within an action using `wait` actions:
 
-<ExampleYAML src={require('../../examples/component-actions/zarf.yaml')} component="on-create-with-network-wait-action" />
-<ExampleYAML src={require('../../examples/component-actions/zarf.yaml')} component="on-deploy-with-wait-action" showLink={false} />
+<ExampleYAML src={require('../../examples/component-actions/jackal.yaml')} component="on-create-with-network-wait-action" />
+<ExampleYAML src={require('../../examples/component-actions/jackal.yaml')} component="on-deploy-with-wait-action" showLink={false} />
 </TabItem>
 </Tabs>
 
 ## Action Transformations
 
-As you may have noticed mentioned in the `before` action list of the above `Simple onCreate` example, Zarf provides some helpful transformations that help enhance cross-platform compatibility and allow you to better orchestrate Zarf and its components.
+As you may have noticed mentioned in the `before` action list of the above `Simple onCreate` example, Jackal provides some helpful transformations that help enhance cross-platform compatibility and allow you to better orchestrate Jackal and its components.
 
-Below are the transformations that Zarf will make on an action before it is ran:
+Below are the transformations that Jackal will make on an action before it is ran:
 
-- Replace `./zarf `&nbsp;with the path to the currently running Zarf executable.
-  - This allows you to run Zarf in Zarf and is designed to help you use `zarf tools` commands in the air gap.
+- Replace `./jackal `&nbsp;with the path to the currently running Jackal executable.
+  - This allows you to run Jackal in Jackal and is designed to help you use `jackal tools` commands in the air gap.
 - Replace common Unix commands and shell syntax with `powershell` / `pwsh` alternatives on Windows.
   - This allows commands like `touch` to work on Windows and while not perfect enhances cross-platform capabilities.
-- Add `env` entries for all previously declared Zarf `variables`.
+- Add `env` entries for all previously declared Jackal `variables`.
   - This allows you to use variables in actions and when combined with `setVariables` allows you to chain `variables` from an action for use in later actions or templates.
 
 <Tabs queryString="action-transformations">
 
 <TabItem value="Variables onDeploy">
 
-Within `onDeploy` action lists, you can use the `setVariables` action configuration to set a list of variables that can be used in other actions or components during `zarf package deploy`. The variable value will be assigned in two environment variables: `ZARF_VAR_{NAME}` and `TF_VAR_{name}`. These values will be accessible in subsequent actions and can be used for templating in `files` or `manifests` in other components as `###ZARF_VAR_{NAME}###`. This feature allows package authors to define dynamic runtime variables for consumption by other components or actions.
+Within `onDeploy` action lists, you can use the `setVariables` action configuration to set a list of variables that can be used in other actions or components during `jackal package deploy`. The variable value will be assigned in two environment variables: `JACKAL_VAR_{NAME}` and `TF_VAR_{name}`. These values will be accessible in subsequent actions and can be used for templating in `files` or `manifests` in other components as `###JACKAL_VAR_{NAME}###`. This feature allows package authors to define dynamic runtime variables for consumption by other components or actions.
 
 :::note
 
-Unlike normal variables, `setVariables` do not need to be defined with the `variables` key at the top of the `zarf.yaml`.
+Unlike normal variables, `setVariables` do not need to be defined with the `variables` key at the top of the `jackal.yaml`.
 
 :::
 
-<ExampleYAML src={require('../../examples/component-actions/zarf.yaml')} component="on-deploy-with-multiple-variables" />
+<ExampleYAML src={require('../../examples/component-actions/jackal.yaml')} component="on-deploy-with-multiple-variables" />
 
 </TabItem>
-<TabItem value="Zarf in Zarf onRemove">
+<TabItem value="Jackal in Jackal onRemove">
 
-Below is an example of an `onRemove` action set that demonstrates how you can use `./zarf `&nbsp;to use Zarf commands like `zarf tools kubectl` to perform actions on systems that might not have the pre-requisite software (like `kubectl`) installed onto them:
+Below is an example of an `onRemove` action set that demonstrates how you can use `./jackal `&nbsp;to use Jackal commands like `jackal tools kubectl` to perform actions on systems that might not have the pre-requisite software (like `kubectl`) installed onto them:
 
-<ExampleYAML src={require('../../examples/component-actions/zarf.yaml')} component="on-remove" />
+<ExampleYAML src={require('../../examples/component-actions/jackal.yaml')} component="on-remove" />
 
 </TabItem>
 </Tabs>
@@ -154,9 +154,9 @@ Below are a few more use cases from other `examples` and `packages` for how acti
 
 <TabItem value="Downloading Pre-requisites">
 
-The below example shows the `kiwix-serve` component from the data injections example which downloads a `.zim` file with an `onCreate.before` action for inclusion into the Zarf package.
+The below example shows the `kiwix-serve` component from the data injections example which downloads a `.zim` file with an `onCreate.before` action for inclusion into the Jackal package.
 
-<ExampleYAML src={require('../../examples/kiwix/zarf.yaml')} component="kiwix-serve" />
+<ExampleYAML src={require('../../examples/kiwix/jackal.yaml')} component="kiwix-serve" />
 
 </TabItem>
 
@@ -165,16 +165,16 @@ The below example shows the `kiwix-serve` component from the data injections exa
 
 The below example includes the `eksctl` binary and `eks.yaml` file in one component, setting it up in an `onDeploy.after` action and then uses the `eksctl` binary in a second component to create an EKS cluster in an `onDeploy.before` action.
 
-<ExampleYAML src={require('../../packages/distros/eks/zarf.yaml')} component="load-eksctl" />
-<ExampleYAML src={require('../../packages/distros/eks/zarf.yaml')} component="deploy-eks-cluster" showLink={false} />
+<ExampleYAML src={require('../../packages/distros/eks/jackal.yaml')} component="load-eksctl" />
+<ExampleYAML src={require('../../packages/distros/eks/jackal.yaml')} component="deploy-eks-cluster" showLink={false} />
 
 </TabItem>
 
 <TabItem value="Waiting for GitOps Resources">
 
-The below example shows using a `wait` command to wait for a GitOps deployment to happen after Zarf configures the initial `GitRepository` manifest.  By default Zarf will only track the resources it directly deploys, but adding a `wait` action allows you to control the lifecycle more directly.
+The below example shows using a `wait` command to wait for a GitOps deployment to happen after Jackal configures the initial `GitRepository` manifest.  By default Jackal will only track the resources it directly deploys, but adding a `wait` action allows you to control the lifecycle more directly.
 
-<ExampleYAML src={require('../../examples/podinfo-flux/zarf.yaml')} component="podinfo-via-flux" />
+<ExampleYAML src={require('../../examples/podinfo-flux/jackal.yaml')} component="podinfo-via-flux" />
 
 </TabItem>
 

@@ -1,4 +1,4 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: component-actions-edgecases
   description: Component actions edge cases
@@ -7,11 +7,11 @@ components:
   - name: on-deploy
     required: true
     actions:
-      # runs during "zarf package remove"
+      # runs during "jackal package remove"
       onDeploy:
         before:
           # Wait for something that doesn't have a namespace (no -n)
           - wait:
               cluster:
                 kind: ns
-                name: zarf
+                name: jackal

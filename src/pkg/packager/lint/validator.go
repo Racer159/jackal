@@ -1,16 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package lint contains functions for verifying zarf yaml files are valid
+// Package lint contains functions for verifying jackal yaml files are valid
 package lint
 
 import (
 	"fmt"
 	"path/filepath"
 
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/types"
 	"github.com/fatih/color"
 )
 
@@ -48,17 +48,17 @@ func (vm validatorMessage) String() string {
 
 // Validator holds the warnings/errors and messaging that we get from validation
 type Validator struct {
-	findings           []validatorMessage
-	jsonSchema         []byte
-	typedZarfPackage   types.ZarfPackage
-	untypedZarfPackage interface{}
-	baseDir            string
+	findings             []validatorMessage
+	jsonSchema           []byte
+	typedJackalPackage   types.JackalPackage
+	untypedJackalPackage interface{}
+	baseDir              string
 }
 
 // DisplayFormattedMessage message sent to user based on validator results
 func (v Validator) DisplayFormattedMessage() {
 	if !v.hasFindings() {
-		message.Successf("0 findings for %q", v.typedZarfPackage.Metadata.Name)
+		message.Successf("0 findings for %q", v.typedJackalPackage.Metadata.Name)
 	}
 	v.printValidationTable()
 }

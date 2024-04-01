@@ -1,18 +1,18 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package tools contains the CLI commands for Zarf.
+// Package tools contains the CLI commands for Jackal.
 package tools
 
 import (
 	"os"
 
-	"github.com/defenseunicorns/zarf/src/cmd/tools/helm"
-	"github.com/defenseunicorns/zarf/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/cmd/tools/helm"
+	"github.com/defenseunicorns/jackal/src/config/lang"
 	"helm.sh/helm/v3/pkg/action"
 )
 
-// ldflags github.com/defenseunicorns/zarf/src/cmd/tools.helmVersion=x.x.x
+// ldflags github.com/defenseunicorns/jackal/src/cmd/tools.helmVersion=x.x.x
 var helmVersion string
 
 func init() {

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package sources contains core implementations of the PackageSource interface.
 package sources
@@ -13,11 +13,11 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/filters"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/filters"
-	"github.com/defenseunicorns/zarf/src/types"
 )
 
 var (
@@ -27,7 +27,7 @@ var (
 
 // SplitTarballSource is a package source for split tarballs.
 type SplitTarballSource struct {
-	*types.ZarfPackageOptions
+	*types.JackalPackageOptions
 }
 
 // Collect turns a split tarball into a full tarball.
@@ -49,7 +49,7 @@ func (s *SplitTarballSource) Collect(dir string) (string, error) {
 	}
 	defer pkgFile.Close()
 
-	var pkgData types.ZarfSplitPackageData
+	var pkgData types.JackalSplitPackageData
 	for idx, file := range fileList {
 		// The first file contains metadata about the package
 		if idx == 0 {
@@ -109,7 +109,7 @@ func (s *SplitTarballSource) Collect(dir string) (string, error) {
 }
 
 // LoadPackage loads a package from a split tarball.
-func (s *SplitTarballSource) LoadPackage(dst *layout.PackagePaths, filter filters.ComponentFilterStrategy, unarchiveAll bool) (pkg types.ZarfPackage, warnings []string, err error) {
+func (s *SplitTarballSource) LoadPackage(dst *layout.PackagePaths, filter filters.ComponentFilterStrategy, unarchiveAll bool) (pkg types.JackalPackage, warnings []string, err error) {
 	tb, err := s.Collect(filepath.Dir(s.PackageSource))
 	if err != nil {
 		return pkg, nil, err
@@ -121,13 +121,13 @@ func (s *SplitTarballSource) LoadPackage(dst *layout.PackagePaths, filter filter
 	s.Shasum = ""
 
 	ts := &TarballSource{
-		s.ZarfPackageOptions,
+		s.JackalPackageOptions,
 	}
 	return ts.LoadPackage(dst, filter, unarchiveAll)
 }
 
 // LoadPackageMetadata loads a package's metadata from a split tarball.
-func (s *SplitTarballSource) LoadPackageMetadata(dst *layout.PackagePaths, wantSBOM bool, skipValidation bool) (pkg types.ZarfPackage, warnings []string, err error) {
+func (s *SplitTarballSource) LoadPackageMetadata(dst *layout.PackagePaths, wantSBOM bool, skipValidation bool) (pkg types.JackalPackage, warnings []string, err error) {
 	tb, err := s.Collect(filepath.Dir(s.PackageSource))
 	if err != nil {
 		return pkg, nil, err
@@ -137,7 +137,7 @@ func (s *SplitTarballSource) LoadPackageMetadata(dst *layout.PackagePaths, wantS
 	s.PackageSource = tb
 
 	ts := &TarballSource{
-		s.ZarfPackageOptions,
+		s.JackalPackageOptions,
 	}
 	return ts.LoadPackageMetadata(dst, wantSBOM, skipValidation)
 }

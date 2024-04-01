@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package test provides e2e tests for Zarf.
+// Package test provides e2e tests for Jackal.
 package test
 
 import (
@@ -18,33 +18,33 @@ func TestConfigFile(t *testing.T) {
 	e2e.SetupWithCluster(t)
 
 	var (
-		path   = fmt.Sprintf("zarf-package-config-file-%s.tar.zst", e2e.Arch)
+		path   = fmt.Sprintf("jackal-package-config-file-%s.tar.zst", e2e.Arch)
 		dir    = "examples/config-file"
-		config = "zarf-config.toml"
+		config = "jackal-config.toml"
 	)
 
 	e2e.CleanFiles(path)
 
 	// Test the config file environment variable
-	os.Setenv("ZARF_CONFIG", filepath.Join(dir, config))
+	os.Setenv("JACKAL_CONFIG", filepath.Join(dir, config))
 	configFileTests(t, dir, path)
-	os.Unsetenv("ZARF_CONFIG")
+	os.Unsetenv("JACKAL_CONFIG")
 
 	configFileDefaultTests(t)
 
-	stdOut, stdErr, err := e2e.Zarf("package", "remove", path, "--confirm")
+	stdOut, stdErr, err := e2e.Jackal("package", "remove", path, "--confirm")
 	require.NoError(t, err, stdOut, stdErr)
 
 	e2e.CleanFiles(path)
 }
 
 func configFileTests(t *testing.T, dir, path string) {
-	_, stdErr, err := e2e.Zarf("package", "create", dir, "--confirm")
+	_, stdErr, err := e2e.Jackal("package", "create", dir, "--confirm")
 	require.NoError(t, err)
 	require.Contains(t, string(stdErr), "This is a zebra and they have stripes")
 	require.Contains(t, string(stdErr), "This is a leopard and they have spots")
 
-	_, stdErr, err = e2e.Zarf("package", "deploy", path, "--confirm")
+	_, stdErr, err = e2e.Jackal("package", "deploy", path, "--confirm")
 	require.NoError(t, err)
 	require.Contains(t, string(stdErr), "📦 LION COMPONENT")
 	require.NotContains(t, string(stdErr), "📦 LEOPARD COMPONENT")
@@ -54,7 +54,7 @@ func configFileTests(t *testing.T, dir, path string) {
 	require.NotContains(t, string(stdErr), "This package does NOT contain an SBOM.")
 
 	// Verify the configmap was properly templated
-	kubectlOut, _, err := e2e.Kubectl("-n", "zarf", "get", "configmap", "simple-configmap", "-o", "jsonpath={.data.templateme\\.properties}")
+	kubectlOut, _, err := e2e.Kubectl("-n", "jackal", "get", "configmap", "simple-configmap", "-o", "jsonpath={.data.templateme\\.properties}")
 	require.NoError(t, err)
 	require.Contains(t, string(kubectlOut), "scorpion=iridescent")
 	require.Contains(t, string(kubectlOut), "camel_spider=matte")
@@ -88,7 +88,7 @@ b42JLSKqwpvVjQDiFZPI/0wZTo3WkWm9Rd7CAACheb8S70K1r/JIzsmIcnj0v4xs
 sfd+R35UE+m8MExbDP4lKFParmvi2/UZfb3VFNMmMPTV6AEIBl6N4PmhHMZOsIRs
 H4RxbE+FpmsMAUCpdrzvFkc=
 -----END PRIVATE KEY-----`
-	kubectlOut, _, err = e2e.Kubectl("-n", "zarf", "get", "configmap", "simple-configmap", "-o", "jsonpath={.data.tls-key}")
+	kubectlOut, _, err = e2e.Kubectl("-n", "jackal", "get", "configmap", "simple-configmap", "-o", "jsonpath={.data.tls-key}")
 	require.NoError(t, err)
 	require.Equal(t, tlsKey, kubectlOut)
 }
@@ -100,7 +100,7 @@ func configFileDefaultTests(t *testing.T) {
 		"log_level: 6a845a41",
 		"Disable log file creation (default true)",
 		"Disable fancy UI progress bars, spinners, logos, etc (default true)",
-		"zarf_cache: 978499a5",
+		"jackal_cache: 978499a5",
 		"Allow access to insecure registries and disable other recommended security enforcements such as package checksum and signature validation. This flag should only be used if you have a specific reason and accept the reduced security posture.",
 		"tmp_dir: c457359e",
 	}
@@ -136,31 +136,31 @@ func configFileDefaultTests(t *testing.T) {
 	}
 
 	// Test remaining default initializers
-	os.Setenv("ZARF_CONFIG", filepath.Join("src", "test", "zarf-config-test.toml"))
+	os.Setenv("JACKAL_CONFIG", filepath.Join("src", "test", "jackal-config-test.toml"))
 
 	// Test global flags
-	stdOut, _, _ := e2e.Zarf("--help")
+	stdOut, _, _ := e2e.Jackal("--help")
 	for _, test := range globalFlags {
 		require.Contains(t, string(stdOut), test)
 	}
 
 	// Test init flags
-	stdOut, _, _ = e2e.Zarf("init", "--help")
+	stdOut, _, _ = e2e.Jackal("init", "--help")
 	for _, test := range initFlags {
 		require.Contains(t, string(stdOut), test)
 	}
 
 	// Test package create flags
-	stdOut, _, _ = e2e.Zarf("package", "create", "--help")
+	stdOut, _, _ = e2e.Jackal("package", "create", "--help")
 	for _, test := range packageCreateFlags {
 		require.Contains(t, string(stdOut), test)
 	}
 
 	// Test package deploy flags
-	stdOut, _, _ = e2e.Zarf("package", "deploy", "--help")
+	stdOut, _, _ = e2e.Jackal("package", "deploy", "--help")
 	for _, test := range packageDeployFlags {
 		require.Contains(t, string(stdOut), test)
 	}
 
-	os.Unsetenv("ZARF_CONFIG")
+	os.Unsetenv("JACKAL_CONFIG")
 }

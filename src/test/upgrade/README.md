@@ -1,27 +1,27 @@
-# Test Upgrading a Zarf package and Zarf itself
+# Test Upgrading a Jackal package and Jackal itself
 
-> Note: For this test case, we first deploy the podinfo package (from this directory) with version 6.3.3, then build a 6.3.4 package.  This package is then deployed to an upgraded cluster with the new zarf version and the new zarf version builds and deploys a 6.3.5 version.
+> Note: For this test case, we first deploy the podinfo package (from this directory) with version 6.3.3, then build a 6.3.4 package.  This package is then deployed to an upgraded cluster with the new jackal version and the new jackal version builds and deploys a 6.3.5 version.
 
-This directory holds the tests that verify Zarf can perform these upgrade actions and that any deploy deprecations work as expected.
+This directory holds the tests that verify Jackal can perform these upgrade actions and that any deploy deprecations work as expected.
 
 ## Running Tests Locally
 
 ### Dependencies
 
-Running the tests locally have the same prerequisites as running and building Zarf:
+Running the tests locally have the same prerequisites as running and building Jackal:
 
 1. GoLang >= `1.19.x`
 1. Make
 1. Access to a cluster to test against
-1. The zarf.yaml created and deployed with PODINFO_VERSION 6.3.3
-1. The zarf.yaml created with PODINFO_VERSION 6.3.4
+1. The jackal.yaml created and deployed with PODINFO_VERSION 6.3.3
+1. The jackal.yaml created with PODINFO_VERSION 6.3.4
 
 ### Actually Running The Test
 
 Here are a few different ways to run the tests, based on your specific situation:
 
 ``` bash
-# The default way, from the root directory of the repo. This will automatically build any Zarf related resources if they don't already exist (i.e. binary, init-package, example packages):
+# The default way, from the root directory of the repo. This will automatically build any Jackal related resources if they don't already exist (i.e. binary, init-package, example packages):
 make test-upgrade
 ```
 

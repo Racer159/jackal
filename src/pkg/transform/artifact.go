@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package transform provides helper functions to transform URLs to airgap equivalents
 package transform
@@ -14,11 +14,11 @@ import (
 )
 
 const (
-	// NoTransform is the URL prefix added to HTTP 3xx or text URLs that instructs Zarf not to transform on a subsequent request.
-	NoTransform = "/zarf-3xx-no-transform"
+	// NoTransform is the URL prefix added to HTTP 3xx or text URLs that instructs Jackal not to transform on a subsequent request.
+	NoTransform = "/jackal-3xx-no-transform"
 )
 
-// NoTransformTarget takes an address that Zarf should not transform, and removes the NoTransform prefix.
+// NoTransformTarget takes an address that Jackal should not transform, and removes the NoTransform prefix.
 func NoTransformTarget(address string, path string) (*url.URL, error) {
 	targetURL, err := url.Parse(address)
 	if err != nil {
@@ -68,7 +68,7 @@ func GenTransformURL(targetBaseURL string, sourceURL string) (*url.URL, error) {
 		fileName = matches[idx("host")]
 	}
 
-	// NOTE: We remove the protocol, port and file name so that https://zarf.dev:443/package/package1.zip and http://zarf.dev/package/package2.zip
+	// NOTE: We remove the protocol, port and file name so that https://jackal.dev:443/package/package1.zip and http://jackal.dev/package/package2.zip
 	// resolve to the same "folder" (as they would in real life)
 	sanitizedURL := fmt.Sprintf("%s%s%s", matches[idx("host")], matches[idx("startPath")], matches[idx("midPath")])
 

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package packager contains functions for interacting with, managing and deploying Zarf packages.
+// Package packager contains functions for interacting with, managing and deploying Jackal packages.
 package packager
 
 import (
@@ -14,17 +14,17 @@ import (
 	"slices"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/internal/packager/template"
-	"github.com/defenseunicorns/zarf/src/pkg/cluster"
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/internal/packager/template"
+	"github.com/defenseunicorns/jackal/src/pkg/cluster"
+	"github.com/defenseunicorns/jackal/src/types"
 
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/deprecated"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/sources"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/deprecated"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/sources"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
 )
 
 // Packager is the main struct for managing packages.
@@ -78,7 +78,7 @@ func New(cfg *types.PackagerConfig, mods ...Modifier) (*Packager, error) {
 	}
 
 	if cfg.SetVariableMap == nil {
-		cfg.SetVariableMap = make(map[string]*types.ZarfSetVariable)
+		cfg.SetVariableMap = make(map[string]*types.JackalSetVariable)
 	}
 
 	var (
@@ -204,9 +204,9 @@ func (p *Packager) attemptClusterChecks() (err error) {
 		}
 	}
 
-	// Check for any breaking changes between the initialized Zarf version and this CLI
+	// Check for any breaking changes between the initialized Jackal version and this CLI
 	if existingInitPackage, _ := p.cluster.GetDeployedPackage("init"); existingInitPackage != nil {
-		// Use the build version instead of the metadata since this will support older Zarf versions
+		// Use the build version instead of the metadata since this will support older Jackal versions
 		deprecated.PrintBreakingChanges(existingInitPackage.Data.Build.Version)
 	}
 
@@ -235,7 +235,7 @@ func (p *Packager) validatePackageArchitecture() error {
 	return nil
 }
 
-// validateLastNonBreakingVersion validates the Zarf CLI version against a package's LastNonBreakingVersion.
+// validateLastNonBreakingVersion validates the Jackal CLI version against a package's LastNonBreakingVersion.
 func (p *Packager) validateLastNonBreakingVersion() (err error) {
 	cliVersion := config.CLIVersion
 	lastNonBreakingVersion := p.cfg.Pkg.Build.LastNonBreakingVersion
@@ -246,7 +246,7 @@ func (p *Packager) validateLastNonBreakingVersion() (err error) {
 
 	lastNonBreakingSemVer, err := semver.NewVersion(lastNonBreakingVersion)
 	if err != nil {
-		return fmt.Errorf("unable to parse lastNonBreakingVersion '%s' from Zarf package build data : %w", lastNonBreakingVersion, err)
+		return fmt.Errorf("unable to parse lastNonBreakingVersion '%s' from Jackal package build data : %w", lastNonBreakingVersion, err)
 	}
 
 	cliSemVer, err := semver.NewVersion(cliVersion)

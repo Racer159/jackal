@@ -1,13 +1,13 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: import-everything
   description: Test nearly every type of import
   version: 0.0.1
 
 components:
-  # Test every simple primitive that Zarf has through a local import
+  # Test every simple primitive that Jackal has through a local import
   - name: import-component-local
-    description: "import-component-local == ###ZARF_COMPONENT_NAME###"
+    description: "import-component-local == ###JACKAL_COMPONENT_NAME###"
     required: false
     import:
       path: ../09-composable-packages
@@ -15,7 +15,7 @@ components:
 
   # Test nested local to oci imports
   - name: import-component-oci
-    description: "import-component-oci == ###ZARF_COMPONENT_NAME###"
+    description: "import-component-oci == ###JACKAL_COMPONENT_NAME###"
     required: false
     import:
       name: import-component-oci
@@ -23,7 +23,7 @@ components:
 
   # Test big bang extension files
   - name: import-big-bang
-    description: "import-big-bang == ###ZARF_COMPONENT_NAME###"
+    description: "import-big-bang == ###JACKAL_COMPONENT_NAME###"
     required: false
     import:
       name: bigbang
@@ -31,7 +31,7 @@ components:
 
   # Test file imports including cosignKeyPath
   - name: file-imports
-    description: "file-imports == ###ZARF_COMPONENT_NAME###"
+    description: "file-imports == ###JACKAL_COMPONENT_NAME###"
     required: false
     cosignKeyPath: ../../../../cosign.pub
     files:
@@ -39,24 +39,24 @@ components:
       - source: ../09-composable-packages/files/coffee-ipsum.txt
         target: ../09-composable-packages/coffee-ipsum.txt
         # Import of a file from a URL
-      - source: https://raw.githubusercontent.com/defenseunicorns/zarf/main/README.md
-        target: files/zarf-readme.md
+      - source: https://raw.githubusercontent.com/defenseunicorns/jackal/main/README.md
+        target: files/jackal-readme.md
     actions:
       onDeploy:
         after:
           - cmd: test -f files/coffee-ipsum.txt
-          - cmd: test -f files/zarf-readme.md
+          - cmd: test -f files/jackal-readme.md
       onRemove:
         before:
           - cmd: rm files/coffee-ipsum.txt
-          - cmd: rm files/zarf-readme.md
+          - cmd: rm files/jackal-readme.md
         after:
           - cmd: test ! -f files/coffee-ipsum.txt
-          - cmd: test ! -f files/zarf-readme.md
+          - cmd: test ! -f files/jackal-readme.md
 
   # Test local charts (for skeletons)
   - name: local-chart-import
-    description: "local-chart-import == ###ZARF_COMPONENT_NAME###"
+    description: "local-chart-import == ###JACKAL_COMPONENT_NAME###"
     required: false
     charts:
       - name: podinfo

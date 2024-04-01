@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package variables contains functions for working with variables within Zarf packages.
+// Package variables contains functions for working with variables within Jackal packages.
 package variables
 
 import (
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/interactive"
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/interactive"
+	"github.com/defenseunicorns/jackal/src/types"
 )
 
 // SetVariableMapInConfig handles setting the active variables used to template component files.

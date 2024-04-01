@@ -5,7 +5,7 @@ const SchemaItemProperties = ({ item, include, invert }) => {
   const [itemSchema, setItemSchema] = useState(null);
 
   useEffect(async () => {
-    const json = await import("@site/static/zarf.schema.json");
+    const json = await import("@site/static/jackal.schema.json");
     setItemSchema(json.definitions[item]);
   }, []);
 

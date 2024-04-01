@@ -3,9 +3,9 @@ kind: Service
 metadata:
   name: kiwix
   annotations:
-    zarf.dev/connect-description: "View the Kiwix web interface"
+    jackal.dev/connect-description: "View the Kiwix web interface"
   labels:
-    zarf.dev/connect-name: kiwix
+    jackal.dev/connect-name: kiwix
 spec:
   selector:
     app: kiwix-serve

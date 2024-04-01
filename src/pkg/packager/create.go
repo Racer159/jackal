@@ -1,22 +1,22 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package packager contains functions for interacting with, managing and deploying Zarf packages.
+// Package packager contains functions for interacting with, managing and deploying Jackal packages.
 package packager
 
 import (
 	"fmt"
 	"os"
 
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/internal/packager/validate"
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/creator"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/internal/packager/validate"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/creator"
 )
 
-// Create generates a Zarf package tarball for a given PackageConfig and optional base directory.
+// Create generates a Jackal package tarball for a given PackageConfig and optional base directory.
 func (p *Packager) Create() (err error) {
 	cwd, err := os.Getwd()
 	if err != nil {
@@ -31,7 +31,7 @@ func (p *Packager) Create() (err error) {
 
 	pc := creator.NewPackageCreator(p.cfg.CreateOpts, p.cfg, cwd)
 
-	if err := helpers.CreatePathAndCopy(layout.ZarfYAML, p.layout.ZarfYAML); err != nil {
+	if err := helpers.CreatePathAndCopy(layout.JackalYAML, p.layout.JackalYAML); err != nil {
 		return err
 	}
 
@@ -45,7 +45,7 @@ func (p *Packager) Create() (err error) {
 		return fmt.Errorf("unable to validate package: %w", err)
 	}
 
-	if !p.confirmAction(config.ZarfCreateStage) {
+	if !p.confirmAction(config.JackalCreateStage) {
 		return fmt.Errorf("package creation canceled")
 	}
 

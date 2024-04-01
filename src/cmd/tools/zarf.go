@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package tools contains the CLI commands for Zarf.
+// Package tools contains the CLI commands for Jackal.
 package tools
 
 import (
@@ -11,26 +11,26 @@ import (
 	"slices"
 
 	"github.com/AlecAivazis/survey/v2"
+	"github.com/defenseunicorns/jackal/src/cmd/common"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/internal/packager/git"
+	"github.com/defenseunicorns/jackal/src/internal/packager/helm"
+	"github.com/defenseunicorns/jackal/src/pkg/cluster"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/sources"
+	"github.com/defenseunicorns/jackal/src/pkg/pki"
+	"github.com/defenseunicorns/jackal/src/pkg/zoci"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
 	"github.com/defenseunicorns/pkg/oci"
-	"github.com/defenseunicorns/zarf/src/cmd/common"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/internal/packager/git"
-	"github.com/defenseunicorns/zarf/src/internal/packager/helm"
-	"github.com/defenseunicorns/zarf/src/pkg/cluster"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/sources"
-	"github.com/defenseunicorns/zarf/src/pkg/pki"
-	"github.com/defenseunicorns/zarf/src/pkg/zoci"
-	"github.com/defenseunicorns/zarf/src/types"
 	"github.com/sigstore/cosign/v2/pkg/cosign"
 	"github.com/spf13/cobra"
 )
 
 var subAltNames []string
 var outputDirectory string
-var updateCredsInitOpts types.ZarfInitOptions
+var updateCredsInitOpts types.JackalInitOptions
 
 var deprecatedGetGitCredsCmd = &cobra.Command{
 	Use:    "get-git-password",
@@ -51,9 +51,9 @@ var getCredsCmd = &cobra.Command{
 	Aliases: []string{"gc"},
 	Args:    cobra.MaximumNArgs(1),
 	Run: func(_ *cobra.Command, args []string) {
-		state, err := cluster.NewClusterOrDie().LoadZarfState()
+		state, err := cluster.NewClusterOrDie().LoadJackalState()
 		if err != nil || state.Distro == "" {
-			// If no distro the zarf secret did not load properly
+			// If no distro the jackal secret did not load properly
 			message.Fatalf(nil, lang.ErrLoadState)
 		}
 
@@ -85,13 +85,13 @@ var updateCredsCmd = &cobra.Command{
 		}
 
 		c := cluster.NewClusterOrDie()
-		oldState, err := c.LoadZarfState()
+		oldState, err := c.LoadJackalState()
 		if err != nil || oldState.Distro == "" {
-			// If no distro the zarf secret did not load properly
+			// If no distro the jackal secret did not load properly
 			message.Fatalf(nil, lang.ErrLoadState)
 		}
-		var newState *types.ZarfState
-		if newState, err = c.MergeZarfState(oldState, updateCredsInitOpts, args); err != nil {
+		var newState *types.JackalState
+		if newState, err = c.MergeJackalState(oldState, updateCredsInitOpts, args); err != nil {
 			message.Fatal(err, lang.CmdToolsUpdateCredsUnableUpdateCreds)
 		}
 
@@ -113,10 +113,10 @@ var updateCredsCmd = &cobra.Command{
 		if confirm {
 			// Update registry and git pull secrets
 			if slices.Contains(args, message.RegistryKey) {
-				c.UpdateZarfManagedImageSecrets(newState)
+				c.UpdateJackalManagedImageSecrets(newState)
 			}
 			if slices.Contains(args, message.GitKey) {
-				c.UpdateZarfManagedGitSecrets(newState)
+				c.UpdateJackalManagedGitSecrets(newState)
 			}
 
 			// Update artifact token (if internal)
@@ -131,17 +131,17 @@ var updateCredsCmd = &cobra.Command{
 				}
 			}
 
-			// Save the final Zarf State
-			err = c.SaveZarfState(newState)
+			// Save the final Jackal State
+			err = c.SaveJackalState(newState)
 			if err != nil {
 				message.Fatalf(err, lang.ErrSaveState)
 			}
 
-			// Update Zarf 'init' component Helm releases if present
+			// Update Jackal 'init' component Helm releases if present
 			h := helm.NewClusterOnly(&types.PackagerConfig{State: newState}, c)
 
 			if slices.Contains(args, message.RegistryKey) && newState.RegistryInfo.InternalRegistry {
-				err = h.UpdateZarfRegistryValues()
+				err = h.UpdateJackalRegistryValues()
 				if err != nil {
 					// Warn if we couldn't actually update the registry (it might not be installed and we should try to continue)
 					message.Warnf(lang.CmdToolsUpdateCredsUnableUpdateRegistry, err.Error())
@@ -149,14 +149,14 @@ var updateCredsCmd = &cobra.Command{
 			}
 			if slices.Contains(args, message.GitKey) && newState.GitServer.InternalServer {
 				g := git.New(newState.GitServer)
-				err = g.UpdateZarfGiteaUsers(oldState)
+				err = g.UpdateJackalGiteaUsers(oldState)
 				if err != nil {
 					// Warn if we couldn't actually update the git server (it might not be installed and we should try to continue)
 					message.Warnf(lang.CmdToolsUpdateCredsUnableUpdateGit, err.Error())
 				}
 			}
 			if slices.Contains(args, message.AgentKey) {
-				err = h.UpdateZarfAgentValues()
+				err = h.UpdateJackalAgentValues()
 				if err != nil {
 					// Warn if we couldn't actually update the agent (it might not be installed and we should try to continue)
 					message.Warnf(lang.CmdToolsUpdateCredsUnableUpdateAgent, err.Error())
@@ -324,7 +324,7 @@ func init() {
 	updateCredsCmd.Flags().SortFlags = true
 
 	toolsCmd.AddCommand(clearCacheCmd)
-	clearCacheCmd.Flags().StringVar(&config.CommonOptions.CachePath, "zarf-cache", config.ZarfDefaultCachePath, lang.CmdToolsClearCacheFlagCachePath)
+	clearCacheCmd.Flags().StringVar(&config.CommonOptions.CachePath, "jackal-cache", config.JackalDefaultCachePath, lang.CmdToolsClearCacheFlagCachePath)
 
 	toolsCmd.AddCommand(downloadInitCmd)
 	downloadInitCmd.Flags().StringVarP(&outputDirectory, "output-directory", "o", "", lang.CmdToolsDownloadInitFlagOutputDirectory)

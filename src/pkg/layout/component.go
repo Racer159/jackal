@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package layout contains functions for interacting with Zarf's package layout on disk.
+// Package layout contains functions for interacting with Jackal's package layout on disk.
 package layout
 
 import (
@@ -10,9 +10,9 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/types"
 	"github.com/mholt/archiver/v3"
 )
 
@@ -45,7 +45,7 @@ func IsNotLoaded(err error) bool {
 }
 
 // Archive archives a component.
-func (c *Components) Archive(component types.ZarfComponent, cleanupTemp bool) (err error) {
+func (c *Components) Archive(component types.JackalComponent, cleanupTemp bool) (err error) {
 	name := component.Name
 	if _, ok := c.Dirs[name]; !ok {
 		return &fs.PathError{
@@ -81,7 +81,7 @@ func (c *Components) Archive(component types.ZarfComponent, cleanupTemp bool) (e
 }
 
 // Unarchive unarchives a component.
-func (c *Components) Unarchive(component types.ZarfComponent) (err error) {
+func (c *Components) Unarchive(component types.JackalComponent) (err error) {
 	name := component.Name
 	tb, ok := c.Tarballs[name]
 	if !ok {
@@ -144,7 +144,7 @@ func (c *Components) Unarchive(component types.ZarfComponent) (err error) {
 }
 
 // Create creates a new component directory structure.
-func (c *Components) Create(component types.ZarfComponent) (cp *ComponentPaths, err error) {
+func (c *Components) Create(component types.JackalComponent) (cp *ComponentPaths, err error) {
 	name := component.Name
 
 	_, ok := c.Tarballs[name]

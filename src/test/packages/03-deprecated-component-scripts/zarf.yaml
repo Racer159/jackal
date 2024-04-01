@@ -1,4 +1,4 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: deprecated-component-scripts
   description: Test to verify the deprecated component scripts functionality gets migrated to the 'actions' while maintaining past functionality (see src/pkg/packager/deprecated)

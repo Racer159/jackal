@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package test provides e2e tests for Zarf.
+// Package test provides e2e tests for Jackal.
 package test
 
 import (
@@ -12,7 +12,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/defenseunicorns/zarf/src/pkg/cluster"
+	"github.com/defenseunicorns/jackal/src/pkg/cluster"
 	"github.com/stretchr/testify/require"
 )
 
@@ -24,37 +24,37 @@ func TestConnectAndCreds(t *testing.T) {
 	t.Log("E2E: Connect")
 	e2e.SetupWithCluster(t)
 
-	prevAgentSecretData, _, err := e2e.Kubectl("get", "secret", "agent-hook-tls", "-n", "zarf", "-o", "jsonpath={.data}")
+	prevAgentSecretData, _, err := e2e.Kubectl("get", "secret", "agent-hook-tls", "-n", "jackal", "-o", "jsonpath={.data}")
 	require.NoError(t, err)
 
-	connectToZarfServices(t)
+	connectToJackalServices(t)
 
-	stdOut, stdErr, err := e2e.Zarf("tools", "update-creds", "--confirm")
+	stdOut, stdErr, err := e2e.Jackal("tools", "update-creds", "--confirm")
 	require.NoError(t, err, stdOut, stdErr)
 
-	newAgentSecretData, _, err := e2e.Kubectl("get", "secret", "agent-hook-tls", "-n", "zarf", "-o", "jsonpath={.data}")
+	newAgentSecretData, _, err := e2e.Kubectl("get", "secret", "agent-hook-tls", "-n", "jackal", "-o", "jsonpath={.data}")
 	require.NoError(t, err)
 	require.NotEqual(t, prevAgentSecretData, newAgentSecretData, "agent secrets should not be the same")
 
-	connectToZarfServices(t)
+	connectToJackalServices(t)
 
-	stdOut, stdErr, err = e2e.Zarf("package", "remove", "init", "--components=logging", "--confirm")
+	stdOut, stdErr, err = e2e.Jackal("package", "remove", "init", "--components=logging", "--confirm")
 	require.NoError(t, err, stdOut, stdErr)
 
 	// Prune the images from Grafana and ensure that they are gone
-	stdOut, stdErr, err = e2e.Zarf("tools", "registry", "prune", "--confirm")
+	stdOut, stdErr, err = e2e.Jackal("tools", "registry", "prune", "--confirm")
 	require.NoError(t, err, stdOut, stdErr)
 
-	stdOut, stdErr, err = e2e.Zarf("tools", "registry", "ls", "127.0.0.1:31337/library/registry")
+	stdOut, stdErr, err = e2e.Jackal("tools", "registry", "ls", "127.0.0.1:31337/library/registry")
 	require.NoError(t, err, stdOut, stdErr)
 	require.Contains(t, stdOut, "2.8.3")
-	stdOut, stdErr, err = e2e.Zarf("tools", "registry", "ls", "127.0.0.1:31337/grafana/promtail")
+	stdOut, stdErr, err = e2e.Jackal("tools", "registry", "ls", "127.0.0.1:31337/grafana/promtail")
 	require.NoError(t, err, stdOut, stdErr)
 	require.Equal(t, stdOut, "")
-	stdOut, stdErr, err = e2e.Zarf("tools", "registry", "ls", "127.0.0.1:31337/grafana/grafana")
+	stdOut, stdErr, err = e2e.Jackal("tools", "registry", "ls", "127.0.0.1:31337/grafana/grafana")
 	require.NoError(t, err, stdOut, stdErr)
 	require.Equal(t, stdOut, "")
-	stdOut, stdErr, err = e2e.Zarf("tools", "registry", "ls", "127.0.0.1:31337/grafana/loki")
+	stdOut, stdErr, err = e2e.Jackal("tools", "registry", "ls", "127.0.0.1:31337/grafana/loki")
 	require.NoError(t, err, stdOut, stdErr)
 	require.Equal(t, stdOut, "")
 }
@@ -66,7 +66,7 @@ func TestMetrics(t *testing.T) {
 	c, err := cluster.NewCluster()
 	require.NoError(t, err)
 
-	tunnel, err := c.NewTunnel("zarf", "svc", "agent-hook", "", 8888, 8443)
+	tunnel, err := c.NewTunnel("jackal", "svc", "agent-hook", "", 8888, 8443)
 	require.NoError(t, err)
 	_, err = tunnel.Connect()
 	require.NoError(t, err)
@@ -98,16 +98,16 @@ func TestMetrics(t *testing.T) {
 	require.Equal(t, 200, resp.StatusCode)
 }
 
-func connectToZarfServices(t *testing.T) {
+func connectToJackalServices(t *testing.T) {
 	// Make the Registry contains the images we expect
-	stdOut, stdErr, err := e2e.Zarf("tools", "registry", "catalog")
+	stdOut, stdErr, err := e2e.Jackal("tools", "registry", "catalog")
 	require.NoError(t, err, stdOut, stdErr)
 	registryList := strings.Split(strings.Trim(stdOut, "\n "), "\n")
 
 	// We assert greater than or equal to since the base init has 12 images
 	// HOWEVER during an upgrade we could have mismatched versions/names resulting in more images
 	require.GreaterOrEqual(t, len(registryList), 7)
-	require.Contains(t, stdOut, "defenseunicorns/zarf/agent")
+	require.Contains(t, stdOut, "defenseunicorns/jackal/agent")
 	require.Contains(t, stdOut, "gitea/gitea")
 	require.Contains(t, stdOut, "grafana/grafana")
 	require.Contains(t, stdOut, "grafana/loki")
@@ -116,33 +116,33 @@ func connectToZarfServices(t *testing.T) {
 	require.Contains(t, stdOut, "library/registry")
 
 	// Get the git credentials
-	stdOut, stdErr, err = e2e.Zarf("tools", "get-creds", "git")
+	stdOut, stdErr, err = e2e.Jackal("tools", "get-creds", "git")
 	require.NoError(t, err, stdOut, stdErr)
 	gitPushPassword := strings.TrimSpace(stdOut)
-	stdOut, stdErr, err = e2e.Zarf("tools", "get-creds", "git-readonly")
+	stdOut, stdErr, err = e2e.Jackal("tools", "get-creds", "git-readonly")
 	require.NoError(t, err, stdOut, stdErr)
 	gitPullPassword := strings.TrimSpace(stdOut)
-	stdOut, stdErr, err = e2e.Zarf("tools", "get-creds", "artifact")
+	stdOut, stdErr, err = e2e.Jackal("tools", "get-creds", "artifact")
 	require.NoError(t, err, stdOut, stdErr)
 	gitArtifactToken := strings.TrimSpace(stdOut)
 
 	// Connect to Gitea
 	c, err := cluster.NewCluster()
 	require.NoError(t, err)
-	tunnelGit, err := c.Connect(cluster.ZarfGit)
+	tunnelGit, err := c.Connect(cluster.JackalGit)
 	require.NoError(t, err)
 	defer tunnelGit.Close()
 
 	// Make sure Gitea comes up cleanly
-	gitPushURL := fmt.Sprintf("http://zarf-git-user:%s@%s/api/v1/user", gitPushPassword, tunnelGit.Endpoint())
+	gitPushURL := fmt.Sprintf("http://jackal-git-user:%s@%s/api/v1/user", gitPushPassword, tunnelGit.Endpoint())
 	respGit, err := http.Get(gitPushURL)
 	require.NoError(t, err)
 	require.Equal(t, 200, respGit.StatusCode)
-	gitPullURL := fmt.Sprintf("http://zarf-git-read-user:%s@%s/api/v1/user", gitPullPassword, tunnelGit.Endpoint())
+	gitPullURL := fmt.Sprintf("http://jackal-git-read-user:%s@%s/api/v1/user", gitPullPassword, tunnelGit.Endpoint())
 	respGit, err = http.Get(gitPullURL)
 	require.NoError(t, err)
 	require.Equal(t, 200, respGit.StatusCode)
-	gitArtifactURL := fmt.Sprintf("http://zarf-git-user:%s@%s/api/v1/user", gitArtifactToken, tunnelGit.Endpoint())
+	gitArtifactURL := fmt.Sprintf("http://jackal-git-user:%s@%s/api/v1/user", gitArtifactToken, tunnelGit.Endpoint())
 	respGit, err = http.Get(gitArtifactURL)
 	require.NoError(t, err)
 	require.Equal(t, 200, respGit.StatusCode)
@@ -150,7 +150,7 @@ func connectToZarfServices(t *testing.T) {
 	// Connect to the Logging Stack
 	c, err = cluster.NewCluster()
 	require.NoError(t, err)
-	tunnelLog, err := c.Connect(cluster.ZarfLogging)
+	tunnelLog, err := c.Connect(cluster.JackalLogging)
 	require.NoError(t, err)
 	defer tunnelLog.Close()
 

@@ -1,15 +1,15 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: variables
-  description: Example nginx package to demonstrate Zarf variables
+  description: Example nginx package to demonstrate Jackal variables
 
 # Constants are defined on package create and do not change on deploy
 # This demonstrates setting the nginx version to bake into the package using a package variable (PKG_TMPL)
-# NOTE: package templates (PKG_TMPL) only apply to zarf.yaml files so defining this here turns into ###ZARF_CONST_NGINX_VERSION### on deploy
-# ALSO NOTE: the PKG_TMPL is surrounded by quotes ("") inside of the zarf.yaml, while this is not required for deploy-time variables, PKG_TMPLs will be removed as comments without them
+# NOTE: package templates (PKG_TMPL) only apply to jackal.yaml files so defining this here turns into ###JACKAL_CONST_NGINX_VERSION### on deploy
+# ALSO NOTE: the PKG_TMPL is surrounded by quotes ("") inside of the jackal.yaml, while this is not required for deploy-time variables, PKG_TMPLs will be removed as comments without them
 constants:
   - name: NGINX_VERSION
-    value: "###ZARF_PKG_TMPL_NGINX_VERSION###"
+    value: "###JACKAL_PKG_TMPL_NGINX_VERSION###"
     pattern: "^[\\w\\-\\.]+$"
 
 # Demonstrates injecting custom variables into a K8s resource
@@ -49,7 +49,7 @@ components:
   # The following component templates the provided .tf file with the defined AWS_REGION
   # NOTE: this component does not actually execute this file in this example
   - name: variables-with-terraform
-    description: Change a value in a regular file with a Zarf variable. Set AWS_REGION variable to modify the file.
+    description: Change a value in a regular file with a Jackal variable. Set AWS_REGION variable to modify the file.
     required: true
     files:
       - source: simple-terraform.tf
@@ -57,24 +57,24 @@ components:
     actions:
       onDeploy:
         after:
-          # This command uses Zarf to return the SHASUM of the terraform file (`type: file` variables will return the filepath instead of the contents when used in actions due to constraints on env var size)
-          - cmd: ./zarf prepare sha256sum ${ZARF_VAR_MODIFIED_TERRAFORM}
+          # This command uses Jackal to return the SHASUM of the terraform file (`type: file` variables will return the filepath instead of the contents when used in actions due to constraints on env var size)
+          - cmd: ./jackal prepare sha256sum ${JACKAL_VAR_MODIFIED_TERRAFORM}
             # `mute` is set to exclude the command output from being shown (since we are treating it as sensitive below)
             mute: true
             setVariables:
               - name: MODIFIED_TERRAFORM_SHASUM
                 # `sensitive` is set to exclude the command output from the logs
                 sensitive: true
-                # `pattern` here will ensure that we get a properly formatted sha256 sum back from the zarf prepare command
+                # `pattern` here will ensure that we get a properly formatted sha256 sum back from the jackal prepare command
                 pattern: "^[\\da-f]{64}$"
 
   # The following component deploys nginx to the cluster using the defined variables
   - name: variables-with-nginx
-    description: "This component deploys nginx version ###ZARF_PKG_TMPL_NGINX_VERSION### to the cluster"
+    description: "This component deploys nginx version ###JACKAL_PKG_TMPL_NGINX_VERSION### to the cluster"
     required: true
     images:
-      # This sets the nginx image tag to the same PKG_TMPL used for the constant above to keep the zarf.yaml and nginx-deployment.yaml in sync
-      - "nginx:###ZARF_PKG_TMPL_NGINX_VERSION###"
+      # This sets the nginx image tag to the same PKG_TMPL used for the constant above to keep the jackal.yaml and nginx-deployment.yaml in sync
+      - "nginx:###JACKAL_PKG_TMPL_NGINX_VERSION###"
     manifests:
       - name: variables-with-nginx
         files:

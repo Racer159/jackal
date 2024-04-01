@@ -1,4 +1,4 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: test-compose-sub-package
   description: Deploy podinfo using a Helm OCI chart
@@ -26,7 +26,7 @@ components:
     images:
       - ghcr.io/stefanprodan/podinfo:6.4.0
     repos:
-      - https://github.com/defenseunicorns/zarf-public-test.git
+      - https://github.com/defenseunicorns/jackal-public-test.git
     files:
       - source: ../files/coffee-ipsum.txt
         target: coffee-ipsum.txt

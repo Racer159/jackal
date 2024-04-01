@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package creator contains functions for creating Zarf packages.
+// Package creator contains functions for creating Jackal packages.
 package creator
 
 import (
@@ -14,24 +14,24 @@ import (
 	"strings"
 	"time"
 
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/extensions/bigbang"
+	"github.com/defenseunicorns/jackal/src/internal/packager/git"
+	"github.com/defenseunicorns/jackal/src/internal/packager/helm"
+	"github.com/defenseunicorns/jackal/src/internal/packager/images"
+	"github.com/defenseunicorns/jackal/src/internal/packager/kustomize"
+	"github.com/defenseunicorns/jackal/src/internal/packager/sbom"
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/actions"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/sources"
+	"github.com/defenseunicorns/jackal/src/pkg/transform"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/pkg/zoci"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
 	"github.com/defenseunicorns/pkg/oci"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/extensions/bigbang"
-	"github.com/defenseunicorns/zarf/src/internal/packager/git"
-	"github.com/defenseunicorns/zarf/src/internal/packager/helm"
-	"github.com/defenseunicorns/zarf/src/internal/packager/images"
-	"github.com/defenseunicorns/zarf/src/internal/packager/kustomize"
-	"github.com/defenseunicorns/zarf/src/internal/packager/sbom"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/actions"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/sources"
-	"github.com/defenseunicorns/zarf/src/pkg/transform"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/pkg/zoci"
-	"github.com/defenseunicorns/zarf/src/types"
 	"github.com/mholt/archiver/v3"
 )
 
@@ -40,16 +40,16 @@ var (
 	_ Creator = (*PackageCreator)(nil)
 )
 
-// PackageCreator provides methods for creating normal (not skeleton) Zarf packages.
+// PackageCreator provides methods for creating normal (not skeleton) Jackal packages.
 type PackageCreator struct {
-	createOpts types.ZarfCreateOptions
+	createOpts types.JackalCreateOptions
 
-	// TODO: (@lucasrod16) remove PackagerConfig once actions do not depend on it: https://github.com/defenseunicorns/zarf/pull/2276
+	// TODO: (@lucasrod16) remove PackagerConfig once actions do not depend on it: https://github.com/defenseunicorns/jackal/pull/2276
 	cfg *types.PackagerConfig
 }
 
 // NewPackageCreator returns a new PackageCreator.
-func NewPackageCreator(createOpts types.ZarfCreateOptions, cfg *types.PackagerConfig, cwd string) *PackageCreator {
+func NewPackageCreator(createOpts types.JackalCreateOptions, cfg *types.PackagerConfig, cwd string) *PackageCreator {
 	if createOpts.DifferentialPackagePath != "" && !filepath.IsAbs(createOpts.DifferentialPackagePath) {
 		createOpts.DifferentialPackagePath = filepath.Join(cwd, createOpts.DifferentialPackagePath)
 	}
@@ -57,19 +57,19 @@ func NewPackageCreator(createOpts types.ZarfCreateOptions, cfg *types.PackagerCo
 	return &PackageCreator{createOpts, cfg}
 }
 
-// LoadPackageDefinition loads and configures a zarf.yaml file during package create.
-func (pc *PackageCreator) LoadPackageDefinition(dst *layout.PackagePaths) (pkg types.ZarfPackage, warnings []string, err error) {
-	pkg, warnings, err = dst.ReadZarfYAML()
+// LoadPackageDefinition loads and configures a jackal.yaml file during package create.
+func (pc *PackageCreator) LoadPackageDefinition(dst *layout.PackagePaths) (pkg types.JackalPackage, warnings []string, err error) {
+	pkg, warnings, err = dst.ReadJackalYAML()
 	if err != nil {
-		return types.ZarfPackage{}, nil, err
+		return types.JackalPackage{}, nil, err
 	}
 
 	pkg.Metadata.Architecture = config.GetArch(pkg.Metadata.Architecture)
 
-	// Compose components into a single zarf.yaml file
+	// Compose components into a single jackal.yaml file
 	pkg, composeWarnings, err := ComposeComponents(pkg, pc.createOpts.Flavor)
 	if err != nil {
-		return types.ZarfPackage{}, nil, err
+		return types.JackalPackage{}, nil, err
 	}
 
 	warnings = append(warnings, composeWarnings...)
@@ -77,7 +77,7 @@ func (pc *PackageCreator) LoadPackageDefinition(dst *layout.PackagePaths) (pkg t
 	// After components are composed, template the active package.
 	pkg, templateWarnings, err := FillActiveTemplate(pkg, pc.createOpts.SetVariables)
 	if err != nil {
-		return types.ZarfPackage{}, nil, fmt.Errorf("unable to fill values in template: %w", err)
+		return types.JackalPackage{}, nil, fmt.Errorf("unable to fill values in template: %w", err)
 	}
 
 	warnings = append(warnings, templateWarnings...)
@@ -85,7 +85,7 @@ func (pc *PackageCreator) LoadPackageDefinition(dst *layout.PackagePaths) (pkg t
 	// After templates are filled process any create extensions
 	pkg.Components, err = pc.processExtensions(pkg.Components, dst, pkg.Metadata.YOLO)
 	if err != nil {
-		return types.ZarfPackage{}, nil, err
+		return types.JackalPackage{}, nil, err
 	}
 
 	// If we are creating a differential package, remove duplicate images and repos.
@@ -94,32 +94,32 @@ func (pc *PackageCreator) LoadPackageDefinition(dst *layout.PackagePaths) (pkg t
 
 		diffData, err := loadDifferentialData(pc.createOpts.DifferentialPackagePath)
 		if err != nil {
-			return types.ZarfPackage{}, nil, err
+			return types.JackalPackage{}, nil, err
 		}
 
 		pkg.Build.DifferentialPackageVersion = diffData.DifferentialPackageVersion
 
 		versionsMatch := diffData.DifferentialPackageVersion == pkg.Metadata.Version
 		if versionsMatch {
-			return types.ZarfPackage{}, nil, errors.New(lang.PkgCreateErrDifferentialSameVersion)
+			return types.JackalPackage{}, nil, errors.New(lang.PkgCreateErrDifferentialSameVersion)
 		}
 
 		noVersionSet := diffData.DifferentialPackageVersion == "" || pkg.Metadata.Version == ""
 		if noVersionSet {
-			return types.ZarfPackage{}, nil, errors.New(lang.PkgCreateErrDifferentialNoVersion)
+			return types.JackalPackage{}, nil, errors.New(lang.PkgCreateErrDifferentialNoVersion)
 		}
 
 		pkg.Components, err = removeCopiesFromComponents(pkg.Components, diffData)
 		if err != nil {
-			return types.ZarfPackage{}, nil, err
+			return types.JackalPackage{}, nil, err
 		}
 	}
 
 	return pkg, warnings, nil
 }
 
-// Assemble assembles all of the package assets into Zarf's tmp directory layout.
-func (pc *PackageCreator) Assemble(dst *layout.PackagePaths, components []types.ZarfComponent, arch string) error {
+// Assemble assembles all of the package assets into Jackal's tmp directory layout.
+func (pc *PackageCreator) Assemble(dst *layout.PackagePaths, components []types.JackalComponent, arch string) error {
 	var imageList []transform.Image
 
 	skipSBOMFlagUsed := pc.createOpts.SkipSBOM
@@ -222,13 +222,13 @@ func (pc *PackageCreator) Assemble(dst *layout.PackagePaths, components []types.
 //
 // - generates checksums for all package files
 //
-// - writes the loaded zarf.yaml to disk
+// - writes the loaded jackal.yaml to disk
 //
 // - signs the package
 //
-// - writes the Zarf package as a tarball to a local directory,
+// - writes the Jackal package as a tarball to a local directory,
 // or an OCI registry based on the --output flag
-func (pc *PackageCreator) Output(dst *layout.PackagePaths, pkg *types.ZarfPackage) (err error) {
+func (pc *PackageCreator) Output(dst *layout.PackagePaths, pkg *types.JackalPackage) (err error) {
 	// Process the component directories into compressed tarballs
 	// NOTE: This is purposefully being done after the SBOM cataloging
 	for _, component := range pkg.Components {
@@ -248,8 +248,8 @@ func (pc *PackageCreator) Output(dst *layout.PackagePaths, pkg *types.ZarfPackag
 		return err
 	}
 
-	if err := utils.WriteYaml(dst.ZarfYAML, pkg, helpers.ReadUser); err != nil {
-		return fmt.Errorf("unable to write zarf.yaml: %w", err)
+	if err := utils.WriteYaml(dst.JackalYAML, pkg, helpers.ReadUser); err != nil {
+		return fmt.Errorf("unable to write jackal.yaml: %w", err)
 	}
 
 	// Sign the package if a key has been provided
@@ -280,9 +280,9 @@ func (pc *PackageCreator) Output(dst *layout.PackagePaths, pkg *types.ZarfPackag
 			flags = "--insecure"
 		}
 		message.Title("To inspect/deploy/pull:", "")
-		message.ZarfCommand("package inspect %s %s", helpers.OCIURLPrefix+remote.Repo().Reference.String(), flags)
-		message.ZarfCommand("package deploy %s %s", helpers.OCIURLPrefix+remote.Repo().Reference.String(), flags)
-		message.ZarfCommand("package pull %s %s", helpers.OCIURLPrefix+remote.Repo().Reference.String(), flags)
+		message.JackalCommand("package inspect %s %s", helpers.OCIURLPrefix+remote.Repo().Reference.String(), flags)
+		message.JackalCommand("package deploy %s %s", helpers.OCIURLPrefix+remote.Repo().Reference.String(), flags)
+		message.JackalCommand("package pull %s %s", helpers.OCIURLPrefix+remote.Repo().Reference.String(), flags)
 	} else {
 		// Use the output path if the user specified it.
 		packageName := fmt.Sprintf("%s%s", sources.NameFromMetadata(pkg, pc.createOpts.IsSkeleton), sources.PkgSuffix(pkg.Metadata.Uncompressed))
@@ -321,7 +321,7 @@ func (pc *PackageCreator) Output(dst *layout.PackagePaths, pkg *types.ZarfPackag
 	return nil
 }
 
-func (pc *PackageCreator) processExtensions(components []types.ZarfComponent, layout *layout.PackagePaths, isYOLO bool) (processedComponents []types.ZarfComponent, err error) {
+func (pc *PackageCreator) processExtensions(components []types.JackalComponent, layout *layout.PackagePaths, isYOLO bool) (processedComponents []types.JackalComponent, err error) {
 	// Create component paths and process extensions for each component.
 	for _, c := range components {
 		componentPaths, err := layout.Components.Create(c)
@@ -342,7 +342,7 @@ func (pc *PackageCreator) processExtensions(components []types.ZarfComponent, la
 	return processedComponents, nil
 }
 
-func (pc *PackageCreator) addComponent(component types.ZarfComponent, dst *layout.PackagePaths) error {
+func (pc *PackageCreator) addComponent(component types.JackalComponent, dst *layout.PackagePaths) error {
 	message.HeaderInfof("📦 %s COMPONENT", strings.ToUpper(component.Name))
 
 	componentPaths, err := dst.Components.Create(component)
@@ -522,7 +522,7 @@ func (pc *PackageCreator) addComponent(component types.ZarfComponent, dst *layou
 	return nil
 }
 
-func (pc *PackageCreator) getFilesToSBOM(component types.ZarfComponent, dst *layout.PackagePaths) (*layout.ComponentSBOM, error) {
+func (pc *PackageCreator) getFilesToSBOM(component types.JackalComponent, dst *layout.PackagePaths) (*layout.ComponentSBOM, error) {
 	componentPaths, err := dst.Components.Create(component)
 	if err != nil {
 		return nil, err

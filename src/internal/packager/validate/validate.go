@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package validate provides Zarf package validation functions.
+// Package validate provides Jackal package validation functions.
 package validate
 
 import (
@@ -10,10 +10,10 @@ import (
 	"regexp"
 	"slices"
 
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/types"
 )
 
 var (
@@ -24,7 +24,7 @@ var (
 	// https://regex101.com/r/tfsEuZ/1
 	IsUppercaseNumberUnderscore = regexp.MustCompile(`^[A-Z0-9_]+$`).MatchString
 	// Define allowed OS, an empty string means it is allowed on all operating systems
-	// same as enums on ZarfComponentOnlyTarget
+	// same as enums on JackalComponentOnlyTarget
 	supportedOS = []string{"linux", "darwin", "windows", ""}
 )
 
@@ -38,8 +38,8 @@ func SupportedOS() []string {
 }
 
 // Run performs config validations.
-func Run(pkg types.ZarfPackage) error {
-	if pkg.Kind == types.ZarfInitConfig && pkg.Metadata.YOLO {
+func Run(pkg types.JackalPackage) error {
+	if pkg.Kind == types.JackalInitConfig && pkg.Metadata.YOLO {
 		return fmt.Errorf(lang.PkgValidateErrInitNoYOLO)
 	}
 
@@ -96,7 +96,7 @@ func Run(pkg types.ZarfPackage) error {
 }
 
 // ImportDefinition validates the component trying to be imported.
-func ImportDefinition(component *types.ZarfComponent) error {
+func ImportDefinition(component *types.JackalComponent) error {
 	path := component.Import.Path
 	url := component.Import.URL
 
@@ -137,7 +137,7 @@ func oneIfNotEmpty(testString string) int {
 	return 1
 }
 
-func validateComponent(pkg types.ZarfPackage, component types.ZarfComponent) error {
+func validateComponent(pkg types.JackalPackage, component types.JackalComponent) error {
 	if !IsLowercaseNumberHyphenNoStartHyphen(component.Name) {
 		return fmt.Errorf(lang.PkgValidateErrComponentName, component.Name)
 	}
@@ -206,10 +206,10 @@ func validateComponent(pkg types.ZarfPackage, component types.ZarfComponent) err
 	return nil
 }
 
-func validateActionset(actions types.ZarfComponentActionSet) (bool, error) {
+func validateActionset(actions types.JackalComponentActionSet) (bool, error) {
 	containsVariables := false
 
-	validate := func(actions []types.ZarfComponentAction) error {
+	validate := func(actions []types.JackalComponentAction) error {
 		for _, action := range actions {
 			if cv, err := validateAction(action); err != nil {
 				return err
@@ -237,7 +237,7 @@ func validateActionset(actions types.ZarfComponentActionSet) (bool, error) {
 	return containsVariables, nil
 }
 
-func validateAction(action types.ZarfComponentAction) (bool, error) {
+func validateAction(action types.JackalComponentAction) (bool, error) {
 	containsVariables := false
 
 	// Validate SetVariable
@@ -268,7 +268,7 @@ func validateAction(action types.ZarfComponentAction) (bool, error) {
 	return containsVariables, nil
 }
 
-func validateYOLO(component types.ZarfComponent) error {
+func validateYOLO(component types.JackalComponent) error {
 	if len(component.Images) > 0 {
 		return fmt.Errorf(lang.PkgValidateErrYOLONoOCI)
 	}
@@ -296,7 +296,7 @@ func validatePackageName(subject string) error {
 	return nil
 }
 
-func validatePackageVariable(subject types.ZarfPackageVariable) error {
+func validatePackageVariable(subject types.JackalPackageVariable) error {
 	// ensure the variable name is only capitals and underscores
 	if !IsUppercaseNumberUnderscore(subject.Name) {
 		return fmt.Errorf(lang.PkgValidateMustBeUppercase, subject.Name)
@@ -305,7 +305,7 @@ func validatePackageVariable(subject types.ZarfPackageVariable) error {
 	return nil
 }
 
-func validatePackageConstant(subject types.ZarfPackageConstant) error {
+func validatePackageConstant(subject types.JackalPackageConstant) error {
 	// ensure the constant name is only capitals and underscores
 	if !IsUppercaseNumberUnderscore(subject.Name) {
 		return fmt.Errorf(lang.PkgValidateErrPkgConstantName, subject.Name)
@@ -318,15 +318,15 @@ func validatePackageConstant(subject types.ZarfPackageConstant) error {
 	return nil
 }
 
-func validateChart(chart types.ZarfChart) error {
+func validateChart(chart types.JackalChart) error {
 	// Don't allow empty names
 	if chart.Name == "" {
 		return fmt.Errorf(lang.PkgValidateErrChartNameMissing, chart.Name)
 	}
 
 	// Helm max release name
-	if len(chart.Name) > config.ZarfMaxChartNameLength {
-		return fmt.Errorf(lang.PkgValidateErrChartName, chart.Name, config.ZarfMaxChartNameLength)
+	if len(chart.Name) > config.JackalMaxChartNameLength {
+		return fmt.Errorf(lang.PkgValidateErrChartName, chart.Name, config.JackalMaxChartNameLength)
 	}
 
 	// Must have a namespace
@@ -348,15 +348,15 @@ func validateChart(chart types.ZarfChart) error {
 	return nil
 }
 
-func validateManifest(manifest types.ZarfManifest) error {
+func validateManifest(manifest types.JackalManifest) error {
 	// Don't allow empty names
 	if manifest.Name == "" {
 		return fmt.Errorf(lang.PkgValidateErrManifestNameMissing, manifest.Name)
 	}
 
 	// Helm max release name
-	if len(manifest.Name) > config.ZarfMaxChartNameLength {
-		return fmt.Errorf(lang.PkgValidateErrManifestNameLength, manifest.Name, config.ZarfMaxChartNameLength)
+	if len(manifest.Name) > config.JackalMaxChartNameLength {
+		return fmt.Errorf(lang.PkgValidateErrManifestNameLength, manifest.Name, config.JackalMaxChartNameLength)
 	}
 
 	// Require files in manifest

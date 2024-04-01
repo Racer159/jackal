@@ -1,10 +1,10 @@
-# Zarf Package Schema
+# Jackal Package Schema
 
 |                           |                                                                                                          |
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
 | **Type**                  | `object`                                                                                                 |
 | **Additional properties** | [![Not allowed](https://img.shields.io/badge/Not%20allowed-red)](# "Additional Properties not allowed.") |
-| **Defined in**            | #/definitions/ZarfPackage                                                                                |
+| **Defined in**            | #/definitions/JackalPackage                                                                                |
 
 <details>
 <summary>
@@ -15,17 +15,17 @@
 
 ![Required](https://img.shields.io/badge/Required-red)
 
-**Description:** The kind of Zarf package
+**Description:** The kind of Jackal package
 
 |             |                       |
 | ----------- | --------------------- |
 | **Type**    | `enum (of string)`    |
-| **Default** | `"ZarfPackageConfig"` |
+| **Default** | `"JackalPackageConfig"` |
 
 :::note
 Must be one of:
-* "ZarfInitConfig"
-* "ZarfPackageConfig"
+* "JackalInitConfig"
+* "JackalPackageConfig"
 :::
 
 </blockquote>
@@ -46,7 +46,7 @@ Must be one of:
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
 | **Type**                  | `object`                                                                                                 |
 | **Additional properties** | [![Not allowed](https://img.shields.io/badge/Not%20allowed-red)](# "Additional Properties not allowed.") |
-| **Defined in**            | #/definitions/ZarfMetadata                                                                               |
+| **Defined in**            | #/definitions/JackalMetadata                                                                               |
 
 <details>
 <summary>
@@ -57,7 +57,7 @@ Must be one of:
 
 ![Required](https://img.shields.io/badge/Required-red)
 
-**Description:** Name to identify this Zarf package
+**Description:** Name to identify this Jackal package
 
 |          |          |
 | -------- | -------- |
@@ -93,7 +93,7 @@ Must be one of:
 &nbsp;
 <blockquote>
 
-**Description:** Generic string set by a package author to track the package version (Note: ZarfInitConfigs will always be versioned to the CLIVersion they were created with)
+**Description:** Generic string set by a package author to track the package version (Note: JackalInitConfigs will always be versioned to the CLIVersion they were created with)
 
 |          |          |
 | -------- | -------- |
@@ -125,7 +125,7 @@ Must be one of:
 &nbsp;
 <blockquote>
 
-**Description:** An image URL to embed in this package (Reserved for future use in Zarf UI)
+**Description:** An image URL to embed in this package (Reserved for future use in Jackal UI)
 
 |          |          |
 | -------- | -------- |
@@ -178,7 +178,7 @@ Must be one of:
 &nbsp;
 <blockquote>
 
-**Description:** Yaml OnLy Online (YOLO): True enables deploying a Zarf package without first running zarf init against the cluster. This is ideal for connected environments where you want to use existing VCS and container registries.
+**Description:** Yaml OnLy Online (YOLO): True enables deploying a Jackal package without first running jackal init against the cluster. This is ideal for connected environments where you want to use existing VCS and container registries.
 
 |          |           |
 | -------- | --------- |
@@ -284,13 +284,13 @@ Must be one of:
 
   ## build
 
-**Description:** Zarf-generated package build data
+**Description:** Jackal-generated package build data
 
 |                           |                                                                                                          |
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
 | **Type**                  | `object`                                                                                                 |
 | **Additional properties** | [![Not allowed](https://img.shields.io/badge/Not%20allowed-red)](# "Additional Properties not allowed.") |
-| **Defined in**            | #/definitions/ZarfBuildData                                                                              |
+| **Defined in**            | #/definitions/JackalBuildData                                                                              |
 
 <details>
 <summary>
@@ -373,7 +373,7 @@ Must be one of:
 
 ![Required](https://img.shields.io/badge/Required-red)
 
-**Description:** The version of Zarf used to build this package
+**Description:** The version of Jackal used to build this package
 
 |          |          |
 | -------- | -------- |
@@ -494,7 +494,7 @@ Must be one of:
 &nbsp;
 <blockquote>
 
-**Description:** The minimum version of Zarf that does not have breaking package structure changes
+**Description:** The minimum version of Jackal that does not have breaking package structure changes
 
 |          |          |
 | -------- | -------- |
@@ -510,7 +510,7 @@ Must be one of:
 &nbsp;
 <blockquote>
 
-**Description:** The flavor of Zarf used to build this package
+**Description:** The flavor of Jackal used to build this package
 
 |          |          |
 | -------- | -------- |
@@ -543,13 +543,13 @@ Must be one of:
 ![Item unicity: False](https://img.shields.io/badge/Item%20unicity%3A%20False-gold)
 ![Additional items: N/A](https://img.shields.io/badge/Additional%20items%3A%20N/A-gold)
 
- ### <a name="autogenerated_heading_6"></a>ZarfComponent  
+ ### <a name="autogenerated_heading_6"></a>JackalComponent  
 
 |                           |                                                                                                          |
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
 | **Type**                  | `object`                                                                                                 |
 | **Additional properties** | [![Not allowed](https://img.shields.io/badge/Not%20allowed-red)](# "Additional Properties not allowed.") |
-| **Defined in**            | #/definitions/ZarfComponent                                                                              |
+| **Defined in**            | #/definitions/JackalComponent                                                                              |
 
 <details>
 <summary>
@@ -636,7 +636,7 @@ Must be one of:
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
 | **Type**                  | `object`                                                                                                 |
 | **Additional properties** | [![Not allowed](https://img.shields.io/badge/Not%20allowed-red)](# "Additional Properties not allowed.") |
-| **Defined in**            | #/definitions/ZarfComponentOnlyTarget                                                                    |
+| **Defined in**            | #/definitions/JackalComponentOnlyTarget                                                                    |
 
 <details>
 <summary>
@@ -676,7 +676,7 @@ Must be one of:
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
 | **Type**                  | `object`                                                                                                 |
 | **Additional properties** | [![Not allowed](https://img.shields.io/badge/Not%20allowed-red)](# "Additional Properties not allowed.") |
-| **Defined in**            | #/definitions/ZarfComponentOnlyCluster                                                                   |
+| **Defined in**            | #/definitions/JackalComponentOnlyCluster                                                                   |
 
 <details>
 <summary>
@@ -737,7 +737,7 @@ Must be one of:
 &nbsp;
 <blockquote>
 
-**Description:** Only include this component when a matching '--flavor' is specified on 'zarf package create'
+**Description:** Only include this component when a matching '--flavor' is specified on 'jackal package create'
 
 |          |          |
 | -------- | -------- |
@@ -758,13 +758,13 @@ Must be one of:
 
   ## components > import
 
-**Description:** Import a component from another Zarf package
+**Description:** Import a component from another Jackal package
 
 |                           |                                                                                                          |
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
 | **Type**                  | `object`                                                                                                 |
 | **Additional properties** | [![Not allowed](https://img.shields.io/badge/Not%20allowed-red)](# "Additional Properties not allowed.") |
-| **Defined in**            | #/definitions/ZarfComponentImport                                                                        |
+| **Defined in**            | #/definitions/JackalComponentImport                                                                        |
 
 <details>
 <summary>
@@ -773,7 +773,7 @@ Must be one of:
 &nbsp;
 <blockquote>
 
-**Description:** The name of the component to import from the referenced zarf.yaml
+**Description:** The name of the component to import from the referenced jackal.yaml
 
 |          |          |
 | -------- | -------- |
@@ -789,7 +789,7 @@ Must be one of:
 &nbsp;
 <blockquote>
 
-**Description:** The relative path to a directory containing a zarf.yaml to import from
+**Description:** The relative path to a directory containing a jackal.yaml to import from
 
 |          |          |
 | -------- | -------- |
@@ -805,7 +805,7 @@ Must be one of:
 &nbsp;
 <blockquote>
 
-**Description:** [beta] The URL to a Zarf package to import via OCI
+**Description:** [beta] The URL to a Jackal package to import via OCI
 
 |          |          |
 | -------- | -------- |
@@ -841,13 +841,13 @@ Must be one of:
 ![Item unicity: False](https://img.shields.io/badge/Item%20unicity%3A%20False-gold)
 ![Additional items: N/A](https://img.shields.io/badge/Additional%20items%3A%20N/A-gold)
 
- ### <a name="autogenerated_heading_8"></a>ZarfManifest  
+ ### <a name="autogenerated_heading_8"></a>JackalManifest  
 
 |                           |                                                                                                          |
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
 | **Type**                  | `object`                                                                                                 |
 | **Additional properties** | [![Not allowed](https://img.shields.io/badge/Not%20allowed-red)](# "Additional Properties not allowed.") |
-| **Defined in**            | #/definitions/ZarfManifest                                                                               |
+| **Defined in**            | #/definitions/JackalManifest                                                                               |
 
 <details>
 <summary>
@@ -992,13 +992,13 @@ Must be one of:
 ![Item unicity: False](https://img.shields.io/badge/Item%20unicity%3A%20False-gold)
 ![Additional items: N/A](https://img.shields.io/badge/Additional%20items%3A%20N/A-gold)
 
- ### <a name="autogenerated_heading_11"></a>ZarfChart  
+ ### <a name="autogenerated_heading_11"></a>JackalChart  
 
 |                           |                                                                                                          |
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
 | **Type**                  | `object`                                                                                                 |
 | **Additional properties** | [![Not allowed](https://img.shields.io/badge/Not%20allowed-red)](# "Additional Properties not allowed.") |
-| **Defined in**            | #/definitions/ZarfChart                                                                                  |
+| **Defined in**            | #/definitions/JackalChart                                                                                  |
 
 <details>
 <summary>
@@ -1009,7 +1009,7 @@ Must be one of:
 
 ![Required](https://img.shields.io/badge/Required-red)
 
-**Description:** The name of the chart within Zarf; note that this must be unique and does not need to be the same as the name in the chart repo
+**Description:** The name of the chart within Jackal; note that this must be unique and does not need to be the same as the name in the chart repo
 
 |          |          |
 | -------- | -------- |
@@ -1062,7 +1062,7 @@ Must be one of:
 &nbsp;
 <blockquote>
 
-**Description:** The name of a chart within a Helm repository (defaults to the Zarf name of the chart)
+**Description:** The name of a chart within a Helm repository (defaults to the Jackal name of the chart)
 
 |          |          |
 | -------- | -------- |
@@ -1133,7 +1133,7 @@ Must be one of:
 &nbsp;
 <blockquote>
 
-**Description:** The name of the Helm release to create (defaults to the Zarf name of the chart)
+**Description:** The name of the Helm release to create (defaults to the Jackal name of the chart)
 
 |          |          |
 | -------- | -------- |
@@ -1208,13 +1208,13 @@ Must be one of:
 ![Item unicity: False](https://img.shields.io/badge/Item%20unicity%3A%20False-gold)
 ![Additional items: N/A](https://img.shields.io/badge/Additional%20items%3A%20N/A-gold)
 
- ### <a name="autogenerated_heading_13"></a>ZarfDataInjection  
+ ### <a name="autogenerated_heading_13"></a>JackalDataInjection  
 
 |                           |                                                                                                          |
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
 | **Type**                  | `object`                                                                                                 |
 | **Additional properties** | [![Not allowed](https://img.shields.io/badge/Not%20allowed-red)](# "Additional Properties not allowed.") |
-| **Defined in**            | #/definitions/ZarfDataInjection                                                                          |
+| **Defined in**            | #/definitions/JackalDataInjection                                                                          |
 
 <details>
 <summary>
@@ -1250,7 +1250,7 @@ Must be one of:
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
 | **Type**                  | `object`                                                                                                 |
 | **Additional properties** | [![Not allowed](https://img.shields.io/badge/Not%20allowed-red)](# "Additional Properties not allowed.") |
-| **Defined in**            | #/definitions/ZarfContainerTarget                                                                        |
+| **Defined in**            | #/definitions/JackalContainerTarget                                                                        |
 
 <details>
 <summary>
@@ -1371,13 +1371,13 @@ Must be one of:
 ![Item unicity: False](https://img.shields.io/badge/Item%20unicity%3A%20False-gold)
 ![Additional items: N/A](https://img.shields.io/badge/Additional%20items%3A%20N/A-gold)
 
- ### <a name="autogenerated_heading_14"></a>ZarfFile  
+ ### <a name="autogenerated_heading_14"></a>JackalFile  
 
 |                           |                                                                                                          |
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
 | **Type**                  | `object`                                                                                                 |
 | **Additional properties** | [![Not allowed](https://img.shields.io/badge/Not%20allowed-red)](# "Additional Properties not allowed.") |
-| **Defined in**            | #/definitions/ZarfFile                                                                                   |
+| **Defined in**            | #/definitions/JackalFile                                                                                   |
 
 <details>
 <summary>
@@ -1562,7 +1562,7 @@ Must be one of:
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
 | **Type**                  | `object`                                                                                                 |
 | **Additional properties** | [![Not allowed](https://img.shields.io/badge/Not%20allowed-red)](# "Additional Properties not allowed.") |
-| **Defined in**            | #/definitions/ZarfComponentExtensions                                                                    |
+| **Defined in**            | #/definitions/JackalComponentExtensions                                                                    |
 
 <details open>
 <summary>
@@ -1706,7 +1706,7 @@ Must be one of:
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
 | **Type**                  | `object`                                                                                                 |
 | **Additional properties** | [![Not allowed](https://img.shields.io/badge/Not%20allowed-red)](# "Additional Properties not allowed.") |
-| **Defined in**            | #/definitions/ZarfComponentActions                                                                       |
+| **Defined in**            | #/definitions/JackalComponentActions                                                                       |
 
 <details open>
 <summary>
@@ -1723,7 +1723,7 @@ Must be one of:
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
 | **Type**                  | `object`                                                                                                 |
 | **Additional properties** | [![Not allowed](https://img.shields.io/badge/Not%20allowed-red)](# "Additional Properties not allowed.") |
-| **Defined in**            | #/definitions/ZarfComponentActionSet                                                                     |
+| **Defined in**            | #/definitions/JackalComponentActionSet                                                                     |
 
 <details open>
 <summary>
@@ -1740,7 +1740,7 @@ Must be one of:
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
 | **Type**                  | `object`                                                                                                 |
 | **Additional properties** | [![Not allowed](https://img.shields.io/badge/Not%20allowed-red)](# "Additional Properties not allowed.") |
-| **Defined in**            | #/definitions/ZarfComponentActionDefaults                                                                |
+| **Defined in**            | #/definitions/JackalComponentActionDefaults                                                                |
 
 <details>
 <summary>
@@ -1939,13 +1939,13 @@ Must be one of:
 ![Item unicity: False](https://img.shields.io/badge/Item%20unicity%3A%20False-gold)
 ![Additional items: N/A](https://img.shields.io/badge/Additional%20items%3A%20N/A-gold)
 
- ### <a name="autogenerated_heading_21"></a>ZarfComponentAction  
+ ### <a name="autogenerated_heading_21"></a>JackalComponentAction  
 
 |                           |                                                                                                          |
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
 | **Type**                  | `object`                                                                                                 |
 | **Additional properties** | [![Not allowed](https://img.shields.io/badge/Not%20allowed-red)](# "Additional Properties not allowed.") |
-| **Defined in**            | #/definitions/ZarfComponentAction                                                                        |
+| **Defined in**            | #/definitions/JackalComponentAction                                                                        |
 
 <details>
 <summary>
@@ -2094,13 +2094,13 @@ Must be one of:
 ![Item unicity: False](https://img.shields.io/badge/Item%20unicity%3A%20False-gold)
 ![Additional items: N/A](https://img.shields.io/badge/Additional%20items%3A%20N/A-gold)
 
- ### <a name="autogenerated_heading_23"></a>ZarfComponentActionSetVariable  
+ ### <a name="autogenerated_heading_23"></a>JackalComponentActionSetVariable  
 
 |                           |                                                                                                          |
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
 | **Type**                  | `object`                                                                                                 |
 | **Additional properties** | [![Not allowed](https://img.shields.io/badge/Not%20allowed-red)](# "Additional Properties not allowed.") |
-| **Defined in**            | #/definitions/ZarfComponentActionSetVariable                                                             |
+| **Defined in**            | #/definitions/JackalComponentActionSetVariable                                                             |
 
 <details>
 <summary>
@@ -2169,7 +2169,7 @@ Must be one of:
 &nbsp;
 <blockquote>
 
-**Description:** Whether to mark this variable as sensitive to not print it in the Zarf log
+**Description:** Whether to mark this variable as sensitive to not print it in the Jackal log
 
 |          |           |
 | -------- | --------- |
@@ -2185,7 +2185,7 @@ Must be one of:
 &nbsp;
 <blockquote>
 
-**Description:** Whether to automatically indent the variable's value (if multiline) when templating. Based on the number of chars before the start of ###ZARF_VAR_.
+**Description:** Whether to automatically indent the variable's value (if multiline) when templating. Based on the number of chars before the start of ###JACKAL_VAR_.
 
 |          |           |
 | -------- | --------- |
@@ -2222,13 +2222,13 @@ Must be one of:
 
   ## components > actions > onCreate > before > wait
 
-**Description:** Wait for a condition to be met before continuing. Must specify either cmd or wait for the action. See the 'zarf tools wait-for' command for more info.
+**Description:** Wait for a condition to be met before continuing. Must specify either cmd or wait for the action. See the 'jackal tools wait-for' command for more info.
 
 |                           |                                                                                                          |
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
 | **Type**                  | `object`                                                                                                 |
 | **Additional properties** | [![Not allowed](https://img.shields.io/badge/Not%20allowed-red)](# "Additional Properties not allowed.") |
-| **Defined in**            | #/definitions/ZarfComponentActionWait                                                                    |
+| **Defined in**            | #/definitions/JackalComponentActionWait                                                                    |
 
 <details open>
 <summary>
@@ -2245,7 +2245,7 @@ Must be one of:
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
 | **Type**                  | `object`                                                                                                 |
 | **Additional properties** | [![Not allowed](https://img.shields.io/badge/Not%20allowed-red)](# "Additional Properties not allowed.") |
-| **Defined in**            | #/definitions/ZarfComponentActionWaitCluster                                                             |
+| **Defined in**            | #/definitions/JackalComponentActionWaitCluster                                                             |
 
 <details>
 <summary>
@@ -2348,7 +2348,7 @@ Must be one of:
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
 | **Type**                  | `object`                                                                                                 |
 | **Additional properties** | [![Not allowed](https://img.shields.io/badge/Not%20allowed-red)](# "Additional Properties not allowed.") |
-| **Defined in**            | #/definitions/ZarfComponentActionWaitNetwork                                                             |
+| **Defined in**            | #/definitions/JackalComponentActionWaitNetwork                                                             |
 
 <details>
 <summary>
@@ -2448,7 +2448,7 @@ Must be one of:
 ![Item unicity: False](https://img.shields.io/badge/Item%20unicity%3A%20False-gold)
 ![Additional items: N/A](https://img.shields.io/badge/Additional%20items%3A%20N/A-gold)
 
- ### <a name="autogenerated_heading_24"></a>ZarfComponentAction  
+ ### <a name="autogenerated_heading_24"></a>JackalComponentAction  
 
 |                           |                                                                                                          |
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
@@ -2479,7 +2479,7 @@ Must be one of:
 ![Item unicity: False](https://img.shields.io/badge/Item%20unicity%3A%20False-gold)
 ![Additional items: N/A](https://img.shields.io/badge/Additional%20items%3A%20N/A-gold)
 
- ### <a name="autogenerated_heading_25"></a>ZarfComponentAction  
+ ### <a name="autogenerated_heading_25"></a>JackalComponentAction  
 
 |                           |                                                                                                          |
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
@@ -2510,7 +2510,7 @@ Must be one of:
 ![Item unicity: False](https://img.shields.io/badge/Item%20unicity%3A%20False-gold)
 ![Additional items: N/A](https://img.shields.io/badge/Additional%20items%3A%20N/A-gold)
 
- ### <a name="autogenerated_heading_26"></a>ZarfComponentAction  
+ ### <a name="autogenerated_heading_26"></a>JackalComponentAction  
 
 |                           |                                                                                                          |
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
@@ -2590,13 +2590,13 @@ Must be one of:
 ![Item unicity: False](https://img.shields.io/badge/Item%20unicity%3A%20False-gold)
 ![Additional items: N/A](https://img.shields.io/badge/Additional%20items%3A%20N/A-gold)
 
- ### <a name="autogenerated_heading_27"></a>ZarfPackageConstant  
+ ### <a name="autogenerated_heading_27"></a>JackalPackageConstant  
 
 |                           |                                                                                                          |
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
 | **Type**                  | `object`                                                                                                 |
 | **Additional properties** | [![Not allowed](https://img.shields.io/badge/Not%20allowed-red)](# "Additional Properties not allowed.") |
-| **Defined in**            | #/definitions/ZarfPackageConstant                                                                        |
+| **Defined in**            | #/definitions/JackalPackageConstant                                                                        |
 
 <details>
 <summary>
@@ -2661,7 +2661,7 @@ Must be one of:
 &nbsp;
 <blockquote>
 
-**Description:** Whether to automatically indent the variable's value (if multiline) when templating. Based on the number of chars before the start of ###ZARF_CONST_.
+**Description:** Whether to automatically indent the variable's value (if multiline) when templating. Based on the number of chars before the start of ###JACKAL_CONST_.
 
 |          |           |
 | -------- | --------- |
@@ -2709,13 +2709,13 @@ Must be one of:
 ![Item unicity: False](https://img.shields.io/badge/Item%20unicity%3A%20False-gold)
 ![Additional items: N/A](https://img.shields.io/badge/Additional%20items%3A%20N/A-gold)
 
- ### <a name="autogenerated_heading_28"></a>ZarfPackageVariable  
+ ### <a name="autogenerated_heading_28"></a>JackalPackageVariable  
 
 |                           |                                                                                                          |
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
 | **Type**                  | `object`                                                                                                 |
 | **Additional properties** | [![Not allowed](https://img.shields.io/badge/Not%20allowed-red)](# "Additional Properties not allowed.") |
-| **Defined in**            | #/definitions/ZarfPackageVariable                                                                        |
+| **Defined in**            | #/definitions/JackalPackageVariable                                                                        |
 
 <details>
 <summary>
@@ -2794,7 +2794,7 @@ Must be one of:
 &nbsp;
 <blockquote>
 
-**Description:** Whether to mark this variable as sensitive to not print it in the Zarf log
+**Description:** Whether to mark this variable as sensitive to not print it in the Jackal log
 
 |          |           |
 | -------- | --------- |
@@ -2810,7 +2810,7 @@ Must be one of:
 &nbsp;
 <blockquote>
 
-**Description:** Whether to automatically indent the variable's value (if multiline) when templating. Based on the number of chars before the start of ###ZARF_VAR_.
+**Description:** Whether to automatically indent the variable's value (if multiline) when templating. Based on the number of chars before the start of ###JACKAL_VAR_.
 
 |          |           |
 | -------- | --------- |
@@ -2861,4 +2861,4 @@ Must be one of:
 </details>
 
 ----------------------------------------------------------------------------------------------------------------------------
-Generated from [zarf.schema.json](https://github.com/defenseunicorns/zarf/blob/main/zarf.schema.json)
+Generated from [jackal.schema.json](https://github.com/defenseunicorns/jackal/blob/main/jackal.schema.json)

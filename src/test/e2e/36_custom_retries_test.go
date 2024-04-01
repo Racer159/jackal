@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package test provides e2e tests for Zarf.
+// Package test provides e2e tests for Jackal.
 package test
 
 import (
@@ -20,12 +20,12 @@ func TestRetries(t *testing.T) {
 	tmpDir := t.TempDir()
 
 	buildPath := filepath.Join("src", "test", "packages", "25-evil-dos-games")
-	pkgName := fmt.Sprintf("zarf-package-dos-games-%s.tar.zst", e2e.Arch)
+	pkgName := fmt.Sprintf("jackal-package-dos-games-%s.tar.zst", e2e.Arch)
 
-	stdOut, stdErr, err := e2e.Zarf("package", "create", buildPath, "--tmpdir", tmpDir, "--output", tmpDir, "--confirm")
+	stdOut, stdErr, err := e2e.Jackal("package", "create", buildPath, "--tmpdir", tmpDir, "--output", tmpDir, "--confirm")
 	require.NoError(t, err, stdOut, stdErr)
 
-	stdOut, stdErr, err = e2e.Zarf("package", "deploy", path.Join(tmpDir, pkgName), "--retries", "2", "--timeout", "3s", "--tmpdir", tmpDir, "--confirm")
+	stdOut, stdErr, err = e2e.Jackal("package", "deploy", path.Join(tmpDir, pkgName), "--retries", "2", "--timeout", "3s", "--tmpdir", tmpDir, "--confirm")
 	require.Error(t, err, stdOut, stdErr)
 	require.Contains(t, stdErr, "Retrying (1/2) in 5s:")
 	require.Contains(t, stdErr, "Retrying (2/2) in 10s:")

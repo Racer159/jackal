@@ -4,7 +4,7 @@ import CodeBlock from "@theme/CodeBlock";
 
 const FetchExampleYAML = ({ src, component, raw, showLink = true }) => {
   const [content, setContent] = useState(null);
-  const linkBaseUrl = `${src}`.replace(/^\/build\/\.\.\//gm,'').replace(/\/zarf\.yaml.+?$/gm,'');
+  const linkBaseUrl = `${src}`.replace(/^\/build\/\.\.\//gm,'').replace(/\/jackal\.yaml.+?$/gm,'');
 
   useEffect(() => {
     fetch(src)
@@ -32,8 +32,8 @@ const FetchExampleYAML = ({ src, component, raw, showLink = true }) => {
     <>
       {showLink && (
         <p>
-          This example's full <code>zarf.yaml</code> can be viewed at{" "}
-          <a href={`/${linkBaseUrl}/#zarf.yaml`}>{linkBaseUrl}</a>
+          This example's full <code>jackal.yaml</code> can be viewed at{" "}
+          <a href={`/${linkBaseUrl}/#jackal.yaml`}>{linkBaseUrl}</a>
         </p>
       )}
       <CodeBlock copy={false} language="yaml">

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package sources contains core implementations of the PackageSource interface.
 package sources
@@ -12,12 +12,12 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/filters"
+	"github.com/defenseunicorns/jackal/src/pkg/zoci"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/filters"
-	"github.com/defenseunicorns/zarf/src/pkg/zoci"
-	"github.com/defenseunicorns/zarf/src/types"
 	"github.com/mholt/archiver/v3"
 )
 
@@ -28,11 +28,11 @@ var (
 
 // TarballSource is a package source for tarballs.
 type TarballSource struct {
-	*types.ZarfPackageOptions
+	*types.JackalPackageOptions
 }
 
 // LoadPackage loads a package from a tarball.
-func (s *TarballSource) LoadPackage(dst *layout.PackagePaths, filter filters.ComponentFilterStrategy, unarchiveAll bool) (pkg types.ZarfPackage, warnings []string, err error) {
+func (s *TarballSource) LoadPackage(dst *layout.PackagePaths, filter filters.ComponentFilterStrategy, unarchiveAll bool) (pkg types.JackalPackage, warnings []string, err error) {
 	spinner := message.NewProgressSpinner("Loading package from %q", s.PackageSource)
 	defer spinner.Stop()
 
@@ -82,7 +82,7 @@ func (s *TarballSource) LoadPackage(dst *layout.PackagePaths, filter filters.Com
 
 	dst.SetFromPaths(pathsExtracted)
 
-	pkg, warnings, err = dst.ReadZarfYAML()
+	pkg, warnings, err = dst.ReadJackalYAML()
 	if err != nil {
 		return pkg, nil, err
 	}
@@ -137,7 +137,7 @@ func (s *TarballSource) LoadPackage(dst *layout.PackagePaths, filter filters.Com
 }
 
 // LoadPackageMetadata loads a package's metadata from a tarball.
-func (s *TarballSource) LoadPackageMetadata(dst *layout.PackagePaths, wantSBOM bool, skipValidation bool) (pkg types.ZarfPackage, warnings []string, err error) {
+func (s *TarballSource) LoadPackageMetadata(dst *layout.PackagePaths, wantSBOM bool, skipValidation bool) (pkg types.JackalPackage, warnings []string, err error) {
 	if s.Shasum != "" {
 		if err := helpers.SHAsMatch(s.PackageSource, s.Shasum); err != nil {
 			return pkg, nil, err
@@ -162,7 +162,7 @@ func (s *TarballSource) LoadPackageMetadata(dst *layout.PackagePaths, wantSBOM b
 
 	dst.SetFromPaths(pathsExtracted)
 
-	pkg, warnings, err = dst.ReadZarfYAML()
+	pkg, warnings, err = dst.ReadJackalYAML()
 	if err != nil {
 		return pkg, nil, err
 	}

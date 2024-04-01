@@ -1,12 +1,12 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: test-compose-package
-  description: A contrived example for podinfo using many Zarf primitives for compose testing
+  description: A contrived example for podinfo using many Jackal primitives for compose testing
   version: 0.0.1
 
 components:
   - name: test-compose-package
-    description: A contrived example for podinfo using many Zarf primitives for compose testing
+    description: A contrived example for podinfo using many Jackal primitives for compose testing
     required: true
     import:
       path: sub-package
@@ -40,7 +40,7 @@ components:
     images:
       - ghcr.io/stefanprodan/podinfo:6.4.1
     repos:
-      - https://github.com/defenseunicorns/zarf-public-test.git@refs/heads/dragons
+      - https://github.com/defenseunicorns/jackal-public-test.git@refs/heads/dragons
     files:
       - source: files/coffee-ipsum.txt
         target: coffee-ipsum.txt

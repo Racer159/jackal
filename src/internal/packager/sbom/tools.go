@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package sbom contains tools for generating SBOMs.
 package sbom
@@ -9,8 +9,8 @@ import (
 	"path/filepath"
 
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/utils/exec"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/utils/exec"
 )
 
 // ViewSBOMFiles opens a browser to view the SBOM files and pauses for user input.

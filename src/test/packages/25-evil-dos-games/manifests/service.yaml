@@ -4,11 +4,11 @@ kind: Service
 metadata:
   name: doom
   annotations:
-    zarf.dev/connect-description: "Play doom!!!"
-    zarf.dev/connect-url: "?doom"
+    jackal.dev/connect-description: "Play doom!!!"
+    jackal.dev/connect-url: "?doom"
   labels:
-    # Enables "zarf connect doom"
-    zarf.dev/connect-name: doom
+    # Enables "jackal connect doom"
+    jackal.dev/connect-name: doom
 spec:
   selector:
     # This is intentionally wrong to cause this to fail to deploy with helm
@@ -24,10 +24,10 @@ kind: Service
 metadata:
   name: game
   annotations:
-    zarf.dev/connect-description: "Play some old dos games 🦄"
+    jackal.dev/connect-description: "Play some old dos games 🦄"
   labels:
-    # Enables "zarf connect games"
-    zarf.dev/connect-name: games
+    # Enables "jackal connect games"
+    jackal.dev/connect-name: games
 spec:
   selector:
     app: game

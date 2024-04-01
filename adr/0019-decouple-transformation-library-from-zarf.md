@@ -1,4 +1,4 @@
-# 19. Decouple Transformation Library from Zarf
+# 19. Decouple Transformation Library from Jackal
 
 Date: 2023-05-28
 
@@ -8,7 +8,7 @@ Pending
 
 ## Context
 
-We need a way to decouple transformations from Zarf. We know the Zarf transformation library is battle tested, hardened, and reliable. As Pepr takes admission responsibilities from the Zarf Agent, we need a way to synchronize the TypeScript with the Go code instead of maintaining two disparate libraries which will be expected to grow.
+We need a way to decouple transformations from Jackal. We know the Jackal transformation library is battle tested, hardened, and reliable. As Pepr takes admission responsibilities from the Jackal Agent, we need a way to synchronize the TypeScript with the Go code instead of maintaining two disparate libraries which will be expected to grow.
 
 We considered:
 
@@ -62,7 +62,7 @@ We considered:
 
 ## Decision
 
-We conformed around using WASM because we can leverage the battle tested transform library from Zarf without incurring network overhead cost from pod to pod or container to container communications.
+We conformed around using WASM because we can leverage the battle tested transform library from Jackal without incurring network overhead cost from pod to pod or container to container communications.
 
 ## Consequences
 

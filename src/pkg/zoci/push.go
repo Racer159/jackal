@@ -1,25 +1,25 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package zoci contains functions for interacting with Zarf packages stored in OCI registries.
+// Package zoci contains functions for interacting with Jackal packages stored in OCI registries.
 package zoci
 
 import (
 	"context"
 	"fmt"
 
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
 	"github.com/defenseunicorns/pkg/oci"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/types"
 	ocispec "github.com/opencontainers/image-spec/specs-go/v1"
 	"oras.land/oras-go/v2"
 	"oras.land/oras-go/v2/content/file"
 )
 
-// PublishPackage publishes the zarf package to the remote repository.
-func (r *Remote) PublishPackage(ctx context.Context, pkg *types.ZarfPackage, paths *layout.PackagePaths, concurrency int) error {
+// PublishPackage publishes the jackal package to the remote repository.
+func (r *Remote) PublishPackage(ctx context.Context, pkg *types.JackalPackage, paths *layout.PackagePaths, concurrency int) error {
 	src, err := file.New(paths.Base)
 	if err != nil {
 		return err
@@ -35,7 +35,7 @@ func (r *Remote) PublishPackage(ctx context.Context, pkg *types.ZarfPackage, pat
 	for name, path := range paths.Files() {
 		spinner.Updatef("Preparing layer %s", helpers.First30last30(name))
 
-		mediaType := ZarfLayerMediaTypeBlob
+		mediaType := JackalLayerMediaTypeBlob
 
 		desc, err := src.Add(ctx, name, mediaType, path)
 		if err != nil {
@@ -56,7 +56,7 @@ func (r *Remote) PublishPackage(ctx context.Context, pkg *types.ZarfPackage, pat
 	r.Repo().SetReferrersCapability(false)
 
 	// push the manifest config
-	manifestConfigDesc, err := r.CreateAndPushManifestConfig(ctx, annotations, ZarfConfigMediaType)
+	manifestConfigDesc, err := r.CreateAndPushManifestConfig(ctx, annotations, JackalConfigMediaType)
 	if err != nil {
 		return err
 	}
@@ -81,11 +81,11 @@ func (r *Remote) PublishPackage(ctx context.Context, pkg *types.ZarfPackage, pat
 		return err
 	}
 
-	progressBar.Successf("Published %s [%s]", r.Repo().Reference, ZarfLayerMediaTypeBlob)
+	progressBar.Successf("Published %s [%s]", r.Repo().Reference, JackalLayerMediaTypeBlob)
 	return nil
 }
 
-func annotationsFromMetadata(metadata *types.ZarfMetadata) map[string]string {
+func annotationsFromMetadata(metadata *types.JackalMetadata) map[string]string {
 	annotations := map[string]string{
 		ocispec.AnnotationTitle:       metadata.Name,
 		ocispec.AnnotationDescription: metadata.Description,

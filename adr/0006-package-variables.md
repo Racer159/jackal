@@ -8,7 +8,7 @@ Accepted
 
 ## Context
 
-Currently, Zarf only allows variables to be specified within components which introduces the following limitations:
+Currently, Jackal only allows variables to be specified within components which introduces the following limitations:
 
  - Variables are scoped to the component making reuse between components impossible
  - Variables cannot be used for elements within the package definition itself
@@ -20,11 +20,11 @@ This forces a package creator to copy information within their package/component
 
 The decision was made to move variable definitions to the package level and to split "variables" into three distinct types:
 
-- Variables (specified with the `variables` yaml key) allow for the templating of component files similar to the component variables before them.  The main changes are that they are now specified at the package level (allowing for reuse between components) and have additional prompting and defaulting features to allow a package creator to ask for more information during `zarf package deploy`.
+- Variables (specified with the `variables` yaml key) allow for the templating of component files similar to the component variables before them.  The main changes are that they are now specified at the package level (allowing for reuse between components) and have additional prompting and defaulting features to allow a package creator to ask for more information during `jackal package deploy`.
 - Constants (specified with the `constants` yaml key) also template component files, but must be specified at package create time.  This allows a package creator to use the same value in multiple places without the need for copying it and without the package deployer being able to override it.
-- Package Variables (specified by using `###ZARF_PKG_VAR_*###` in the package definition) allow package creators to template the same information multiple times within the package definition or dynamically specify values or defaults in constants and variables.
+- Package Variables (specified by using `###JACKAL_PKG_VAR_*###` in the package definition) allow package creators to template the same information multiple times within the package definition or dynamically specify values or defaults in constants and variables.
 
-> ⚠️ `###ZARF_PKG_VAR_*###` has been changed to `###ZARF_PKG_TMPL_*###` to semantically dissociate it from normal variables.
+> ⚠️ `###JACKAL_PKG_VAR_*###` has been changed to `###JACKAL_PKG_TMPL_*###` to semantically dissociate it from normal variables.
 
 ## Consequences
 

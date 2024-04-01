@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package http provides a http server for the webhook and proxy.
 package http
@@ -9,8 +9,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/defenseunicorns/zarf/src/internal/agent/hooks"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/internal/agent/hooks"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 

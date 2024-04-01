@@ -6,15 +6,15 @@ const { SocialsBox } = require("./static-components/SocialsBox/SocialsBox");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "Zarf Documentation",
-  tagline: "Airgap is hard. Zarf makes it easy.",
-  url: "https://zarf.dev",
+  title: "Jackal Documentation",
+  tagline: "Airgap is hard. Jackal makes it easy.",
+  url: "https://jackal.dev",
   baseUrl: "/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "throw",
   favicon: "img/favicon.svg",
   organizationName: "Defense Unicorns", // Usually your GitHub org/user name.
-  projectName: "Zarf", // Usually your repo name.
+  projectName: "Jackal", // Usually your repo name.
   markdown: {
     mermaid: true,
   },
@@ -44,8 +44,8 @@ const config = {
           showLastUpdateAuthor: true,
           sidebarPath: require.resolve("./src/sidebars.js"),
           editUrl: ({ docPath }) => {
-            // TODO: (@RAZZLE) once examples have been fixed, change this url to edit: `https://github.com/defenseunicorns/zarf/edit/main/${docPath}`
-            return `https://github.com/defenseunicorns/zarf/tree/main/${docPath}`; // <-- to view
+            // TODO: (@RAZZLE) once examples have been fixed, change this url to edit: `https://github.com/defenseunicorns/jackal/edit/main/${docPath}`
+            return `https://github.com/defenseunicorns/jackal/tree/main/${docPath}`; // <-- to view
           },
           routeBasePath: "/",
           async sidebarItemsGenerator({ defaultSidebarItemsGenerator, ...args }) {
@@ -91,10 +91,10 @@ const config = {
       },
       navbar: {
         logo: {
-          alt: "Zarf",
-          src: "img/zarf-logo-header.svg",
-          srcDark: "img/zarf-logo-header.svg",
-          href: "https://zarf.dev/",
+          alt: "Jackal",
+          src: "img/jackal-logo-header.svg",
+          srcDark: "img/jackal-logo-header.svg",
+          href: "https://jackal.dev/",
           target: "_self",
         },
         items: [
@@ -104,14 +104,14 @@ const config = {
           },
           {
             type: "doc",
-            docId: "docs/zarf-overview",
+            docId: "docs/jackal-overview",
             position: "left",
             label: "Docs",
           },
           {
             position: "left",
             label: "Product",
-            to: "https://zarf.dev",
+            to: "https://jackal.dev",
             target: "_self",
           },
           {
@@ -127,12 +127,12 @@ const config = {
       footer: {
         style: "dark",
         logo: {
-          alt: "Zarf",
-          src: "img/zarf-logo-header.svg",
-          srcDark: "img/zarf-logo-header.svg",
-          href: "https://zarf.dev/",
+          alt: "Jackal",
+          src: "img/jackal-logo-header.svg",
+          srcDark: "img/jackal-logo-header.svg",
+          href: "https://jackal.dev/",
         },
-        copyright: `<p class="p-copy">Copyright © ${new Date().getFullYear()} Zarf Project, All rights reserved.</p>`,
+        copyright: `<p class="p-copy">Copyright © ${new Date().getFullYear()} Jackal Project, All rights reserved.</p>`,
         links: [
           {
             html: SocialsBox(),

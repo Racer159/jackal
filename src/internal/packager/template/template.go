@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package template provides functions for templating yaml files.
 package template
@@ -12,12 +12,12 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/types"
 
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
 )
 
 // TextTemplate represents a value to be templated into a text file.
@@ -75,18 +75,18 @@ func (values *Values) Ready() bool {
 }
 
 // SetState sets the state
-func (values *Values) SetState(state *types.ZarfState) {
+func (values *Values) SetState(state *types.JackalState) {
 	values.config.State = state
 }
 
 // GetVariables returns the variables to be used in the template.
-func (values *Values) GetVariables(component types.ZarfComponent) (templateMap map[string]*TextTemplate, deprecations map[string]string) {
+func (values *Values) GetVariables(component types.JackalComponent) (templateMap map[string]*TextTemplate, deprecations map[string]string) {
 	templateMap = make(map[string]*TextTemplate)
 
 	depMarkerOld := "DATA_INJECTON_MARKER"
 	depMarkerNew := "DATA_INJECTION_MARKER"
 	deprecations = map[string]string{
-		fmt.Sprintf("###ZARF_%s###", depMarkerOld): fmt.Sprintf("###ZARF_%s###", depMarkerNew),
+		fmt.Sprintf("###JACKAL_%s###", depMarkerOld): fmt.Sprintf("###JACKAL_%s###", depMarkerNew),
 	}
 
 	if values.config.State != nil {
@@ -118,14 +118,14 @@ func (values *Values) GetVariables(component types.ZarfComponent) (templateMap m
 
 		// Don't template component-specific variables for every component
 		switch component.Name {
-		case "zarf-agent":
+		case "jackal-agent":
 			agentTLS := values.config.State.AgentTLS
 			builtinMap["AGENT_CRT"] = base64.StdEncoding.EncodeToString(agentTLS.Cert)
 			builtinMap["AGENT_KEY"] = base64.StdEncoding.EncodeToString(agentTLS.Key)
 			builtinMap["AGENT_CA"] = base64.StdEncoding.EncodeToString(agentTLS.CA)
 
-		case "zarf-seed-registry", "zarf-registry":
-			builtinMap["SEED_REGISTRY"] = fmt.Sprintf("%s:%s", helpers.IPV4Localhost, config.ZarfSeedPort)
+		case "jackal-seed-registry", "jackal-registry":
+			builtinMap["SEED_REGISTRY"] = fmt.Sprintf("%s:%s", helpers.IPV4Localhost, config.JackalSeedPort)
 			builtinMap["HTPASSWD"] = values.htpasswd
 			builtinMap["REGISTRY_SECRET"] = regInfo.Secret
 
@@ -135,8 +135,8 @@ func (values *Values) GetVariables(component types.ZarfComponent) (templateMap m
 
 		// Iterate over any custom variables and add them to the mappings for templating
 		for key, value := range builtinMap {
-			// Builtin keys are always uppercase in the format ###ZARF_KEY###
-			templateMap[strings.ToUpper(fmt.Sprintf("###ZARF_%s###", key))] = &TextTemplate{
+			// Builtin keys are always uppercase in the format ###JACKAL_KEY###
+			templateMap[strings.ToUpper(fmt.Sprintf("###JACKAL_%s###", key))] = &TextTemplate{
 				Value: value,
 			}
 
@@ -144,14 +144,14 @@ func (values *Values) GetVariables(component types.ZarfComponent) (templateMap m
 				key == "AGENT_CA" || key == "AGENT_KEY" || key == "AGENT_CRT" || key == "GIT_AUTH_PULL" ||
 				key == "GIT_AUTH_PUSH" || key == "REGISTRY_AUTH_PULL" || key == "REGISTRY_AUTH_PUSH" {
 				// Sanitize any builtin templates that are sensitive
-				templateMap[strings.ToUpper(fmt.Sprintf("###ZARF_%s###", key))].Sensitive = true
+				templateMap[strings.ToUpper(fmt.Sprintf("###JACKAL_%s###", key))].Sensitive = true
 			}
 		}
 	}
 
 	for key, variable := range values.config.SetVariableMap {
-		// Variable keys are always uppercase in the format ###ZARF_VAR_KEY###
-		templateMap[strings.ToUpper(fmt.Sprintf("###ZARF_VAR_%s###", key))] = &TextTemplate{
+		// Variable keys are always uppercase in the format ###JACKAL_VAR_KEY###
+		templateMap[strings.ToUpper(fmt.Sprintf("###JACKAL_VAR_%s###", key))] = &TextTemplate{
 			Value:      variable.Value,
 			Sensitive:  variable.Sensitive,
 			AutoIndent: variable.AutoIndent,
@@ -160,8 +160,8 @@ func (values *Values) GetVariables(component types.ZarfComponent) (templateMap m
 	}
 
 	for _, constant := range values.config.Pkg.Constants {
-		// Constant keys are always uppercase in the format ###ZARF_CONST_KEY###
-		templateMap[strings.ToUpper(fmt.Sprintf("###ZARF_CONST_%s###", constant.Name))] = &TextTemplate{
+		// Constant keys are always uppercase in the format ###JACKAL_CONST_KEY###
+		templateMap[strings.ToUpper(fmt.Sprintf("###JACKAL_CONST_%s###", constant.Name))] = &TextTemplate{
 			Value:      constant.Value,
 			AutoIndent: constant.AutoIndent,
 		}
@@ -174,14 +174,14 @@ func (values *Values) GetVariables(component types.ZarfComponent) (templateMap m
 }
 
 // Apply renders the template and writes the result to the given path.
-func (values *Values) Apply(component types.ZarfComponent, path string, ignoreReady bool) error {
+func (values *Values) Apply(component types.JackalComponent, path string, ignoreReady bool) error {
 	// If Apply() is called before all values are loaded, fail unless ignoreReady is true
 	if !values.Ready() && !ignoreReady {
 		return fmt.Errorf("template.Apply() called before template.Generate()")
 	}
 
 	templateMap, deprecations := values.GetVariables(component)
-	err := ReplaceTextTemplate(path, templateMap, deprecations, "###ZARF_[A-Z0-9_]+###")
+	err := ReplaceTextTemplate(path, templateMap, deprecations, "###JACKAL_[A-Z0-9_]+###")
 
 	return err
 }
@@ -226,7 +226,7 @@ func ReplaceTextTemplate(path string, mappings map[string]*TextTemplate, depreca
 
 			_, present := deprecations[templateKey]
 			if present {
-				message.Warnf("This Zarf Package uses a deprecated variable: '%s' changed to '%s'.  Please notify your package creator for an update.", templateKey, deprecations[templateKey])
+				message.Warnf("This Jackal Package uses a deprecated variable: '%s' changed to '%s'.  Please notify your package creator for an update.", templateKey, deprecations[templateKey])
 			}
 
 			template := mappings[templateKey]

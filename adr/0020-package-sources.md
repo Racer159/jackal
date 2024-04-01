@@ -8,18 +8,18 @@ Accepted
 
 ## Context
 
-Zarf natively supports creating the following package sources:
+Jackal natively supports creating the following package sources:
 
 - Local Tarball (`.tar` and `.tar.zst`)
-  - Via `zarf package create <dir> -o <dir>`, with compression determined by `metadata.uncompressed` in `zarf.yaml`
+  - Via `jackal package create <dir> -o <dir>`, with compression determined by `metadata.uncompressed` in `jackal.yaml`
 - Split Tarball (`.part...`)
-  - Via `zarf package create <dir> --max-package-size <size> -o <dir>`
+  - Via `jackal package create <dir> --max-package-size <size> -o <dir>`
 - OCI package (`oci://`)
-  - Via `zarf package publish <source> oci://` or `zarf package create <dir> -o oci://...`
+  - Via `jackal package publish <source> oci://` or `jackal package create <dir> -o oci://...`
 - In-cluster (Deployed) package
-  - Post `zarf package deploy <source>` the package is show in `zarf package list`
+  - Post `jackal package deploy <source>` the package is show in `jackal package list`
 
-However, the current loading abilities of Zarf have been inconsistent depending upon the action specified. For example:
+However, the current loading abilities of Jackal have been inconsistent depending upon the action specified. For example:
 
 - Split tarball packages could be created, deployed, but not inspected, or removed
 - In-cluster packages could be removed (by name), but not inspected
@@ -28,7 +28,7 @@ However, the current loading abilities of Zarf have been inconsistent depending 
 
 ## Decision
 
-Zarf must support the `deploy`, `inspect`, `remove`, `publish`, `pull`, and `mirror-resources` commands across package sources.
+Jackal must support the `deploy`, `inspect`, `remove`, `publish`, `pull`, and `mirror-resources` commands across package sources.
 
 For common behavior to be exhibited by all sources, the `PackageSource` interface has been introduced along with the `layout` library.
 
@@ -43,10 +43,10 @@ For common behavior to be exhibited by all sources, the `PackageSource` interfac
 type PackageSource interface {
     // LoadPackage loads a package from a source.
     //
-    // For the default sources included in Zarf, package integrity (checksums, signatures, etc.) is validated during this function
-    // and expects the package structure to follow the default Zarf package structure.
+    // For the default sources included in Jackal, package integrity (checksums, signatures, etc.) is validated during this function
+    // and expects the package structure to follow the default Jackal package structure.
     //
-    // If your package does not follow the default Zarf package structure, you will need to implement your own source.
+    // If your package does not follow the default Jackal package structure, you will need to implement your own source.
     LoadPackage(*layout.PackagePaths) error
     // LoadPackageMetadata loads a package's metadata from a source.
     //
@@ -70,10 +70,10 @@ The following sources have been implemented:
 - Published OCI package (`oci://`)
 - In-cluster (Deployed) package (`inspect` and `remove` only)
 
-The `layout` library contains the `PackagePaths` struct which supercedes the prior `TempPaths` struct. This new struct contains access methods to different aspects of Zarf's internal package layout. This struct is passed to the `PackageSource` functions to allow for the loading of packages into the correct layout. In order for a package to be loaded into the correct layout, the package must follow the default Zarf package structure, or be converted to the expected structure during loading operations.
+The `layout` library contains the `PackagePaths` struct which supercedes the prior `TempPaths` struct. This new struct contains access methods to different aspects of Jackal's internal package layout. This struct is passed to the `PackageSource` functions to allow for the loading of packages into the correct layout. In order for a package to be loaded into the correct layout, the package must follow the default Jackal package structure, or be converted to the expected structure during loading operations.
 
 ## Consequences
 
-The `PackageSource` interface and `layout` library are now part of the public API of Zarf. This means that any package source can be implemented by a third party and used with Zarf as a first class citizen.
+The `PackageSource` interface and `layout` library are now part of the public API of Jackal. This means that any package source can be implemented by a third party and used with Jackal as a first class citizen.
 
-By moving towards a behavioral driven design, Zarf is now more consistent in its behavior across all package sources. If it walks like a source, and it quacks like a source, it's a source.
+By moving towards a behavioral driven design, Jackal is now more consistent in its behavior across all package sources. If it walks like a source, and it quacks like a source, it's a source.

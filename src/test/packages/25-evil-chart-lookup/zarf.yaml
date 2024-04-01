@@ -1,4 +1,4 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: helm-charts-evil-lookup
   description: A test case that checks that an index lookup is performed on helm repos to help people get chart names correct

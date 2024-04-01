@@ -9,10 +9,10 @@ stringData:
         {
           "auths": {
             "registry1.dso.mil": {
-              "username": "###ZARF_VAR_REGISTRY1_USERNAME###",
-              "password": "###ZARF_VAR_REGISTRY1_CLI_SECRET###",
+              "username": "###JACKAL_VAR_REGISTRY1_USERNAME###",
+              "password": "###JACKAL_VAR_REGISTRY1_CLI_SECRET###",
               "email": "",
-              "auth": "###ZARF_VAR_REGISTRY1_AUTH###"
+              "auth": "###JACKAL_VAR_REGISTRY1_AUTH###"
             }
           }
         }

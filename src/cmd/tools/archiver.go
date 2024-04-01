@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package tools contains the CLI commands for Zarf.
+// Package tools contains the CLI commands for Jackal.
 package tools
 
 import (
@@ -10,14 +10,14 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/defenseunicorns/zarf/src/config/lang"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
 	"github.com/mholt/archiver/v3"
 	"github.com/spf13/cobra"
 )
 
-// ldflags github.com/defenseunicorns/zarf/src/cmd/tools.archiverVersion=x.x.x
+// ldflags github.com/defenseunicorns/jackal/src/cmd/tools.archiverVersion=x.x.x
 var archiverVersion string
 
 var archiverCmd = &cobra.Command{

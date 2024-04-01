@@ -1,4 +1,4 @@
-# Zarf Documentation Style Guide
+# Jackal Documentation Style Guide
 
 ### Introduction
 Welcome to the Defense Unicorns Project Documentation Style Guide, your guide to writing style and terminology for all project communication. This style guide provides editorial guidelines for writing clear and consistent Unicorn-related documentation. Writing is an essential aspect of open-source software development, including documentation, user guides, and communication with the community. Consistency and clarity are critical in conveying our information effectively.
@@ -28,14 +28,14 @@ Follow these guidelines for creating Defense Unicorns content:
 - Use sentence-style capitalization for all body text.
    - Capitalize the first word of a sentence, heading, title, or label.
    - Capitalize proper nouns and Defense Unicorn products.
-      - Zarf/Big Bang/K8s/K9s
+      - Jackal/Big Bang/K8s/K9s
 - When words are joined by a slash, capitalize the word after the slash if the word before it is capitalized.
 
 #### Title/Heading Style Capitalization:
 - Use title case.
    - 'Connect to the Internet'
 - Don't capitalize *a, an,* or *the* unless it's the first word.
-   - 'The Utility Cluster' 'Zarf is the Best'
+   - 'The Utility Cluster' 'Jackal is the Best'
 - Don't capitalize prepositions of four or fewer letters.
    - Such as: *on, to, in, up, down, of, for, yet, but, or,* or *so*
 
@@ -99,7 +99,7 @@ Following these guidelines will help you write content and documentation that is
   * See the 'Admonitions' section.
 
 ### Heading and Title Language
-Considering the majority of our documentation revolves around Zarf, it's components, and commands, the language we use to introduce titles and headings needs to reflect the correct tense.
+Considering the majority of our documentation revolves around Jackal, it's components, and commands, the language we use to introduce titles and headings needs to reflect the correct tense.
 
 **Default to using the tense of the command when addressing it in titles and headings.** For example:
 
@@ -162,7 +162,7 @@ Linking to other forms of documentation or references is a great way to provide 
 Follow these guidelines to efficiently link the reader to other resources:
 
 * To write link text, use descriptive phrases that provide context for the material that you're linking to.
-  * "For more information on what Zarf consists of, see [Zarf Packages](../3-create-a-zarf-package/1-zarf-packages.md).
+  * "For more information on what Jackal consists of, see [Jackal Packages](../3-create-a-jackal-package/1-jackal-packages.md).
 * When you write a complete sentence that refers the reader to another topic, introduce the link with the phrase For more information, see or For more information about..., see.
    * "For more information, see [Getting Started](../1-getting-started/index.md)."
 
@@ -189,8 +189,8 @@ If you're going to use jargon, consider the following questions:
 ### Word List
 Follow these guidelines for standardizing Defense Unicorn's spelling and grammar:
 
-* Zarf
-* Zarf Package
+* Jackal
+* Jackal Package
 * Open-source
 * Air gap/Air-gapped
 * K8s

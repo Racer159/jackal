@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package helm contains operations for working with helm charts.
 package helm
@@ -11,12 +11,12 @@ import (
 	"path/filepath"
 	"reflect"
 
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/internal/packager/template"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/internal/packager/template"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/types"
 	"helm.sh/helm/v3/pkg/releaseutil"
 	corev1 "k8s.io/api/core/v1"
 	"sigs.k8s.io/yaml"
@@ -40,14 +40,14 @@ func (h *Helm) newRenderer() (*renderer, error) {
 		return nil, err
 	}
 
-	// TODO (@austinabro321) this should be cleaned up after https://github.com/defenseunicorns/zarf/pull/2276 gets merged
+	// TODO (@austinabro321) this should be cleaned up after https://github.com/defenseunicorns/jackal/pull/2276 gets merged
 	if h.cfg.State == nil {
-		valueTemplate.SetState(&types.ZarfState{})
+		valueTemplate.SetState(&types.JackalState{})
 	}
 
 	namespaces := make(map[string]*corev1.Namespace)
 	if h.cluster != nil {
-		namespaces[h.chart.Namespace] = h.cluster.NewZarfManagedNamespace(h.chart.Namespace)
+		namespaces[h.chart.Namespace] = h.cluster.NewJackalManagedNamespace(h.chart.Namespace)
 	}
 
 	return &renderer{
@@ -148,20 +148,20 @@ func (r *renderer) adoptAndUpdateNamespaces() error {
 		}
 
 		// Create the secret
-		validRegistrySecret := c.GenerateRegistryPullCreds(name, config.ZarfImagePullSecretName, r.cfg.State.RegistryInfo)
+		validRegistrySecret := c.GenerateRegistryPullCreds(name, config.JackalImagePullSecretName, r.cfg.State.RegistryInfo)
 
 		// Try to get a valid existing secret
-		currentRegistrySecret, _ := c.GetSecret(name, config.ZarfImagePullSecretName)
-		if currentRegistrySecret.Name != config.ZarfImagePullSecretName || !reflect.DeepEqual(currentRegistrySecret.Data, validRegistrySecret.Data) {
-			// Create or update the zarf registry secret
+		currentRegistrySecret, _ := c.GetSecret(name, config.JackalImagePullSecretName)
+		if currentRegistrySecret.Name != config.JackalImagePullSecretName || !reflect.DeepEqual(currentRegistrySecret.Data, validRegistrySecret.Data) {
+			// Create or update the jackal registry secret
 			if _, err := c.CreateOrUpdateSecret(validRegistrySecret); err != nil {
 				message.WarnErrf(err, "Problem creating registry secret for the %s namespace", name)
 			}
 
 			// Generate the git server secret
-			gitServerSecret := c.GenerateGitPullCreds(name, config.ZarfGitServerSecretName, r.cfg.State.GitServer)
+			gitServerSecret := c.GenerateGitPullCreds(name, config.JackalGitServerSecretName, r.cfg.State.GitServer)
 
-			// Create or update the zarf git server secret
+			// Create or update the jackal git server secret
 			if _, err := c.CreateOrUpdateSecret(gitServerSecret); err != nil {
 				message.WarnErrf(err, "Problem creating git server secret for the %s namespace", name)
 			}
@@ -181,18 +181,18 @@ func (r *renderer) editHelmResources(resources []releaseutil.Manifest, finalMani
 		switch rawData.GetKind() {
 		case "Namespace":
 			var namespace corev1.Namespace
-			// parse the namespace resource so it can be applied out-of-band by zarf instead of helm to avoid helm ns shenanigans
+			// parse the namespace resource so it can be applied out-of-band by jackal instead of helm to avoid helm ns shenanigans
 			if err := runtime.DefaultUnstructuredConverter.FromUnstructured(rawData.UnstructuredContent(), &namespace); err != nil {
 				message.WarnErrf(err, "could not parse namespace %s", rawData.GetName())
 			} else {
-				message.Debugf("Matched helm namespace %s for zarf annotation", namespace.Name)
+				message.Debugf("Matched helm namespace %s for jackal annotation", namespace.Name)
 				if namespace.Labels == nil {
 					// Ensure label map exists to avoid nil panic
 					namespace.Labels = make(map[string]string)
 				}
-				// Now track this namespace by zarf
-				namespace.Labels[config.ZarfManagedByLabel] = "zarf"
-				namespace.Labels["zarf-helm-release"] = r.chart.ReleaseName
+				// Now track this namespace by jackal
+				namespace.Labels[config.JackalManagedByLabel] = "jackal"
+				namespace.Labels["jackal-helm-release"] = r.chart.ReleaseName
 
 				// Add it to the stack
 				r.namespaces[namespace.Name] = &namespace
@@ -201,18 +201,18 @@ func (r *renderer) editHelmResources(resources []releaseutil.Manifest, finalMani
 			continue
 
 		case "Service":
-			// Check service resources for the zarf-connect label
+			// Check service resources for the jackal-connect label
 			labels := rawData.GetLabels()
 			annotations := rawData.GetAnnotations()
 
-			if key, keyExists := labels[config.ZarfConnectLabelName]; keyExists {
-				// If there is a zarf-connect label
-				message.Debugf("Match helm service %s for zarf connection %s", rawData.GetName(), key)
+			if key, keyExists := labels[config.JackalConnectLabelName]; keyExists {
+				// If there is a jackal-connect label
+				message.Debugf("Match helm service %s for jackal connection %s", rawData.GetName(), key)
 
 				// Add the connectString for processing later in the deployment
 				r.connectStrings[key] = types.ConnectString{
-					Description: annotations[config.ZarfConnectAnnotationDescription],
-					URL:         annotations[config.ZarfConnectAnnotationURL],
+					Description: annotations[config.JackalConnectAnnotationDescription],
+					URL:         annotations[config.JackalConnectAnnotationURL],
 				}
 			}
 		}
@@ -220,7 +220,7 @@ func (r *renderer) editHelmResources(resources []releaseutil.Manifest, finalMani
 		namespace := rawData.GetNamespace()
 		if _, exists := r.namespaces[namespace]; !exists && namespace != "" {
 			// if this is the first time seeing this ns, we need to track that to create it as well
-			r.namespaces[namespace] = r.cluster.NewZarfManagedNamespace(namespace)
+			r.namespaces[namespace] = r.cluster.NewJackalManagedNamespace(namespace)
 		}
 
 		// If we have been asked to adopt existing resources, process those now as well

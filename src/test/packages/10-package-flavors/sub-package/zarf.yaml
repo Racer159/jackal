@@ -1,4 +1,4 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: test-sub-package-flavors
   description: A contrived example for package flavor / arch filter testing

@@ -6,49 +6,49 @@ sidebar_position: 9
 
 ## Issue Tracking
 
-The issue board for Zarf is hosted on a [GitHub Project Board](https://github.com/orgs/defenseunicorns/projects/1) that tracks the issues the Zarf team is working along with future work we are prioritizing.
+The issue board for Jackal is hosted on a [GitHub Project Board](https://github.com/orgs/defenseunicorns/projects/1) that tracks the issues the Jackal team is working along with future work we are prioritizing.
 
-If you would like to add bug reports or feature requests, please [add an issue](https://github.com/defenseunicorns/zarf/issues) to the GitHub repository under the appropriate template.  If you have a more general question about a feature, feel free to ask the team in the [Zarf Kubernetes Slack Channel](https://kubernetes.slack.com/archives/C03B6BJAUJ3).
+If you would like to add bug reports or feature requests, please [add an issue](https://github.com/defenseunicorns/jackal/issues) to the GitHub repository under the appropriate template.  If you have a more general question about a feature, feel free to ask the team in the [Jackal Kubernetes Slack Channel](https://kubernetes.slack.com/archives/C03B6BJAUJ3).
 
-We also accept contributions from the community (regardless of where a particular bug or feature is in the queue), so feel free to read our [contributing guidelines](./12-contribute-to-zarf/1-contributor-guide.md) and [submit a PR](https://github.com/defenseunicorns/zarf/pulls)!  You can also ask any development related questions in the [Zarf Dev Kubernetes Slack Channel](https://kubernetes.slack.com/archives/C03BP9Z3CMA).
+We also accept contributions from the community (regardless of where a particular bug or feature is in the queue), so feel free to read our [contributing guidelines](./12-contribute-to-jackal/1-contributor-guide.md) and [submit a PR](https://github.com/defenseunicorns/jackal/pulls)!  You can also ask any development related questions in the [Jackal Dev Kubernetes Slack Channel](https://kubernetes.slack.com/archives/C03BP9Z3CMA).
 
 ## 2024 General Roadmap
 
 ### Q1: Community Building and Refactoring
 
-- [X] - Establish a [monthly community meetup](https://github.com/defenseunicorns/zarf/issues/2202) to engage members of the community and answer questions.
+- [X] - Establish a [monthly community meetup](https://github.com/defenseunicorns/jackal/issues/2202) to engage members of the community and answer questions.
 - [ ] - Refactor and add tests to library code shared with [UDS-CLI](https://github.com/defenseunicorns/uds-cli) and split into a new GitHub repository.
 - [ ] - Gather OpenSSF donation requirements and clear off pre-reqs (additional maintainers and sponsor working group).
 
 ### Q2 Consistency, Docs and Donation to OpenSSF
 
-- [ ] - Consolidate and improve consistency around features such as Zarf `variables` and component `required` schema.
-- [ ] - Move [docs website](https://docs.zarf.dev) from Docusaurus to a different framework to improve maintainability going forward.
-- [ ] - Finalize and submit Zarf's `sandbox` application to officially join the OpenSSF.
+- [ ] - Consolidate and improve consistency around features such as Jackal `variables` and component `required` schema.
+- [ ] - Move [docs website](https://docs.jackal.dev) from Docusaurus to a different framework to improve maintainability going forward.
+- [ ] - Finalize and submit Jackal's `sandbox` application to officially join the OpenSSF.
 
 ### Q3: Transfer Project, Stabilize and Extend
 
-- [ ] - Transfer project and additional repos (`zarf-ui`, `zarf-init-aws`, `setup-zarf`, etc.) to a new GitHub organization.
+- [ ] - Transfer project and additional repos (`jackal-ui`, `jackal-init-aws`, `setup-jackal`, etc.) to a new GitHub organization.
 - [ ] - Stabilize features after the consolidation of Q2 - clean up GA milestone in preparation for Q4.
-- [ ] - Flesh out the extension system for new features / experiments to be more smoothly integrated with Zarf.
-- [ ] - Make `zarf init` custom logic definable in-schema and across all packages.
+- [ ] - Flesh out the extension system for new features / experiments to be more smoothly integrated with Jackal.
+- [ ] - Make `jackal init` custom logic definable in-schema and across all packages.
 
 ### Q4: Post Donation and General Availability
 
 - [ ] - Continue stabilizing features and interfaces in preparation for GA release.
 - [ ] - Gather and prepare to meet OpenSSF's `incubation` requirements.
-- [ ] - Officially cut a GA v1.0.0 release of Zarf.
+- [ ] - Officially cut a GA v1.0.0 release of Jackal.
 
 ## Feature Stability
 
-Zarf has three levels of feature stability that are defined below but generally follow existing Kubernetes conventions.  These communicate how a feature may change in the future as well as expectations for [*ilities](https://en.wiktionary.org/wiki/ility) like documentation.
+Jackal has three levels of feature stability that are defined below but generally follow existing Kubernetes conventions.  These communicate how a feature may change in the future as well as expectations for [*ilities](https://en.wiktionary.org/wiki/ility) like documentation.
 
 ### `alpha`
 
-Alpha features act as early previews for things that are being considered for inclusion into Zarf and:
+Alpha features act as early previews for things that are being considered for inclusion into Jackal and:
 
-- they are very likely to have breaking changes (or be removed entirely) in future versions of Zarf
-- they will have limited documentation beyond autogenerated CLI and schema documentation (questions should be directed to the [Zarf team](https://kubernetes.slack.com/archives/C03B6BJAUJ3))
+- they are very likely to have breaking changes (or be removed entirely) in future versions of Jackal
+- they will have limited documentation beyond autogenerated CLI and schema documentation (questions should be directed to the [Jackal team](https://kubernetes.slack.com/archives/C03B6BJAUJ3))
 - they will have limited testing and are only recommended for use cases where the risk of instability is acceptable
 
 ### `beta`
@@ -61,7 +61,7 @@ Beta features are newer features that are being prepared to eventually become st
 
 ### `stable`
 
-Stable features are features that the Zarf team has committed to maintaining stability for and:
+Stable features are features that the Jackal team has committed to maintaining stability for and:
 
 - they will have backwards compatibility shims introduced in lieu of breaking changes
 - they will have autogenerated docs, tutorials/tutorial mentions, examples, and core docs
@@ -69,12 +69,12 @@ Stable features are features that the Zarf team has committed to maintaining sta
 
 :::note
 
-While Zarf is pre-General Availability (see below) the above feature stability guidelines should be considered notionally what our expectations are for different Zarf features.  There may be individual cases where *ilities are not met as we work to shore things up for GA.
+While Jackal is pre-General Availability (see below) the above feature stability guidelines should be considered notionally what our expectations are for different Jackal features.  There may be individual cases where *ilities are not met as we work to shore things up for GA.
 
 :::
 
 ## General Availability (GA) Release
 
-Right now, Zarf itself is still in its 'beta' phase. We are working on some final things before we release the official 1.0 General Availability (GA) release. The work still needed for the GA release can be found in our issues with [this filter](https://github.com/defenseunicorns/zarf/issues?q=is%3Aopen+is%3Aissue+label%3Aga).
+Right now, Jackal itself is still in its 'beta' phase. We are working on some final things before we release the official 1.0 General Availability (GA) release. The work still needed for the GA release can be found in our issues with [this filter](https://github.com/defenseunicorns/jackal/issues?q=is%3Aopen+is%3Aissue+label%3Aga).
 
-We are currently targeting Q4 2024 to have Zarf be generally available and will be pushing weekly releases until then to add necessary features and fix bugs as well as improve docs, architecture and test coverage behind the scenes.
+We are currently targeting Q4 2024 to have Jackal be generally available and will be pushing weekly releases until then to add necessary features and fix bugs as well as improve docs, architecture and test coverage behind the scenes.

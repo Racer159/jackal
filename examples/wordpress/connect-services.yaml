@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: wordpress-connect-blog
   labels:
-    # Enables "zarf connect wordpress-blog"
-    zarf.dev/connect-name: wordpress-blog
+    # Enables "jackal connect wordpress-blog"
+    jackal.dev/connect-name: wordpress-blog
   annotations:
-    zarf.dev/connect-description: "The public facing WordPress blog site"
+    jackal.dev/connect-description: "The public facing WordPress blog site"
 spec:
   selector:
     app.kubernetes.io/instance: wordpress
@@ -22,12 +22,12 @@ kind: Service
 metadata:
   name: wordpress-connect-admin
   labels:
-    # Enables "zarf connect wordpress-admin"
-    zarf.dev/connect-name: wordpress-admin
+    # Enables "jackal connect wordpress-admin"
+    jackal.dev/connect-name: wordpress-admin
   annotations:
-    zarf.dev/connect-description: "The login page for the WordPress admin panel"
+    jackal.dev/connect-description: "The login page for the WordPress admin panel"
     # Sets a URL-suffix to automatically navigate to in the browser
-    zarf.dev/connect-url: "/wp-admin"
+    jackal.dev/connect-url: "/wp-admin"
 spec:
   selector:
     app.kubernetes.io/instance: wordpress

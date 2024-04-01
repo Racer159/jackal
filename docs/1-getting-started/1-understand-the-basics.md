@@ -1,6 +1,6 @@
 # Understand the Basics
 
-Before you can effectively use Zarf, it is useful to have an understanding of the technology Zarf is built on and around. The sections below provide some helpful links to start building up this foundation as well as a glossary of the terms used in this project.
+Before you can effectively use Jackal, it is useful to have an understanding of the technology Jackal is built on and around. The sections below provide some helpful links to start building up this foundation as well as a glossary of the terms used in this project.
 
 <!-- TODO: The links and information on this page need to be expanded a lot more to be useful -->
 
@@ -31,7 +31,7 @@ Before you can effectively use Zarf, it is useful to have an understanding of th
 
 ## Terms Used
 
-- **Declarative**:  A user states (via configuration file) which resources are needed and Zarf locates and packages them. A user does not have to know _how_ to download, collect, roll, and unroll dependencies for transport, they only have to know _what_ they need.
+- **Declarative**:  A user states (via configuration file) which resources are needed and Jackal locates and packages them. A user does not have to know _how_ to download, collect, roll, and unroll dependencies for transport, they only have to know _what_ they need.
 - **Package**:  A well-defined, tool-generated, versioned, and compressed collection of software intended for movement (and later use) across a network/administrative boundary.
 - **Remote systems**:  Systems that are organized such that development and maintenance actions occur _primarily_ in locations physically and logically separate from where operations occur.
 - **Constrained systems**:  Systems with explicit resource/administrative/capability limitations.

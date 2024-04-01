@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package test provides e2e tests for Zarf.
+// Package test provides e2e tests for Jackal.
 package test
 
 import (
@@ -12,12 +12,12 @@ import (
 
 	"encoding/json"
 
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/stretchr/testify/require"
 )
 
-func TestZarfInit(t *testing.T) {
-	t.Log("E2E: Zarf init")
+func TestJackalInit(t *testing.T) {
+	t.Log("E2E: Jackal init")
 	e2e.SetupWithCluster(t)
 
 	initComponents := "logging,git-server"
@@ -26,11 +26,11 @@ func TestZarfInit(t *testing.T) {
 		initComponents = "k3s,logging,git-server"
 	}
 
-	initPackageVersion := e2e.GetZarfVersion(t)
+	initPackageVersion := e2e.GetJackalVersion(t)
 
 	var (
 		mismatchedArch        = e2e.GetMismatchedArch()
-		mismatchedInitPackage = fmt.Sprintf("zarf-init-%s-%s.tar.zst", mismatchedArch, initPackageVersion)
+		mismatchedInitPackage = fmt.Sprintf("jackal-init-%s-%s.tar.zst", mismatchedArch, initPackageVersion)
 		expectedErrorMessage  = "unable to run component before action: command \"Check that the host architecture matches the package architecture\""
 	)
 	t.Cleanup(func() {
@@ -39,12 +39,12 @@ func TestZarfInit(t *testing.T) {
 
 	if runtime.GOOS == "linux" {
 		// Build init package with different arch than the cluster arch.
-		stdOut, stdErr, err := e2e.Zarf("package", "create", "src/test/packages/20-mismatched-arch-init", "--architecture", mismatchedArch, "--confirm")
+		stdOut, stdErr, err := e2e.Jackal("package", "create", "src/test/packages/20-mismatched-arch-init", "--architecture", mismatchedArch, "--confirm")
 		require.NoError(t, err, stdOut, stdErr)
 
-		// Check that `zarf init` returns an error because of the mismatched architectures.
-		// We need to use the --architecture flag here to force zarf to find the package.
-		_, stdErr, err = e2e.Zarf("init", "--architecture", mismatchedArch, "--components=k3s", "--confirm")
+		// Check that `jackal init` returns an error because of the mismatched architectures.
+		// We need to use the --architecture flag here to force jackal to find the package.
+		_, stdErr, err = e2e.Jackal("init", "--architecture", mismatchedArch, "--components=k3s", "--confirm")
 		require.Error(t, err, stdErr)
 		require.Contains(t, stdErr, expectedErrorMessage)
 	}
@@ -56,8 +56,8 @@ func TestZarfInit(t *testing.T) {
 	}
 
 	// Check for any old secrets to ensure that they don't get saved in the init log
-	oldState := types.ZarfState{}
-	base64State, _, err := e2e.Kubectl("get", "secret", "zarf-state", "-n", "zarf", "-o", "jsonpath={.data.state}")
+	oldState := types.JackalState{}
+	base64State, _, err := e2e.Kubectl("get", "secret", "jackal-state", "-n", "jackal", "-o", "jsonpath={.data.state}")
 	if err == nil {
 		oldStateJSON, err := base64.StdEncoding.DecodeString(base64State)
 		require.NoError(t, err)
@@ -65,8 +65,8 @@ func TestZarfInit(t *testing.T) {
 		require.NoError(t, err)
 	}
 
-	// run `zarf init`
-	_, initStdErr, err := e2e.Zarf("init", "--components="+initComponents, "--nodeport", "31337", "-l", "trace", "--confirm")
+	// run `jackal init`
+	_, initStdErr, err := e2e.Jackal("init", "--components="+initComponents, "--nodeport", "31337", "-l", "trace", "--confirm")
 	require.NoError(t, err)
 	require.Contains(t, initStdErr, "an inventory of all software contained in this package")
 	require.NotContains(t, initStdErr, "This package does NOT contain an SBOM. If you require an SBOM, please contact the creator of this package to request a version that includes an SBOM.")
@@ -74,8 +74,8 @@ func TestZarfInit(t *testing.T) {
 	logText := e2e.GetLogFileContents(t, e2e.StripMessageFormatting(initStdErr))
 
 	// Verify that any state secrets were not included in the log
-	state := types.ZarfState{}
-	base64State, _, err = e2e.Kubectl("get", "secret", "zarf-state", "-n", "zarf", "-o", "jsonpath={.data.state}")
+	state := types.JackalState{}
+	base64State, _, err = e2e.Kubectl("get", "secret", "jackal-state", "-n", "jackal", "-o", "jsonpath={.data.state}")
 	require.NoError(t, err)
 	stateJSON, err := base64.StdEncoding.DecodeString(base64State)
 	require.NoError(t, err)
@@ -96,32 +96,32 @@ func TestZarfInit(t *testing.T) {
 	}
 
 	// Check that the registry is running on the correct NodePort
-	stdOut, _, err := e2e.Kubectl("get", "service", "-n", "zarf", "zarf-docker-registry", "-o=jsonpath='{.spec.ports[*].nodePort}'")
+	stdOut, _, err := e2e.Kubectl("get", "service", "-n", "jackal", "jackal-docker-registry", "-o=jsonpath='{.spec.ports[*].nodePort}'")
 	require.NoError(t, err)
 	require.Contains(t, stdOut, "31337")
 
 	// Check that the registry is running with the correct scale down policy
-	stdOut, _, err = e2e.Kubectl("get", "hpa", "-n", "zarf", "zarf-docker-registry", "-o=jsonpath='{.spec.behavior.scaleDown.selectPolicy}'")
+	stdOut, _, err = e2e.Kubectl("get", "hpa", "-n", "jackal", "jackal-docker-registry", "-o=jsonpath='{.spec.behavior.scaleDown.selectPolicy}'")
 	require.NoError(t, err)
 	require.Contains(t, stdOut, "Min")
 
 	// Special sizing-hacking for reducing resources where Kind + CI eats a lot of free cycles (ignore errors)
 	_, _, _ = e2e.Kubectl("scale", "deploy", "-n", "kube-system", "coredns", "--replicas=1")
-	_, _, _ = e2e.Kubectl("scale", "deploy", "-n", "zarf", "agent-hook", "--replicas=1")
+	_, _, _ = e2e.Kubectl("scale", "deploy", "-n", "jackal", "agent-hook", "--replicas=1")
 }
 
-func checkLogForSensitiveState(t *testing.T, logText string, zarfState types.ZarfState) {
-	require.NotContains(t, logText, zarfState.AgentTLS.CA)
-	require.NotContains(t, logText, string(zarfState.AgentTLS.CA))
-	require.NotContains(t, logText, zarfState.AgentTLS.Cert)
-	require.NotContains(t, logText, string(zarfState.AgentTLS.Cert))
-	require.NotContains(t, logText, zarfState.AgentTLS.Key)
-	require.NotContains(t, logText, string(zarfState.AgentTLS.Key))
-	require.NotContains(t, logText, zarfState.ArtifactServer.PushToken)
-	require.NotContains(t, logText, zarfState.GitServer.PullPassword)
-	require.NotContains(t, logText, zarfState.GitServer.PushPassword)
-	require.NotContains(t, logText, zarfState.RegistryInfo.PullPassword)
-	require.NotContains(t, logText, zarfState.RegistryInfo.PushPassword)
-	require.NotContains(t, logText, zarfState.RegistryInfo.Secret)
-	require.NotContains(t, logText, zarfState.LoggingSecret)
+func checkLogForSensitiveState(t *testing.T, logText string, jackalState types.JackalState) {
+	require.NotContains(t, logText, jackalState.AgentTLS.CA)
+	require.NotContains(t, logText, string(jackalState.AgentTLS.CA))
+	require.NotContains(t, logText, jackalState.AgentTLS.Cert)
+	require.NotContains(t, logText, string(jackalState.AgentTLS.Cert))
+	require.NotContains(t, logText, jackalState.AgentTLS.Key)
+	require.NotContains(t, logText, string(jackalState.AgentTLS.Key))
+	require.NotContains(t, logText, jackalState.ArtifactServer.PushToken)
+	require.NotContains(t, logText, jackalState.GitServer.PullPassword)
+	require.NotContains(t, logText, jackalState.GitServer.PushPassword)
+	require.NotContains(t, logText, jackalState.RegistryInfo.PullPassword)
+	require.NotContains(t, logText, jackalState.RegistryInfo.PushPassword)
+	require.NotContains(t, logText, jackalState.RegistryInfo.Secret)
+	require.NotContains(t, logText, jackalState.LoggingSecret)
 }

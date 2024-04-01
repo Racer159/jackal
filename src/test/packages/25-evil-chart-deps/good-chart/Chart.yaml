@@ -4,8 +4,8 @@ name: good-chart
 version: 1.0.0
 
 maintainers:
-  - name: The Zarf Authors
-    url: https://zarf.dev
+  - name: The Jackal Authors
+    url: https://jackal.dev
 
 dependencies:
 # This chart should be saved into the charts directory

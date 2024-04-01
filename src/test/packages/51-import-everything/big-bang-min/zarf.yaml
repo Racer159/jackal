@@ -1,4 +1,4 @@
-kind: ZarfPackageConfig
+kind: JackalPackageConfig
 metadata:
   name: big-bang-min
   description: A minimal Big Bang package for use in testing

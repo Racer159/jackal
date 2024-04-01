@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package images provides functions for building and pushing images.
 package images
@@ -13,12 +13,12 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/transform"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/transform"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
 	"github.com/google/go-containerregistry/pkg/crane"
 	"github.com/google/go-containerregistry/pkg/logs"
 	"github.com/google/go-containerregistry/pkg/name"
@@ -319,7 +319,7 @@ func (i *ImageConfig) PullAll() ([]ImgInfo, error) {
 		<-doneSaving
 		message.WarnErr(err, "Failed to write image layers, trying again up to 3 times...")
 		if strings.HasPrefix(err.Error(), "expected blob size") {
-			message.Warnf("Potential image cache corruption: %s - try clearing cache with \"zarf tools clear-cache\"", err.Error())
+			message.Warnf("Potential image cache corruption: %s - try clearing cache with \"jackal tools clear-cache\"", err.Error())
 		}
 		return err
 	}
@@ -348,7 +348,7 @@ func (i *ImageConfig) PullAll() ([]ImgInfo, error) {
 			if err != nil {
 				// Check if the cache has been invalidated, and warn the user if so
 				if strings.HasPrefix(err.Error(), "error writing layer: expected blob size") {
-					message.Warnf("Potential image cache corruption: %s - try clearing cache with \"zarf tools clear-cache\"", err.Error())
+					message.Warnf("Potential image cache corruption: %s - try clearing cache with \"jackal tools clear-cache\"", err.Error())
 				}
 				imageSavingConcurrency.ErrorChan <- fmt.Errorf("error when trying to save the img (%s): %w", refInfo.Reference, err)
 				return
@@ -458,11 +458,11 @@ func (i *ImageConfig) PullImage(src string, spinner *message.Spinner) (img v1.Im
 		// Warn the user if the image is large.
 		if rawImg.Size > 750*1000*1000 {
 			message.Warnf("%s is %s and may take a very long time to load via docker. "+
-				"See https://docs.zarf.dev/docs/faq for suggestions on how to improve large local image loading operations.",
+				"See https://docs.jackal.dev/docs/faq for suggestions on how to improve large local image loading operations.",
 				src, utils.ByteFormat(float64(rawImg.Size), 2))
 		}
 
-		// Use unbuffered opener to avoid OOM Kill issues https://github.com/defenseunicorns/zarf/issues/1214.
+		// Use unbuffered opener to avoid OOM Kill issues https://github.com/defenseunicorns/jackal/issues/1214.
 		// This will also take for ever to load large images.
 		if img, err = daemon.Image(reference, daemon.WithUnbufferedOpener()); err != nil {
 			return nil, false, fmt.Errorf("failed to load image from docker daemon: %w", err)

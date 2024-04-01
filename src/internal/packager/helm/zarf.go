@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package helm contains operations for working with helm charts.
 package helm
@@ -7,17 +7,17 @@ package helm
 import (
 	"fmt"
 
-	"github.com/defenseunicorns/zarf/src/pkg/cluster"
-	"github.com/defenseunicorns/zarf/src/pkg/k8s"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/pkg/transform"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/pkg/cluster"
+	"github.com/defenseunicorns/jackal/src/pkg/k8s"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/transform"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/types"
 	"helm.sh/helm/v3/pkg/action"
 )
 
-// UpdateZarfRegistryValues updates the Zarf registry deployment with the new state values
-func (h *Helm) UpdateZarfRegistryValues() error {
+// UpdateJackalRegistryValues updates the Jackal registry deployment with the new state values
+func (h *Helm) UpdateJackalRegistryValues() error {
 	pushUser, err := utils.GetHtpasswdString(h.cfg.State.RegistryInfo.PushUsername, h.cfg.State.RegistryInfo.PushPassword)
 	if err != nil {
 		return fmt.Errorf("error generating htpasswd string: %w", err)
@@ -34,9 +34,9 @@ func (h *Helm) UpdateZarfRegistryValues() error {
 		},
 	}
 
-	h.chart = types.ZarfChart{
-		Namespace:   "zarf",
-		ReleaseName: "zarf-docker-registry",
+	h.chart = types.JackalChart{
+		Namespace:   "jackal",
+		ReleaseName: "jackal-docker-registry",
 	}
 
 	err = h.UpdateReleaseValues(registryValues)
@@ -47,19 +47,19 @@ func (h *Helm) UpdateZarfRegistryValues() error {
 	return nil
 }
 
-// UpdateZarfAgentValues updates the Zarf agent deployment with the new state values
-func (h *Helm) UpdateZarfAgentValues() error {
-	spinner := message.NewProgressSpinner("Gathering information to update Zarf Agent TLS")
+// UpdateJackalAgentValues updates the Jackal agent deployment with the new state values
+func (h *Helm) UpdateJackalAgentValues() error {
+	spinner := message.NewProgressSpinner("Gathering information to update Jackal Agent TLS")
 	defer spinner.Stop()
 
-	err := h.createActionConfig(cluster.ZarfNamespaceName, spinner)
+	err := h.createActionConfig(cluster.JackalNamespaceName, spinner)
 	if err != nil {
 		return fmt.Errorf("unable to initialize the K8s client: %w", err)
 	}
 
 	// Get the current agent image from one of its pods.
 	pods := h.cluster.WaitForPodsAndContainers(k8s.PodLookup{
-		Namespace: cluster.ZarfNamespaceName,
+		Namespace: cluster.JackalNamespaceName,
 		Selector:  "app=agent-hook",
 	}, nil)
 
@@ -84,16 +84,16 @@ func (h *Helm) UpdateZarfAgentValues() error {
 	spinner.Success()
 
 	for _, release := range releases {
-		// Update the Zarf Agent release with the new values
-		if release.Chart.Name() == "raw-init-zarf-agent-zarf-agent" {
-			h.chart = types.ZarfChart{
-				Namespace:   "zarf",
+		// Update the Jackal Agent release with the new values
+		if release.Chart.Name() == "raw-init-jackal-agent-jackal-agent" {
+			h.chart = types.JackalChart{
+				Namespace:   "jackal",
 				ReleaseName: release.Name,
 			}
-			h.component = types.ZarfComponent{
-				Name: "zarf-agent",
+			h.component = types.JackalComponent{
+				Name: "jackal-agent",
 			}
-			h.cfg.Pkg.Constants = []types.ZarfPackageConstant{
+			h.cfg.Pkg.Constants = []types.JackalPackageConstant{
 				{
 					Name:  "AGENT_IMAGE",
 					Value: currentAgentImage.Path,
@@ -111,16 +111,16 @@ func (h *Helm) UpdateZarfAgentValues() error {
 		}
 	}
 
-	spinner = message.NewProgressSpinner("Cleaning up Zarf Agent pods after update")
+	spinner = message.NewProgressSpinner("Cleaning up Jackal Agent pods after update")
 	defer spinner.Stop()
 
 	// Force pods to be recreated to get the updated secret.
 	err = h.cluster.DeletePods(k8s.PodLookup{
-		Namespace: cluster.ZarfNamespaceName,
+		Namespace: cluster.JackalNamespaceName,
 		Selector:  "app=agent-hook",
 	})
 	if err != nil {
-		return fmt.Errorf("error recycling pods for the Zarf Agent: %w", err)
+		return fmt.Errorf("error recycling pods for the Jackal Agent: %w", err)
 	}
 
 	spinner.Success()

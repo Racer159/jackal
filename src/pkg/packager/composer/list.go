@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package composer contains functions for composing components within Zarf packages.
+// Package composer contains functions for composing components within Jackal packages.
 package composer
 
 import (
@@ -10,23 +10,23 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/defenseunicorns/jackal/src/internal/packager/validate"
+	"github.com/defenseunicorns/jackal/src/pkg/layout"
+	"github.com/defenseunicorns/jackal/src/pkg/packager/deprecated"
+	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/defenseunicorns/jackal/src/pkg/zoci"
+	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/internal/packager/validate"
-	"github.com/defenseunicorns/zarf/src/pkg/layout"
-	"github.com/defenseunicorns/zarf/src/pkg/packager/deprecated"
-	"github.com/defenseunicorns/zarf/src/pkg/utils"
-	"github.com/defenseunicorns/zarf/src/pkg/zoci"
-	"github.com/defenseunicorns/zarf/src/types"
 )
 
 // Node is a node in the import chain
 type Node struct {
-	types.ZarfComponent
+	types.JackalComponent
 
 	index int
 
-	vars   []types.ZarfPackageVariable
-	consts []types.ZarfPackageConstant
+	vars   []types.JackalPackageVariable
+	consts []types.JackalPackageConstant
 
 	relativeToHead      string
 	originalPackageName string
@@ -35,21 +35,21 @@ type Node struct {
 	next *Node
 }
 
-// Index returns the .components index location for this node's source `zarf.yaml`
+// Index returns the .components index location for this node's source `jackal.yaml`
 func (n *Node) Index() int {
 	return n.index
 }
 
-// OriginalPackageName returns the .metadata.name for this node's source `zarf.yaml`
+// OriginalPackageName returns the .metadata.name for this node's source `jackal.yaml`
 func (n *Node) OriginalPackageName() string {
 	return n.originalPackageName
 }
 
-// ImportLocation gets the path from the base `zarf.yaml` to the imported `zarf.yaml`
+// ImportLocation gets the path from the base `jackal.yaml` to the imported `jackal.yaml`
 func (n *Node) ImportLocation() string {
 	if n.prev != nil {
-		if n.prev.ZarfComponent.Import.URL != "" {
-			return n.prev.ZarfComponent.Import.URL
+		if n.prev.JackalComponent.Import.URL != "" {
+			return n.prev.JackalComponent.Import.URL
 		}
 	}
 	return n.relativeToHead
@@ -69,7 +69,7 @@ func (n *Node) Prev() *Node {
 // If the component import has a ComponentName defined, that will be used
 // otherwise the name of the component will be used
 func (n *Node) ImportName() string {
-	name := n.ZarfComponent.Name
+	name := n.JackalComponent.Name
 	if n.Import.ComponentName != "" {
 		name = n.Import.ComponentName
 	}
@@ -94,10 +94,10 @@ func (ic *ImportChain) Tail() *Node {
 	return ic.tail
 }
 
-func (ic *ImportChain) append(c types.ZarfComponent, index int, originalPackageName string,
-	relativeToHead string, vars []types.ZarfPackageVariable, consts []types.ZarfPackageConstant) {
+func (ic *ImportChain) append(c types.JackalComponent, index int, originalPackageName string,
+	relativeToHead string, vars []types.JackalPackageVariable, consts []types.JackalPackageConstant) {
 	node := &Node{
-		ZarfComponent:       c,
+		JackalComponent:     c,
 		index:               index,
 		originalPackageName: originalPackageName,
 		relativeToHead:      relativeToHead,
@@ -119,7 +119,7 @@ func (ic *ImportChain) append(c types.ZarfComponent, index int, originalPackageN
 
 // NewImportChain creates a new import chain from a component
 // Returning the chain on error so we can have additional information to use during lint
-func NewImportChain(head types.ZarfComponent, index int, originalPackageName, arch, flavor string) (*ImportChain, error) {
+func NewImportChain(head types.JackalComponent, index int, originalPackageName, arch, flavor string) (*ImportChain, error) {
 	ic := &ImportChain{}
 	if arch == "" {
 		return ic, fmt.Errorf("cannot build import chain: architecture must be provided")
@@ -141,7 +141,7 @@ func NewImportChain(head types.ZarfComponent, index int, originalPackageName, ar
 		}
 
 		// TODO: stuff like this should also happen in linting
-		if err := validate.ImportDefinition(&node.ZarfComponent); err != nil {
+		if err := validate.ImportDefinition(&node.JackalComponent); err != nil {
 			return ic, err
 		}
 
@@ -154,7 +154,7 @@ func NewImportChain(head types.ZarfComponent, index int, originalPackageName, ar
 			return ic, fmt.Errorf("detected malformed import chain, cannot import local components from remote components")
 		}
 
-		var pkg types.ZarfPackage
+		var pkg types.JackalPackage
 
 		var relativeToHead string
 		var importURL string
@@ -172,8 +172,8 @@ func NewImportChain(head types.ZarfComponent, index int, originalPackageName, ar
 				prev = prev.prev
 			}
 
-			// this assumes the composed package is following the zarf layout
-			if err := utils.ReadYaml(filepath.Join(relativeToHead, layout.ZarfYAML), &pkg); err != nil {
+			// this assumes the composed package is following the jackal layout
+			if err := utils.ReadYaml(filepath.Join(relativeToHead, layout.JackalYAML), &pkg); err != nil {
 				return ic, err
 			}
 		} else if isRemote {
@@ -182,7 +182,7 @@ func NewImportChain(head types.ZarfComponent, index int, originalPackageName, ar
 			if err != nil {
 				return ic, err
 			}
-			pkg, err = remote.FetchZarfYAML(context.TODO())
+			pkg, err = remote.FetchJackalYAML(context.TODO())
 			if err != nil {
 				return ic, err
 			}
@@ -192,7 +192,7 @@ func NewImportChain(head types.ZarfComponent, index int, originalPackageName, ar
 
 		// 'found' and 'index' are parallel slices. Each element in found[x] corresponds to pkg[index[x]]
 		// found[0] and pkg[index[0]] would be the same component for example
-		found := []types.ZarfComponent{}
+		found := []types.JackalComponent{}
 		index := []int{}
 		for i, component := range pkg.Components {
 			if component.Name == name && CompatibleComponent(component, arch, flavor) {
@@ -256,11 +256,11 @@ func (ic *ImportChain) String() string {
 }
 
 // Migrate performs migrations on the import chain
-func (ic *ImportChain) Migrate(build types.ZarfBuildData) (warnings []string) {
+func (ic *ImportChain) Migrate(build types.JackalBuildData) (warnings []string) {
 	node := ic.head
 	for node != nil {
-		migrated, w := deprecated.MigrateComponent(build, node.ZarfComponent)
-		node.ZarfComponent = migrated
+		migrated, w := deprecated.MigrateComponent(build, node.JackalComponent)
+		node.JackalComponent = migrated
 		warnings = append(warnings, w...)
 		node = node.next
 	}
@@ -273,8 +273,8 @@ func (ic *ImportChain) Migrate(build types.ZarfBuildData) (warnings []string) {
 
 // Compose merges the import chain into a single component
 // fixing paths, overriding metadata, etc
-func (ic *ImportChain) Compose() (composed *types.ZarfComponent, err error) {
-	composed = &ic.tail.ZarfComponent
+func (ic *ImportChain) Compose() (composed *types.JackalComponent, err error) {
+	composed = &ic.tail.JackalComponent
 
 	if ic.tail.prev == nil {
 		// only had one component in the import chain
@@ -286,24 +286,24 @@ func (ic *ImportChain) Compose() (composed *types.ZarfComponent, err error) {
 	}
 
 	// start with an empty component to compose into
-	composed = &types.ZarfComponent{}
+	composed = &types.JackalComponent{}
 
 	// start overriding with the tail node
 	node := ic.tail
 	for node != nil {
-		fixPaths(&node.ZarfComponent, node.relativeToHead)
+		fixPaths(&node.JackalComponent, node.relativeToHead)
 
 		// perform overrides here
-		err := overrideMetadata(composed, node.ZarfComponent)
+		err := overrideMetadata(composed, node.JackalComponent)
 		if err != nil {
 			return nil, err
 		}
 
-		overrideDeprecated(composed, node.ZarfComponent)
-		overrideResources(composed, node.ZarfComponent)
-		overrideActions(composed, node.ZarfComponent)
+		overrideDeprecated(composed, node.JackalComponent)
+		overrideResources(composed, node.JackalComponent)
+		overrideActions(composed, node.JackalComponent)
 
-		composeExtensions(composed, node.ZarfComponent, node.relativeToHead)
+		composeExtensions(composed, node.JackalComponent, node.relativeToHead)
 
 		node = node.prev
 	}
@@ -312,8 +312,8 @@ func (ic *ImportChain) Compose() (composed *types.ZarfComponent, err error) {
 }
 
 // MergeVariables merges variables from the import chain
-func (ic *ImportChain) MergeVariables(existing []types.ZarfPackageVariable) (merged []types.ZarfPackageVariable) {
-	exists := func(v1 types.ZarfPackageVariable, v2 types.ZarfPackageVariable) bool {
+func (ic *ImportChain) MergeVariables(existing []types.JackalPackageVariable) (merged []types.JackalPackageVariable) {
+	exists := func(v1 types.JackalPackageVariable, v2 types.JackalPackageVariable) bool {
 		return v1.Name == v2.Name
 	}
 
@@ -329,8 +329,8 @@ func (ic *ImportChain) MergeVariables(existing []types.ZarfPackageVariable) (mer
 }
 
 // MergeConstants merges constants from the import chain
-func (ic *ImportChain) MergeConstants(existing []types.ZarfPackageConstant) (merged []types.ZarfPackageConstant) {
-	exists := func(c1 types.ZarfPackageConstant, c2 types.ZarfPackageConstant) bool {
+func (ic *ImportChain) MergeConstants(existing []types.JackalPackageConstant) (merged []types.JackalPackageConstant) {
+	exists := func(c1 types.JackalPackageConstant, c2 types.JackalPackageConstant) bool {
 		return c1.Name == c2.Name
 	}
 
@@ -346,7 +346,7 @@ func (ic *ImportChain) MergeConstants(existing []types.ZarfPackageConstant) (mer
 }
 
 // CompatibleComponent determines if this component is compatible with the given create options
-func CompatibleComponent(c types.ZarfComponent, arch, flavor string) bool {
+func CompatibleComponent(c types.JackalComponent, arch, flavor string) bool {
 	satisfiesArch := c.Only.Cluster.Architecture == "" || c.Only.Cluster.Architecture == arch
 	satisfiesFlavor := c.Only.Flavor == "" || c.Only.Flavor == flavor
 	return satisfiesArch && satisfiesFlavor

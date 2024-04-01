@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
-// Package cluster contains Zarf-specific cluster management functions.
+// Package cluster contains Jackal-specific cluster management functions.
 package cluster
 
 import (
@@ -11,9 +11,9 @@ import (
 
 	corev1 "k8s.io/api/core/v1"
 
-	"github.com/defenseunicorns/zarf/src/config"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
-	"github.com/defenseunicorns/zarf/src/types"
+	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/types"
 )
 
 // DockerConfig contains the authentication information from the machine's docker config.
@@ -72,9 +72,9 @@ func (c *Cluster) GenerateGitPullCreds(namespace, name string, gitServerInfo typ
 	return gitServerSecret
 }
 
-// UpdateZarfManagedImageSecrets updates all Zarf-managed image secrets in all namespaces based on state
-func (c *Cluster) UpdateZarfManagedImageSecrets(state *types.ZarfState) {
-	spinner := message.NewProgressSpinner("Updating existing Zarf-managed image secrets")
+// UpdateJackalManagedImageSecrets updates all Jackal-managed image secrets in all namespaces based on state
+func (c *Cluster) UpdateJackalManagedImageSecrets(state *types.JackalState) {
+	spinner := message.NewProgressSpinner("Updating existing Jackal-managed image secrets")
 	defer spinner.Stop()
 
 	if namespaces, err := c.GetNamespaces(); err != nil {
@@ -82,20 +82,20 @@ func (c *Cluster) UpdateZarfManagedImageSecrets(state *types.ZarfState) {
 	} else {
 		// Update all image pull secrets
 		for _, namespace := range namespaces.Items {
-			currentRegistrySecret, err := c.GetSecret(namespace.Name, config.ZarfImagePullSecretName)
+			currentRegistrySecret, err := c.GetSecret(namespace.Name, config.JackalImagePullSecretName)
 			if err != nil {
 				continue
 			}
 
-			// Check if this is a Zarf managed secret or is in a namespace the Zarf agent will take action in
-			if currentRegistrySecret.Labels[config.ZarfManagedByLabel] == "zarf" ||
+			// Check if this is a Jackal managed secret or is in a namespace the Jackal agent will take action in
+			if currentRegistrySecret.Labels[config.JackalManagedByLabel] == "jackal" ||
 				(namespace.Labels[agentLabel] != "skip" && namespace.Labels[agentLabel] != "ignore") {
-				spinner.Updatef("Updating existing Zarf-managed image secret for namespace: '%s'", namespace.Name)
+				spinner.Updatef("Updating existing Jackal-managed image secret for namespace: '%s'", namespace.Name)
 
 				// Create the secret
-				newRegistrySecret := c.GenerateRegistryPullCreds(namespace.Name, config.ZarfImagePullSecretName, state.RegistryInfo)
+				newRegistrySecret := c.GenerateRegistryPullCreds(namespace.Name, config.JackalImagePullSecretName, state.RegistryInfo)
 				if !reflect.DeepEqual(currentRegistrySecret.Data, newRegistrySecret.Data) {
-					// Create or update the zarf registry secret
+					// Create or update the jackal registry secret
 					if _, err := c.CreateOrUpdateSecret(newRegistrySecret); err != nil {
 						message.WarnErrf(err, "Problem creating registry secret for the %s namespace", namespace.Name)
 					}
@@ -106,9 +106,9 @@ func (c *Cluster) UpdateZarfManagedImageSecrets(state *types.ZarfState) {
 	}
 }
 
-// UpdateZarfManagedGitSecrets updates all Zarf-managed git secrets in all namespaces based on state
-func (c *Cluster) UpdateZarfManagedGitSecrets(state *types.ZarfState) {
-	spinner := message.NewProgressSpinner("Updating existing Zarf-managed git secrets")
+// UpdateJackalManagedGitSecrets updates all Jackal-managed git secrets in all namespaces based on state
+func (c *Cluster) UpdateJackalManagedGitSecrets(state *types.JackalState) {
+	spinner := message.NewProgressSpinner("Updating existing Jackal-managed git secrets")
 	defer spinner.Stop()
 
 	if namespaces, err := c.GetNamespaces(); err != nil {
@@ -116,20 +116,20 @@ func (c *Cluster) UpdateZarfManagedGitSecrets(state *types.ZarfState) {
 	} else {
 		// Update all git pull secrets
 		for _, namespace := range namespaces.Items {
-			currentGitSecret, err := c.GetSecret(namespace.Name, config.ZarfGitServerSecretName)
+			currentGitSecret, err := c.GetSecret(namespace.Name, config.JackalGitServerSecretName)
 			if err != nil {
 				continue
 			}
 
-			// Check if this is a Zarf managed secret or is in a namespace the Zarf agent will take action in
-			if currentGitSecret.Labels[config.ZarfManagedByLabel] == "zarf" ||
+			// Check if this is a Jackal managed secret or is in a namespace the Jackal agent will take action in
+			if currentGitSecret.Labels[config.JackalManagedByLabel] == "jackal" ||
 				(namespace.Labels[agentLabel] != "skip" && namespace.Labels[agentLabel] != "ignore") {
-				spinner.Updatef("Updating existing Zarf-managed git secret for namespace: '%s'", namespace.Name)
+				spinner.Updatef("Updating existing Jackal-managed git secret for namespace: '%s'", namespace.Name)
 
 				// Create the secret
-				newGitSecret := c.GenerateGitPullCreds(namespace.Name, config.ZarfGitServerSecretName, state.GitServer)
+				newGitSecret := c.GenerateGitPullCreds(namespace.Name, config.JackalGitServerSecretName, state.GitServer)
 				if !reflect.DeepEqual(currentGitSecret.StringData, newGitSecret.StringData) {
-					// Create or update the zarf git secret
+					// Create or update the jackal git secret
 					if _, err := c.CreateOrUpdateSecret(newGitSecret); err != nil {
 						message.WarnErrf(err, "Problem creating git server secret for the %s namespace", namespace.Name)
 					}

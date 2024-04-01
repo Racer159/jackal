@@ -1,15 +1,15 @@
 import { Capability, a, Log, K8s, kind } from "pepr";
-import { DeployedPackage } from "./zarf-types";
+import { DeployedPackage } from "./jackal-types";
 
 /**
- *  The Webhook Capability is an example capability to demonstrate using webhooks to interact with Zarf package deployments.
- *  To test this capability you run `pepr dev`and then deploy a zarf package!
+ *  The Webhook Capability is an example capability to demonstrate using webhooks to interact with Jackal package deployments.
+ *  To test this capability you run `pepr dev`and then deploy a jackal package!
  */
 export const Webhook = new Capability({
   name: "example-webhook",
   description:
-    "A simple example capability to show how webhooks work with Zarf package deployments.",
-  namespaces: ["zarf"],
+    "A simple example capability to show how webhooks work with Jackal package deployments.",
+  namespaces: ["jackal"],
 });
 
 const webhookName = "test-webhook";
@@ -18,7 +18,7 @@ const { When } = Webhook;
 
 When(a.Secret)
   .IsCreatedOrUpdated()
-  .InNamespace("zarf")
+  .InNamespace("jackal")
   .WithLabel("package-deploy-info")
   .Mutate(request => {
     const secret = request.Raw;
@@ -89,7 +89,7 @@ When(a.Secret)
 async function sleepAndChangeStatus(secretName: string, componentName: string) {
   await sleep(10);
 
-  const ns = "zarf";
+  const ns = "jackal";
 
   let secret: a.Secret;
 
@@ -121,7 +121,7 @@ async function sleepAndChangeStatus(secretName: string, componentName: string) {
 
   // Update the status in the package secret
   // Use Server-Side force apply to forcefully take ownership of the package secret data.data field
-  // Doing a Server-Side apply without the force option will result in a FieldManagerConflict error due to Zarf owning the object.
+  // Doing a Server-Side apply without the force option will result in a FieldManagerConflict error due to Jackal owning the object.
   try {
     await K8s(kind.Secret).Apply(
       {

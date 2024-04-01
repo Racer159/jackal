@@ -1,32 +1,32 @@
 persistence:
-  storageClass: "###ZARF_STORAGE_CLASS###"
-  claimName: "###ZARF_VAR_GIT_SERVER_EXISTING_PVC###"
-  size: "###ZARF_VAR_GIT_SERVER_PVC_SIZE###"
+  storageClass: "###JACKAL_STORAGE_CLASS###"
+  claimName: "###JACKAL_VAR_GIT_SERVER_EXISTING_PVC###"
+  size: "###JACKAL_VAR_GIT_SERVER_PVC_SIZE###"
   accessModes:
-    - "###ZARF_VAR_GIT_SERVER_PVC_ACCESS_MODE###"
-  create: ###ZARF_VAR_GIT_SERVER_CREATE_PVC###
+    - "###JACKAL_VAR_GIT_SERVER_PVC_ACCESS_MODE###"
+  create: ###JACKAL_VAR_GIT_SERVER_CREATE_PVC###
 
-replicaCount: ###ZARF_VAR_GIT_SERVER_REPLICA_COUNT###
+replicaCount: ###JACKAL_VAR_GIT_SERVER_REPLICA_COUNT###
 
 gitea:
   admin:
-    username: "###ZARF_GIT_PUSH###"
-    password: "###ZARF_GIT_AUTH_PUSH###"
-    email: "zarf@localhost"
+    username: "###JACKAL_GIT_PUSH###"
+    password: "###JACKAL_GIT_AUTH_PUSH###"
+    email: "jackal@localhost"
   config:
-    APP_NAME: "Zarf Gitops Service"
+    APP_NAME: "Jackal Gitops Service"
     server:
       DISABLE_SSH: true
       OFFLINE_MODE: true
-      ROOT_URL: http://zarf-gitea-http.zarf.svc.cluster.local:3000
+      ROOT_URL: http://jackal-gitea-http.jackal.svc.cluster.local:3000
     database:
       DB_TYPE: sqlite3
       # Note that the init script checks to see if the IP & port of the database service is accessible, so make sure you set those to something that resolves as successful (since sqlite uses files on disk setting the port & ip won't affect the running of gitea).
-      HOST: zarf-docker-registry.zarf.svc.cluster.local:5000
+      HOST: jackal-docker-registry.jackal.svc.cluster.local:5000
     security:
       INSTALL_LOCK: true
     service:
-      DISABLE_REGISTRATION: ###ZARF_VAR_GIT_SERVER_DISABLE_REGISTRATION###
+      DISABLE_REGISTRATION: ###JACKAL_VAR_GIT_SERVER_DISABLE_REGISTRATION###
     repository:
       ENABLE_PUSH_CREATE_USER: true
       FORCE_PRIVATE: true
@@ -38,14 +38,14 @@ gitea:
       TYPE: level
 resources:
   requests:
-    cpu: "###ZARF_VAR_GIT_SERVER_CPU_REQ###"
-    memory: "###ZARF_VAR_GIT_SERVER_MEM_REQ###"
+    cpu: "###JACKAL_VAR_GIT_SERVER_CPU_REQ###"
+    memory: "###JACKAL_VAR_GIT_SERVER_MEM_REQ###"
   limits:
-    cpu: "###ZARF_VAR_GIT_SERVER_CPU_LIMIT###"
-    memory: "###ZARF_VAR_GIT_SERVER_MEM_LIMIT###"
+    cpu: "###JACKAL_VAR_GIT_SERVER_CPU_LIMIT###"
+    memory: "###JACKAL_VAR_GIT_SERVER_MEM_LIMIT###"
 
 image:
-  fullOverride: "###ZARF_CONST_GITEA_IMAGE###"
+  fullOverride: "###JACKAL_CONST_GITEA_IMAGE###"
   rootless: true
 
 postgresql-ha:

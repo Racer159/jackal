@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package bigbang contains the logic for installing Big Bang and Flux
 package bigbang
 
 import (
-	"github.com/defenseunicorns/zarf/src/pkg/message"
+	"github.com/defenseunicorns/jackal/src/pkg/message"
 	"github.com/pterm/pterm"
 )
 

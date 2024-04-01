@@ -2,23 +2,23 @@
 
 ## Introduction
 
-In this tutorial, you will create a test workload prior to initializing Zarf.  After that you will then use Zarf to adopt those workloads, so you can manage their future lifecycle with Zarf.
+In this tutorial, you will create a test workload prior to initializing Jackal.  After that you will then use Jackal to adopt those workloads, so you can manage their future lifecycle with Jackal.
 
 ## System Requirements
 
-- You'll need an internet connection to grab the Zarf Init Package if it's not already on your machine.
+- You'll need an internet connection to grab the Jackal Init Package if it's not already on your machine.
 
 ## Prerequisites
 
-- Prior to this tutorial you'll want to have a working cluster.  But unlike our other tutorials you **don't want Zarf initialized**.
+- Prior to this tutorial you'll want to have a working cluster.  But unlike our other tutorials you **don't want Jackal initialized**.
 
-- Zarf binary installed on your $PATH: ([Installing Zarf](../1-getting-started/index.md#installing-zarf))
+- Jackal binary installed on your $PATH: ([Installing Jackal](../1-getting-started/index.md#installing-jackal))
 
 ## Youtube Tutorial
-[![Tutorial: Adopt Pre-Existing Resources to Manage with Zarf](../.images/tutorials/adoption_thumbnail.png)](https://youtu.be/r3TBpMXtuNY "Adopt Pre-Existing Resources to Manage with Zarf")
+[![Tutorial: Adopt Pre-Existing Resources to Manage with Jackal](../.images/tutorials/adoption_thumbnail.png)](https://youtu.be/r3TBpMXtuNY "Adopt Pre-Existing Resources to Manage with Jackal")
 
 ## Creating a Test Component
-We're going to use the manifests from the [Deploying a Retro Arcade](./3-deploy-a-retro-arcade.md) tutorial for this example.  So if you haven't yet, clone the Zarf repository, and navigate to the cloned repository's root directory.
+We're going to use the manifests from the [Deploying a Retro Arcade](./3-deploy-a-retro-arcade.md) tutorial for this example.  So if you haven't yet, clone the Jackal repository, and navigate to the cloned repository's root directory.
 
 1. Create the dos-games namespace
 
@@ -44,13 +44,13 @@ Remember to press `ctrl+c` in your terminal when you're done with the port-forwa
 
 :::
 
-## Initialize Zarf
+## Initialize Jackal
 
-1. Use the [Initializing a K8s Cluster](./1-initializing-a-k8s-cluster.md) tutorial, to initialize Zarf in the cluster.
+1. Use the [Initializing a K8s Cluster](./1-initializing-a-k8s-cluster.md) tutorial, to initialize Jackal in the cluster.
 
 :::note
 
-You'll notice the dos-games namespace has been excluded from Zarf management as it has the `zarf.dev/agent=ignore` label.  This means that Zarf will not manage any resources in this namespace.
+You'll notice the dos-games namespace has been excluded from Jackal management as it has the `jackal.dev/agent=ignore` label.  This means that Jackal will not manage any resources in this namespace.
 
 <iframe src="/docs/tutorials/resource_adoption_ignored.html" width="100%" height="175px"></iframe>
 
@@ -60,22 +60,22 @@ The iframe was pointing to the wrong file, and this likely would be better as an
 
 ## Deploy the Package, Adopting the Workloads
 
-1. Use the `zarf package deploy` command with the `--adopt-existing-resources` flag to adopt the existing dos-games resources in the `dos-games` namespace.
+1. Use the `jackal package deploy` command with the `--adopt-existing-resources` flag to adopt the existing dos-games resources in the `dos-games` namespace.
 
 <iframe src="/docs/tutorials/resource_adoption_deploy.html" width="100%" height="600px"></iframe>
 
 :::caution
 
-Notice that in this example the dos-games resources were contained in their own namespace.  When running a deploy with `--adopt-existing-resources` it is recommended that this be the case as you could break other non-Zarf deployments if resources are shared.
+Notice that in this example the dos-games resources were contained in their own namespace.  When running a deploy with `--adopt-existing-resources` it is recommended that this be the case as you could break other non-Jackal deployments if resources are shared.
 
 :::
 ## Test to see that this is working
 
-1. You'll notice the dos-games namespace is no longer excluded from Zarf management as it has the `app.kubernetes.io/managed-by=zarf` label.  This means that Zarf will now manage any resources in this namespace.
+1. You'll notice the dos-games namespace is no longer excluded from Jackal management as it has the `app.kubernetes.io/managed-by=jackal` label.  This means that Jackal will now manage any resources in this namespace.
 
 <iframe src="/docs/tutorials/resource_adoption_adopted.html" width="100%" height="120px"></iframe>
 
-2. You can also now use the `zarf connect` command to connect to the dos-games application. Again it will look something like this.
+2. You can also now use the `jackal connect` command to connect to the dos-games application. Again it will look something like this.
 ![Connected to the Games](../.images/tutorials/games_connected.png)
 
 :::note
@@ -88,4 +88,4 @@ Again, remember to press `ctrl+c` in your terminal, when you're done with the co
 
 ## Conclusion
 
-At this point the dos-game package is managed by Zarf and will behave just like a package initially deployed with Zarf.
+At this point the dos-game package is managed by Jackal and will behave just like a package initially deployed with Jackal.

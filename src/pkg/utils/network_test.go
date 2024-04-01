@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// SPDX-FileCopyrightText: 2021-Present The Zarf Authors
+// SPDX-FileCopyrightText: 2021-Present The Jackal Authors
 
 // Package utils provides generic utility functions.
 package utils
@@ -9,8 +9,8 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/defenseunicorns/jackal/src/pkg/message"
 	"github.com/defenseunicorns/pkg/helpers"
-	"github.com/defenseunicorns/zarf/src/pkg/message"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
@@ -25,8 +25,8 @@ func (suite *TestNetworkSuite) SetupSuite() {
 }
 
 func (suite *TestNetworkSuite) Test_0_parseChecksum() {
-	// zarf prepare sha256sum .adr-dir
-	adr := "https://raw.githubusercontent.com/defenseunicorns/zarf/main/.adr-dir"
+	// jackal prepare sha256sum .adr-dir
+	adr := "https://raw.githubusercontent.com/defenseunicorns/jackal/main/.adr-dir"
 	sum := "930f4d5a191812e57b39bd60fca789ace07ec5acd36d63e1047604c8bdf998a3"
 	url := adr + "@" + sum
 	uri, checksum, err := parseChecksum(url)
@@ -54,20 +54,20 @@ func (suite *TestNetworkSuite) Test_0_parseChecksum() {
 }
 
 func (suite *TestNetworkSuite) Test_1_DownloadToFile() {
-	readme := "https://raw.githubusercontent.com/defenseunicorns/zarf/main/README.md"
+	readme := "https://raw.githubusercontent.com/defenseunicorns/jackal/main/README.md"
 	tmp := suite.T().TempDir()
 	path := filepath.Join(tmp, "README.md")
 	suite.NoError(DownloadToFile(readme, path, ""))
 	suite.FileExists(path)
 
 	path = filepath.Join(tmp, "README.md.bad")
-	bad := "https://raw.githubusercontent.com/defenseunicorns/zarf/main/README.md.bad"
+	bad := "https://raw.githubusercontent.com/defenseunicorns/jackal/main/README.md.bad"
 	suite.Error(DownloadToFile(bad, path, ""))
 
-	// zarf prepare sha256sum .adr-dir
+	// jackal prepare sha256sum .adr-dir
 	path = filepath.Join(tmp, ".adr-dir")
 	sum := "930f4d5a191812e57b39bd60fca789ace07ec5acd36d63e1047604c8bdf998a3"
-	adr := "https://raw.githubusercontent.com/defenseunicorns/zarf/main/.adr-dir"
+	adr := "https://raw.githubusercontent.com/defenseunicorns/jackal/main/.adr-dir"
 	url := adr + "@" + sum
 	err := DownloadToFile(url, path, "")
 	suite.NoError(err)
