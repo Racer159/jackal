@@ -4,7 +4,7 @@
 [![Go version](https://img.shields.io/github/go-mod/go-version/racer159/jackal?filename=go.mod)](https://go.dev/)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/racer159/jackal/release.yml)](https://github.com/racer159/jackal/actions/workflows/release.yml)
 [![Jackal Documentation Status](https://api.netlify.com/api/v1/badges/fe846ae4-25fb-4274-9968-90782640ee9f/deploy-status)](https://app.netlify.com/sites/jackal-docs/deploys)
-[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/racer159/jackal/badge)](https://api.securityscorecards.dev/projects/github.com/racer159/jackal)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/Racer159/jackal/badge)](https://api.securityscorecards.dev/projects/github.com/racer159/jackal)
 
 <img align="right" alt="jackal logo" src=".images/jackal-logo.png"  height="256" />
 
