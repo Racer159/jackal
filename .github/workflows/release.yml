@@ -72,7 +72,7 @@ jobs:
 
   push:
     runs-on: ubuntu-latest
-    needs: validate
+    needs: build
     environment: release
     permissions:
       contents: write
