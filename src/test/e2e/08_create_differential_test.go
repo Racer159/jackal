@@ -9,10 +9,10 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/defenseunicorns/jackal/src/config/lang"
-	"github.com/defenseunicorns/jackal/src/pkg/layout"
-	"github.com/defenseunicorns/jackal/src/pkg/utils"
-	"github.com/defenseunicorns/jackal/src/types"
+	"github.com/Racer159/jackal/src/config/lang"
+	"github.com/Racer159/jackal/src/pkg/layout"
+	"github.com/Racer159/jackal/src/pkg/utils"
+	"github.com/Racer159/jackal/src/types"
 	"github.com/mholt/archiver/v3"
 	"github.com/stretchr/testify/require"
 )
@@ -63,7 +63,7 @@ func TestCreateDifferential(t *testing.T) {
 	expectedGitRepos := []string{
 		"https://github.com/stefanprodan/podinfo.git",
 		"https://github.com/kelseyhightower/nocode.git",
-		"https://github.com/defenseunicorns/jackal.git@refs/tags/v0.26.0",
+		"https://github.com/Racer159/jackal.git@refs/tags/v0.26.0",
 	}
 	require.Len(t, actualGitRepos, 4, "jackal.yaml from the differential package does not contain the correct number of repos")
 	for _, expectedRepo := range expectedGitRepos {
@@ -73,7 +73,7 @@ func TestCreateDifferential(t *testing.T) {
 	/* Validate we have ONLY the images we expect to have */
 	expectedImages := []string{
 		"ghcr.io/stefanprodan/podinfo:latest",
-		"ghcr.io/defenseunicorns/jackal/agent:v0.26.0",
+		"ghcr.io/Racer159/jackal/agent:v0.26.0",
 	}
 	require.Len(t, actualImages, 2, "jackal.yaml from the differential package does not contain the correct number of images")
 	for _, expectedImage := range expectedImages {

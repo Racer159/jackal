@@ -14,7 +14,7 @@ In this tutorial, you will create a differential package using Jackal.  This is 
 For following along locally, please ensure the following prerequisites are met:
 
 - Jackal binary installed on your `$PATH`: ([Installing Jackal](../1-getting-started/index.md#installing-jackal))
-- The [Jackal](https://github.com/defenseunicorns/jackal) repository cloned: ([`git clone` Instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository))
+- The [Jackal](https://github.com/Racer159/jackal) repository cloned: ([`git clone` Instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository))
 
 ## Youtube Tutorial
 

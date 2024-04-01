@@ -8,12 +8,12 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/defenseunicorns/jackal/src/config"
-	"github.com/defenseunicorns/jackal/src/config/lang"
-	"github.com/defenseunicorns/jackal/src/internal/agent/operations"
-	"github.com/defenseunicorns/jackal/src/internal/agent/state"
-	"github.com/defenseunicorns/jackal/src/pkg/message"
-	"github.com/defenseunicorns/jackal/src/pkg/transform"
+	"github.com/Racer159/jackal/src/config"
+	"github.com/Racer159/jackal/src/config/lang"
+	"github.com/Racer159/jackal/src/internal/agent/operations"
+	"github.com/Racer159/jackal/src/internal/agent/state"
+	"github.com/Racer159/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/pkg/transform"
 	v1 "k8s.io/api/admission/v1"
 
 	corev1 "k8s.io/api/core/v1"

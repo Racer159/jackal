@@ -5,7 +5,7 @@
 package tools
 
 import (
-	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/Racer159/jackal/src/config/lang"
 	yq "github.com/mikefarah/yq/v4/cmd"
 )
 

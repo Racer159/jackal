@@ -12,7 +12,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/defenseunicorns/jackal/src/pkg/zoci"
+	"github.com/Racer159/jackal/src/pkg/zoci"
 	"github.com/defenseunicorns/pkg/oci"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"

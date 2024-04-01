@@ -19,7 +19,7 @@ Specifically:
 
 :key: == Required by automation
 
-1. Look at the next due [release milestone](https://github.com/defenseunicorns/jackal/milestones) and pick an issue that you want to work on. If you don't see anything that interests you, create an issue and assign it to yourself.
+1. Look at the next due [release milestone](https://github.com/Racer159/jackal/milestones) and pick an issue that you want to work on. If you don't see anything that interests you, create an issue and assign it to yourself.
 1. Drop a comment in the issue to let everyone know you're working on it and submit a Draft PR (step 4) as soon as you are able. If you have any questions as you work through the code, reach out in the [Jackal Dev Kubernetes Slack Channel](https://kubernetes.slack.com/archives/C03BP9Z3CMA).
 1. :key: Set up your Git config to GPG sign all commits. [Here's some documentation on how to set it up](https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-commits). You won't be able to merge your PR if you have any unverified commits.
 1. Create a Draft Pull Request as soon as you can, even if it is just 5 minutes after you started working on it. We lean towards working in the open as much as we can. If you're not sure what to put in the PR description, just put a link to the issue you're working on.
@@ -27,8 +27,8 @@ Specifically:
    - :key: We follow the [conventional commits spec](https://www.conventionalcommits.org/en/v1.0.0/) with the [commitlint conventional config](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional) as extended types for PR titles.
 
 1. :key: Automated tests will begin based on the paths you have edited in your Pull Request.
-   > ⚠️ **NOTE:** _If you are an external third-party contributor, the pipelines won't run until a [CODEOWNER](https://github.com/defenseunicorns/jackal/blob/main/CODEOWNERS) approves the pipeline run._
-1. :key: Be sure to use the [needs-adr,needs-docs,needs-tests](https://github.com/defenseunicorns/jackal/labels?q=needs) labels as appropriate for the PR. Once you have addressed all of the needs, remove the label.
+   > ⚠️ **NOTE:** _If you are an external third-party contributor, the pipelines won't run until a [CODEOWNER](https://github.com/Racer159/jackal/blob/main/CODEOWNERS) approves the pipeline run._
+1. :key: Be sure to use the [needs-adr,needs-docs,needs-tests](https://github.com/Racer159/jackal/labels?q=needs) labels as appropriate for the PR. Once you have addressed all of the needs, remove the label.
 1. Once the review is complete and approved, a core member of the jackal project will merge your PR. If you are an external third-party contributor, two core members of the jackal project will be required to approve the PR.
 1. Close the issue if it is fully resolved by your PR. _Hint: You can add "Fixes #XX" to the PR description to automatically close an issue when the PR is merged._
 
@@ -53,7 +53,7 @@ You can learn more about the testing of Jackal [here](docs/12-contribute-to-jack
 
 ### Updating Our Documentation
 
-Our documentation is auto-generated from the `src/types` and `src/cmd` go packages.  This includes the [Jackal package jsonschema](https://github.com/defenseunicorns/jackal/blob/main/jackal.schema.json), the [Jackal schema docs](https://docs.jackal.dev/docs/create-a-jackal-package/jackal-schema), and the [Jackal CLI docs](https://docs.jackal.dev/docs/the-jackal-cli/).   When an update to types or the CLI commands is made you will need to run `make docs-and-schema` locally to regenerate the schema and documentation. CI checks if this was ran, and will fail if it wasn't.
+Our documentation is auto-generated from the `src/types` and `src/cmd` go packages.  This includes the [Jackal package jsonschema](https://github.com/Racer159/jackal/blob/main/jackal.schema.json), the [Jackal schema docs](https://docs.jackal.dev/docs/create-a-jackal-package/jackal-schema), and the [Jackal CLI docs](https://docs.jackal.dev/docs/the-jackal-cli/).   When an update to types or the CLI commands is made you will need to run `make docs-and-schema` locally to regenerate the schema and documentation. CI checks if this was ran, and will fail if it wasn't.
 
 We do this so that there is a git commit signature from a person on the commit for better traceability, rather than a non-person entity (e.g. GitHub CI token).
 

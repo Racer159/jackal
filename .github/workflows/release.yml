@@ -42,13 +42,13 @@ jobs:
         run: |
           cp build/jackal build/jackal-linux-amd64
           cp build/jackal-arm build/jackal-linux-arm64
-          docker buildx build --push --platform linux/arm64/v8,linux/amd64 --tag ghcr.io/defenseunicorns/jackal/agent:$GITHUB_REF_NAME .
+          docker buildx build --push --platform linux/arm64/v8,linux/amd64 --tag ghcr.io/Racer159/jackal/agent:$GITHUB_REF_NAME .
           rm build/jackal-linux-amd64
           rm build/jackal-linux-arm64
-          echo JACKAL_AGENT_IMAGE_DIGEST=$(docker buildx imagetools inspect ghcr.io/defenseunicorns/jackal/agent:$GITHUB_REF_NAME --format '{{ json . }}' | jq -r .manifest.digest) >> $GITHUB_ENV
+          echo JACKAL_AGENT_IMAGE_DIGEST=$(docker buildx imagetools inspect ghcr.io/Racer159/jackal/agent:$GITHUB_REF_NAME --format '{{ json . }}' | jq -r .manifest.digest) >> $GITHUB_ENV
 
       - name: "Jackal Agent: Sign the Image"
-        run: cosign sign --key awskms:///${{ secrets.COSIGN_AWS_KMS_KEY }} -a release-engineer=https://github.com/${{ github.actor }} -a version=$GITHUB_REF_NAME ghcr.io/defenseunicorns/jackal/agent@$JACKAL_AGENT_IMAGE_DIGEST -y
+        run: cosign sign --key awskms:///${{ secrets.COSIGN_AWS_KMS_KEY }} -a release-engineer=https://github.com/${{ github.actor }} -a version=$GITHUB_REF_NAME ghcr.io/Racer159/jackal/agent@$JACKAL_AGENT_IMAGE_DIGEST -y
         env:
           COSIGN_EXPERIMENTAL: 1
           AWS_REGION: ${{ secrets.COSIGN_AWS_REGION }}

@@ -7,7 +7,7 @@ package composer
 import (
 	"fmt"
 
-	"github.com/defenseunicorns/jackal/src/types"
+	"github.com/Racer159/jackal/src/types"
 )
 
 func overrideMetadata(c *types.JackalComponent, override types.JackalComponent) error {

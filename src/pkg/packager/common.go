@@ -14,17 +14,17 @@ import (
 	"slices"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/defenseunicorns/jackal/src/config/lang"
-	"github.com/defenseunicorns/jackal/src/internal/packager/template"
-	"github.com/defenseunicorns/jackal/src/pkg/cluster"
-	"github.com/defenseunicorns/jackal/src/types"
+	"github.com/Racer159/jackal/src/config/lang"
+	"github.com/Racer159/jackal/src/internal/packager/template"
+	"github.com/Racer159/jackal/src/pkg/cluster"
+	"github.com/Racer159/jackal/src/types"
 
-	"github.com/defenseunicorns/jackal/src/config"
-	"github.com/defenseunicorns/jackal/src/pkg/layout"
-	"github.com/defenseunicorns/jackal/src/pkg/message"
-	"github.com/defenseunicorns/jackal/src/pkg/packager/deprecated"
-	"github.com/defenseunicorns/jackal/src/pkg/packager/sources"
-	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/Racer159/jackal/src/config"
+	"github.com/Racer159/jackal/src/pkg/layout"
+	"github.com/Racer159/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/pkg/packager/deprecated"
+	"github.com/Racer159/jackal/src/pkg/packager/sources"
+	"github.com/Racer159/jackal/src/pkg/utils"
 )
 
 // Packager is the main struct for managing packages.

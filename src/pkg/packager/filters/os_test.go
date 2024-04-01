@@ -7,8 +7,8 @@ package filters
 import (
 	"testing"
 
-	"github.com/defenseunicorns/jackal/src/internal/packager/validate"
-	"github.com/defenseunicorns/jackal/src/types"
+	"github.com/Racer159/jackal/src/internal/packager/validate"
+	"github.com/Racer159/jackal/src/types"
 	"github.com/stretchr/testify/require"
 )
 

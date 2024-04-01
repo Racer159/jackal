@@ -10,14 +10,14 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/defenseunicorns/jackal/src/config/lang"
-	"github.com/defenseunicorns/jackal/src/pkg/layout"
-	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/config/lang"
+	"github.com/Racer159/jackal/src/pkg/layout"
+	"github.com/Racer159/jackal/src/pkg/message"
 	"github.com/mholt/archiver/v3"
 	"github.com/spf13/cobra"
 )
 
-// ldflags github.com/defenseunicorns/jackal/src/cmd/tools.archiverVersion=x.x.x
+// ldflags github.com/Racer159/jackal/src/cmd/tools.archiverVersion=x.x.x
 var archiverVersion string
 
 var archiverCmd = &cobra.Command{

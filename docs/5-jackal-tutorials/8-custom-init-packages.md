@@ -16,7 +16,7 @@ When creating a Jackal 'init' package, you must have a network connection so tha
 
 Before beginning this tutorial you will need the following:
 
-- The [Jackal](https://github.com/defenseunicorns/jackal) repository cloned: ([git clone instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository))
+- The [Jackal](https://github.com/Racer159/jackal) repository cloned: ([git clone instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository))
 - Jackal binary installed on your $PATH: ([Installing Jackal](../1-getting-started/index.md#installing-jackal))
 - (if building a local [`jackal-agent`](../8-faq.md#what-is-the-jackal-agent)) The [Docker CLI](https://docs.docker.com/desktop/) installed and the tools to [Build your own CLI](../2-the-jackal-cli/0-building-your-own-cli.md)
 
@@ -66,7 +66,7 @@ The Jackal 'init' Package is a [composed Jackal Package](../3-create-a-jackal-pa
 
 ### Swapping Images
 
-As of v0.26.0 you can swap the `registry` and `agent` images by specifying different values in the `jackal-config.toml` file at the root of the project or by overriding them as we did above with `--set` on the command line. This allows you to swap these images for hardened or enterprise-vetted versions like those from [Iron Bank](https://repo1.dso.mil/dsop/opensource/defenseunicorns/jackal/jackal-agent).
+As of v0.26.0 you can swap the `registry` and `agent` images by specifying different values in the `jackal-config.toml` file at the root of the project or by overriding them as we did above with `--set` on the command line. This allows you to swap these images for hardened or enterprise-vetted versions like those from [Iron Bank](https://repo1.dso.mil/dsop/opensource/Racer159/jackal/jackal-agent).
 
 For other components, or older versions of Jackal, you can modify the manifests of the components you want to change in their individual packages under the `packages` folder of the Jackal repo.
 

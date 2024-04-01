@@ -11,7 +11,7 @@
 
 ----------------------------------------------------------------------------------------------------------------------------
 {% if config.with_footer -%}
-Generated from [jackal.schema.json](https://github.com/defenseunicorns/jackal/blob/main/jackal.schema.json){% if config.footer_show_time %} on {{ get_local_time() }}{% endif %}
+Generated from [jackal.schema.json](https://github.com/Racer159/jackal/blob/main/jackal.schema.json){% if config.footer_show_time %} on {{ get_local_time() }}{% endif %}
 {%- endif -%}
 
 {{ "\n" }}

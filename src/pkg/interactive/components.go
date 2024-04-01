@@ -8,9 +8,9 @@ import (
 	"fmt"
 
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/defenseunicorns/jackal/src/pkg/message"
-	"github.com/defenseunicorns/jackal/src/pkg/utils"
-	"github.com/defenseunicorns/jackal/src/types"
+	"github.com/Racer159/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/pkg/utils"
+	"github.com/Racer159/jackal/src/types"
 	"github.com/pterm/pterm"
 )
 

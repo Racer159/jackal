@@ -11,7 +11,7 @@ import (
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/defenseunicorns/jackal/src/types/extensions"
+	"github.com/Racer159/jackal/src/types/extensions"
 	fluxHelmCtrl "github.com/fluxcd/helm-controller/api/v2beta1"
 	fluxSrcCtrl "github.com/fluxcd/source-controller/api/v1"
 	corev1 "k8s.io/api/core/v1"

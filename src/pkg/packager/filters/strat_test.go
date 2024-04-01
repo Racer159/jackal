@@ -7,7 +7,7 @@ package filters
 import (
 	"testing"
 
-	"github.com/defenseunicorns/jackal/src/types"
+	"github.com/Racer159/jackal/src/types"
 	"github.com/stretchr/testify/require"
 )
 

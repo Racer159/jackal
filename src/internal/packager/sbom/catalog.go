@@ -11,6 +11,11 @@ import (
 	"path/filepath"
 	"regexp"
 
+	"github.com/Racer159/jackal/src/config"
+	"github.com/Racer159/jackal/src/pkg/layout"
+	"github.com/Racer159/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/pkg/transform"
+	"github.com/Racer159/jackal/src/pkg/utils"
 	"github.com/anchore/stereoscope/pkg/file"
 	"github.com/anchore/stereoscope/pkg/image"
 	"github.com/anchore/syft/syft"
@@ -23,11 +28,6 @@ import (
 	"github.com/anchore/syft/syft/pkg/cataloger"
 	"github.com/anchore/syft/syft/sbom"
 	"github.com/anchore/syft/syft/source"
-	"github.com/defenseunicorns/jackal/src/config"
-	"github.com/defenseunicorns/jackal/src/pkg/layout"
-	"github.com/defenseunicorns/jackal/src/pkg/message"
-	"github.com/defenseunicorns/jackal/src/pkg/transform"
-	"github.com/defenseunicorns/jackal/src/pkg/utils"
 	"github.com/defenseunicorns/pkg/helpers"
 	v1 "github.com/google/go-containerregistry/pkg/v1"
 )

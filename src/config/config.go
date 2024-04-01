@@ -15,7 +15,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/defenseunicorns/jackal/src/types"
+	"github.com/Racer159/jackal/src/types"
 	"github.com/google/go-containerregistry/pkg/authn"
 	"github.com/google/go-containerregistry/pkg/crane"
 	v1 "github.com/google/go-containerregistry/pkg/v1"
@@ -23,7 +23,7 @@ import (
 
 // Jackal Global Configuration Constants.
 const (
-	GithubProject = "defenseunicorns/jackal"
+	GithubProject = "Racer159/jackal"
 
 	// JackalMaxChartNameLength limits helm chart name size to account for K8s/helm limits and jackal prefix
 	JackalMaxChartNameLength = 40
@@ -143,7 +143,7 @@ func GetCraneOptions(insecure bool, archs ...string) []crane.Option {
 		crane.WithUserAgent("jackal"),
 		crane.WithNoClobber(true),
 		// TODO: (@WSTARR) this is set to limit pushes to registry pods and reduce the likelihood that crane will get stuck.
-		// We should investigate this further in the future to dig into more of what is happening (see https://github.com/defenseunicorns/jackal/issues/1568)
+		// We should investigate this further in the future to dig into more of what is happening (see https://github.com/Racer159/jackal/issues/1568)
 		crane.WithJobs(1),
 	)
 

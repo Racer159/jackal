@@ -5,8 +5,8 @@
 package creator
 
 import (
-	"github.com/defenseunicorns/jackal/src/pkg/layout"
-	"github.com/defenseunicorns/jackal/src/types"
+	"github.com/Racer159/jackal/src/pkg/layout"
+	"github.com/Racer159/jackal/src/types"
 )
 
 // Creator is an interface for creating Jackal packages.

@@ -12,7 +12,7 @@ Defense Unicorns' mission is to advance freedom and independence globally throug
 
 ## What license is Jackal under?
 
-Jackal is under the [Apache License 2.0](https://github.com/defenseunicorns/jackal/blob/main/LICENSE). This is one of the most commonly used licenses for open-source software.
+Jackal is under the [Apache License 2.0](https://github.com/Racer159/jackal/blob/main/LICENSE). This is one of the most commonly used licenses for open-source software.
 
 ## Is Jackal free to use?
 
@@ -20,7 +20,7 @@ Yes! Jackal is Free and Open-Source Software (FOSS). And will remain free foreve
 
 ## Do I have to use Homebrew to install Jackal?
 
-No, the Jackal binary and init package can be downloaded from the [Releases Page](https://github.com/defenseunicorns/jackal/releases). Jackal does not need to be installed or available to all users on the system, but it does need to be executable for the current user (i.e. `chmod +x jackal` for Linux/Mac).
+No, the Jackal binary and init package can be downloaded from the [Releases Page](https://github.com/Racer159/jackal/releases). Jackal does not need to be installed or available to all users on the system, but it does need to be executable for the current user (i.e. `chmod +x jackal` for Linux/Mac).
 
 ## What dependencies does Jackal have?
 
@@ -56,7 +56,7 @@ Additionally, when adopting resources, you should ensure that the namespaces you
 
 ## How can I improve the speed of loading large images from Docker on `jackal package create`?
 
-Due to some limitations with how Docker provides access to local image layers, `jackal package create` has to rely on `docker save` under the hood which is [very slow overall](https://github.com/defenseunicorns/jackal/issues/1214) and also takes a long time to report progress. We experimented with many ways to improve this, but for now recommend leveraging a local docker registry to speed up the process.
+Due to some limitations with how Docker provides access to local image layers, `jackal package create` has to rely on `docker save` under the hood which is [very slow overall](https://github.com/Racer159/jackal/issues/1214) and also takes a long time to report progress. We experimented with many ways to improve this, but for now recommend leveraging a local docker registry to speed up the process.
 
 This can be done by running a local registry and pushing the images to it before running `jackal package create`. This will allow `jackal package create` to pull the images from the local registry instead of Docker. This can also be combined with [component actions](3-create-a-jackal-package/7-component-actions.md) and [`--registry-override`](./2-the-jackal-cli/100-cli-commands/jackal_package_create.md) to make the process automatic. Given an example image of `registry.enterprise.corp/my-giant-image:v2` you could do something like this:
 
@@ -104,8 +104,8 @@ metadata:
 
 components:
     repos:
-      - https://github.com/defenseunicorns/jackal.git
-      - ssh://git@github.com/defenseunicorns/jackal.git
+      - https://github.com/Racer159/jackal.git
+      - ssh://git@github.com/Racer159/jackal.git
       - file:///home/jackal/workspace/jackal
       - git://somegithost.com/jackal.git
 ```

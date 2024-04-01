@@ -15,8 +15,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/defenseunicorns/jackal/src/pkg/utils"
-	"github.com/defenseunicorns/jackal/src/pkg/utils/exec"
+	"github.com/Racer159/jackal/src/pkg/utils"
+	"github.com/Racer159/jackal/src/pkg/utils/exec"
 	"github.com/defenseunicorns/pkg/helpers"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"

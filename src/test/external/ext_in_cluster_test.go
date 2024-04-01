@@ -11,8 +11,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/defenseunicorns/jackal/src/pkg/cluster"
-	"github.com/defenseunicorns/jackal/src/pkg/utils/exec"
+	"github.com/Racer159/jackal/src/pkg/cluster"
+	"github.com/Racer159/jackal/src/pkg/utils/exec"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )

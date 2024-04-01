@@ -10,7 +10,7 @@ import (
 
 	"slices"
 
-	"github.com/defenseunicorns/jackal/src/config"
+	"github.com/Racer159/jackal/src/config"
 	"github.com/spf13/cobra"
 )
 

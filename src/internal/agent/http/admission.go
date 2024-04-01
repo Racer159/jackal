@@ -10,9 +10,9 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/defenseunicorns/jackal/src/config/lang"
-	"github.com/defenseunicorns/jackal/src/internal/agent/operations"
-	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/config/lang"
+	"github.com/Racer159/jackal/src/internal/agent/operations"
+	"github.com/Racer159/jackal/src/pkg/message"
 	v1 "k8s.io/api/admission/v1"
 	meta "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"

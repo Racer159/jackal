@@ -10,9 +10,9 @@ import (
 	"regexp"
 	"slices"
 
-	"github.com/defenseunicorns/jackal/src/config"
-	"github.com/defenseunicorns/jackal/src/config/lang"
-	"github.com/defenseunicorns/jackal/src/types"
+	"github.com/Racer159/jackal/src/config"
+	"github.com/Racer159/jackal/src/config/lang"
+	"github.com/Racer159/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
 )
 

@@ -7,9 +7,9 @@ package tools
 import (
 	"fmt"
 
-	"github.com/defenseunicorns/jackal/src/cmd/common"
-	"github.com/defenseunicorns/jackal/src/config"
-	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/Racer159/jackal/src/cmd/common"
+	"github.com/Racer159/jackal/src/config"
+	"github.com/Racer159/jackal/src/config/lang"
 	"github.com/spf13/cobra"
 )
 

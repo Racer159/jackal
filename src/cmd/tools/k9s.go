@@ -7,7 +7,7 @@ package tools
 import (
 	"os"
 
-	"github.com/defenseunicorns/jackal/src/config/lang"
+	"github.com/Racer159/jackal/src/config/lang"
 	k9s "github.com/derailed/k9s/cmd"
 	"github.com/spf13/cobra"
 

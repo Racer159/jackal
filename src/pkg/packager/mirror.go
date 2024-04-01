@@ -9,10 +9,10 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/defenseunicorns/jackal/src/config"
-	"github.com/defenseunicorns/jackal/src/pkg/message"
-	"github.com/defenseunicorns/jackal/src/pkg/packager/filters"
-	"github.com/defenseunicorns/jackal/src/types"
+	"github.com/Racer159/jackal/src/config"
+	"github.com/Racer159/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/pkg/packager/filters"
+	"github.com/Racer159/jackal/src/types"
 )
 
 // Mirror pulls resources from a package (images, git repositories, etc) and pushes them to remotes in the air gap without deploying them

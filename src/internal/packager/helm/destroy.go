@@ -7,8 +7,8 @@ package helm
 import (
 	"regexp"
 
-	"github.com/defenseunicorns/jackal/src/pkg/cluster"
-	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/pkg/cluster"
+	"github.com/Racer159/jackal/src/pkg/message"
 	"helm.sh/helm/v3/pkg/action"
 )
 

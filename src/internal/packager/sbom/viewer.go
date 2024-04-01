@@ -9,8 +9,8 @@ import (
 	"fmt"
 	"html/template"
 
-	"github.com/defenseunicorns/jackal/src/pkg/layout"
-	"github.com/defenseunicorns/jackal/src/pkg/transform"
+	"github.com/Racer159/jackal/src/pkg/layout"
+	"github.com/Racer159/jackal/src/pkg/transform"
 )
 
 func (b *Builder) createSBOMViewerAsset(identifier string, jsonData []byte) error {

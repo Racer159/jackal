@@ -9,12 +9,12 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/defenseunicorns/jackal/src/config"
-	"github.com/defenseunicorns/jackal/src/pkg/cluster"
-	"github.com/defenseunicorns/jackal/src/pkg/k8s"
-	"github.com/defenseunicorns/jackal/src/pkg/message"
-	"github.com/defenseunicorns/jackal/src/pkg/transform"
-	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/Racer159/jackal/src/config"
+	"github.com/Racer159/jackal/src/pkg/cluster"
+	"github.com/Racer159/jackal/src/pkg/k8s"
+	"github.com/Racer159/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/pkg/transform"
+	"github.com/Racer159/jackal/src/pkg/utils"
 	"github.com/defenseunicorns/pkg/helpers"
 	"github.com/google/go-containerregistry/pkg/crane"
 	"github.com/google/go-containerregistry/pkg/logs"
@@ -52,7 +52,7 @@ func (i *ImageConfig) PushToJackalRegistry() error {
 
 	httpTransport := http.DefaultTransport.(*http.Transport).Clone()
 	httpTransport.TLSClientConfig.InsecureSkipVerify = i.Insecure
-	// TODO (@WSTARR) This is set to match the TLSHandshakeTimeout to potentially mitigate effects of https://github.com/defenseunicorns/jackal/issues/1444
+	// TODO (@WSTARR) This is set to match the TLSHandshakeTimeout to potentially mitigate effects of https://github.com/Racer159/jackal/issues/1444
 	httpTransport.ResponseHeaderTimeout = 10 * time.Second
 	progressBar := message.NewProgressBar(totalSize, fmt.Sprintf("Pushing %d images to the jackal registry", len(i.ImageList)))
 	defer progressBar.Stop()

@@ -1,17 +1,17 @@
 # Jackal - DevSecOps for Air Gap
 
-[![Latest Release](https://img.shields.io/github/v/release/defenseunicorns/jackal)](https://github.com/defenseunicorns/jackal/releases)
-[![Go version](https://img.shields.io/github/go-mod/go-version/defenseunicorns/jackal?filename=go.mod)](https://go.dev/)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/defenseunicorns/jackal/release.yml)](https://github.com/defenseunicorns/jackal/actions/workflows/release.yml)
+[![Latest Release](https://img.shields.io/github/v/release/Racer159/jackal)](https://github.com/Racer159/jackal/releases)
+[![Go version](https://img.shields.io/github/go-mod/go-version/Racer159/jackal?filename=go.mod)](https://go.dev/)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/Racer159/jackal/release.yml)](https://github.com/Racer159/jackal/actions/workflows/release.yml)
 [![Jackal Documentation Status](https://api.netlify.com/api/v1/badges/fe846ae4-25fb-4274-9968-90782640ee9f/deploy-status)](https://app.netlify.com/sites/jackal-docs/deploys)
-[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/defenseunicorns/jackal/badge)](https://api.securityscorecards.dev/projects/github.com/defenseunicorns/jackal)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/Racer159/jackal/badge)](https://api.securityscorecards.dev/projects/github.com/Racer159/jackal)
 
 <img align="right" alt="jackal logo" src=".images/jackal-logo.png"  height="256" />
 
 [![Jackal Website](https://img.shields.io/badge/web-jackal.dev-6d87c3)](https://jackal.dev/)
 [![Jackal Documentation](https://img.shields.io/badge/docs-docs.jackal.dev-775ba1)](https://docs.jackal.dev/)
 [![Jackal Slack Channel](https://img.shields.io/badge/k8s%20slack-jackal-40a3dd)](https://kubernetes.slack.com/archives/C03B6BJAUJ3)
-[![Community Meetups](https://img.shields.io/badge/community-meetups-22aebb)](https://github.com/defenseunicorns/jackal/issues/2202)
+[![Community Meetups](https://img.shields.io/badge/community-meetups-22aebb)](https://github.com/Racer159/jackal/issues/2202)
 
 Jackal eliminates the [complexity of air gap software delivery](https://www.itopstimes.com/contain/air-gap-kubernetes-considerations-for-running-cloud-native-applications-without-the-cloud/) for Kubernetes clusters and cloud-native workloads using a declarative packaging strategy to support DevSecOps in offline and semi-connected environments.
 
@@ -76,8 +76,8 @@ Join our community and developers on the [#Jackal slack](https://jackal.dev/slac
 
 We are so grateful to our Jackal community for contributing bug fixes and collaborating on new features:
 
-<a href="https://github.com/defenseunicorns/jackal/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=defenseunicorns/jackal" />
+<a href="https://github.com/Racer159/jackal/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Racer159/jackal" />
 </a>
 
 Made with [contrib.rocks](https://contrib.rocks).

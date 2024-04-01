@@ -11,9 +11,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/defenseunicorns/jackal/src/pkg/cluster"
-	"github.com/defenseunicorns/jackal/src/pkg/utils/exec"
-	test "github.com/defenseunicorns/jackal/src/test"
+	"github.com/Racer159/jackal/src/pkg/cluster"
+	"github.com/Racer159/jackal/src/pkg/utils/exec"
+	test "github.com/Racer159/jackal/src/test"
 	"github.com/stretchr/testify/require"
 )
 

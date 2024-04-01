@@ -12,9 +12,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/defenseunicorns/jackal/src/internal/packager/git"
-	"github.com/defenseunicorns/jackal/src/pkg/cluster"
-	"github.com/defenseunicorns/jackal/src/types"
+	"github.com/Racer159/jackal/src/internal/packager/git"
+	"github.com/Racer159/jackal/src/pkg/cluster"
+	"github.com/Racer159/jackal/src/types"
 	"github.com/stretchr/testify/require"
 )
 

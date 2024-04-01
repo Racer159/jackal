@@ -5,8 +5,8 @@
 package images
 
 import (
-	"github.com/defenseunicorns/jackal/src/pkg/transform"
-	"github.com/defenseunicorns/jackal/src/types"
+	"github.com/Racer159/jackal/src/pkg/transform"
+	"github.com/Racer159/jackal/src/types"
 )
 
 // ImageConfig is the main struct for managing container images.

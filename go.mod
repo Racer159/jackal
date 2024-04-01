@@ -16,7 +16,6 @@ require (
 	github.com/anchore/syft v0.100.0
 	github.com/defenseunicorns/pkg/helpers v0.0.2
 	github.com/defenseunicorns/pkg/oci v0.0.1
-	github.com/Racer159/jackal v0.32.6
 	github.com/derailed/k9s v0.31.7
 	github.com/distribution/reference v0.5.0
 	github.com/fairwindsops/pluto/v5 v5.18.4

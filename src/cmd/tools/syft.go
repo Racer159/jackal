@@ -5,12 +5,12 @@
 package tools
 
 import (
+	"github.com/Racer159/jackal/src/config/lang"
 	"github.com/anchore/clio"
 	syftCLI "github.com/anchore/syft/cmd/syft/cli"
-	"github.com/defenseunicorns/jackal/src/config/lang"
 )
 
-// ldflags github.com/defenseunicorns/jackal/src/cmd/tools.syftVersion=x.x.x
+// ldflags github.com/Racer159/jackal/src/cmd/tools.syftVersion=x.x.x
 var syftVersion string
 
 func init() {

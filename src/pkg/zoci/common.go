@@ -7,8 +7,8 @@ package zoci
 import (
 	"log/slog"
 
-	"github.com/defenseunicorns/jackal/src/config"
-	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/config"
+	"github.com/Racer159/jackal/src/pkg/message"
 	"github.com/defenseunicorns/pkg/oci"
 	ocispec "github.com/opencontainers/image-spec/specs-go/v1"
 )

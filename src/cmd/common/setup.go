@@ -8,9 +8,9 @@ import (
 	"io"
 	"os"
 
-	"github.com/defenseunicorns/jackal/src/config"
-	"github.com/defenseunicorns/jackal/src/config/lang"
-	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/config"
+	"github.com/Racer159/jackal/src/config/lang"
+	"github.com/Racer159/jackal/src/pkg/message"
 	"github.com/pterm/pterm"
 )
 

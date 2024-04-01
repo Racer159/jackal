@@ -8,8 +8,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/defenseunicorns/jackal/src/config"
-	"github.com/defenseunicorns/jackal/src/types"
+	"github.com/Racer159/jackal/src/config"
+	"github.com/Racer159/jackal/src/types"
 	"github.com/pterm/pterm"
 )
 

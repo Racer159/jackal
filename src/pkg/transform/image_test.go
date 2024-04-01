@@ -13,11 +13,11 @@ import (
 var imageRefs = []string{
 	"nginx",
 	"nginx:1.23.3",
-	"defenseunicorns/jackal-agent:v0.22.1",
-	"defenseunicorns/jackal-agent@sha256:84605f731c6a18194794c51e70021c671ab064654b751aa57e905bce55be13de",
+	"Racer159/jackal-agent:v0.22.1",
+	"Racer159/jackal-agent@sha256:84605f731c6a18194794c51e70021c671ab064654b751aa57e905bce55be13de",
 	"busybox:latest@sha256:3fbc632167424a6d997e74f52b878d7cc478225cffac6bc977eedfe51c7f4e79",
 	"ghcr.io/stefanprodan/podinfo:6.3.3",
-	"registry1.dso.mil/ironbank/opensource/defenseunicorns/jackal/jackal-agent:v0.25.0",
+	"registry1.dso.mil/ironbank/opensource/Racer159/jackal/jackal-agent:v0.25.0",
 	"gitlab.com/project/gitea/gitea:1.19.3-rootless-jackal-3431384023",
 }
 
@@ -32,11 +32,11 @@ func TestImageTransformHost(t *testing.T) {
 		// Normal git repos and references for pushing/pulling
 		"gitlab.com/project/library/nginx:latest-jackal-3793515731",
 		"gitlab.com/project/library/nginx:1.23.3-jackal-3793515731",
-		"gitlab.com/project/defenseunicorns/jackal-agent:v0.22.1-jackal-4283503412",
-		"gitlab.com/project/defenseunicorns/jackal-agent@sha256:84605f731c6a18194794c51e70021c671ab064654b751aa57e905bce55be13de",
+		"gitlab.com/project/Racer159/jackal-agent:v0.22.1-jackal-4283503412",
+		"gitlab.com/project/Racer159/jackal-agent@sha256:84605f731c6a18194794c51e70021c671ab064654b751aa57e905bce55be13de",
 		"gitlab.com/project/library/busybox@sha256:3fbc632167424a6d997e74f52b878d7cc478225cffac6bc977eedfe51c7f4e79",
 		"gitlab.com/project/stefanprodan/podinfo:6.3.3-jackal-2985051089",
-		"gitlab.com/project/ironbank/opensource/defenseunicorns/jackal/jackal-agent:v0.25.0-jackal-2003217571",
+		"gitlab.com/project/ironbank/opensource/Racer159/jackal/jackal-agent:v0.25.0-jackal-2003217571",
 		"gitlab.com/project/gitea/gitea:1.19.3-rootless-jackal-3431384023",
 	}
 
@@ -56,11 +56,11 @@ func TestImageTransformHostWithoutChecksum(t *testing.T) {
 	var expectedResult = []string{
 		"gitlab.com/project/library/nginx:latest",
 		"gitlab.com/project/library/nginx:1.23.3",
-		"gitlab.com/project/defenseunicorns/jackal-agent:v0.22.1",
-		"gitlab.com/project/defenseunicorns/jackal-agent@sha256:84605f731c6a18194794c51e70021c671ab064654b751aa57e905bce55be13de",
+		"gitlab.com/project/Racer159/jackal-agent:v0.22.1",
+		"gitlab.com/project/Racer159/jackal-agent@sha256:84605f731c6a18194794c51e70021c671ab064654b751aa57e905bce55be13de",
 		"gitlab.com/project/library/busybox@sha256:3fbc632167424a6d997e74f52b878d7cc478225cffac6bc977eedfe51c7f4e79",
 		"gitlab.com/project/stefanprodan/podinfo:6.3.3",
-		"gitlab.com/project/ironbank/opensource/defenseunicorns/jackal/jackal-agent:v0.25.0",
+		"gitlab.com/project/ironbank/opensource/Racer159/jackal/jackal-agent:v0.25.0",
 		"gitlab.com/project/gitea/gitea:1.19.3-rootless-jackal-3431384023",
 	}
 
@@ -80,11 +80,11 @@ func TestParseImageRef(t *testing.T) {
 	var expectedResult = [][]string{
 		{"docker.io/", "library/nginx", "latest", ""},
 		{"docker.io/", "library/nginx", "1.23.3", ""},
-		{"docker.io/", "defenseunicorns/jackal-agent", "v0.22.1", ""},
-		{"docker.io/", "defenseunicorns/jackal-agent", "", "sha256:84605f731c6a18194794c51e70021c671ab064654b751aa57e905bce55be13de"},
+		{"docker.io/", "Racer159/jackal-agent", "v0.22.1", ""},
+		{"docker.io/", "Racer159/jackal-agent", "", "sha256:84605f731c6a18194794c51e70021c671ab064654b751aa57e905bce55be13de"},
 		{"docker.io/", "library/busybox", "latest", "sha256:3fbc632167424a6d997e74f52b878d7cc478225cffac6bc977eedfe51c7f4e79"},
 		{"ghcr.io/", "stefanprodan/podinfo", "6.3.3", ""},
-		{"registry1.dso.mil/", "ironbank/opensource/defenseunicorns/jackal/jackal-agent", "v0.25.0", ""},
+		{"registry1.dso.mil/", "ironbank/opensource/Racer159/jackal/jackal-agent", "v0.25.0", ""},
 		{"gitlab.com/", "project/gitea/gitea", "1.19.3-rootless-jackal-3431384023", ""},
 	}
 

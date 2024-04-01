@@ -7,7 +7,7 @@ package filters
 import (
 	"errors"
 
-	"github.com/defenseunicorns/jackal/src/types"
+	"github.com/Racer159/jackal/src/types"
 )
 
 // ByLocalOS creates a new filter that filters components based on local (runtime) OS.

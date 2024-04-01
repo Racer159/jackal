@@ -9,12 +9,12 @@ import (
 	"os"
 	"regexp"
 
-	"github.com/defenseunicorns/jackal/src/config"
-	"github.com/defenseunicorns/jackal/src/config/lang"
-	"github.com/defenseunicorns/jackal/src/internal/packager/helm"
-	"github.com/defenseunicorns/jackal/src/pkg/cluster"
-	"github.com/defenseunicorns/jackal/src/pkg/message"
-	"github.com/defenseunicorns/jackal/src/pkg/utils/exec"
+	"github.com/Racer159/jackal/src/config"
+	"github.com/Racer159/jackal/src/config/lang"
+	"github.com/Racer159/jackal/src/internal/packager/helm"
+	"github.com/Racer159/jackal/src/pkg/cluster"
+	"github.com/Racer159/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/pkg/utils/exec"
 	"github.com/defenseunicorns/pkg/helpers"
 
 	"github.com/spf13/cobra"

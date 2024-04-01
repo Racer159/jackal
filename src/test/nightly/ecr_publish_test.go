@@ -11,8 +11,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/defenseunicorns/jackal/src/config"
-	"github.com/defenseunicorns/jackal/src/test"
+	"github.com/Racer159/jackal/src/config"
+	"github.com/Racer159/jackal/src/test"
 	"github.com/stretchr/testify/require"
 )
 

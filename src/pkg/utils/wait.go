@@ -13,10 +13,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/defenseunicorns/jackal/src/pkg/utils/exec"
+	"github.com/Racer159/jackal/src/pkg/utils/exec"
 
-	"github.com/defenseunicorns/jackal/src/config/lang"
-	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/config/lang"
+	"github.com/Racer159/jackal/src/pkg/message"
 )
 
 // isJSONPathWaitType checks if the condition is a JSONPath or condition.

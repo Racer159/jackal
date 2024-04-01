@@ -9,8 +9,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/defenseunicorns/jackal/src/internal/agent/hooks"
-	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/internal/agent/hooks"
+	"github.com/Racer159/jackal/src/pkg/message"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 

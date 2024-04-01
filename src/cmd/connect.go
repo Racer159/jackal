@@ -10,12 +10,12 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/defenseunicorns/jackal/src/cmd/common"
-	"github.com/defenseunicorns/jackal/src/config/lang"
-	"github.com/defenseunicorns/jackal/src/pkg/cluster"
-	"github.com/defenseunicorns/jackal/src/pkg/k8s"
-	"github.com/defenseunicorns/jackal/src/pkg/message"
-	"github.com/defenseunicorns/jackal/src/pkg/utils/exec"
+	"github.com/Racer159/jackal/src/cmd/common"
+	"github.com/Racer159/jackal/src/config/lang"
+	"github.com/Racer159/jackal/src/pkg/cluster"
+	"github.com/Racer159/jackal/src/pkg/k8s"
+	"github.com/Racer159/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/pkg/utils/exec"
 	"github.com/spf13/cobra"
 )
 

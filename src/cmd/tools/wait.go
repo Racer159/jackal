@@ -7,9 +7,9 @@ package tools
 import (
 	"time"
 
-	"github.com/defenseunicorns/jackal/src/config/lang"
-	"github.com/defenseunicorns/jackal/src/pkg/message"
-	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/Racer159/jackal/src/config/lang"
+	"github.com/Racer159/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/pkg/utils"
 	"github.com/spf13/cobra"
 
 	// Import to initialize client auth plugins.

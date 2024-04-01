@@ -8,7 +8,7 @@ Accepted
 
 ## Context
 
-> Feature request: <https://github.com/defenseunicorns/jackal/issues/2169>
+> Feature request: <https://github.com/Racer159/jackal/issues/2169>
 
 The current package development lifecycle is:
 

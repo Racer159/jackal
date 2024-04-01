@@ -32,7 +32,7 @@ To learn more about Big Bang's requirements in general, see their documentation:
 Before beginning this tutorial you will need the following:
 
 - A local copy of the Jackal repository
-  - `git clone https://github.com/defenseunicorns/jackal.git`
+  - `git clone https://github.com/Racer159/jackal.git`
 - A kubernetes cluster onto which you can deploy Jackal and Big Bang
 - The latest version of the Jackal `cli`
   - Follow instructions on https://jackal.dev/install/
@@ -205,4 +205,4 @@ See the Troubleshooting section of the Big Bang Quick Start for help troubleshoo
 
 Also, ensure that you have followed all of the steps required in the [pre-requisites](#pre-requisites) section and have reviewed the [known issues](#known-issues).
 
-If you feel that the error you are encountering is one with Jackal feel free to [open an issue](https://github.com/defenseunicorns/jackal/issues/new/choose) or reach out via [slack](https://kubernetes.slack.com/archives/C03B6BJAUJ3).
+If you feel that the error you are encountering is one with Jackal feel free to [open an issue](https://github.com/Racer159/jackal/issues/new/choose) or reach out via [slack](https://kubernetes.slack.com/archives/C03B6BJAUJ3).

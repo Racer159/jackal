@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: multi-game
-          image: "defenseunicorns/jackal-game:multi-tile-dark"
+          image: "Racer159/jackal-game:multi-tile-dark"
           ports:
             - name: http
               containerPort: 8000

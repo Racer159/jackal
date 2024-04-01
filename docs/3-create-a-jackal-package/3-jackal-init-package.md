@@ -2,7 +2,7 @@
 
 The 'init' package is a special Jackal Package (denoted by `kind: JackalInitConfig` in its `jackal.yaml`) that initializes a cluster with the requisite air gap services when running `jackal init`.  This allows future Jackal Packages to store any required resources (i.e. container images and git repositories) so that they can be retrieved later.
 
-The default 'init' package that Jackal ships is defined in the `jackal.yaml` that lives at the [root of the Jackal repository](https://github.com/defenseunicorns/jackal/blob/main/jackal.yaml), and is constructed from composed components that provide a foundation for customization.  If you would like to change the behavior of the 'init' package you can do so by modifying this `jackal.yaml` or any of the composed components that it references and running `jackal package create` at the root of the repository.  You can learn more about creating a custom init package in the [Creating a Custom 'init' Package Tutorial](../5-jackal-tutorials/8-custom-init-packages.md).
+The default 'init' package that Jackal ships is defined in the `jackal.yaml` that lives at the [root of the Jackal repository](https://github.com/Racer159/jackal/blob/main/jackal.yaml), and is constructed from composed components that provide a foundation for customization.  If you would like to change the behavior of the 'init' package you can do so by modifying this `jackal.yaml` or any of the composed components that it references and running `jackal package create` at the root of the repository.  You can learn more about creating a custom init package in the [Creating a Custom 'init' Package Tutorial](../5-jackal-tutorials/8-custom-init-packages.md).
 
 Upon deployment, the init package creates a `jackal` namespace within your K8s cluster and deploys pods, services, and secrets to that namespace based on the components selected for deployment.
 
@@ -48,7 +48,7 @@ The Jackal Registry is initially injected as a series of config maps that bootst
 
 You can further customize how the registry behaves by setting variables such as `REGISTRY_PVC_SIZE` with a [config file](../2-the-jackal-cli/index.md#using-a-config-file-to-make-cli-command-flags-declarative) or `--set` on `jackal init`.
 
-To see a full list of `variables` you can view the [jackal.yaml that defines the registry](https://github.com/defenseunicorns/jackal/blob/main/packages/jackal-registry/jackal.yaml).
+To see a full list of `variables` you can view the [jackal.yaml that defines the registry](https://github.com/Racer159/jackal/blob/main/packages/jackal-registry/jackal.yaml).
 
 :::
 
@@ -82,7 +82,7 @@ root@machine ~ # jackal init --components k3s --set K3S_ARGS="" --confirm
 
 You can further customize how the git-server behaves by setting variables such as `GIT_SERVER_PVC_SIZE` with a [config file](../2-the-jackal-cli/index.md#using-a-config-file-to-make-cli-command-flags-declarative) or `--set` on `jackal init`.
 
-To see a full list of `variables` you can view the [jackal.yaml that defines the git-server](https://github.com/defenseunicorns/jackal/blob/main/packages/gitea/jackal.yaml).
+To see a full list of `variables` you can view the [jackal.yaml that defines the git-server](https://github.com/Racer159/jackal/blob/main/packages/gitea/jackal.yaml).
 
 :::
 
@@ -90,11 +90,11 @@ To see a full list of `variables` you can view the [jackal.yaml that defines the
 
 Deploying into air gapped environments is a [hard problem](../1-getting-started/1-understand-the-basics.md#what-is-the-air-gap), particularly when the K8s environment doesn't have a container registry for you to store images in already. This results in a dilemma where the container registry image must be introduced to the cluster, but there is no container registry to push it to as the image is not yet in the cluster - chicken, meet egg. To ensure that our approach is distro-agnostic, we developed a unique solution to seed the container registry into the cluster.
 
-This is done with the `jackal-injector` [component](https://github.com/defenseunicorns/jackal/blob/main/packages/jackal-injector/jackal.yaml) which injects a single rust binary (statically compiled) and a series of configmap chunks of a `registry:2` image into an ephemeral pod that is based on an existing image in the cluster.  This gives us a running registry to bootstrap from and deploy the rest of the 'init' package and any other packages down the line.
+This is done with the `jackal-injector` [component](https://github.com/Racer159/jackal/blob/main/packages/jackal-injector/jackal.yaml) which injects a single rust binary (statically compiled) and a series of configmap chunks of a `registry:2` image into an ephemeral pod that is based on an existing image in the cluster.  This gives us a running registry to bootstrap from and deploy the rest of the 'init' package and any other packages down the line.
 
 :::note
 
-The `registry:2` image and the Jackal Agent image can be configured with a custom init package using the `registry_image_*` and `agent_image_*` templates defined in the Jackal repo's [jackal-config.toml](https://github.com/defenseunicorns/jackal/blob/main/jackal-config.toml).  This allows you to swap them for enterprise provided / hardened versions if desired such as those provided by [Iron Bank](https://repo1.dso.mil/dsop/opensource/defenseunicorns/jackal/jackal-agent).
+The `registry:2` image and the Jackal Agent image can be configured with a custom init package using the `registry_image_*` and `agent_image_*` templates defined in the Jackal repo's [jackal-config.toml](https://github.com/Racer159/jackal/blob/main/jackal-config.toml).  This allows you to swap them for enterprise provided / hardened versions if desired such as those provided by [Iron Bank](https://repo1.dso.mil/dsop/opensource/Racer159/jackal/jackal-agent).
 
 :::
 

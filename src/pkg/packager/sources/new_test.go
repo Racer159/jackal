@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/defenseunicorns/jackal/src/types"
+	"github.com/Racer159/jackal/src/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -26,10 +26,10 @@ type source struct {
 
 var sources = []source{
 	{pkgSrc: "oci://ghcr.io/defenseunicorns/packages/init:1.0.0", srcType: "oci", source: ociS},
-	{pkgSrc: "sget://github.com/defenseunicorns/jackal-hello-world:x86", srcType: "sget", source: urlS},
-	{pkgSrc: "sget://defenseunicorns/jackal-hello-world:x86_64", srcType: "sget", source: urlS},
-	{pkgSrc: "https://github.com/defenseunicorns/jackal/releases/download/v1.0.0/jackal-init-amd64-v1.0.0.tar.zst", srcType: "https", source: urlS},
-	{pkgSrc: "http://github.com/defenseunicorns/jackal/releases/download/v1.0.0/jackal-init-amd64-v1.0.0.tar.zst", srcType: "http", source: urlS},
+	{pkgSrc: "sget://github.com/Racer159/jackal-hello-world:x86", srcType: "sget", source: urlS},
+	{pkgSrc: "sget://Racer159/jackal-hello-world:x86_64", srcType: "sget", source: urlS},
+	{pkgSrc: "https://github.com/Racer159/jackal/releases/download/v1.0.0/jackal-init-amd64-v1.0.0.tar.zst", srcType: "https", source: urlS},
+	{pkgSrc: "http://github.com/Racer159/jackal/releases/download/v1.0.0/jackal-init-amd64-v1.0.0.tar.zst", srcType: "http", source: urlS},
 	{pkgSrc: "jackal-init-amd64-v1.0.0.tar.zst", srcType: "tarball", source: tarballS},
 	{pkgSrc: "jackal-package-manifests-amd64-v1.0.0.tar", srcType: "tarball", source: tarballS},
 	{pkgSrc: "jackal-package-manifests-amd64-v1.0.0.tar.zst", srcType: "tarball", source: tarballS},

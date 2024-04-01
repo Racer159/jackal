@@ -13,9 +13,9 @@ import (
 var gitURLs = []string{
 	// Normal git repos and references for pushing/pulling
 	"https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/twistlock.git",
-	"https://github.com/defenseunicorns/jackal.git",
+	"https://github.com/Racer159/jackal.git",
 	"https://ghcr.io/stefanprodan/podinfo_fasd-123.git",
-	"git://k3d-cluster.localhost/defenseunicorns/jackal-agent",
+	"git://k3d-cluster.localhost/Racer159/jackal-agent",
 	"http://localhost:5000/some-cool-repo",
 	"ssh://ghcr.io/stefanprodan/podinfo@6.0.0",
 	"https://stefanprodan/podinfo.git@adf0fasd10.1.223124123123-asdf",
@@ -23,19 +23,19 @@ var gitURLs = []string{
 	"file:///srv/git/stefanprodan/podinfo@adf0fasd10.1.223124123123-asdf",
 	"https://me0515@dev.azure.com/me0515/jackal-public-test/_git/jackal-public-test",
 	"https://me0515@dev.azure.com/me0515/jackal-public-test/_git/jackal-public-test@524980951ff16e19dc25232e9aea8fd693989ba6",
-	"https://github.com/defenseunicorns/jackal.helm.git",
-	"https://github.com/defenseunicorns/jackal.git@refs/tags/v0.16.0",
+	"https://github.com/Racer159/jackal.helm.git",
+	"https://github.com/Racer159/jackal.git@refs/tags/v0.16.0",
 	"https://github.com/DoD-Platform-One/big-bang.git@refs/heads/release-1.54.x",
 	"https://github.com/prometheus-community/helm-charts.git@kube-prometheus-stack-47.3.0",
 	"https://github.com/prometheus-community/",
 	"https://github.com/",
 
 	// Smart Git Protocol URLs for proxying (https://www.git-scm.com/docs/http-protocol)
-	"https://github.com/defenseunicorns/jackal.helm.git/info/refs",
-	"https://github.com/defenseunicorns/jackal.helm.git/info/refs?service=git-upload-pack",
-	"https://github.com/defenseunicorns/jackal.helm.git/info/refs?service=git-receive-pack",
-	"https://github.com/defenseunicorns/jackal.helm.git/git-upload-pack",
-	"https://github.com/defenseunicorns/jackal.helm.git/git-receive-pack",
+	"https://github.com/Racer159/jackal.helm.git/info/refs",
+	"https://github.com/Racer159/jackal.helm.git/info/refs?service=git-upload-pack",
+	"https://github.com/Racer159/jackal.helm.git/info/refs?service=git-receive-pack",
+	"https://github.com/Racer159/jackal.helm.git/git-upload-pack",
+	"https://github.com/Racer159/jackal.helm.git/git-receive-pack",
 }
 
 var badGitURLs = []string{
@@ -48,11 +48,11 @@ func TestMutateGitURLsInText(t *testing.T) {
 	originalText := `
 	# Here we handle invalid URLs (see below comment)
 	# We transform https://*/*.git URLs
-	https://github.com/defenseunicorns/jackal.git
+	https://github.com/Racer159/jackal.git
 	# Even URLs with things on either side
-	stuff https://github.com/defenseunicorns/jackal.git andthings
+	stuff https://github.com/Racer159/jackal.git andthings
 	# Including ssh://*/*.git URLs
-	ssh://git@github.com/defenseunicorns/jackal.git
+	ssh://git@github.com/Racer159/jackal.git
 	# Or non .git URLs
 	https://www.defenseunicorns.com/
 	`
@@ -77,9 +77,9 @@ func TestGitURLSplitRef(t *testing.T) {
 	var expectedResult = [][]string{
 		// Normal git repos and references for pushing/pulling
 		{"https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/twistlock.git", ""},
-		{"https://github.com/defenseunicorns/jackal.git", ""},
+		{"https://github.com/Racer159/jackal.git", ""},
 		{"https://ghcr.io/stefanprodan/podinfo_fasd-123.git", ""},
-		{"git://k3d-cluster.localhost/defenseunicorns/jackal-agent", ""},
+		{"git://k3d-cluster.localhost/Racer159/jackal-agent", ""},
 		{"http://localhost:5000/some-cool-repo", ""},
 		{"ssh://ghcr.io/stefanprodan/podinfo", "6.0.0"},
 		{"https://stefanprodan/podinfo.git", "adf0fasd10.1.223124123123-asdf"},
@@ -87,19 +87,19 @@ func TestGitURLSplitRef(t *testing.T) {
 		{"file:///srv/git/stefanprodan/podinfo", "adf0fasd10.1.223124123123-asdf"},
 		{"https://me0515@dev.azure.com/me0515/jackal-public-test/_git/jackal-public-test", ""},
 		{"https://me0515@dev.azure.com/me0515/jackal-public-test/_git/jackal-public-test", "524980951ff16e19dc25232e9aea8fd693989ba6"},
-		{"https://github.com/defenseunicorns/jackal.helm.git", ""},
-		{"https://github.com/defenseunicorns/jackal.git", "refs/tags/v0.16.0"},
+		{"https://github.com/Racer159/jackal.helm.git", ""},
+		{"https://github.com/Racer159/jackal.git", "refs/tags/v0.16.0"},
 		{"https://github.com/DoD-Platform-One/big-bang.git", "refs/heads/release-1.54.x"},
 		{"https://github.com/prometheus-community/helm-charts.git", "kube-prometheus-stack-47.3.0"},
 		{"https://github.com/prometheus-community", ""},
 		{"https://github.com/", ""},
 
 		// Smart Git Protocol URLs for proxying (https://www.git-scm.com/docs/http-protocol)
-		{"https://github.com/defenseunicorns/jackal.helm.git", ""},
-		{"https://github.com/defenseunicorns/jackal.helm.git", ""},
-		{"https://github.com/defenseunicorns/jackal.helm.git", ""},
-		{"https://github.com/defenseunicorns/jackal.helm.git", ""},
-		{"https://github.com/defenseunicorns/jackal.helm.git", ""},
+		{"https://github.com/Racer159/jackal.helm.git", ""},
+		{"https://github.com/Racer159/jackal.helm.git", ""},
+		{"https://github.com/Racer159/jackal.helm.git", ""},
+		{"https://github.com/Racer159/jackal.helm.git", ""},
+		{"https://github.com/Racer159/jackal.helm.git", ""},
 	}
 
 	for idx, url := range gitURLs {

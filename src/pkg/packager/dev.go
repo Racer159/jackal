@@ -9,14 +9,14 @@ import (
 	"os"
 	"runtime"
 
-	"github.com/defenseunicorns/jackal/src/config"
-	"github.com/defenseunicorns/jackal/src/internal/packager/validate"
-	"github.com/defenseunicorns/jackal/src/pkg/layout"
-	"github.com/defenseunicorns/jackal/src/pkg/message"
-	"github.com/defenseunicorns/jackal/src/pkg/packager/creator"
-	"github.com/defenseunicorns/jackal/src/pkg/packager/filters"
-	"github.com/defenseunicorns/jackal/src/pkg/packager/variables"
-	"github.com/defenseunicorns/jackal/src/types"
+	"github.com/Racer159/jackal/src/config"
+	"github.com/Racer159/jackal/src/internal/packager/validate"
+	"github.com/Racer159/jackal/src/pkg/layout"
+	"github.com/Racer159/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/pkg/packager/creator"
+	"github.com/Racer159/jackal/src/pkg/packager/filters"
+	"github.com/Racer159/jackal/src/pkg/packager/variables"
+	"github.com/Racer159/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
 )
 

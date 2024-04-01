@@ -10,9 +10,9 @@ import (
 	"path"
 	"testing"
 
-	"github.com/defenseunicorns/jackal/src/config"
-	"github.com/defenseunicorns/jackal/src/pkg/message"
-	"github.com/defenseunicorns/jackal/src/test"
+	"github.com/Racer159/jackal/src/config"
+	"github.com/Racer159/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/test"
 )
 
 var (

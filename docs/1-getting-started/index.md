@@ -87,7 +87,7 @@ jackal package deploy oci://🦄/dos-games:1.0.0-$(uname -m) --key=https://jacka
 
 This example shows how to install Jackal with the official (📜) `defenseunicorns` Homebrew tap, however there are many other options to install Jackal on Linux such as:
 
-- 📜 **[official]** Downloading Jackal directly from [GitHub releases](https://github.com/defenseunicorns/jackal/releases)
+- 📜 **[official]** Downloading Jackal directly from [GitHub releases](https://github.com/Racer159/jackal/releases)
 - 🧑‍🤝‍🧑 **[community]** `apk add` on [Alpine Linux Edge](https://pkgs.alpinelinux.org/package/edge/testing/x86_64/jackal)
 - 🧑‍🤝‍🧑 **[community]** `asdf install` with the [ASDF Version Manager](https://github.com/defenseunicorns/asdf-jackal)
 - 🧑‍🤝‍🧑 **[community]** `nix-shell`/`nix-env` with [Nix Packages](https://search.nixos.org/packages?channel=23.05&show=jackal&from=0&size=50&sort=relevance&type=packages&query=jackal)

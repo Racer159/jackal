@@ -7,7 +7,7 @@ package cluster
 import (
 	"context"
 
-	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/pkg/message"
 )
 
 // DeleteJackalNamespace deletes the Jackal namespace from the connected cluster.

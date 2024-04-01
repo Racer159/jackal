@@ -14,8 +14,8 @@ components:
 
   - name: full-repo
     repos:
-    - https://github.com/defenseunicorns/jackal-public-test.git
-    - https://dev.azure.com/defenseunicorns/jackal-public-test/_git/jackal-public-test@v0.0.1
+    - https://github.com/Racer159/jackal-public-test.git
+    - https://dev.azure.com/Racer159/jackal-public-test/_git/jackal-public-test@v0.0.1
     - https://gitlab.com/gitlab-org/build/omnibus-mirror/pcre2/-/tree/vreverse?ref_type=heads
     images:
     - registry.com:9001/whatever/image:1.0.0

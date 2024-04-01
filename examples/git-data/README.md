@@ -12,25 +12,25 @@ Git repositories included in a package can be deployed with `jackal package depl
 
 ## Tag-Based Git Repository Clone
 
-Tag-based `git` repository cloning is the **recommended** way of cloning a `git` repository for air-gapped deployments because it wraps meaning around a specific point in git history that can easily be traced back to the online world. Tag-based clones are defined using the `scheme://host/repo@tag` format as seen in the example of the `defenseunicorns/jackal` repository (`https://github.com/defenseunicorns/jackal.git@v0.15.0`).
+Tag-based `git` repository cloning is the **recommended** way of cloning a `git` repository for air-gapped deployments because it wraps meaning around a specific point in git history that can easily be traced back to the online world. Tag-based clones are defined using the `scheme://host/repo@tag` format as seen in the example of the `Racer159/jackal` repository (`https://github.com/Racer159/jackal.git@v0.15.0`).
 
 A tag-based clone only mirrors the tag defined in the Jackal definition. The tag will be applied on the `git` mirror to a jackal-specific branch name based on the tag name (e.g. the tag `v0.1.0` will be pushed to the `jackal-ref-v0.1.0` branch).  This ensures that this tag will be pushed and received properly by the airgap `git` server.
 
 :::note
 
-If you would like to use a protocol scheme other than http/https, you can do so with something like the following: `ssh://git@github.com/defenseunicorns/jackal.git@v0.15.0`.  Using this you can also clone from a local repo to help you manage larger git repositories: `file:///home/jackal/workspace/jackal@v0.15.0`.
+If you would like to use a protocol scheme other than http/https, you can do so with something like the following: `ssh://git@github.com/Racer159/jackal.git@v0.15.0`.  Using this you can also clone from a local repo to help you manage larger git repositories: `file:///home/jackal/workspace/jackal@v0.15.0`.
 
 :::
 
 :::caution
 
-Because Jackal creates long-lived mirrors of repositories in the air gap, it does not support shallow clones (i.e. `git clone --depth x`).  These may be present in build environments (i.e. [GitLab runners](https://github.com/defenseunicorns/jackal/issues/1698)) and should be avoided.  To learn more about shallow and partial clones see the [GitHub blog on the topic](https://github.blog/2020-12-21-get-up-to-speed-with-partial-clone-and-shallow-clone).
+Because Jackal creates long-lived mirrors of repositories in the air gap, it does not support shallow clones (i.e. `git clone --depth x`).  These may be present in build environments (i.e. [GitLab runners](https://github.com/Racer159/jackal/issues/1698)) and should be avoided.  To learn more about shallow and partial clones see the [GitHub blog on the topic](https://github.blog/2020-12-21-get-up-to-speed-with-partial-clone-and-shallow-clone).
 
 :::
 
 ## SHA-Based Git Repository Clone
 
-In addition to tags, Jackal also supports cloning and pushing a specific SHA hash from a `git` repository, but this is **not recommended** as it is less readable/understandable than tag cloning.  Commit SHAs are defined using the same `scheme://host/repo@shasum` format as seen in the example of the `defenseunicorns/jackal` repository (`https://github.com/defenseunicorns/jackal.git@c74e2e9626da0400e0a41e78319b3054c53a5d4e`).
+In addition to tags, Jackal also supports cloning and pushing a specific SHA hash from a `git` repository, but this is **not recommended** as it is less readable/understandable than tag cloning.  Commit SHAs are defined using the same `scheme://host/repo@shasum` format as seen in the example of the `Racer159/jackal` repository (`https://github.com/Racer159/jackal.git@c74e2e9626da0400e0a41e78319b3054c53a5d4e`).
 
 A SHA-based clone only mirrors the SHA hash defined in the Jackal definition. The SHA will be applied on the `git` mirror to a jackal-specific branch name based on the SHA hash (e.g. the SHA `c74e2e9626da0400e0a41e78319b3054c53a5d4e` will be pushed to the `jackal-ref-c74e2e9626da0400e0a41e78319b3054c53a5d4e` branch).  This ensures that this tag will be pushed and received properly by the airgap `git` server.
 

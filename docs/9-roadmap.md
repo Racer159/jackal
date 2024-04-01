@@ -8,15 +8,15 @@ sidebar_position: 9
 
 The issue board for Jackal is hosted on a [GitHub Project Board](https://github.com/orgs/defenseunicorns/projects/1) that tracks the issues the Jackal team is working along with future work we are prioritizing.
 
-If you would like to add bug reports or feature requests, please [add an issue](https://github.com/defenseunicorns/jackal/issues) to the GitHub repository under the appropriate template.  If you have a more general question about a feature, feel free to ask the team in the [Jackal Kubernetes Slack Channel](https://kubernetes.slack.com/archives/C03B6BJAUJ3).
+If you would like to add bug reports or feature requests, please [add an issue](https://github.com/Racer159/jackal/issues) to the GitHub repository under the appropriate template.  If you have a more general question about a feature, feel free to ask the team in the [Jackal Kubernetes Slack Channel](https://kubernetes.slack.com/archives/C03B6BJAUJ3).
 
-We also accept contributions from the community (regardless of where a particular bug or feature is in the queue), so feel free to read our [contributing guidelines](./12-contribute-to-jackal/1-contributor-guide.md) and [submit a PR](https://github.com/defenseunicorns/jackal/pulls)!  You can also ask any development related questions in the [Jackal Dev Kubernetes Slack Channel](https://kubernetes.slack.com/archives/C03BP9Z3CMA).
+We also accept contributions from the community (regardless of where a particular bug or feature is in the queue), so feel free to read our [contributing guidelines](./12-contribute-to-jackal/1-contributor-guide.md) and [submit a PR](https://github.com/Racer159/jackal/pulls)!  You can also ask any development related questions in the [Jackal Dev Kubernetes Slack Channel](https://kubernetes.slack.com/archives/C03BP9Z3CMA).
 
 ## 2024 General Roadmap
 
 ### Q1: Community Building and Refactoring
 
-- [X] - Establish a [monthly community meetup](https://github.com/defenseunicorns/jackal/issues/2202) to engage members of the community and answer questions.
+- [X] - Establish a [monthly community meetup](https://github.com/Racer159/jackal/issues/2202) to engage members of the community and answer questions.
 - [ ] - Refactor and add tests to library code shared with [UDS-CLI](https://github.com/defenseunicorns/uds-cli) and split into a new GitHub repository.
 - [ ] - Gather OpenSSF donation requirements and clear off pre-reqs (additional maintainers and sponsor working group).
 
@@ -75,6 +75,6 @@ While Jackal is pre-General Availability (see below) the above feature stability
 
 ## General Availability (GA) Release
 
-Right now, Jackal itself is still in its 'beta' phase. We are working on some final things before we release the official 1.0 General Availability (GA) release. The work still needed for the GA release can be found in our issues with [this filter](https://github.com/defenseunicorns/jackal/issues?q=is%3Aopen+is%3Aissue+label%3Aga).
+Right now, Jackal itself is still in its 'beta' phase. We are working on some final things before we release the official 1.0 General Availability (GA) release. The work still needed for the GA release can be found in our issues with [this filter](https://github.com/Racer159/jackal/issues?q=is%3Aopen+is%3Aissue+label%3Aga).
 
 We are currently targeting Q4 2024 to have Jackal be generally available and will be pushing weekly releases until then to add necessary features and fix bugs as well as improve docs, architecture and test coverage behind the scenes.

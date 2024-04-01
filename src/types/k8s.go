@@ -8,8 +8,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/defenseunicorns/jackal/src/config/lang"
-	"github.com/defenseunicorns/jackal/src/pkg/k8s"
+	"github.com/Racer159/jackal/src/config/lang"
+	"github.com/Racer159/jackal/src/pkg/k8s"
 	"github.com/defenseunicorns/pkg/helpers"
 )
 

@@ -6,11 +6,11 @@ The Jackal Web UI mirrors the functionality of the Jackal CLI commands, but with
 
 ## Open the Jackal Deployment Web UI
 
-The Jackal Deployment Web UI can easily be downloaded from the [Jackal UI Github Project](https://github.com/defenseunicorns/jackal-ui/releases/latest).
+The Jackal Deployment Web UI can easily be downloaded from the [Jackal UI Github Project](https://github.com/Racer159/jackal-ui/releases/latest).
 
 Follow these steps to get started using the Web UI
 
-1. Step one: [Download the Jackal UI](https://github.com/defenseunicorns/jackal-ui/releases/latest) version that matches your system (i.e. `jackal-ui_v0.1.0-Darwin_arm64`)
+1. Step one: [Download the Jackal UI](https://github.com/Racer159/jackal-ui/releases/latest) version that matches your system (i.e. `jackal-ui_v0.1.0-Darwin_arm64`)
 2. Step two: (if applicable) Mark the file as executable with `chmod +x jackal-ui_v0.1.0-Darwin_arm64`
 3. Step three: Run the binary with `./jackal-ui_v0.1.0-Darwin_arm64` or by double clicking the file in your file browser
 

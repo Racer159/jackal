@@ -44,8 +44,8 @@ const config = {
           showLastUpdateAuthor: true,
           sidebarPath: require.resolve("./src/sidebars.js"),
           editUrl: ({ docPath }) => {
-            // TODO: (@RAZZLE) once examples have been fixed, change this url to edit: `https://github.com/defenseunicorns/jackal/edit/main/${docPath}`
-            return `https://github.com/defenseunicorns/jackal/tree/main/${docPath}`; // <-- to view
+            // TODO: (@RAZZLE) once examples have been fixed, change this url to edit: `https://github.com/Racer159/jackal/edit/main/${docPath}`
+            return `https://github.com/Racer159/jackal/tree/main/${docPath}`; // <-- to view
           },
           routeBasePath: "/",
           async sidebarItemsGenerator({ defaultSidebarItemsGenerator, ...args }) {

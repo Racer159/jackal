@@ -5,7 +5,7 @@
 [![Jackal Documentation](https://img.shields.io/badge/docs-docs.jackal.dev-775ba1)](https://docs.jackal.dev/)
 Jackal Documentation|[![Jackal Documentation Status](https://api.netlify.com/api/v1/badges/fe846ae4-25fb-4274-9968-90782640ee9f/deploy-status)](https://app.netlify.com/sites/jackal-docs/deploys)
 
-This is the docs site for [Jackal](https://github.com/defenseunicorns/jackal), a declarative air gap solution for Kubernetes.  This site is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator created by Facebook.
+This is the docs site for [Jackal](https://github.com/Racer159/jackal), a declarative air gap solution for Kubernetes.  This site is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator created by Facebook.
 
 ## Prerequisites
 

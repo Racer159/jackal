@@ -11,10 +11,10 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/defenseunicorns/jackal/src/pkg/layout"
-	"github.com/defenseunicorns/jackal/src/pkg/message"
-	"github.com/defenseunicorns/jackal/src/pkg/utils"
-	"github.com/defenseunicorns/jackal/src/types"
+	"github.com/Racer159/jackal/src/pkg/layout"
+	"github.com/Racer159/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/pkg/utils"
+	"github.com/Racer159/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
 	"github.com/stretchr/testify/require"
 )

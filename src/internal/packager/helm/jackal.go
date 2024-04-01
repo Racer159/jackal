@@ -7,12 +7,12 @@ package helm
 import (
 	"fmt"
 
-	"github.com/defenseunicorns/jackal/src/pkg/cluster"
-	"github.com/defenseunicorns/jackal/src/pkg/k8s"
-	"github.com/defenseunicorns/jackal/src/pkg/message"
-	"github.com/defenseunicorns/jackal/src/pkg/transform"
-	"github.com/defenseunicorns/jackal/src/pkg/utils"
-	"github.com/defenseunicorns/jackal/src/types"
+	"github.com/Racer159/jackal/src/pkg/cluster"
+	"github.com/Racer159/jackal/src/pkg/k8s"
+	"github.com/Racer159/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/pkg/transform"
+	"github.com/Racer159/jackal/src/pkg/utils"
+	"github.com/Racer159/jackal/src/types"
 	"helm.sh/helm/v3/pkg/action"
 )
 

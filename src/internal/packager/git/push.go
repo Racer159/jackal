@@ -10,8 +10,8 @@ import (
 	"os"
 	"path"
 
-	"github.com/defenseunicorns/jackal/src/pkg/message"
-	"github.com/defenseunicorns/jackal/src/pkg/transform"
+	"github.com/Racer159/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/pkg/transform"
 	"github.com/go-git/go-git/v5"
 	goConfig "github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing"
@@ -145,7 +145,7 @@ func (g *Git) push(repo *git.Repository, spinner *message.Spinner) error {
 		RemoteName: offlineRemoteName,
 		Auth:       &gitCred,
 		Progress:   spinner,
-		// TODO: (@JEFFMCCOY) add the parsing for the `+` force prefix (see https://github.com/defenseunicorns/jackal/issues/1410)
+		// TODO: (@JEFFMCCOY) add the parsing for the `+` force prefix (see https://github.com/Racer159/jackal/issues/1410)
 		//Force: isForce,
 		// If a provided refspec doesn't push anything, it is just ignored
 		RefSpecs: []goConfig.RefSpec{

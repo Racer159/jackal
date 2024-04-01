@@ -5,9 +5,9 @@
 package variables
 
 import (
-	"github.com/defenseunicorns/jackal/src/config"
-	"github.com/defenseunicorns/jackal/src/pkg/interactive"
-	"github.com/defenseunicorns/jackal/src/types"
+	"github.com/Racer159/jackal/src/config"
+	"github.com/Racer159/jackal/src/pkg/interactive"
+	"github.com/Racer159/jackal/src/types"
 )
 
 // SetVariableMapInConfig handles setting the active variables used to template component files.

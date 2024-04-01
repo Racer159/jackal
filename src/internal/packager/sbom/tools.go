@@ -9,8 +9,8 @@ import (
 	"path/filepath"
 
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/defenseunicorns/jackal/src/pkg/message"
-	"github.com/defenseunicorns/jackal/src/pkg/utils/exec"
+	"github.com/Racer159/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/pkg/utils/exec"
 )
 
 // ViewSBOMFiles opens a browser to view the SBOM files and pauses for user input.

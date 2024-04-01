@@ -7,9 +7,9 @@ package cluster
 import (
 	"time"
 
-	"github.com/defenseunicorns/jackal/src/config"
-	"github.com/defenseunicorns/jackal/src/pkg/k8s"
-	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/config"
+	"github.com/Racer159/jackal/src/pkg/k8s"
+	"github.com/Racer159/jackal/src/pkg/message"
 )
 
 // Cluster is a wrapper for the k8s package that provides Jackal-specific cluster management functions.

@@ -12,7 +12,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/pkg/message"
 	"github.com/go-git/go-git/v5/plumbing/transport/http"
 )
 

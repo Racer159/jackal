@@ -13,11 +13,11 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/defenseunicorns/jackal/src/config"
-	"github.com/defenseunicorns/jackal/src/pkg/layout"
-	"github.com/defenseunicorns/jackal/src/pkg/message"
-	"github.com/defenseunicorns/jackal/src/pkg/transform"
-	"github.com/defenseunicorns/jackal/src/pkg/utils"
+	"github.com/Racer159/jackal/src/config"
+	"github.com/Racer159/jackal/src/pkg/layout"
+	"github.com/Racer159/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/pkg/transform"
+	"github.com/Racer159/jackal/src/pkg/utils"
 	"github.com/defenseunicorns/pkg/helpers"
 	"github.com/google/go-containerregistry/pkg/crane"
 	"github.com/google/go-containerregistry/pkg/logs"
@@ -462,7 +462,7 @@ func (i *ImageConfig) PullImage(src string, spinner *message.Spinner) (img v1.Im
 				src, utils.ByteFormat(float64(rawImg.Size), 2))
 		}
 
-		// Use unbuffered opener to avoid OOM Kill issues https://github.com/defenseunicorns/jackal/issues/1214.
+		// Use unbuffered opener to avoid OOM Kill issues https://github.com/Racer159/jackal/issues/1214.
 		// This will also take for ever to load large images.
 		if img, err = daemon.Image(reference, daemon.WithUnbufferedOpener()); err != nil {
 			return nil, false, fmt.Errorf("failed to load image from docker daemon: %w", err)

@@ -45,7 +45,7 @@ The above command detects your OS and system architecture and installs the corre
 
 ## Downloading the CLI from GitHub Releases
 
-All [Jackal releases](https://github.com/defenseunicorns/jackal/releases) on GitHub include prebuilt binaries that you can download and use. We offer range of combinations of OS and architecture for you to choose from.
+All [Jackal releases](https://github.com/Racer159/jackal/releases) on GitHub include prebuilt binaries that you can download and use. We offer range of combinations of OS and architecture for you to choose from.
 
 <Tabs>
 <TabItem value="Linux">
@@ -56,7 +56,7 @@ To download Jackal on Linux you can run the following (replacing `<jackal-versio
 JACKAL_VERSION=<jackal-version>
 JACKAL_ARCH=$([ $(uname -m) == "x86_64" ] && echo "amd64" || echo "arm64";)
 
-curl -sL https://github.com/defenseunicorns/jackal/releases/download/${JACKAL_VERSION}/jackal_${JACKAL_VERSION}_Linux_${JACKAL_ARCH} -o jackal
+curl -sL https://github.com/Racer159/jackal/releases/download/${JACKAL_VERSION}/jackal_${JACKAL_VERSION}_Linux_${JACKAL_ARCH} -o jackal
 chmod +x jackal
 ```
 
@@ -75,7 +75,7 @@ To download Jackal on macOS you can run the following (replacing `<jackal-versio
 JACKAL_VERSION=<jackal-version>
 JACKAL_ARCH=$([ $(uname -m) == "x86_64" ] && echo "amd64" || echo "arm64";)
 
-curl -sL https://github.com/defenseunicorns/jackal/releases/download/${JACKAL_VERSION}/jackal_${JACKAL_VERSION}_Darwin_${JACKAL_ARCH} -o jackal
+curl -sL https://github.com/Racer159/jackal/releases/download/${JACKAL_VERSION}/jackal_${JACKAL_VERSION}_Darwin_${JACKAL_ARCH} -o jackal
 chmod +x jackal
 ```
 
@@ -95,7 +95,7 @@ To download Jackal on Windows you can run the following (replacing `<jackal-vers
 $JackalVersion="<jackal-version>"
 $JackalArch="<jackal-arch>"
 
-Start-BitsTransfer -Source "https://github.com/defenseunicorns/jackal/releases/download/$($JackalVersion)/jackal_$($JackalVersion)_Windows_$($JackalArch).exe" -Destination jackal.exe
+Start-BitsTransfer -Source "https://github.com/Racer159/jackal/releases/download/$($JackalVersion)/jackal_$($JackalVersion)_Windows_$($JackalArch).exe" -Destination jackal.exe
 ```
 
 You can also install the binary onto your `$PATH` by moving the downloaded binary to the desired directory and modifying the `$PATH` environment variable to include that directory.
@@ -140,7 +140,7 @@ If you are not seeing this then Jackal was not installed onto your `$PATH` corre
 
 In most usage scenarios ([but not all](../../examples/yolo/README.md)) you will also need an ['init' package](../3-create-a-jackal-package/3-jackal-init-package.md) to be initialized before you deploy your own packages. This is a special Jackal package that initializes a cluster with services that are used to store package resources while in the air gap.
 
-You can get the default 'init' package for your version of Jackal by visiting the [Jackal releases](https://github.com/defenseunicorns/jackal/releases) page and downloading it into your working directory or into `~/.jackal-cache/jackal-init-<amd64|arm64>-vX.X.X.tar.zst`.
+You can get the default 'init' package for your version of Jackal by visiting the [Jackal releases](https://github.com/Racer159/jackal/releases) page and downloading it into your working directory or into `~/.jackal-cache/jackal-init-<amd64|arm64>-vX.X.X.tar.zst`.
 
 If you are online on the machine with cluster access you can also run `jackal init` without the `--confirm` flag to be given the option to download the matching version of the default 'init' package or you can use the `jackal tools download-init` command to download a copy to your machine.
 

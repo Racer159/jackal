@@ -10,12 +10,12 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/defenseunicorns/jackal/src/internal/packager/validate"
-	"github.com/defenseunicorns/jackal/src/pkg/layout"
-	"github.com/defenseunicorns/jackal/src/pkg/packager/deprecated"
-	"github.com/defenseunicorns/jackal/src/pkg/utils"
-	"github.com/defenseunicorns/jackal/src/pkg/zoci"
-	"github.com/defenseunicorns/jackal/src/types"
+	"github.com/Racer159/jackal/src/internal/packager/validate"
+	"github.com/Racer159/jackal/src/pkg/layout"
+	"github.com/Racer159/jackal/src/pkg/packager/deprecated"
+	"github.com/Racer159/jackal/src/pkg/utils"
+	"github.com/Racer159/jackal/src/pkg/zoci"
+	"github.com/Racer159/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
 )
 

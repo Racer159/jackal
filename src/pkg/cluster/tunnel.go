@@ -8,11 +8,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/defenseunicorns/jackal/src/types"
+	"github.com/Racer159/jackal/src/types"
 
-	"github.com/defenseunicorns/jackal/src/config"
-	"github.com/defenseunicorns/jackal/src/pkg/k8s"
-	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/config"
+	"github.com/Racer159/jackal/src/pkg/k8s"
+	"github.com/Racer159/jackal/src/pkg/message"
 	v1 "k8s.io/api/core/v1"
 )
 

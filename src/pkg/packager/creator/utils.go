@@ -9,9 +9,9 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/defenseunicorns/jackal/src/config"
-	"github.com/defenseunicorns/jackal/src/pkg/packager/deprecated"
-	"github.com/defenseunicorns/jackal/src/types"
+	"github.com/Racer159/jackal/src/config"
+	"github.com/Racer159/jackal/src/pkg/packager/deprecated"
+	"github.com/Racer159/jackal/src/types"
 )
 
 // recordPackageMetadata records various package metadata during package create.

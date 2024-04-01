@@ -7,7 +7,7 @@ package message
 import (
 	"fmt"
 
-	"github.com/defenseunicorns/jackal/src/types"
+	"github.com/Racer159/jackal/src/types"
 )
 
 // PrintConnectStringTable prints a table of connect strings.

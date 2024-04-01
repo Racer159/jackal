@@ -14,8 +14,8 @@ import (
 	"net"
 	"time"
 
-	"github.com/defenseunicorns/jackal/src/pkg/k8s"
-	"github.com/defenseunicorns/jackal/src/pkg/message"
+	"github.com/Racer159/jackal/src/pkg/k8s"
+	"github.com/Racer159/jackal/src/pkg/message"
 	"github.com/defenseunicorns/pkg/helpers"
 )
 

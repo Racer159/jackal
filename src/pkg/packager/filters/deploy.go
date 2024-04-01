@@ -9,9 +9,9 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/Racer159/jackal/src/pkg/interactive"
+	"github.com/Racer159/jackal/src/types"
 	"github.com/agnivade/levenshtein"
-	"github.com/defenseunicorns/jackal/src/pkg/interactive"
-	"github.com/defenseunicorns/jackal/src/types"
 	"github.com/defenseunicorns/pkg/helpers"
 )
 
