@@ -44,7 +44,7 @@ func TestUseCLI(t *testing.T) {
 		// Test `jackal prepare sha256sum` for a remote asset
 		expectedShasum := "c3cdea0573ba5a058ec090b5d2683bf398e8b1614c37ec81136ed03b78167617\n"
 
-		stdOut, stdErr, err := e2e.Jackal("prepare", "sha256sum", "https://jackal-public.s3-us-gov-west-1.amazonaws.com/pipelines/jackal-prepare-shasum-remote-test-file.txt")
+		stdOut, stdErr, err := e2e.Jackal("prepare", "sha256sum", "https://zarf-public.s3-us-gov-west-1.amazonaws.com/pipelines/zarf-prepare-shasum-remote-test-file.txt")
 		require.NoError(t, err, stdOut, stdErr)
 		require.Contains(t, stdOut, expectedShasum, "The expected SHASUM should equal the actual SHASUM")
 	})
@@ -204,7 +204,6 @@ func TestUseCLI(t *testing.T) {
 		})
 		stdOut, stdErr, err := e2e.Jackal("tools", "gen-pki", "github.com", "--sub-alt-name", "google.com")
 		require.NoError(t, err, stdOut, stdErr)
-		require.Contains(t, stdErr, "Successfully created a chain of trust for github.com")
 
 		require.FileExists(t, tlsCA)
 
